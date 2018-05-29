@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>drop-shadow</title>
+  <style>
+    ul, li {
+      list-style: none;
+    }
+
+    .stage {
+      margin: 20px auto;
+    }
+
+    .box {
+      width: 280px;
+      margin: 0 20px;
+      float: left;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .box2 {
+      box-shadow: 10px 10px 10px red;
+    }
+
+    .box3-img {
+      -webkit-filter: drop-shadow(10px 10px 10px red);
+    }
+  </style>
+</head>
+<body>
+<ul class="stage">
+  <li class="box box1">
+    <img
+      src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526797130781&di=f502be1ab7e4b03f21e3ae92880abdc9&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F9f2f070828381f307020c79fab014c086e06f0cf.jpg"
+      alt="">
+  </li>
+  <li class="box box2"><img
+    src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526797130781&di=f502be1ab7e4b03f21e3ae92880abdc9&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F9f2f070828381f307020c79fab014c086e06f0cf.jpg"
+    alt=""></li>
+  <li class="box box3"><img class="box3-img"
+    src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526797130781&di=f502be1ab7e4b03f21e3ae92880abdc9&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F9f2f070828381f307020c79fab014c086e06f0cf.jpg"
+    alt=""></li>
+</ul>
+<script>
+  /*
+  drop-shadow 下落式阴影
+添加阴影效果可不只有text-shadow和box-shadow哦，text-shadow是为文字添加阴影，box-shadow给一个元素添加阴影，drop-shadow在图片是非png情况下和box-shadow有些相似,然而png图片才是她大放异彩的地方*/
+</script>
+</body>
+</html>

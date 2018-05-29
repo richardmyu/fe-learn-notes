@@ -1,0 +1,17 @@
+/*这是一个CSS样式表：定义了程序输出的样式*/
+.output {
+    font-weight: bold;
+}
+
+/*计算结果定义为粗体*/
+#payment {
+    text-decoration: underline;
+}
+
+#graph {
+    border: 1px solid black;
+}
+
+th, td {
+    vertical-align: top;
+}

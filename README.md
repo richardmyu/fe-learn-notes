@@ -1,2 +1,3 @@
 # learnRep
-Learning record
+
+这是一个个人仓库，记录学习的知识以备后续的复习。
