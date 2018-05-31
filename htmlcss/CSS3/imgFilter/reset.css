@@ -1,35 +1,38 @@
 html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
 
-        .stage {
-            width: 100%;
-        }
+.stage {
+    width: 100%;
+}
 
-        .demo {
-            margin: 0 30px;
-        }
+.demo {
+    margin: 0 30px;
+}
 
-        ul,
-        li {
-            list-style: none;
-        }
+ul,
+li {
+    list-style: none;
+}
 
-        img {
-            width: 280px;
-            height: 250px;
-        }
+img {
+    width: 280px;
+    height: 250px;
+}
 
-        h1 {
-            text-align: center;
-        }
+h1 ,p{
+    text-align: center;
+}
 
-
-        ul li {
-            width: 33%;
-            float: left;
-            margin: 20px auto;
-        }
+ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+ul li {
+    margin: 20px 5px;
+}
