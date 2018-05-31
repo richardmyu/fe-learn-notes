@@ -23,7 +23,8 @@ img {
     height: 250px;
 }
 
-h1 ,p{
+h1,
+p{
     text-align: center;
 }
 
@@ -33,6 +34,7 @@ ul{
     align-items: center;
     flex-wrap: nowrap;
 }
+
 ul li {
     margin: 20px 5px;
 }
