@@ -14,7 +14,7 @@ html 和 css 的一些实现
 
 ### jsDemo
 
-顾名思义，就是 js 的 demo
+顾名思义，就是 js 的 demo；当然也会有一些学习的记录
 
 ### LeetCode
 
