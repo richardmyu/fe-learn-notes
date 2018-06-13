@@ -1,1 +1,0 @@
-note's for learning javascript Data structures and Algorithms
