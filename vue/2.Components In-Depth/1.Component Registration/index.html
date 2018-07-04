@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>全局注册</title>
+
+</head>
+
+<body>
+  <div id="app">
+    <com-title></com-title>
+    <com-content></com-content>
+    <com-copyright></com-copyright>
+    <!-- template 从外部脚本引入 -->
+    <!-- script -->
+    <out-com></out-com>
+    <!-- template -->
+    <tem-com></tem-com>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    Vue.component('com-title',{template:'<h3>title<slot></slot></h3>'});
+    Vue.component('com-content',{template:'<div><com-title> : content-title</com-title><p>当使用 PascalCase (驼峰式命名) 定义一个组件时，你在引用这个自定义元素时两种命名法都可以使用。也就是说 都是可接受的。注意，尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。</p></div>'});
+    Vue.component('com-copyright',{template:'<p>richyu</p>'});
+
+  </script>
+  <script>
+      Vue.component('out-com',{
+        template:'#out_com'
+      })
+    </script>
+    <script type="text/x-template" id="out_com">
+      <div>
+        <ul>
+          <li>123456</li>
+          <li>123456</li>
+          <li>123456</li>
+          <li>123456</li>
+          <li>123456</li>
+        </ul>
+      </div>
+    </script>
+    <script>
+        Vue.component('tem-com',{
+          template:'#tem'
+        })
+      </script>
+    <template id="tem">
+        <div>
+            <ul>
+              <li>1</li>
+              <li>12</li>
+              <li>123</li>
+              <li>1234</li>
+              <li>12345</li>
+              <li>123456</li>
+            </ul>
+          </div>
+    </template>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+
+      }
+    })
+  </script>
+
+
+</body>
+
+</html>

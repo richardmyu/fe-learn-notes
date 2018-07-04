@@ -1,0 +1,26 @@
+[
+  {
+    "isSelected": true,
+    "mCover": "http://file.ituring.com.cn/SmallCover/0100fda4486fc72b3548",
+    "mName": "Vue.js小书",
+    "mInfo": "blue",
+    "mPrice": 20,
+    "mQuantity": 3
+  },
+  {
+    "isSelected": true,
+    "mCover": "http://file.ituring.com.cn/SmallCover/0100c4de6d0965b125db",
+    "mName": "深入React技术栈",
+    "mInfo": "darkblue",
+    "mPrice": 57.8,
+    "mQuantity": 3
+  },
+  {
+    "isSelected": true,
+    "mCover": "http://file.ituring.com.cn/SmallCover/0100c1f47e3edc3cf166",
+    "mName": "AngularJS权威教程",
+    "mInfo": "brown",
+    "mPrice": 57.8,
+    "mQuantity": 3
+  }
+]

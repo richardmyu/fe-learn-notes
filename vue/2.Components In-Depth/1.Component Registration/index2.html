@@ -5,19 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>响应式</title>
-  <style>
-    @media (max-width:480px) {}
+  <title>模块系统</title>
 
-    @media (max-width:767px) {}
-
-    @media (min-width:768px)and(max-width:979px) {}
-
-    @media (min-width:1200px) {}
-  </style>
 </head>
 
 <body>
+  <div id="app">
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app'
+    })
+  </script>
+
 
 </body>
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>异步组件</title>
+</head>
+
+<body>
+  <div id="app">
+    <async-example></async-example>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    Vue.component('async-example', function (resolve, reject) {
+      setTimeout(function () {
+        // 向 `resolve` 回调传递组件定义
+        resolve({
+          template: '<div>I am async!</div>'
+        })
+      }, 0)
+    })
+    Vue.component('async-webpack-example', function (resolve) {
+      // 这个特殊的 `require` 语法将会告诉 webpack
+      // 自动将你的构建代码切割成多个包，这些包
+      // 会通过 Ajax 请求加载
+      require(['./my-async-component'], resolve)
+    })
+    Vue.component('async-webpack-example',
+      // 这个 `import` 函数会返回一个 `Promise` 对象。
+      () => import('./my-async-component')
+    )
+  </script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+
+      }
+    })
+  </script>
+</body>
+
+</html>

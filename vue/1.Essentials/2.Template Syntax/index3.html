@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>表达式</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <p>{{ a+1 }}</p>
+    <!-- 注意表达式不能用 n++/++n ，会进入死循环，报错信息：You may have an infinite update loop in a component render function ，详细分析见 text.md-->
+    {{ a ? a : 100 }}
+    <br/>
+    {{msg.split('').reverse().join('')}}
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        a: 0,
+        msg:'hello'
+      },
+      beforeMount: function () {
+        console.log('beforeMount a ', this.a)
+        console.log('beforeMount p-a ', document.getElementsByTagName('p')[0])
+        // debugger
+      },
+      mounted: function () {
+        console.log('mounted a ', this.a)
+        console.log('mounted p-a ', document.getElementsByTagName('p')[0])
+        // debugger
+      },
+      beforeUpdate: function () {
+        console.log('beforeUpdate a ', this.a)
+        console.log('beforeUpdate p-a ', document.getElementsByTagName('p')[0])
+        // debugger
+      },
+      updated: function () {
+        console.log('updated a ', this.a)
+        console.log('updated p-a ', document.getElementsByTagName('p')[0])
+      }
+    })
+  </script>
+</body>
+
+</html>
