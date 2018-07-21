@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>todoList</title>
+    <!-- <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+      .del{text-decoration: line-through;color:#cccccc!important;}
+    </style>
+</head>
+<body>
+<div id="app">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <h1 class="text-center">
+          ToDoList
+        </h1>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="text-danger">有 {{count}} 件事要完成</h3>
+            <input class="form-control" type="text" v-model="title" @keyup.13="add">
+          </div>
+          <div class="panel-body">
+            <ul class="list-group">
+              <li class="list-group-item" v-for="(todo,index) in filterTodos">
+                <span :class="{del:todo.isSelected}" v-show="cur!==todo">
+                  <input type="checkbox" v-model="todo.isSelected">
+                  <span @dblclick.stop="remember(todo)">{{todo.title}}</span>
+                </span>
+                <input type="text" v-model="todo.title" v-show="cur===todo" @keyup.enter="cancel" @blur="cancel" v-focus="cur===todo">
+                <button class="pull-right btn btn-danger btn-xs" @click="remove(todo)">&bigotimes;</button>
+              </li>
+            </ul>
+          </div>
+          <div class="panel-footer">
+            <ul class="nav nav-pills">
+              <li role="presentation" :class="{active:hash==='all'}"><a href="#/all">全部任务</a></li>
+              <li role="presentation" :class="{active:hash==='finish'}"><a href="#/finish">已完成</a></li>
+              <li role="presentation" :class="{active:hash==='unfinish'}"><a href="#/unfinish">未完成</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../node_modules/axios/dist/axios.js"></script>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="test.js"></script>
+</body>
+</html>
