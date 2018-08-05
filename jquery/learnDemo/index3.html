@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>test1</title>
+  <style>
+    .container {
+      width: 100%;
+      height: 300px;
+    }
+
+    .parent {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+      background-color: #ececec;
+    }
+
+    .son {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100px;
+      line-height: 100px;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      background-color: red;
+
+    }
+  </style>
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+</head>
+
+<body>
+  <button class="add">add</button>
+  <div class="container">
+
+    <!-- <div class="parent">
+      <div class="son">哈哈</div>
+    </div> -->
+  </div>
+  <script>
+    $(function () {
+      $(".add").on("click", function () {
+        let html = "";
+        $.ajax({
+          url: "data.json",
+          async: false,
+          type: "POST",
+          success: function () {
+            $.each(data, function () {
+              html += `
+                <div class="parent">${this.id}
+                  <div class="son">哈哈${this.name}</div>
+                </div>
+              `;
+              $(".container").html(html);
+            })
+          }
+        });
+        $(".parent").hover(function () {
+          $(".son").css("display", "block");
+        }, function () {
+          $(".son").css("display", "none");
+        })
+      })
+    })
+  </script>
+</body>
+
+</html>
