@@ -4,5 +4,5 @@ let fn_hello = async (ctx, next) => {
 };
 
 module.exports = {
-  "GET /hello:name": fn_hello
+  "GET /hello/:name": fn_hello
 };

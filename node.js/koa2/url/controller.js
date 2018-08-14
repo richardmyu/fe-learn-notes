@@ -18,6 +18,16 @@ const fs = require("fs");
   }
 } */
 
+String.prototype.startWith = function(str) {
+  var reg = new RegExp("^" + str);
+  return reg.test(this);
+};
+
+String.prototype.endWith = function(str) {
+  var reg = new RegExp(str + "$");
+  return reg.test(this);
+};
+
 function addMapping(router, mapping) {
   for (let url in mapping) {
     if (url.startsWith("GET")) {
@@ -36,13 +46,13 @@ function addMapping(router, mapping) {
 
 function addControllers(router) {
   let files = fs.readdirSync(__dirname + "/controllers");
-  let js_files = files.filter((f) => {
-    return f.endsWidth(".js");
+  let js_files = files.filter(f => {
+    return f.endWith(".js");
   });
 
   for (let f of js_files) {
     console.log(`process controller: ${f}`);
-    let mapping = require(__dirname + "/controllers" + f);
+    let mapping = require(__dirname + "/controllers/" + f);
     addMapping(router, mapping);
   }
 }
