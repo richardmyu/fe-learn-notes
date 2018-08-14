@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .container {
+      overflow: hidden;
+    }
+
+    .item {
+      height: 30px;
+      margin: 10px;
+      background-color: #ececec;
+    }
+
+    .test {
+      width: 100%;
+      height: 520px;
+      border: 1px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul>
+      <li class="item">GET</li>
+      <li class="item">POST</li>
+      <li class="item">PUT</li>
+      <li class="item">DELETE</li>
+    </ul>
+    <div class="test"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="api.js"></script>
+  <!-- <script>
+    $(function () {
+      async function timeout(flag) {
+        console.log("1");
+        if (flag) {
+          return "2"
+        } else {
+          throw new error("no");
+          return "3"
+        }
+      }
+      // console.log(timeout(true));
+      // console.log(timeout(false));
+      timeout(true).then(result => {
+        console.log(result)
+      })
+      timeout(false).catch(err => {
+        console.log("err")
+      })
+      console.log("4")
+    })
+  </script> -->
+  <script>
+    function double(num) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(2 * num);
+        }, 200)
+      })
+    }
+
+    async function test() {
+      let first = await double(30);
+      let second = await double(first);
+      let third = await double(second);
+      console.log(first, second, third)
+    }
+
+    test();
+  </script>
+</body>
+
+</html>
