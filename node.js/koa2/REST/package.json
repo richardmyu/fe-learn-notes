@@ -1,10 +1,10 @@
 {
-  "name": "ajax",
+  "name": "REST",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "node app6.js"
+    "test": "node app.js"
   },
   "keywords": [],
   "author": "",

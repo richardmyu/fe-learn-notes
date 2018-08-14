@@ -1,12 +1,13 @@
 // GET
-$.get = function(url, data, callback) {
+$.GET = function(url, callback) {
   $.ajax({
     url: url,
     type: "GET",
-    data: data,
-    dataType: "json",
-    success: function(data) {
-      callback(data);
+    dataType: "jsonp",
+    jsonp: "callback",
+    jsonpCallback: "successCallback",
+    success: function(json) {
+      callback(JSON.stringify(json.data));
     },
     error: function(xhr) {
       console.log(xhr.status + " " + xhr.statusText);
@@ -15,12 +16,12 @@ $.get = function(url, data, callback) {
 };
 
 // POST
-$.post = function(url, data, callback) {
+$.POST = function(url, data, callback) {
   $.ajax({
     url: url,
     type: "POST",
     data: data,
-    dataType: "json",
+    dataType: "jsonp",
     success: function(data) {
       callback(data);
     },
@@ -31,12 +32,12 @@ $.post = function(url, data, callback) {
 };
 
 // PUT
-$.put = function(url, data, callback) {
+$.PUT = function(url, data, callback) {
   $.ajax({
     url: url,
     type: "PUT",
     data: data,
-    dataType: "json",
+    dataType: "jsonp",
     success: function(data) {
       callback(data);
     },
@@ -47,12 +48,12 @@ $.put = function(url, data, callback) {
 };
 
 // DELETE
-$.delete = function(url, data, callback) {
+$.DELETE = function(url, data, callback) {
   $.ajax({
     url: url,
     type: "DELETE",
     data: data,
-    dataType: "json",
+    dataType: "jsonp",
     success: function(data) {
       callback(data);
     },
