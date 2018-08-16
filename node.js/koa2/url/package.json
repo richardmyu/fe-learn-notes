@@ -12,6 +12,7 @@
   "dependencies": {
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
+    "koa-cors": "^0.0.16",
     "koa-router": "^7.4.0"
   }
 }

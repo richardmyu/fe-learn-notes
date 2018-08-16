@@ -1,13 +1,13 @@
 // GET
-$.GET = function(url, callback) {
+$.GET = function(url, data, callback) {
   $.ajax({
     url: url,
     type: "GET",
-    dataType: "jsonp",
-    jsonp: "callback",
-    jsonpCallback: "successCallback",
-    success: function(json) {
-      callback(JSON.stringify(json.data));
+    data: data,
+    dataType: "json",
+    cache: false,
+    success: function(data, status) {
+      callback(JSON.stringify(data), status);
     },
     error: function(xhr) {
       console.log(xhr.status + " " + xhr.statusText);
@@ -21,9 +21,10 @@ $.POST = function(url, data, callback) {
     url: url,
     type: "POST",
     data: data,
-    dataType: "jsonp",
-    success: function(data) {
-      callback(data);
+    dataType: "json",
+    cache: false,
+    success: function(data, status) {
+      callback(JSON.stringify(data), status);
     },
     error: function(xhr) {
       console.log(xhr.status + " " + xhr.statusText);
@@ -37,9 +38,10 @@ $.PUT = function(url, data, callback) {
     url: url,
     type: "PUT",
     data: data,
-    dataType: "jsonp",
-    success: function(data) {
-      callback(data);
+    dataType: "json",
+    cache: false,
+    success: function(data, status) {
+      callback(JSON.stringify(data), status);
     },
     error: function(xhr) {
       console.log(xhr.status + " " + xhr.statusText);
@@ -53,9 +55,10 @@ $.DELETE = function(url, data, callback) {
     url: url,
     type: "DELETE",
     data: data,
-    dataType: "jsonp",
-    success: function(data) {
-      callback(data);
+    dataType: "json",
+    cache: false,
+    success: function(data, status) {
+      callback(JSON.stringify(data), status);
     },
     error: function(xhr) {
       console.log(xhr.status + " " + xhr.statusText);
