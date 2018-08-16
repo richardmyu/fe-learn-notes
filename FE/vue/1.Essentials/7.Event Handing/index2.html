@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>按键、系统...修饰符</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <label for="">13</label><br>
+    <input type="text" @keyup.13="submit"><br>
+    <label for="">.enter</label><br>
+    <input type="text" @keyup.enter="submit"><br>
+    <label for="">.page-down</label><br>
+    <input type="text" @keyup.page-down="submit"><br>
+    <label for="">.ctrl</label><br>
+    <input type="text" @keyup.ctrl="submit"><br>
+    <input type="text" @keyup.17="submit"><br>
+    <hr>
+    <!-- ctrl + [alt/shift...] + click-->
+    <button @click.ctrl="onClick">click</button>
+    <!-- 有且只有 ctrl 按下才会触发 -->
+    <button @click.ctrl.exact="onClick">click</button>
+    <!-- 没有任何系统修饰符（其他可以）被按下才会触发 -->
+    <button @click.exact="onClick">click</button>
+    <hr>
+    <button @click.left="onClick">click</button>
+    <button @click.right="onClick">click</button>
+    <button @click.middle="onClick">click</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        
+      },
+      methods:{
+        // 手动传入
+        submit:function($event){
+          alert('submit')
+          alert($event.key)
+        },
+        onClick:function(){
+          alert('ok')
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

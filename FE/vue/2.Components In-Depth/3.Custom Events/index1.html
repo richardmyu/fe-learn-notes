@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>将原生事件绑定到组件</title>
+</head>
+
+<body>
+  <div id="app">
+    <base-input v-on:focus.native="onFocus"></base-input>
+    <hr>
+    <base-button v-on:focus.native.once="onFocus" @add="i++"></base-button>
+    <p>{{i}}</p>
+    <hr>
+    <base-input-t v-on:focus.once="onFocus"></base-input-t>
+    <br><br>
+    <base-input-t v-on:focus.native="onFocus"></base-input-t>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    Vue.component('base-input', {
+      inheritAttrs: false,
+      props: ['label', 'value'],
+      template: `
+      <label>
+        {{label}}
+        <input 
+          v-bind="$attrs"
+          v-bind:value="value"
+          v-on:input="$emit('input', $event.target.value)"
+        >
+      </label>
+      `
+    })
+    Vue.component('base-button', {
+      inheritAttrs: false,
+      template: `
+        <button 
+          v-bind="$attrs"
+          v-on:click="$emit('add')"
+        >add</button>
+      `
+    })
+    Vue.component('base-input-t', {
+      inheritAttrs: false,
+      props: ['label', 'value'],
+      computed: {
+        inputListeners: function () {
+          let vm = this;
+          return Object.assign({}, this.$listeners, {
+            input: function (event) {
+              vm.$emit('input', event.target.value)
+            }
+          })
+        }
+      },
+      template: `
+      <label>
+        {{label}}
+        <input 
+          v-bind="$attrs"
+          v-bind:value="value"
+          v-on="inputListeners"
+        >
+      </label>
+      `
+    })
+  </script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        i: 0
+      },
+      methods: {
+        onFocus: function () {
+          alert('yes/no')
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

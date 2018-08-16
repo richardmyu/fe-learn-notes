@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>插槽</title>
+</head>
+
+<body>
+  <div id="app">
+    <alert-box>Something bad happend</alert-box>
+    <alert-box>哈哈哈哈或</alert-box>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    Vue.component('alert-box', {
+      template: `
+      <div>
+        <strong>Error!</strong>
+        <slot></slot>
+      </div>`
+    })
+  </script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+
+      }
+    })
+  </script>
+
+
+</body>
+
+</html>

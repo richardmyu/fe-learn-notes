@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>defineProperty</title>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" id="inp">
+  </div>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> -->
+  <script>
+    let obj = {};
+    let t = {};
+    Object.defineProperty(obj, 'name', {
+      /* 
+      // 属性描述对象
+      configurable: false, //是否可配置
+      writable: false, //是否可写
+      enumerable: false, //是否可遍历
+      value: undefined,
+      get: undefined,
+      set: undefined 
+      */
+      get() {
+        return t.name;
+      },
+      set(val) {
+        t.name = val;
+        inp.value = obj.name;
+      }
+    });
+    inp.value = obj.name;
+    inp.addEventListener('input', function () {
+      obj.name = this.value;
+    })
+  </script>
+</body>
+
+</html>

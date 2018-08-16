@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>saturate</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .saturate-three-one{
+            -webkit-filter: saturate(67%);
+            filter: saturate(67%);
+        }
+        .saturate-three-two{
+            -webkit-filter: saturate(34%);
+            filter: saturate(34%);
+        }
+        .saturate-three-end{
+            -webkit-filter: saturate(1%);
+            filter: saturate(1%);
+        }
+        .saturate-three-one-over{
+            -webkit-filter: saturate(150%);
+            filter: saturate(150%);
+        }
+        .saturate-three-zone--over{
+            -webkit-filter: saturate(300%);
+            filter: saturate(300%);
+        }
+        .saturate-three-two-over{
+            -webkit-filter: saturate(500%);
+            filter: saturate(500%);
+        }
+        .saturate-three-end-over{
+            -webkit-filter: saturate(1000%);
+            filter: saturate(1000%);
+        }
+        .saturate-three-zone-sup-over{
+            -webkit-filter: saturate(5000%);
+            filter: saturate(5000%);
+        }
+        .saturate-three-one-sup-over{
+            -webkit-filter: saturate(10000%);
+            filter: saturate(10000%);
+        }
+        .saturate-three-two-sup-over{
+            -webkit-filter: saturate(50000%);
+            filter: saturate(50000%);
+        }
+        .saturate-three-end-sup-over{
+            -webkit-filter: saturate(100000%);
+            filter: saturate(100000%);
+        }
+    </style>
+</head>
+<body>
+    <div class="stage">
+        <h1>filter: saturate; 饱和度</h1>
+        <p>额，1000%以内还算正常吧，但是还可以继续...真是丧心病狂</p>
+        <div class="demo">
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>原图.jpg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-one" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 67%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-two" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 34%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-end" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 1%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img class="saturate-three-zone-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 150%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-one-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 300%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-two-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 500%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-end-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 1000%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img class="saturate-three-zone-sup-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 5000%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-one-sup-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 10000%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-two-sup-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 50000%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-end-sup-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>saturate: 100000%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>原图.png</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-one" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 67%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-two" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 34%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-end" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 1%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img class="saturate-three-zone-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 150%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-one-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 300%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-two-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 500%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-end-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 1000%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img class="saturate-three-zone-sup-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 5000%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-one-sup-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 10000%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-two-sup-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 50000%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="saturate-three-end-sup-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>saturate: 100000%</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

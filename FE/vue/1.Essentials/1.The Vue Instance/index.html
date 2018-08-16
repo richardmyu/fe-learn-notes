@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>数据与方法</title>
+</head>
+
+<body>
+  <div id="app-1">
+    {{a}} {{b}}
+  </div>
+  <div id="app-2">
+    <p>{{foo}}</p>
+    <button v-on:click="foo = 'azb'">Change it</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    let data = { a: 1 };
+    let vm = new Vue({
+      el: '#app-1',
+      data: data
+    })
+    console.log(vm.a === data.a); //true
+    // 只有当实例被创建时 data 中存在的属性才是响应式的
+
+    // 添加一个新的属性，改动将不会触发任何视图的更新
+    vm.b = 'hello';
+    // 并且 {{ b }}会报错:Property or method "b" is not defined on the instance but referenced during render. Make sure that this property is reactive, either in the data option, or for class-based components, by initializing the property.
+
+    // 除了数据属性，Vue 实例还暴露了一些有用的实例属性与方法。它们都有前缀 $，以便与用户定义的属性区分开来
+
+    console.log(vm.$data === data);//true
+
+    console.log(vm.$el === document.getElementById('app-1'));//true
+
+    // 实例方法
+    vm.$watch('a',function(newValue,oldValue){
+      // 这是一个回调，在 vm.a 变化后调用
+      console.log('a has changed');
+    })
+  </script>
+  <script>
+    // 这里唯一的例外是使用 Object.freeze()，这会阻止修改现有的属性，也意味着响应系统无法再追踪变化
+    let obj = { foo: 'bar' };
+    Object.freeze(obj);
+    let vm1 = new Vue({
+      el: '#app-2',
+      data: obj
+    })
+    // 点击报错 
+    // Uncaught TypeError: Cannot assign to read only property 'foo' of object '#<Object>'
+  </script>
+  <script>
+    let o = { a: 'hello' };
+    console.log(o.a);//hello
+    Object.freeze(o);
+    o.a = 'world';
+    console.log(o.a);//hello
+  </script>
+</body>
+
+</html>

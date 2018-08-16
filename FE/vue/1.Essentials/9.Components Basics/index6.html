@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>动态组件</title>
+  <style>
+    span {
+      display: inline-block;
+      width: 100px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background-color: #eee;
+      border: 2px solid #999;
+    }
+
+    h3 {
+      border: 1px solid #999;
+      margin: 0;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <span @click="tabCom('home')">Home</span>
+    <span @click="tabCom('posts')">Posts</span>
+    <span @click="tabCom('archive')">Archive</span>
+    <component :is="curCom"></component>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        curCom: 'home'
+      },
+      components: {
+        home: {
+          template: `<h3>Home component</h3>`
+        },
+        posts: {
+          template: `<h3>Posts component</h3>`
+        },
+        archive: {
+          template: `<h3>Archive component</h3>`
+        }
+      },
+      methods: {
+        tabCom(param) {
+          this.curCom = param;
+        }
+      }
+    })
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>hue-rotate</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .hue-rotate-three-one{
+            -webkit-filter: hue-rotate(90deg);
+            filter: hue-rotate(90deg);
+        }
+        .hue-rotate-three-two{
+            -webkit-filter: hue-rotate(180deg);
+            filter: hue-rotate(180deg);
+        }
+        .hue-rotate-three-end{
+            -webkit-filter: hue-rotate(270deg);
+            filter: hue-rotate(270deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="stage">
+        <h1>filter: hue-rotate; 色相旋转</h1>
+        <p>0 - 360 deg 之间；红-橙-黄-绿-青-蓝-紫</p>
+        <div class="demo">
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>原图.jpg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="hue-rotate-three-one" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>hue-rotate: 90deg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="hue-rotate-three-two" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>hue-rotate: 180deg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="hue-rotate-three-end" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>hue-rotate: 270deg</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>原图.png</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="hue-rotate-three-one" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>hue-rotate: 90deg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="hue-rotate-three-two" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>hue-rotate: 180deg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="hue-rotate-three-end" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>hue-rotate: 270deg</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

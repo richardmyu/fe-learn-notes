@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>事件修饰符</title>
+  <style>
+    .demoP {
+      border: 1px solid red;
+    }
+
+    .demoC {
+      background-color: #999;
+    }
+
+    .demoG{
+      background-color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h3>阻止单击事件继续传播(阻止冒泡) .stop</h3>
+    <p class="demoP" @click="doThis('no-stop-domeP')">
+      demoP
+      <a class="demoC" href="" @click="doThis('no-stop-demoC')">demoC 点击我，依次 no-stop-demoC,no-stop-demoP</a>
+    </p>
+    <p class="demoP" @click="doThis('no-stop-demoP')">
+      demoP
+      <a class="demoC" href="" @click.stop="doThis('stop-demoC')">demoC 点击我，只会触发 stop-demoC</a>
+    </p>
+    <hr>
+    <h3>提交事件不再重载页面 .prevent</h3>
+    <p>刷新</p>
+    <form v-on:submit="onSubmit">
+      <label>name</label>
+      <input type="text">
+      <br/>
+      <br/>
+      <label>password</label>
+      <input type="password">
+      <br/>
+      <br/>
+      <button>sub</button>
+    </form>
+    <br>
+    <p>不刷新</p>
+    <form v-on:submit.prevent="onSubmit">
+      <label>name</label>
+      <input type="text">
+      <br>
+      <br>
+      <label>password</label>
+      <input type="password">
+      <br>
+      <br/>
+      <button>sub</button>
+    </form>
+    <h3>添加事件监听器时使用事件捕获模式 .capture</h3>
+    <p>即元素自身触发的事件先在此处处理，然后才交由内部元素进行处理</p>
+    <div class="demoP" @click="doThis('no-capture')">
+      no-capture
+      <p class="demoC" @click="doThis('no-capture-child')">no-capture-child 点击我，先 no-capture-child 再 no-capture</p>
+    </div>
+    <br>
+    <div class="demoP" @click.capture="doThis('capture')">
+      capture
+      <p class="demoC" @click="doThis('capture-child')">capture-child 点击我，先 capture，再capture-child</p>
+    </div>
+    <h3>只当在 event.target 是当前元素自身时触发处理函数 .self</h3>
+    <p>即事件不是从内部元素触发的</p>
+    <div class="demoP" @click.capture="doThis('no-self')">no-self
+      <p class="demoC" @click="doThis('no-self-child')">no-self-child 点击我，先no-self-child，再 no-self</p>
+    </div>
+    <br>
+    <div class="demoP" @click.self="doThis('self')">self
+      <p class="demoC" @click="doThis('self-child')">self-child 点击我，只有 self-child</p>
+    </div>
+    <h5>使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。因此，用 v-on:click.prevent.self 会阻止所有的点击，而 v-on:click.self.prevent 只会阻止对元素自身的点击。??? 此处.prevent 似乎没起作用，难道只针对表单？？？</h5>
+    <div class="demoP" @click="doThis('demoP-no-ps')">
+      <p class="demoC" @click.prevent.self="doThis('demoC-ps')">
+        <span class="demoG" @click="doThis('demoG-no-ps')">prevent-self</span>
+      </p>
+    </div>
+    <div class="demoP" @click="doThis('demoP-no-sp')">
+      <p class="demoC" @click.self.prevent="doThis('demoC-sp')">
+        <span class="demoG" @click="doThis('demoG-no-sp')">self-prevent</span>
+      </p>
+    </div>
+    <h3>.passive</h3>
+    <p>
+        滚动事件的默认行为 (即滚动行为) 将会立即触发，而不会等待 `onScroll` 完成，这其中包含 `event.preventDefault()` 的情况
+    </p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+
+      },
+      methods: {
+        doThis(msg) {
+          alert(msg);
+        },
+        onSubmit() {
+          alert('submit...');
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>指令</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- vue 的指令是 DOM 的行间属性，被 Vue 赋予特定意义来实现某些功能，指令均以 v- 开头；注意 value selectd checked 属性默认情况下会被 vue 忽略，  -->
+
+    <!-- v-model 绑定变量到 html 元素上，主要用于 input 元素，用来展示数据和改变数据（即输入框的数据变化也会改动变量的值，即绑定是双向的） -->
+    <input type="text" v-model="msg">
+    <br/> {{msg}}
+    <!-- 闪屏,加载时，花括号可能出现在页面上 -->
+    <!-- 方案1 -->
+    <div v-text="msg"></div>
+    <hr/>
+    <!-- v-once 只绑定一次，数据变化也不会刷新页面 -->
+    <div v-once="">
+      {{msg}}
+    </div>
+    <hr/>
+    <!-- v-html 将字符串当做 html 解析,即用于绑定 html 代码 -->
+    <div>
+      {{p}}
+    </div>
+    <div v-html="p">
+    </div>
+    <hr/>
+    <!-- v-for 循环 可以循环数组[，字符串，数字，对象]-->
+    <div>
+      <ul>
+        <li v-for="(item,index) of books">
+          {{index}}: {{item.name}}
+          <ul>
+            <li v-for="(v,i) of item.v">
+              {{index}}.{{i+1}}: {{v}}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+</body>
+
+<script>
+  let vm = new Vue({
+    el: '#app',
+    data: {
+      msg: 'hello',
+      p: '<p>hello<br/>world</p>',
+      books:[{'name':'vue','v':['v1.0','v2.0']},
+      {'name':'react','v':['v1.0','v2.0']},
+      {'name':'ang','v':['v1.0','v2.0']}]
+    }
+  })
+</script>
+
+</html>
