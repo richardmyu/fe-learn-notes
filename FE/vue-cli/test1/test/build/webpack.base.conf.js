@@ -12,9 +12,11 @@ function resolve (dir) {
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
+  // 编译入口文件
   entry: {
     app: './src/main.js'
   },
+  // 编译输出路径
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -22,6 +24,7 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  // 解决方案配置
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {

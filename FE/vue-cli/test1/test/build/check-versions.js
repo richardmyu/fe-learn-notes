@@ -1,6 +1,8 @@
 'use strict'
 const chalk = require('chalk')
+// 加载语义化版本测试库
 const semver = require('semver')
+// 引入 package.json 文件
 const packageConfig = require('../package.json')
 const shell = require('shelljs')
 
@@ -8,6 +10,7 @@ function exec (cmd) {
   return require('child_process').execSync(cmd).toString().trim()
 }
 
+// 定义 node 和 npm 版本需求所组成的数组
 const versionRequirements = [
   {
     name: 'node',
@@ -27,6 +30,7 @@ if (shell.which('npm')) {
 module.exports = function () {
   const warnings = []
 
+  // 一次判断是否符合要求
   for (let i = 0; i < versionRequirements.length; i++) {
     const mod = versionRequirements[i]
 

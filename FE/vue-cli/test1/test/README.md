@@ -21,7 +21,7 @@ npm run build --report
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 
-### vue-cli 目录结构
+### vue-cli2.0 目录结构
 
 ```javascript
   |
@@ -47,7 +47,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   |
   |----  package.json  项目基本信息
   |
-  |----  README.md 项目说明
+  |----  README.md  项目说明
   |
 ```
 
@@ -58,14 +58,54 @@ build 文件主要是 webpack 的配置，主要启动文件是`dev-server.js`�
 ```
 build
   |
-  |----  build.js
+  |----  build.js  生产环境构建
   |
-  |----  check-versions.js
+  |----  check-versions.js  版本检查
   |
-  |----  
+  |----  utils.js  构建相关工具
   |
+  |----  vue-loader.config.js  css 加载器配置
   |
+  |----  webpack.base.conf.js  webpack 基础配置
   |
+  |----  webpack.dev.conf.js  webpack 开发环境配置
   |
+  |----  webpack.prod.conf.js  webpack 生产环境配置
+  |
+```
+
+#### 2.config
+
+```
+  |
+  |----  dev.env.js  项目开发环境配置
+  |
+  |----  index.js 项目主要配置（包括监听端口，打包路径等）
+  |
+  |----  prod.end.js  项目生产环境配置
+  |
+```
+
+#### 3.src
+
+```
+  |
+  |----  assets
+  |
+  |----  components
+  |
+  |----  router  路由配置
+  |
+  |----  App.vue  根组件
+  |
+  |----  main.js  入口文件
+  |
+```
+
+#### 4.static
+
+```
+  |
+  |----  .gitkeep
   |
 ```
