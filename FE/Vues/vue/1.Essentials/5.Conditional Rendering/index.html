@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>条件渲染</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1 v-if="isOk">Yes</h1>
+    <h1 v-else>No</h1>
+    <template v-if="isShow">
+      <h1>Title</h1>
+      <p>Paragraph</p>
+      <p>hhhhhhhhhhhhh</p>
+    </template>
+    <template v-else>
+      <h1>mkl</h1>
+    </template>
+    <div v-if="type === 'A'">
+      A
+    </div>
+    <div v-else-if="type === 'B'">
+      B
+    </div>
+    <div v-else-if="type === 'C'">
+      C
+    </div>
+    <div v-else>
+      Not A/B/C
+    </div>
+    <hr>
+    <template v-if="loginType === 'username'">
+      <label>Username</label>
+      <br/>
+      <input placeholder="Enter your username">
+    </template>
+    <template v-else>
+      <label>Email</label>
+      <br/>
+      <input placeholder="Enter your email address">
+    </template>
+    <button @click="fn">Toggle type</button>
+    <hr>
+    <h1 v-show="isShow">Hello world</h1>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        isOk: true,
+        isShow: true,
+        type: '',
+        loginType: ''
+      },
+      methods: {
+        fn() {
+          if (this.loginType === "username") {
+            this.loginType = '';
+          } else {
+            this.loginType = 'username';
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

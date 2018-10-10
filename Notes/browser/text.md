@@ -1,10 +1,11 @@
-# 浏览器
+# 图解浏览器渲染过程
+
+原文：[图解浏览器渲染过程-基于Webkit/Blink内核Chrome浏览器](https://github.com/abcrun/abcrun.github.com/issues/17)
 
 <!-- TOC -->
 
-- [浏览器](#浏览器)
-    - [[图解浏览器渲染过程-基于Webkit/Blink内核Chrome浏览器](https://github.com/abcrun/abcrun.github.com/issues/17)](#图解浏览器渲染过程-基于webkitblink内核chrome浏览器httpsgithubcomabcrunabcrungithubcomissues17)
-      - [1.Chrome浏览器多进程/线程模型](#1chrome浏览器多进程线程模型)
+- [图解浏览器渲染过程](#图解浏览器渲染过程)
+  - [1.Chrome浏览器多进程/线程模型](#1chrome浏览器多进程线程模型)
       - [2.资源请求与加载过程](#2资源请求与加载过程)
       - [3.渲染过程](#3渲染过程)
         - [3.1 HTMLParser -> DOM](#31-htmlparser---dom)
@@ -59,21 +60,19 @@
 
 <!-- /TOC -->
 
-### [图解浏览器渲染过程-基于Webkit/Blink内核Chrome浏览器](https://github.com/abcrun/abcrun.github.com/issues/17)
+Chrome 基于 Webkit 内核进行封装，采用了多进程/线程模型。当用户访问网页时，大致的流程是这样的：
 
-Chrome基于Webkit内核进行封装，采用了多进程/线程模型。当用户访问网页时，大致的流程是这样的：
+打开浏览器，Browser 进程启动，首先由 UI 线程来处理界面基本信息(如创建 tab 页等)；
 
-打开浏览器，Browser进程启动，首先由UI线程来处理界面基本信息(如创建tab页等)；
+当用户输入 URL 后，UI 线程将任务交给 IO 线程来处理，然后将结果传递给 Render 进程；
 
-当用户输入URL后，UI线程将任务交给IO线程来处理，然后将结果传递给Render进程；
-
-Render进程的IO线程经过简单分析后，将解释后的结果交给渲染线程；
+Render 进程的 IO 线程经过简单分析后，将解释后的结果交给渲染线程；
 
 渲染线程接受请求加载网页并渲染网页；
 
-在加载和渲染过程中，可能会需要Browser进程获取相关的资源(如果CSS文件，图片，音频视频等)和GPU进程帮助渲染，这时Render进程会通过IO线程通知Browser进程或者GPU进程进行相关的任务。
+在加载和渲染过程中，可能会需要 Browser 进程获取相关的资源(如果 CSS 文件，图片，音频视频等)和 GPU 进程帮助渲染，这时 Render 进程会通过 IO 线程通知 Browser 进程或者 GPU 进程进行相关的任务。
 
-#### 1.Chrome浏览器多进程/线程模型
+## 1.Chrome浏览器多进程/线程模型
 
 ![Alt text](./bw-1-chrome_full.png)
 
