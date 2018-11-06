@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>抽象出公共组件类</title>
+</head>
+
+<body>
+  <div class="wrapper"></div>
+  <script>
+    /* 
+    为了让代码更灵活，可以写更多的组件，我们把这种模式抽象出来，放到一个 Component 类当中
+    组件子类继承的时候只需要实现一个返回 HTML 字符串的 render 方法就可以了。
+     */
+    const createDOMFromString = (domString) => {
+      const div = document.createElement('div');
+      div.innerHTML = domString;
+      return div;
+    };
+    const mount = (component, wrapper) => {
+      wrapper.appendChild(component._renderDOM());
+      component.onStateChange = (oldEl, newEl) => {
+        wrapper.insertBefore(newEl, oldEl);
+        wrapper.removeChild(oldEl);
+      }
+    }
+    class Component {
+      setState(state) {
+        const oldEl = this.el;
+        this.state = state;
+        this.el = this._renderDOM();
+        if (this.onStateChange) {
+          this.onStateChange(oldEl, this.el)
+        }
+      }
+      _renderDOM() {
+        this.el = createDOMFromString(this.render());
+        if (this.onClick) {
+          this.el.addEventListener("click", this.onClick.bind(this), false)
+        }
+        return this.el;
+      }
+
+    }
+    class LikeButton extends Component {
+      constructor() {
+        super();
+        this.state = {
+          isLiked: false
+        }
+      }
+      onClick() {
+        this.setState({
+          isLiked: !this.state.isLiked
+        })
+      }
+      render() {
+        return (`
+          <button id="like-btn">
+            <span class="like_text">${this.state.isLiked ? "取消" : "点赞"}</span>
+            <span>👍</span>
+          </button>
+        `)
+      }
+    }
+    const wrapper = document.querySelector(".wrapper");
+
+    mount(new LikeButton(), wrapper);
+  </script>
+</body>
+
+</html>
