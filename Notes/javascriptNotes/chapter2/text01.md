@@ -148,7 +148,7 @@
       - [9.1.概述](#91概述)
       - [9.2.Object.getOwnPropertyDescriptor()](#92objectgetownpropertydescriptor)
       - [9.3.Object.getOwnPropertyNames()](#93objectgetownpropertynames)
-      - [9.4.Object.defineProperty()，Object.defineProperties()](#94objectdefinepropertyobjectdefineproperties)
+      - [9.4.Object.defineProperty()/Object.defineProperties()](#94objectdefinepropertyobjectdefineproperties)
       - [9.5.Object.prototype.propertyIsEnumerable()](#95objectprototypepropertyisenumerable)
       - [9.6.元属性](#96元属性)
         - [9.6.1 value](#961-value)
@@ -2696,7 +2696,7 @@ JavaScript 提供了一个内部数据结构，用来描述对象的属性，控
 
 4).`configurable`
 
-`configurable`是一个布尔值，表示可配置性，默认为true。如果设为false，将阻止某些操作改写该属性，比如无法删除该属性，也不得改变该属性的属性描述对象（value属性除外）。也就是说，`configurable`属性控制了属性描述对象的可写性。
+`configurable`是一个布尔值，表示可配置性，默认为true。如果设为false，将阻止某些操作改写该属性，比如无法删除该属性，也不得改变该属性的属性描述对象（value属性除外）。也就是说，**`configurable`属性控制了属性描述对象的可写性**。
 
 5).`get`
 
@@ -2757,7 +2757,7 @@ Object.getOwnPropertyNames(Object.prototype)
 // 'toString']
 ```
 
-#### 9.4.Object.defineProperty()，Object.defineProperties()
+#### 9.4.Object.defineProperty()/Object.defineProperties()
 
 `Object.defineProperty`方法允许通过属性描述对象，定义或修改一个属性，然后返回修改后的对象，它的用法如下：
 
