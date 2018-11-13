@@ -7,56 +7,56 @@
 1).`Boolean` 值，转换 0 或 1；
 
 ```javascript
-console.log(Number(true)); //1
-console.log(Number(false)); //0
+Number(true); //1
+Number(false); //0
 ```
 
 2).数字值，简单传入传出（第一个数为 `0`，则会被认为是八进制数，忽略剩余前导 `0`，再转化为十进制输出；若前两位为`0x`，则会被认为是十六进制，转化为十进制）；
 
 ```javascript
 //带前导0被当做 8 进制
-console.log(Number(0123)); //83
-console.log(Number(00123)); //83
+Number(0123); //83
+Number(00123); //83
 //带前导0x被当做 16 进制
-console.log(Number(0x123)); //291
+Number(0x123); //291
 
-console.log(Number(-123)); //-123
-console.log(Number(0.123)); //0.123
+Number(-123); //-123
+Number(0.123); //0.123
 //小数点后 0 超过 5 个会自动转科学计数法
-console.log(Number(0.00000123)); //0.00000123
-console.log(Number(0.000000123)); //1.23e-7
-console.log(Number(0.012300000000000000)); //0.0123
+Number(0.00000123); //0.00000123
+Number(0.000000123); //1.23e-7
+Number(0.012300000000000000); //0.0123
 //科学计数法指数不超过20就不会是科学计数法形式
-console.log(Number(3e20)); //300000000000000000000
-console.log(Number(3e-21)); //3e-21
+Number(3e20); //300000000000000000000
+Number(3e-21); //3e-21
 ```
 
 3).空数组也会转换为 0；可以转化数值的单数值数组转换对应的数值；其他数组为 `NaN`；
 
 ```javascript
 //空数组
-console.log(Number([])); //0
+Number([]); //0
 //可以转化数值的单数值数组
-console.log(Number([1])); //1
+Number([1]); //1
 //其他
-console.log(Number(["1x"])); //NaN
-console.log(Number([1, 2])); //NaN
+Number(["1x"]); //NaN
+Number([1, 2]); //NaN
 ```
 
 4).`null`，输出 0; `undefined`，输出 `NaN`;
 
 ```javascript
-console.log(Number(null)); //0
-console.log(Number(undefined)); //NaN
+Number(null); //0
+Number(undefined); //NaN
 //NaN是数字类型，但不是一个数...
-console.log(Number(NaN)); //NaN
+Number(NaN); //NaN
 ```
 
 5).如果是对象。则调用对象的 `valueOf()` 方法，然后依照前面规则转换返回值。如果转换的结果是 `NaN`，则调用对象的 `toString()` 方法。
 
 ```javascript
-console.log(Number({})); //NaN
-console.log(Number({ name: "hhh" })); //NaN
+Number({}); //NaN
+Number({ name: "hhh" }); //NaN
 ```
 
 6).如果是字符串：
@@ -72,69 +72,74 @@ console.log(Number({ name: "hhh" })); //NaN
 ---
 
 ```javascript
-console.group("boolean");
-console.log(Number(true)); //1
-console.log(Number(false)); //0
-console.groupEnd();
+//boolean
+Number(true); //1
+Number(false); //0
 
-console.group("number");
-console.log(Number(0123)); //83
-console.log(Number(00123)); //83
-console.log(Number(0x123)); //291
-console.log(Number(0b111)); //7
-console.log(Number(-123)); //-123
-console.log(Number(0.123)); //0.123
-console.log(Number(0.992)); //0.992
-console.log(Number(0.00000123)); //0.00000123
-console.log(Number(0.000000123)); //1.23e-7
-console.log(Number(0.012300000000000000)); //0.0123
-console.log(Number(3e20)); //300000000000000000000
-console.log(Number(3e-21)); //3e-21
-console.groupEnd();
+//number
+//能识别八进制，十六进制和二进制
+Number(0123); //83
+Number(00123); //83
+Number(0x123); //291
+Number(0b111); //7
+//负数，浮点数
+Number(-123); //-123
+Number(0.123); //0.123
+Number(0.992); //0.992
+//小数点后面的 0 超过 5 位自动转化为科学计数法
+Number(0.00000123); //0.00000123
+Number(0.000000123); //1.23e-7
+//最后一位非 0 数后面的 0 会被忽略
+Number(0.012300000000000000); //0.0123
+//小数点前面的 0 超过 20 位也会自动转化为科学计数法
+Number(3e20); //300000000000000000000
+Number(3e-21); //3e-21
 
-console.group("null && undefined");
-console.log(Number(null)); //0
-console.log(Number(undefined)); //NaN
-console.log(Number(NaN)); //NaN
-console.groupEnd();
+//特殊值
+Number(null); //0
+Number(undefined); //NaN
+Number(NaN); //NaN
 
-console.group("object");
-console.log(Number({})); //NaN
-console.log(Number({ name: "hhh" })); //NaN
-console.log(Number({ 1: "2" })); //NaN
-console.groupEnd();
+//对象一律 NaN
+Number({}); //NaN
+Number({ name: "hhh" }); //NaN
+Number({ 1: "2" }); //NaN
 
-console.group("array");
-console.log(Number([])); //0
-console.log(Number([1])); //1
-console.log(Number(["1x"])); //1
-console.log(Number([1, 2])); //1
-console.log(Number(["1", "2"])); //1
-console.groupEnd();
+//空数组或可转化的单元素数组之外为 NaN
+Number([]); //0
+Number([1]); //1
+Number(["1x"]); //NaN
+Number(["12"]); //12
+Number([1, 2]); //NaN
+Number(["1", "2"]); //NaN
 
-console.group("string");
-console.log(Number("123")); //123
-console.log(Number(" 123")); //123
-console.log(Number("1 23")); //NaN
-console.log(Number("123 ")); //123
-console.log(Number("+123")); //123
-console.log(Number("-123")); //-123
-console.log(Number("0123")); //123
-console.log(Number("00123")); //123
-console.log(Number("0x123")); //291
-console.log(Number("0b111")); //7
-console.log(Number("0.123")); //0.123
-console.log(Number("0.1.23")); //NaN
-console.log(Number("0.00000000000123")); //1.23e-12
-console.log(Number("0.012300000000000")); //0.0123
-console.log(Number("0.0123000 0000000")); //NaN
-console.log(Number("3e33")); //3e+33
-console.log(Number("3e-33")); //3e-33
-console.log(Number("3ez")); //NaN
-console.log(Number("")); //0
-console.log(Number(" ")); //0
-console.log(Number(" ")); //0
-console.groupEnd();
+//string
+//中间空格不识别，前后空格会忽略
+Number("123"); //123
+Number(" 123"); //123
+Number("1 23"); //NaN
+Number("123 "); //123
+//识别正负
+Number("+123"); //123
+Number("-123"); //-123
+//不识别八进制，识别十六进制和二进制
+Number("0123"); //123
+Number("00123"); //123
+Number("0x123"); //291
+Number("0b111"); //7
+//只能识别第一个小数点
+Number("0.123"); //0.123
+Number("0.1.23"); //NaN
+//会自动进行科学计数法的转换
+Number("0.00000000000123"); //1.23e-12
+Number("0.012300000000000"); //0.0123
+Number("3e33"); //3e+33
+Number("3e-33"); //3e-33
+//非数字 NaN
+Number("3ez"); //NaN
+//空字符串（或带空格）为 0
+Number(""); //0
+Number(" "); //0
 ```
 
 ##### 8.4 `parseInt()`
@@ -150,72 +155,72 @@ console.groupEnd();
 4).直至解析完所有数字字符或遇到非数字字符(不识别小数点)，返回转好的部分；
 
 ```javascript
-//console.group("boolean");
-console.log(parseInt(true)); //NaN
-console.log(parseInt(false)); //NaN
-console.groupEnd();
+//boolean
+parseInt(true); //NaN
+parseInt(false); //NaN
 
-//console.group("number");
-console.log(parseInt(0123)); //83
-console.log(parseInt(00123)); //83
-console.log(parseInt(0x123)); //291
-console.log(parseInt(0b111)); //7
-console.log(parseInt(-123)); //-123
-console.log(parseInt(0.123)); //0
-console.log(parseInt(0.992)); //0
-console.log(parseInt(0.00000123)); //0
-console.log(parseInt(0.000000123)); //1
-console.log(parseInt(0.012300000000000000)); //0
-console.log(parseInt(3e20)); //300000000000000000000
-console.log(parseInt(3e-21)); //3
-console.groupEnd();
+//number
+//能识别八进制，十六进制和二进制
+parseInt(0123); //83
+parseInt(00123); //83
+parseInt(0x123); //291
+parseInt(0b111); //7
+//负数，忽略小数点
+parseInt(-123); //-123
+parseInt(0.123); //0
+parseInt(0.992); //0
+//会自动转化为科学计数法，然后再转换字符串
+parseInt(0.00000123); //0
+parseInt(0.000000123); //1 ：1.23E-7 ---> 1
+parseInt(0.012300000000000000); //0
+parseInt(3e20); //300000000000000000000
+parseInt(3e-21); //3
 
-//console.group("null && undefined");
-console.log(parseInt(null)); //NaN
-console.log(parseInt(undefined)); //NaN
-console.log(parseInt(NaN)); //NaN
-console.groupEnd();
+//特殊值均不识别
+parseInt(null); //NaN
+parseInt(undefined); //NaN
+parseInt(NaN); //NaN
 
-//console.group("object");
-console.log(parseInt({})); //NaN
-console.log(parseInt({ name: "hhh" })); //NaN
-console.log(parseInt({ 1: "2" })); //NaN
-console.groupEnd();
+//对象一律 NaN
+parseInt({}); //NaN
+parseInt({ name: "hhh" }); //NaN
+parseInt({ 1: "2" }); //NaN
 
-//console.group("array");
-console.log(parseInt([])); //NaN
-console.log(parseInt([1])); //1
-console.log(parseInt(["1x"])); //1
-console.log(parseInt([1, 2])); //1
-console.log(parseInt(["1", "2"])); //1
-console.groupEnd();
+//不识别空数组，但会将数组的第一项解析而忽略其他项
+parseInt([]); //NaN
+parseInt([1]); //1
+parseInt(["1x"]); //1
+parseInt([1, 2]); //1
+parseInt(["1", "2"]); //1
 
-//console.group("string");
-console.log(parseInt("123")); //123
-console.log(parseInt(" 123")); //123
-console.log(parseInt("1 23")); //1
-console.log(parseInt("123 ")); //123
-console.log(parseInt("+123")); //123
-console.log(parseInt("-123")); //-123
-console.log(parseInt("0123")); //123
-console.log(parseInt("00123")); //123
-console.log(parseInt("0x123")); //291
-console.log(parseInt("0b111")); //0
-console.log(parseInt("0.123")); //0
-console.log(parseInt("0.1.23")); //0
-console.log(parseInt("0.00000000000123")); //0
-console.log(parseInt("0.012300000000000")); //0
-console.log(parseInt("0.0123000 0000000")); //0
-console.log(parseInt("3e33")); //3
-console.log(parseInt("3e-33")); //3
-console.log(parseInt("3ez")); //3
-console.log(parseInt("")); //NaN
-console.log(parseInt(" ")); //NaN
-console.log(parseInt(" ")); //NaN
-console.groupEnd();
+//string
+//中间空格不识别（返回可以转化的），前后空格会忽略
+parseInt("123"); //123
+parseInt(" 123"); //123
+parseInt("1 23"); //1
+parseInt("123 "); //123
+parseInt("+123"); //123
+parseInt("-123"); //-123
+//不识别八进制和二进制，识别十六进制
+parseInt("0123"); //123
+parseInt("00123"); //123
+parseInt("0x123"); //291
+parseInt("0b111"); //0
+//不能识别小数点
+parseInt("0.123"); //0
+parseInt("0.1.23"); //0
+//不会自动进行科学计数法的转换
+parseInt("0.00000000000123"); //0
+parseInt("0.012300000000000"); //0
+parseInt("3e33"); //3
+parseInt("3e-33"); //3
+parseInt("3ez"); //3
+//不识别空字符串（或带空格）
+parseInt(""); //NaN
+parseInt(" "); //NaN
 ```
 
-> 第一个参数若不是字符串，会自动转换为字符串再读取(`String()`)；但这回导致一些意外：
+> **第一个参数若不是字符串，会自动转换为字符串再读取(`String()`)**；但这回导致一些意外：
 
 ```javascript
 parseInt(0x11, 36); // 43
@@ -244,7 +249,7 @@ parseInt(String(9), 2);
 
 > JavaScript 不再允许将带有前缀 0 的数字视为八进制数，而是要求忽略这个 0。但是，为了保证兼容性，大部分浏览器并没有部署这一条规定。
 
-5).存在第二个参数，用来指定转换时的所使用的基数（进制）；如果第二个参数不是数值，会被自动转为一个整数。这个整数只有在 2 到 36 之间，才能得到有意义的结果，超出这个范围，则返回 `NaN`。如果第二个参数是 0、`undefined` 和 `null`，则直接忽略。
+5).存在第二个参数，用来指定转换时的所使用的基数（进制）；如果第二个参数不是数值，会被自动转为（`parseInt()`???）一个整数。这个整数只有在 2 到 36 之间，才能得到有意义的结果，(转化为数字后)超出这个范围，则返回 `NaN`；如果第二个参数是或者转化为 0、`NaN`、`undefined` 和 `null`，则直接忽略（或者可以说调用默认值？？？）。
 
 ```javascript
 parseInt("10", 37); // NaN
@@ -252,9 +257,19 @@ parseInt("10", 1); // NaN
 parseInt("10", 0); // 10
 parseInt("10", null); // 10
 parseInt("10", undefined); // 10
+parseInt("10", 2); //2
+parseInt("10", "1.9"); //NaN
+//2-36 范围内非整数会忽略小数部分
+parseInt("10", "2.1"); //2
+parseInt("10", "3.000000007"); //3
+parseInt("10", "3.007"); //3
+//忽略进制标识符???
+parseInt("10", "03"); //3
+parseInt("10", "0x2"); //2
+parseInt("10", "0x3"); //3
 ```
 
-如果字符串包含对于指定进制无意义的字符，则从最高位开始，只返回可以转换的数值。如果最高位无法转换，则直接返回 `NaN`。
+如果第一个参数字符串包含对于指定进制无意义的字符，则从最高位开始，只返回可以转换的数值。如果最高位无法转换，则直接返回 `NaN`。
 
 ```javascript
 parseInt("1546", 2); // 1
@@ -263,7 +278,7 @@ parseInt("546", 2); // NaN
 
 > `parseInt()`的第二个参数默认为 10；
 
-6).对于会自动转化为科学计数法的数字，`parseInt()` 会产生一些奇怪的结果；`parseFloat()`不会。
+6).对于会自动转化为科学计数法的数字，`parseInt()` 会产生一些奇怪的结果；`parseFloat()` 不会(原因在于 `parseInt()` 会先转化为科学计数法再转化为字符串，而 `parseFloat()` 先转化为字符串，再自动转化科学计数法输出)。
 
 ```javascript
 parseInt(1000000000000000000000.5); // 1
@@ -292,69 +307,70 @@ parseFloat("8e-7"); //8e-7
 3).自动过滤前导空格；若参数不是字符串或者字符串的第一个字符不能转换为浮点数，则返回 `NaN`。
 
 ```javascript
-console.group("boolean");
-console.log(parseFloat(true)); //NaN
-console.log(parseFloat(false)); //NaN
+//boolean
+parseFloat(true); //NaN
+parseFloat(false); //NaN
+
+//number
+//能识别八进制，十六进制和二进制
+parseFloat(0123); //83
+parseFloat(00123); //83
+parseFloat(0x123); //291
+parseFloat(0b111); //7
+//负数，小数点
+parseFloat(-123); //-123
+parseFloat(0.123); //0.123
+parseFloat(0.992); //0.992
+//会先转换字符串，然后再自动转化为科学计数法
+parseFloat(0.00000123); //0.00000123
+parseFloat(0.000000123); //1.23e-7
+parseFloat(0.012300000000000000); //0.0123
+parseFloat(3e20); //300000000000000000000
+parseFloat(3e-21); //3e-21
+
+//特殊值均不识别
+parseFloat(null); //NaN
+parseFloat(undefined); //NaN
+parseFloat(NaN); //NaN
+
+//对象一律 NaN
+parseFloat({}); //NaN
+parseFloat({ name: "hhh" }); //NaN
+parseFloat({ 1: "2" }); //NaN
 console.groupEnd();
 
-console.group("number");
-console.log(parseFloat(0123)); //83
-console.log(parseFloat(00123)); //83
-console.log(parseFloat(0x123)); //291
-console.log(parseFloat(0b111)); //7
-console.log(parseFloat(-123)); //-123
-console.log(parseFloat(0.123)); //0.123
-console.log(parseFloat(0.992)); //0.992
-console.log(parseFloat(0.00000123)); //0.00000123
-console.log(parseFloat(0.000000123)); //1.23e-7
-console.log(parseFloat(0.012300000000000000)); //0.0123
-console.log(parseFloat(3e20)); //300000000000000000000
-console.log(parseFloat(3e-21)); //3e-21
-console.groupEnd();
+//不识别空数组，但会将数组的第一项解析而忽略其他项
+parseFloat([]); //NaN
+parseFloat([1]); //1
+parseFloat(["1x"]); //1
+parseFloat([1, 2]); //1
+parseFloat(["1", "2"]); //1
 
-console.group("null && undefined");
-console.log(parseFloat(null)); //NaN
-console.log(parseFloat(undefined)); //NaN
-console.log(parseFloat(NaN)); //NaN
-console.groupEnd();
-
-console.group("object");
-console.log(parseFloat({})); //NaN
-console.log(parseFloat({ name: "hhh" })); //NaN
-console.log(parseFloat({ 1: "2" })); //NaN
-console.groupEnd();
-
-console.group("array");
-console.log(parseFloat([])); //NaN
-console.log(parseFloat([1])); //1
-console.log(parseFloat(["1x"])); //1
-console.log(parseFloat([1, 2])); //1
-console.log(parseFloat(["1", "2"])); //1
-console.groupEnd();
-
-console.group("string");
-console.log(parseFloat("123")); //123
-console.log(parseFloat(" 123")); //123
-console.log(parseFloat("1 23")); //1
-console.log(parseFloat("123 ")); //123
-console.log(parseFloat("+123")); //123
-console.log(parseFloat("-123")); //-123
-console.log(parseFloat("0123")); //123
-console.log(parseFloat("00123")); //123
-console.log(parseFloat("0x123")); //0
-console.log(parseFloat("0b111")); //0
-console.log(parseFloat("0.123")); //0.123
-console.log(parseFloat("0.1.23")); //0.1
-console.log(parseFloat("0.00000000000123")); //1.23e-12
-console.log(parseFloat("0.012300000000000")); //0.0123
-console.log(parseFloat("0.0123000 0000000")); //0.0123
-console.log(parseFloat("3e33")); //3e+33
-console.log(parseFloat("3e-33")); //3e-33
-console.log(parseFloat("3ez")); //3
-console.log(parseFloat("")); //NaN
-console.log(parseFloat(" ")); //NaN
-console.log(parseFloat(" ")); //NaN
-console.groupEnd();
+//string
+//中间空格不识别（返回可以转化的），前后空格会忽略
+parseFloat("123"); //123
+parseFloat(" 123"); //123
+parseFloat("1 23"); //1
+parseFloat("123 "); //123
+parseFloat("+123"); //123
+parseFloat("-123"); //-123
+//不识别八进制和二进制，十六进制
+parseFloat("0123"); //123
+parseFloat("00123"); //123
+parseFloat("0x123"); //0
+parseFloat("0b111"); //0
+//能识别小数点
+parseFloat("0.123"); //0.123
+parseFloat("0.1.23"); //0.1
+//会自动进行科学计数法的转换
+parseFloat("0.00000000000123"); //1.23e-12
+parseFloat("0.012300000000000"); //0.0123
+parseFloat("3e33"); //3e+33
+parseFloat("3e-33"); //3e-33
+parseFloat("3ez"); //3
+//不识别空字符串（或带空格）
+parseFloat(""); //NaN
+parseFloat(" "); //NaN
 ```
 
 ##### 8.6 浮点运算
@@ -396,16 +412,16 @@ JavaScript 内部，所有数字都是以 64 位浮点数形式储存，即使�
 对于那些极大或极小的数值，可以用 `e` 表示法表示浮点数值。默认情况下，ECMAScript 会将那些小数点后面带有 6 个 0 以上的浮点数值转换为以 `e` 表示的数值。浮点数值最高精确度是 17 位小数，但在进行算数计算时精确度远远不如整数。因此，永远不要测试某个特定的浮点数值。
 
 > 关于浮点数值计算产生舍入误差的问题，这是基于 IEEE754 数值的浮点数值计算的通病。
+>
 > 数值运算中，任何涉及 `NaN` 和 `undefined` 的运算，结果均为 `NaN`;`null` 会转换为 0 参与运算。
 
 ##### 8.7 数值范围
 
-根据标准，64 位浮点数的指数部分的长度是 11 个二进制位，意味着指数部分的最大值是 2047（2 的 11 次方减 1）。也就是说，64 位浮点数的指数部分的值最大为 2047，分出一半表示负数，则 JavaScript 能够表示的数值范围为 21024 到 2-1023（开区间），超出这个范围的数无法表示。
+根据标准，64 位浮点数的指数部分的长度是 11 个二进制位，意味着指数部分的最大值是 2047（2 的 11 次方减 1）。也就是说，64 位浮点数的指数部分的值最大为 2047，分出一半表示负数，则 JavaScript 能够表示的数值范围为 2^1024 到 2^1023（开区间），超出这个范围的数无法表示。
 
 如果一个数大于等于 2 的 1024 次方，那么就会发生“**正向溢出（overflow）**”，即 JavaScript 无法表示这么大的数，这时就会返回`Infinity`。
 
 ```javascript
-FireFox;
 Math.pow(2, 1023); //8.98846567431158e+307
 Math.pow(2, 1024); //Infinity
 ```
@@ -413,9 +429,9 @@ Math.pow(2, 1024); //Infinity
 如果一个数小于等于 2 的 -1075 次方（指数部分最小值 -1023，再加上小数部分的 52 位），那么就会发生为“**负向溢出（underflow）**”，即 JavaScript 无法表示这么小的数，这时会直接返回 0。
 
 ```javascript
-FireFox;
-Math.pow(2, -1074); //5e-324  //chorme  5e-324
-Math.pow(2, -1075); //5e-324  //chorme  0
+Math.pow(2, -1073); //5e-323
+Math.pow(2, -1074); //5e-324
+Math.pow(2, -1075); //5e-324
 Math.pow(2, -1076); //0
 ```
 
@@ -427,6 +443,7 @@ Number.MIN_VALUE; // 5e-324
 ```
 
 > 如果某次计算返回了 `Infinity` 值，那么该值将无法继续参与下一次的计算，因为 `Infinity` 值不能参与数值计算。
+>
 > 要想确定一个值是不是有穷的，可以使用 `isFinite()` 函数，如果该值位于最小值和最大值之间，返回 true。
 
 ##### 8.8 数值的表示法
@@ -440,11 +457,14 @@ JavaScript 的数值有多种表示方法，可以用字面形式直接表示，
 （1）小数点前的数字多于 21 位
 
 ```javascript
-1234567890123456789012;
+1234567890123456789012
 // 1.2345678901234568e+21
 
-123456789012345678901;
+123456789012345678901
 // 123456789012345680000
+
+123456789123456789
+//123456789123456780 ???
 ```
 
 （2）小数点后的零多于 5 个
@@ -465,9 +485,9 @@ JavaScript 的数值有多种表示方法，可以用字面形式直接表示，
 ---
 
 - 十进制：没有前导 0 的数值。
-- 八进制：有前缀`0o`或`0O`的数值，或者有前导 0、且只用到 0-7 的八个阿拉伯数字的数值。
-- 十六进制：有前缀`0x`或`0X`的数值。
-- 二进制：有前缀`0b`或`0B`的数值。
+- 八进制：有前缀 `0o` 或 `0O` 的数值，或者有前导 0、且只用到 0-7 的八个阿拉伯数字的数值。
+- 十六进制：有前缀 `0x` 或 `0X` 的数值。
+- 二进制：有前缀 `0b` 或 `0B` 的数值。
 
 ---
 

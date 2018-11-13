@@ -427,16 +427,69 @@ console.log(!a); //false
 检测一个值不是有效数字；若是有效数字返回 false，不是有效数字返回 true；若传入非数值会自动转换为数值。对于空数组和只有一个数组成员(能转化为数值的)的数组，会返回 false。因此在使用 `isNaN` 之前，最好先判断数据类型：
 
 ```javascript
-console.log(isNaN(6)); //false
-console.log(isNaN("1.23")); //false
-console.log(isNaN(" .1.23 ")); //true
-console.log(isNaN("123jjj")); //true
-//空数组和只有一个数组成员的数组
+console.group("boolean");
+console.log(isNaN(true)); //false
+console.log(isNaN(false)); //false
+console.groupEnd();
+
+console.group("number");
+console.log(isNaN(0123)); //false
+console.log(isNaN(00123)); //false
+console.log(isNaN(0x123)); //false
+console.log(isNaN(0b111)); //false
+console.log(isNaN(-123)); //false
+console.log(isNaN(0.123)); //false
+console.log(isNaN(0.992)); //false
+console.log(isNaN(0.00000123)); //false
+console.log(isNaN(0.000000123)); //false
+console.log(isNaN(0.0123)); //false
+console.log(isNaN(3e20)); //false
+console.log(isNaN(3e-21)); //false
+console.groupEnd();
+
+console.group("null && undefined");
+console.log(isNaN(null)); //false
+console.log(isNaN(undefined)); //true
+console.log(isNaN(NaN)); //true
+console.groupEnd();
+
+console.group("object");
+console.log(isNaN({})); //true
+console.log(isNaN({ name: "hhh" })); //true
+console.log(isNaN({ 1: "2" })); //true
+console.groupEnd();
+
+console.group("array");
 console.log(isNaN([])); //false
 console.log(isNaN([1])); //false
-console.log(isNaN(["123"])); //false
-console.log(isNaN(["as"])); //true
+console.log(isNaN(["1x"])); //true
 console.log(isNaN([1, 2])); //true
+console.log(isNaN(["1", "2"])); //true
+console.groupEnd();
+
+console.group("string");
+console.log(isNaN("123")); //false
+console.log(isNaN(" 123")); //false
+console.log(isNaN("1 23")); //true
+console.log(isNaN("123 ")); //false
+console.log(isNaN("+123")); //false
+console.log(isNaN("-123")); //false
+console.log(isNaN("0123")); //false
+console.log(isNaN("00123")); //false
+console.log(isNaN("0x123")); //false
+console.log(isNaN("0b111")); //false
+console.log(isNaN("0.123")); //false
+console.log(isNaN("0.1.23")); //true
+console.log(isNaN("0.00000000000123")); //false
+console.log(isNaN("0.012300000000000")); //false
+console.log(isNaN("0.0123000 0000000")); //true
+console.log(isNaN("3e33")); //false
+console.log(isNaN("3e-33")); //false
+console.log(isNaN("3ez")); //true
+console.log(isNaN("")); //false
+console.log(isNaN(" ")); //false
+console.log(isNaN(" ")); //false
+console.groupEnd();
 
 //[].valueOf() = [] ===> [].toString() = "" ===> 0
 //[1].valueOf() = [1] ===> [].toString() = "1" ===> 1
@@ -449,6 +502,8 @@ function myIsNaN(value) {
 ```
 
 `isNaN()` 也适用于对象。在基于对象调用 `isNaN()` 函数时，会首先调用对象的 `valueOf()` 方法，然后确定该方法返回的值是否可以装换为数值。如果不能，则基于这个返回值再调用 `toString()` 方法，再测试(`parseFloat()`)返回值，而这个过程也是 ECMAScript 中内置函数和操作符的一般执行流程。
+
+> 执行 `Number()` 返回 NaN 的值在 `isNaN()` 中均会返回 flase，是否在 `isNaN()` 类型转换中默认调用 `Number()` 方法？？？
 
 ##### 8.2 `isFinite()`
 
