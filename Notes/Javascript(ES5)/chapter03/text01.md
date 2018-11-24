@@ -1,3730 +1,3395 @@
-# JavaScript笔记三
+## 四.标准库
 
-## 五.面向对象编程
+### 1.Object 对象
 
-### 1.构造函数与 new 命令
+#### 1.概述
 
-JavaScript 语言具有很强的面向对象编程能力。
+JavaScript 的所有其他对象都继承自`Object`对象，即那些对象都是`Object`的实例。
 
-#### 1.1.对象是什么
+`Object`对象的原生方法分成两类：`Object`本身的方法与`Object`的实例方法。
 
-**面向对象编程（Object Oriented Programming，缩写为 OOP）**是目前主流的编程范式。它将真实世界各种复杂的关系，抽象为一个个对象，然后由对象之间的分工与合作，完成对真实世界的模拟。
+##### 1.1 Object 对象本身的方法
 
-每一个对象都是功能中心，具有明确分工，可以完成接受信息、处理数据、发出信息等任务。对象可以复用，通过继承机制还可以定制。因此，面向对象编程具有灵活、代码可复用、高度模块化等特点，容易维护和开发，比起由一系列函数或指令组成的传统的**过程式编程（procedural programming）**，更适合多人合作的大型软件项目。
+所谓本身的方法就是直接定义在`Object`对象的方法(通过`Object`对象调用)。
 
-对象是单个实物的抽象；对象是一个容器，封装了**属性（property）**和**方法（method）**。属性是对象的状态，方法是对象的行为（完成某种任务）。
+`Object.print = function (o) { console.log(o) };`
 
-#### 1.2.构造函数
+##### 1.2 Object 的实例方法
 
-面向对象编程的第一步，就是要生成对象。通常需要一个模板，表示某一类实物的共同特征，然后对象根据这个模板生成。
-
-典型的面向对象编程语言（比如 C++ 和 Java），都有**类（class）**这个概念。所谓“类”就是对象的模板，对象就是“类”的实例。但是，JavaScript 语言的对象体系，不是基于“类”的，而是基于**构造函数（constructor）**和**原型（prototype）**。
-
-JavaScript 语言使用构造函数作为对象的模板。所谓”构造函数”，就是专门用来生成实例对象的函数。它就是对象的模板，描述实例对象的基本结构。一个构造函数，可以生成多个实例对象，这些实例对象都有相同的结构。
-
-构造函数就是一个普通的函数，但是有自己的特征和用法。为了与普通函数区别，构造函数名字的第一个字母通常大写。
-
-构造函数的特点有两个。
-
-- 函数体内部使用了`this`关键字，代表了所要生成的对象实例。
-- 生成对象的时候，必须使用`new`命令。
-
-#### 1.3. new 命令
-
-##### 1.3.1 基本用法
-
-`new`命令的作用，就是执行构造函数，返回一个实例对象。
+所谓**实例方法**就是定义在`Object`原型对象`Object.prototype`上的方法。它可以被`Object`实例直接使用。
 
 ```javascript
-var Vehicle = function () {
-  this.price = 1000;
+Object.prototype.print = function() {
+  console.log(this);
 };
 
-var v = new Vehicle();
-v.price // 1000
+var obj = new Object();
+obj.print(); // Object
 ```
 
-使用`new`命令时，根据需要，构造函数也可以接受参数。
+#### 2.Object()
+
+`Object`本身是一个函数，可以当作工具方法使用，将任意值转为对象。这个方法常用于保证某个值一定是对象。
+
+如果参数为空（或者为`undefined`和`null`），`Object()`返回一个空对象。
 
 ```javascript
-var Vehicle = function (p) {
-  this.price = p;
-};
-
-var v = new Vehicle(500);
-v.price; //500
-```
-
-`new`命令本身就可以执行构造函数，所以后面的构造函数可以带括号，也可以不带括号。下面两行代码是等价的，但是为了表示这里是函数调用，推荐使用括号。
-
-```javascript
-// 推荐的写法
-var v = new Vehicle();
-// 不推荐的写法
-var v = new Vehicle;
-```
-
-一个很自然的问题是，如果忘了使用`new`命令，直接调用构造函数会发生什么事？
-
-这种情况下，构造函数就变成了普通函数，并不会生成实例对象。而且由于后面会说到的原因，`this`这时代表全局对象，将造成一些意想不到的结果。
-
-```javascript
-var Vehicle = function (){
-  this.price = 1000;
-};
-
-var v = Vehicle();
-v // undefined
-price // 1000
-```
-
-因此，应该非常小心，避免不使用`new`命令、直接调用构造函数。
-
-为了保证构造函数必须与`new`命令一起使用，一个解决办法是，构造函数内部使用严格模式，即第一行加上`use strict`。这样的话，一旦忘了使用`new`命令，直接调用构造函数就会报错。
-
-```javascript
-function Fubar(foo, bar){
-  'use strict';
-  this._foo = foo;
-  this._bar = bar;
-}
-
-Fubar()
-// TypeError: Cannot set property '_foo' of undefined
-```
-
-上面代码的`use strict`命令保证了构造函数在严格模式下运行。由于严格模式中，函数内部的`this`不能指向全局对象，默认等于`undefined`，导致不加`new`调用会报错（JavaScript 不允许对`undefined`添加属性）。
-
-另一个解决办法，构造函数内部判断是否使用`new`命令，如果发现没有使用，则直接返回一个实例对象。
-
-```javascript
-function Fubar(foo, bar) {
-  if (!(this instanceof Fubar)) {
-    return new Fubar(foo, bar);
-  }
-
-  this.foo = foo;
-  this.bar = bar;
-}
-
-Fubar(1, 2).foo // 1
-(new Fubar(1, 2)).foo // 1
-```
-
-##### 1.3.2 new 命令的原理
-
-使用`new`命令时，它后面的函数依次执行下面的步骤。
-
-- --
-- a.创建一个空对象，作为将要返回的对象实例。
-- b.将这个空对象的原型，指向构造函数的`prototype`属性。
-- c.将这个空对象赋值给函数内部的`this`关键字。
-- d.开始执行构造函数内部的代码。
-- --
-
-也就是说，构造函数内部，`this`指的是一个新生成的空对象，所有针对`this`的操作，都会发生在这个空对象上。构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作一个空对象（即`this`对象），将其“构造”为需要的样子。
-
-如果构造函数内部有`return`语句，而且`return`后面跟着一个对象，`new`命令会返回`return`语句指定的对象；否则，就会不管`return`语句，返回`this`对象。
-
-```javascript
-var Vehicle = function () {
-  this.price = 1000;
-  return 1000;
-};
-
-(new Vehicle()) === 1000
-// false
-```
-
-但是，如果`return`语句返回的是一个跟`this`无关的新对象，`new`命令会返回这个新对象，而不是`this`对象。这一点需要特别引起注意。
-
-```javascript
-var Vehicle = function (){
-  this.price = 1000;
-  return { price: 2000 };
-};
-
-(new Vehicle()).price
-// 2000
-```
-
-另一方面，如果对普通函数（内部没有`this`关键字的函数）使用`new`命令，则会返回一个空对象或指定对象。
-
-```javascript
-function getMessage() {
-  return 'this is a message';
-}
-
-var msg = new getMessage();
-
-msg // {}
-typeof msg // "object"
-```
-
-这是因为`new`命令总是返回一个对象，要么是实例对象，要么是`return`语句指定的对象。
-
-`new`命令简化的内部流程，可以用下面的代码表示。
-
-```javascript
-function _new(constructor,params) {
-  //constructor  构造函数
-  //params  构造函数参数
-
-  // 将 arguments 对象转为数组
-  var args = [].slice.call(arguments);
-
-  // 取出构造函数
-  var constructor = args.shift();
-
-  // 创建一个空对象，继承构造函数的 prototype 属性
-  var context = Object.create(constructor.prototype);
-
-  // 执行构造函数
-  var result = constructor.apply(context, args);
-
-  // 如果返回结果是对象，就直接返回，否则返回 context 对象
-  return (typeof result === 'object' && result != null) ? result : context;
-}
-
-function Person(name, age) {
-  this.name = name;
-  this.age = age;
-}
-
-// 实例
-var actor = _new(Person, '张三', 28);
-//Person {name: "张三", age: 28}
-```
-
-##### 1.3.3 new.target
-
-函数内部可以使用`new.target`属性。如果当前函数是`new`命令调用，`new.target`指向当前函数，否则为`undefined`。
-
-```javascript
-function f() {
-  console.log(new.target === f);
-}
-
-f() // false
-new f() // true
-```
-
-使用这个属性，可以判断函数调用的时候，是否使用`new`命令。
-
-```javascript
-function f() {
-  if (!new.target) {
-    throw new Error('请使用 new 命令调用！');
-  }
-  // ...
-}
-
-f() // Uncaught Error: 请使用 new 命令调用！
-```
-
-#### 1.4.Object.create() 创建实例对象
-
-构造函数作为模板，可以生成实例对象。但是，有时拿不到构造函数，只能拿到一个现有的对象。我们希望以这个现有的对象作为模板，生成新的实例对象，这时就可以使用`Object.create()`方法。
-
-```javascript
-var person1 = {
-  name: '张三',
-  age: 38,
-  greeting: function() {
-    console.log('Hi! I\'m ' + this.name + '.');
-  }
-};
-
-var person2 = Object.create(person1);
-
-person2.name // 张三
-person2.greeting() // Hi! I'm 张三.
-```
-
-### 2.Object 对象的相关方法
-
-#### 2.1.Object.getPrototypeOf()
-
-`Object.getPrototypeOf`方法返回参数对象的原型。这是获取原型对象的标准方法。
-
-```javascript
-var F = function () {};
-var f = new F();
-Object.getPrototypeOf(f) === F.prototype // true
-```
-
-下面是几种特殊对象的原型。
-
-```javascript
-// 空对象的原型是 Object.prototype
-Object.getPrototypeOf({}) === Object.prototype // true
-
-// Object.prototype 的原型是 null
-Object.getPrototypeOf(Object.prototype) === null // true
-
-// 函数的原型是 Function.prototype
-function f() {}
-Object.getPrototypeOf(f) === Function.prototype // true
-```
-
-#### 2.2.Object.setPrototypeOf()
-
-`Object.setPrototypeOf`方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。
-
-```javascript
-var a = {};
-var b = {x: 1};
-Object.setPrototypeOf(a, b);
-
-Object.getPrototypeOf(a) === b //true
-a.x // 1
-```
-
-`new`命令可以使用`Object.setPrototypeOf`方法模拟。
-
-```javascript
-var F = function () {
-  this.foo = 'bar';
-};
-
-var f = new F();
+var obj = Object();
 // 等同于
-var f = Object.setPrototypeOf({}, F.prototype);
-F.call(f);
+var obj = Object(undefined);
+var obj = Object(null);
+
+obj instanceof Object; // true
 ```
 
-#### 2.3.Object.create()
+`instanceof`运算符用来验证，一个对象是否为指定的构造函数的实例。`obj instanceof Object`返回 true，就表示 obj 对象是`Object`的实例。
 
-该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例完全继承原型对象的属性。
+如果参数是原始类型的值，`Object`方法将其转为对应的包装对象的实例。
 
 ```javascript
-// 原型对象
-var A = {
-  print: function () {
-    console.log('hello');
-  }
-};
-
-// 实例对象
-var B = Object.create(A);
-
-Object.getPrototypeOf(B) === A // true
-B.print() // hello
-B.print === A.print // true
+var obj = Object(1);
+obj instanceof Object; // true
+obj instanceof Number; // true
 ```
 
-实际上，`Object.create`方法可以用下面的代码代替。
+如果`Object`方法的参数是一个对象(也包括`Function`)，它总是返回该对象，即不用转换。
 
 ```javascript
-if (typeof Object.create !== 'function') {
-  Object.create = function (obj) {
-    function F() {}
-    F.prototype = obj;
-    return new F();
-  };
+var arr = [];
+var obj = Object(arr); // 返回原数组
+obj === arr; // true
+```
+
+利用这一点，可以写一个判断变量是否为对象的函数。
+
+```javascript
+function isObject(value) {
+  return value === Object(value);
 }
+
+isObject([]); // true
+isObject(true); // false
 ```
 
-上面代码表明，`Object.create`方法的实质是新建一个空的构造函数F，然后让F.prototype属性指向参数对象obj，最后返回一个F的实例，从而实现让该实例继承obj的属性。
+#### 3.Object 构造函数
 
-下面三种方式生成的新对象是等价的。
+`Object`不仅可以当作工具函数使用，还可以当作构造函数使用，即前面可以使用`new`命令。
 
-```javascript
-var obj1 = Object.create({});
-var obj2 = Object.create(Object.prototype);
-var obj3 = new Object();
-```
+`Object`构造函数的首要用途，是直接通过它来生成新对象。
 
-如果想要生成一个不继承任何属性（比如没有`toString`和`valueOf`方法）的对象，可以将`Object.create`的参数设为`null`。
+`var obj = new Object();`
 
-```javascript
-var obj = Object.create(null);
+> 注意，通过`var obj = new Object()`的写法生成新对象，与字面量的写法`var obj = {}`是等价的。或者说，后者只是前者的一种简便写法。
 
-obj.valueOf()
-// TypeError: Object [object Object] has no method 'valueOf'
-```
+`Object`构造函数的用法与工具方法很相似，几乎一模一样。使用时，可以接受一个参数，如果该参数是一个对象，则直接返回这个对象；如果是一个原始类型的值，则返回该值对应的包装对象。
 
-使用`Object.create`方法的时候，必须提供对象原型，即参数不能为空，或者不是对象，否则会报错。
+> 虽然用法相似，但是`Object(value)`与`new Object(value)`两者的语义是不同的，`Object(value)`表示将`value`转成一个对象，`new Object(value)`则表示新生成一个对象，它的值是`value`。
 
-```javascript
-Object.create()
-// TypeError: Object prototype may only be an Object or null
+#### 4.Object 的静态方法
 
-Object.create(123)
-// TypeError: Object prototype may only be an Object or null
-```
+所谓静态方法，是指部署在`Object`对象自身的方法。
 
-`object.create`方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
+##### 4.1 Object.keys，Object.getOwnPropertyNames
+
+`Object.keys`方法和`Object.getOwnPropertyNames`方法都用来遍历对象的属性。
+
+`Object.keys`方法的参数是一个对象，返回一个数组。该数组的成员都是该对象自身的（而不是继承的）所有属性名。
 
 ```javascript
-var obj1 = { p: 1 };
-var obj2 = Object.create(obj1);
-
-obj1.p = 2;
-obj2.p // 2
-```
-
-除了对象的原型，`Object.create`方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性。
-
-```javascript
-var obj = Object.create({}, {
-  p1: {
-    value: 123,
-    enumerable: true,
-    configurable: true,
-    writable: true,
-  },
-  p2: {
-    value: 'abc',
-    enumerable: true,
-    configurable: true,
-    writable: true,
-  }
-});
-
-// 等同于
-var obj = Object.create({});
-obj.p1 = 123;
-obj.p2 = 'abc';
-```
-
-`Object.create`方法生成的对象，继承了它的原型对象的构造函数。
-
-```javascript
-function A() {}
-var a = new A();
-var b = Object.create(a);
-
-b.constructor === A // true
-b instanceof A // true
-```
-
-#### 2.4.Object.prototype.isPrototypeOf()
-
-实例对象的`isPrototypeOf`方法，用来判断该对象是否为参数对象的原型。
-
-```javascript
-var o1 = {};
-var o2 = Object.create(o1);
-var o3 = Object.create(o2);
-
-o2.isPrototypeOf(o3) // true
-o1.isPrototypeOf(o3) // true
-```
-
-上面代码中，o1和o2都是o3的原型。这表明只要实例对象处在参数对象的原型链上，`isPrototypeOf`方法都返回true。
-
-```javascript
-Object.prototype.isPrototypeOf({}) // true
-Object.prototype.isPrototypeOf([]) // true
-Object.prototype.isPrototypeOf(/xyz/) // true
-Object.prototype.isPrototypeOf(Object.create(null)) // false
-```
-
-上面代码中，由于`Object.prototype`处于原型链的最顶端，所以对各种实例都返回true，只有直接继承自`null`的对象除外。
-
-#### 2.5.`Object.prototype.__proto__`
-
-实例对象的`__proto__`属性，返回该对象的原型。该属性可读写。
-
-```javascript
-var obj = {};
-var p = {};
-
-obj.__proto__ = p;
-Object.getPrototypeOf(obj) === p // true
-```
-
-根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeof()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
-
-原型链可以用`__proto__`很直观地表示。
-
-```javascript
-var A = {
-  name: '张三'
-};
-var B = {
-  name: '李四'
+var obj = {
+  p1: 123,
+  p2: 456
 };
 
-var proto = {
-  print: function () {
-    console.log(this.name);
-  }
-};
-
-//Object.setPrototypeOf(A, proto);
-A.__proto__ = proto;
-B.__proto__ = proto;
-
-A.print() // 张三
-B.print() // 李四
-
-A.print === B.print // true
-A.print === proto.print // true
-B.print === proto.print // true
+Object.keys(obj); // ["p1", "p2"]
 ```
 
-#### 2.6.获取原型对象方法的比较
+`Object.getOwnPropertyNames`方法与`Object.keys`类似，也是接受一个对象作为参数，返回一个数组，包含了该对象自身的所有属性名。
 
-如前所述，`__proto__`属性指向当前对象的原型对象，即构造函数的`prototype`属性。
+```javascript
+var obj = {
+  p1: 123,
+  p2: 456
+};
+
+Object.getOwnPropertyNames(obj); // ["p1", "p2"]
+```
+
+对于一般的对象来说，`Object.keys`和`Object.getOwnPropertyNames`返回的结果是一样的。只有涉及不可枚举属性时，才会有不一样的结果。`Object.keys`方法只返回可枚举的属性，`Object.getOwnPropertyNames`方法还返回不可枚举的属性名。
+
+```javascript
+var a = ["Hello", "World"];
+
+Object.keys(a); // ["0", "1"]
+Object.getOwnPropertyNames(a); // ["0", "1", "length"]
+```
+
+由于 JavaScript 没有提供计算对象属性个数的方法，所以可以用这两个方法代替。
+
+```javascript
+var obj = {
+  p1: 123,
+  p2: 456
+};
+
+Object.keys(obj).length; // 2
+Object.getOwnPropertyNames(obj).length; // 2
+```
+
+> 一般情况下，几乎总是使用`Object.keys`方法，遍历数组的属性。
+
+##### 4.2 其他方法
+
+1).对象属性模型的相关方法
+
+[从一个程序员的角度来说](https://www.cnblogs.com/tarol/p/4670130.html)，属性分为可通过 JS 调用的的和不可通过 JS 调用的。不可调用的叫做内部属性，那么可调用的我们对应着叫外部属性。内部属性是 JS 解释器实现各种接口的时候使用的算法中需要调用的属性。而外部属性又分为两种，一种是数据属性，一种是访问器属性。
+
+属性还存在其他一些状态，我们称之为元属性，无论是数据属性还是访问器属性，都存在四个元属性。
+
+数据属性的元属性
+
+`[[Value]]`、`[[Writable]]`、`[[Enumerable]]`、`[[Configuration]]`；
+
+访问器属性的元属性
+
+`[[Get]]`、`[[Set]]`、`[[Enumerable]]`、`[[Configuration]]`。
+
+JS 开放了三个接口用于设置和获取属性的特性，分别是：
+
+---
+
+- `Object.defineProperty()`：通过描述对象，定义某个属性
+- `Object.defineProperties()`：通过描述对象，定义多个属性
+- `Object.getOwnPropertyDescriptor()`：获取某个属性的描述对象
+
+---
+
+2).控制对象状态的方法
+
+---
+
+- `Object.preventExtensions()`：防止对象扩展。
+- `Object.isExtensible()`：判断对象是否可扩展。
+
+---
+
+- `Object.seal()`：禁止对象配置。
+- `Object.isSealed()`：判断一个对象是否可配置。
+
+---
+
+- `Object.freeze()`：冻结一个对象。
+- `Object.isFrozen()`：判断一个对象是否被冻结。
+
+---
+
+3).原型链相关方法
+
+---
+
+- `Object.create()`：指定原型对象和属性，返回一个新的对象
+- `Object.getPrototypeOf()`：获取对象的`Prototype`对象
+
+---
+
+#### 5.Object 的实例方法
+
+除了静态方法，还有不少方法定义在`Object.prototype`对象。它们称为实例方法，所有`Object`的实例对象都继承了这些方法。
+
+`Object`实例对象的方法，主要有以下六个。
+
+---
+
+- `Object.prototype.valueOf()`：返回当前对象对应的值
+- `Object.prototype.toString()`：返回当前对象对应的字符串形式
+- `Object.prototype.toLocaleString()`：返回当前对象对应的本地字符串形式
+
+---
+
+- `Object.prototype.hasOwnProperty()`：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性
+- `Object.prototype.isPrototypeOf()`：判断当前对象是否为另一个对象的原型
+- `Object.prototype.propertyIsEnumerable()`：判断某个属性是否可枚举
+
+---
+
+##### 5.1 Object.prototype.valueOf
+
+`valueOf`方法的作用是返回一个对象的“值”，默认情况下返回对象本身。
+
+```javascript
+var obj = new Object();
+obj.valueOf() === obj; // true
+```
+
+`valueOf`方法的主要用途是，JavaScript 自动类型转换时会默认调用这个方法。
+
+```javascript
+var obj = new Object();
+1 + obj; // "1[object Object]"
+```
+
+如果自定义`valueOf`方法，就可以得到想要的结果。
+
+```javascript
+var obj = new Object();
+obj.valueOf = function() {
+  return 2;
+};
+
+1 + obj; // 3
+```
+
+上面代码自定义了 obj 对象的`valueOf`方法，覆盖`Object.prototype.valueOf`。
+
+##### 5.2 Object.prototype.toString
+
+`toString`方法的作用是返回一个对象的字符串形式，默认情况下返回类型字符串。
+
+```javascript
+var o1 = new Object();
+o1.toString(); // "[object Object]"
+
+var o2 = { a: 1 };
+o2.toString(); // "[object Object]"
+```
+
+字符串`[object Object]`本身没有太大的用处，但是通过自定义`toString`方法，可以让对象在自动类型转换时，得到想要的字符串形式。
 
 ```javascript
 var obj = new Object();
 
-obj.__proto__ === Object.prototype
-// true
-obj.__proto__ === obj.constructor.prototype
-// true
+obj.toString = function() {
+  return "hello";
+};
+
+obj + " " + "world"; // "hello world"
 ```
 
-因此，获取实例对象obj的原型对象，有三种方法。
+数组、字符串、函数、`Date` 对象都分别部署了自定义的`toString`方法，覆盖了`Object.prototype.toString`方法。
 
 ```javascript
-obj.__proto__
-obj.constructor.prototype
-Object.getPrototypeOf(obj)
+[1, 2, 3].toString(); // "1,2,3"
+
+"123"
+  .toString()
+  (
+    // "123"
+
+    function() {
+      return 123;
+    }
+  )
+  .toString()(
+    // "function () {
+    //   return 123;
+    // }"
+
+    new Date()
+  )
+  .toString();
+new Date().toLocaleString();
+//Sat May 26 2018 09:46:15 GMT+0800 (中国标准时间)
+//2018-5-26 09:46:15
 ```
 
-上面三种方法之中，前两种都不是很可靠。`__proto__`属性只有浏览器才需要部署，其他环境可以不部署。而`obj.constructor.prototype`在手动改变原型对象时，可能会失效。
+##### 5.3 toString
+
+`Object.prototype.toString`方法返回对象的类型字符串，因此可以用来判断一个值的类型。
+
+由于实例对象可能会自定义`toString`方法，覆盖掉`Object.prototype.toString`方法，所以为了得到类型字符串，最好直接使用`Object.prototype.toString`方法。通过函数的`call`方法，可以在任意值上调用这个方法，帮助我们判断这个值的类型。
+
+`Object.prototype.toString.call(value)`
+
+不同数据类型的`Object.prototype.toString`方法返回值如下。
+
+---
+
+- 数值：返回`[object Number]`。
+- 字符串：返回`[object String]`。
+- 布尔值：返回`[object Boolean]`。
+- `undefined`：返回`[object Undefined]`。
+- `null`：返回`[object Null]`。
+- 数组：返回`[object Array]`。
+- `arguments` 对象：返回`[object Arguments]`。
+- 函数：返回`[object Function]`。
+- `Error` 对象：返回`[object Error]`。
+- `Date` 对象：返回`[object Date]`。
+- `RegExp` 对象：返回`[object RegExp]`。
+- 其他对象：返回`[object Object]`。
+
+---
+
+这就是说，`Object.prototype.toString`可以看出一个值到底是什么类型。
+
+利用这个特性，可以写出一个比`typeof`运算符更准确的类型判断函数。
 
 ```javascript
-var P = function () {};
-var p = new P();
+var type = function(o) {
+  var s = Object.prototype.toString.call(o);
+  return s.match(/\[object (.*?)\]/)[1].toLowerCase();
+  //return s.slice(8,-1).toLowerCase();
+};
 
-var C = function () {};
-
-C.prototype = p;
-var c = new C();
-
-c.constructor.prototype === p // false
+type({}); // "object"
+type([]); // "array"
 ```
 
-上面代码中，构造函数C的原型对象被改成了p，但是实例对象的`c.constructor.prototype`却没有指向p。所以，在改变原型对象时，一般要同时设置`constructor`属性。
+在上面这个`type`函数的基础上，还可以加上专门判断某种类型数据的方法。
 
 ```javascript
-C.prototype = p;
-C.prototype.constructor = C;
+var type = function(o) {
+  var s = Object.prototype.toString.call(o);
+  return s.match(/\[object (.*?)\]/)[1].toLowerCase();
+};
 
-var c = new C();
-c.constructor.prototype === p // true
-```
+let aryType = [
+  "Null",
+  "Undefined",
+  "Object",
+  "Array",
+  "String",
+  "Number",
+  "Boolean",
+  "Function",
+  "RegExp"
+];
 
-因此，推荐使用第三种`Object.getPrototypeOf`方法，获取原型对象。
-
-#### 2.7.Object.getOwnPropertyNames()
-
-`Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
-
-```javascript
-Object.getOwnPropertyNames(Date)
-// ["parse", "arguments", "UTC", "caller", "name", "prototype", "now", "length"]
-```
-
-对象本身的属性之中，有的是可以遍历的，有的是不可以遍历的。`Object.getOwnPropertyNames`方法返回所有键名，不管是否可以遍历。只获取那些可以遍历的属性，使用`Object.keys`方法。
-
-`Object.keys(Date) // []`
-
-> `Date`对象所有自身的属性，都是不可以遍历的。
-
-#### 2.8.Object.prototype.hasOwnProperty()
-
-对象实例的`hasOwnProperty`方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上。
-
-```javascript
-Date.hasOwnProperty('length') // true
-Date.hasOwnProperty('toString') // false
-```
-
-上面代码表明，`Date.length`（构造函数Date可以接受多少个参数）是Date自身的属性，`Date.toString`是继承的属性。
-
-> 另外，`hasOwnProperty`方法是 JavaScript 之中唯一一个处理对象属性时，不会遍历原型链的方法，即该方法无法检测该对象的原型链中是否具有该属性，该属性必须是对象本身的一个成员。
-
-#### 2.9.`in` 运算符和 `for…in` 循环
-
-`in`运算符返回一个布尔值，表示一个对象是否具有某个属性。它不区分该属性是对象自身的属性，还是继承的属性。
-
-```javascript
-'length' in Date // true
-'toString' in Date // true
-```
-
-`in`运算符常用于检查一个属性是否存在。
-
-获得对象的所有可遍历属性（不管是自身的还是继承的；既可以遍历私有属性也可以遍历非内置公有属性，但无法遍历内置公有属性），可以使用`for...in`循环。
-
-```javascript
-var o1 = { p1: 123 };
-
-var o2 = Object.create(o1, {
-  p2: { value: "abc", enumerable: true }
+aryType.forEach(function(t) {
+  type["is" + t] = function(o) {
+    return type(o) === t.toLowerCase();
+  };
 });
 
-for (p in o2) {
-  console.info(p);
-}
-// p2
-// p1
+type.isObject({}); // true
+type.isNumber(NaN); // true
+type.isRegExp(/abc/); // true
 ```
 
-上面对象中，对象o2的p2属性是自身的，p1属性是继承的。这两个属性都会被`for...in`循环遍历。
+##### 5.4 Object.prototype.toLocaleString
 
-为了在`for...in`循环中获得对象自身的属性，可以采用`hasOwnProperty`方法判断一下。
+`Object.prototype.toLocaleString`方法与`toString`的返回结果相同，也是返回一个值的字符串形式。
 
 ```javascript
-for ( var name in object ) {
-  if ( object.hasOwnProperty(name) ) {
-    /* loop code */
-  }
-}
+var obj = {};
+obj.toString(obj); // "[object Object]"
+obj.toLocaleString(obj); // "[object Object]"
 ```
 
-获得对象的所有属性（不管是自身的还是继承的，也不管是否可枚举），可以使用下面的函数。
+这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的`toLocaleString`，用来返回针对某些地域的特定的值。目前，主要有三个对象自定义了`toLocaleString`方法。
+
+---
+
+- `Array.prototype.toLocaleString()`
+- `Number.prototype.toLocaleString()`
+- `Date.prototype.toLocaleString()`
+
+---
+
+举例来说，日期的实例对象的`toString`和`toLocaleString`返回值就不一样，而且`toLocaleString`的返回值跟用户设定的所在地域相关。
 
 ```javascript
-function inheritedPropertyNames(obj) {
-  var props = {};
-  while(obj) {
-    Object.getOwnPropertyNames(obj).forEach(function(p) {
-      props[p] = true;
-    });
-    obj = Object.getPrototypeOf(obj);
-  }
-  return Object.getOwnPropertyNames(props);
-}
+var date = new Date();
+date.toString();
+date.toLocaleString();
+
+//chorme
+//Sat May 26 2018 09:53:22 GMT+0800 (中国标准时间)
+//2018/5/26 上午9:53:22
+
+//Firefox
+//Sat May 26 2018 09:54:09 GMT+0800
+//2018/5/26 上午9:54:09
+
+//node.js
+//Sat May 26 2018 09:53:12 GMT+0800 (中国标准时间)
+//2018-5-26 09:53:12
 ```
 
-上面代码依次获取obj对象的每一级原型对象“自身”的属性，从而获取Obj对象的“所有”属性，不管是否可遍历。
+##### 5.5 Object.prototype.hasOwnProperty
 
-下面是一个例子，列出Date对象的所有属性。
-
-```javascript
-inheritedPropertyNames(Date)
-// [
-//  "caller",
-//  "constructor",
-//  "toString",
-//  "UTC",
-//  ...
-// ]
-```
-
-#### 2.10.对象的拷贝
-
-如果要拷贝一个对象，需要做到下面两件事情。
-
-- --
-- 确保拷贝后的对象，与原对象具有同样的原型。
-- 确保拷贝后的对象，与原对象具有同样的实例属性。
-- --
-
-下面就是根据上面两点，实现的对象拷贝函数。
+`Object.prototype.hasOwnProperty`方法接受一个字符串作为参数，返回一个布尔值，表示该实例对象自身是否具有该属性(换成定义了该属性更合适，这样很明显不包含继承属性)。
 
 ```javascript
-function copyObject(orig) {
-  var copy = Object.create(Object.getPrototypeOf(orig));
-  copyOwnPropertiesFrom(copy, orig);
-  return copy;
-}
-
-function copyOwnPropertiesFrom(target, source) {
-  Object
-    .getOwnPropertyNames(source)
-    .forEach(function (propKey) {
-      var desc = Object.getOwnPropertyDescriptor(source, propKey);
-      Object.defineProperty(target, propKey, desc);
-    });
-  return target;
-}
-```
-
-另一种更简单的写法，是利用 ES2017 才引入标准的`Object.getOwnPropertyDescriptors`方法。
-
-```javascript
-function copyObject(orig) {
-  return Object.create(
-    Object.getPrototypeOf(orig),
-    Object.getOwnPropertyDescriptors(orig)
-  );
-}
-```
-
-对象的深克隆
-
-```javascript
-//第一种方法:通过递归解析解决
-function deepCopy(oldObj, newObj) {
-  var newObj = newObj || {}
-  for (var i in oldObj) {
-    if (typeof oldObj[i] === 'object') {
-      if (oldObj[i] === null) {
-        newObj[i] = oldObj[i];
-      } else {
-        if (oldObj[i].constructor === Array) {
-          newObj[i] = []
-        } else {
-          newObj[i] = {}
-        }
-        deepCopy(oldObj[i], newObj[i]);
-      }
-    } else {
-      newObj[i] = oldObj[i];
-    }
-  }
-  return newObj;
-}
-
-let obj = {
-  'a': 123,
-  'b': [1, 2],
-  'c': function () {
-  },
-  'm': null,
-  'n': undefined,
-  'l': NaN,
-  'd': {
-    'e': {
-      'f': 'zxcv'
-    }
-  }
+var obj = {
+  p: 123
 };
-var nObj = {}
-nObj = deepCopy(obj, nObj)
-console.log(nObj);
-//...
-nObj.b = [1, 2, 3];
-console.log(obj.b);//[1,2]
 
-//第二种方法:通过JSON解析解决(缺点：会忽略函数和原型对象)
-var nObj = JSON.parse(JSON.stringify(obj));
-console.log(nObj);
-// a:123
-// b:(3) [1, 2, 3]
-//
-// d:{e: {…}}
-nObj.b = [1, 2, 3];
-console.log(obj.b);//[1, 2]
+obj.hasOwnProperty("p"); // true
+obj.hasOwnProperty("toString"); // false
 ```
 
-### 3.面向对象编程的模式
+### 2.Array 对象
 
-#### 3.1.构造函数的继承
+#### 1.构造函数
 
-让一个构造函数继承另一个构造函数，是非常常见的需求。
-
-这可以分成两步实现。第一步是在子类的构造函数中，调用父类的构造函数。
+`Array`是 JavaScript 的原生对象，同时也是一个构造函数，可以用它生成新的数组。
 
 ```javascript
-function Sub(value) {
-  Super.call(this);
-  this.prop = value;
-}
+var arr = new Array(2);
+arr.length; // 2
+arr; // [ empty x 2 ]
 ```
 
-上面代码中，Sub是子类的构造函数，`this`是子类的实例。在实例上调用父类的构造函数Super，就会让子类实例具有父类实例的属性。
+如果没有使用`new`，运行结果也是一样的。
 
-第二步，是让子类的原型指向父类的原型，这样子类就可以继承父类原型。
+`Array`构造函数有一个很大的缺陷，就是不同的参数，会导致它的行为不一致。
 
 ```javascript
-Sub.prototype = Object.create(Super.prototype);
-//Sub.prototype --> Super
-Sub.prototype.constructor = Sub;
-Sub.prototype.method = '...';
+// 无参数时，返回一个空数组
+new Array(); // []
+
+// 单个正整数参数，表示返回的新数组的长度
+new Array(1); // [ empty ]
+new Array(2); // [ empty x 2 ]
+
+// 非正整数的数值作为参数，会报错
+new Array(3.2); // RangeError: Invalid array length
+new Array(-3); // RangeError: Invalid array length
+
+// 单个非数值（比如字符串、布尔值、对象等）作为参数，
+// 则该参数是返回的新数组的成员
+new Array("abc"); // ['abc']
+new Array([1]); // [Array[1]]
+
+// 多参数时，所有参数都是返回的新数组的成员
+new Array(1, 2); // [1, 2]
+new Array("a", "b", "c"); // ['a', 'b', 'c']
 ```
 
-上面代码中，`Sub.prototype`是子类的原型，要将它赋值为`Object.create(Super.prototype)`，而不是直接等于`Super.prototype`。否则后面两行对`Sub.prototype`的操作，会连父类的原型`Super.prototype`一起修改掉。
+可以看到，`Array`作为构造函数，行为很不一致。因此，不建议使用它生成新数组，直接使用数组字面量是更好的做法。
 
-- --
-
-另外一种写法是`Sub.prototype`等于一个父类实例。
-
-`Sub.prototype = new Super();`
-
-上面这种写法也有继承的效果，但是子类会具有父类实例的方法。有时，这可能不是我们需要的，所以不推荐使用这种写法。
-
-举例来说，下面是一个Shape构造函数。
+> 注意，如果参数是一个正整数，返回数组的成员都是空位。虽然读取的时候返回`undefined`，但实际上该位置没有任何值。虽然可以取到`length`属性，但是取不到键名。
 
 ```javascript
-function Shape() {
-  this.x = 0;
-  this.y = 0;
-}
+var a = new Array(3);
+var b = [undefined, undefined, undefined];
 
-Shape.prototype.move = function (x, y) {
-  this.x += x;
-  this.y += y;
-  console.info('Shape moved.');
-};
+a.length; // 3
+b.length; // 3
+
+a[0]; // undefined
+b[0]; // undefined
+
+0 in a; // false
+0 in b; // true
 ```
 
-我们需要让Rectangle构造函数继承Shape。
+#### 2.静态方法
+
+##### 2.1 Array.isArray
+
+对于一个网页或者一个全局作用域而言，用`instanceof`操作符就能很好的完成：
 
 ```javascript
-// 第一步，子类继承父类的实例
-function Rectangle() {
-  Shape.call(this); // 调用父类构造函数
-}
-// 另一种写法
-function Rectangle() {
-  this.base = Shape;
-  this.base();
-}
-
-// 第二步，子类继承父类的原型
-Rectangle.prototype = Object.create(Shape.prototype);
-Rectangle.prototype.constructor = Rectangle;
-```
-
-采用这样的写法以后，`instanceof`运算符会对子类和父类的构造函数，都返回true。
-
-```javascript
-var rect = new Rectangle();
-rect.move(1, 1) // 'Shape moved.'
-
-rect instanceof Rectangle  // true
-rect instanceof Shape  // true
-```
-
-上面代码中，子类是整体继承父类。有时只需要单个方法的继承，这时可以采用下面的写法。
-
-```javascript
-ClassB.prototype.print = function() {
-  ClassA.prototype.print.call(this);
-  // some code
-}
-```
-
-上面代码中，子类B的print方法先调用父类A的print方法，再部署自己的代码。这就等于继承了父类A的print方法。
-
-#### 3.2.多重继承
-
-JavaScript 不提供多重继承功能，即不允许一个对象同时继承多个对象。但是，可以通过变通方法，实现这个功能。
-
-```javascript
-function M1() {
-  this.hello = 'hello';
-}
-
-function M2() {
-  this.world = 'world';
-}
-
-function S() {
-  M1.call(this);
-  M2.call(this);
-}
-
-// 继承 M1
-S.prototype = Object.create(M1.prototype);
-// 继承链上加入 M2
-Object.assign(S.prototype, M2.prototype);
-
-// 指定构造函数
-S.prototype.constructor = S;
-
-var s = new S();
-s.hello // 'hello：'
-s.world // 'world'
-```
-
-上面代码中，子类S同时继承了父类M1和M2。这种模式又称为 **Mixin（混入）**。
-
-#### 3.3.模块
-
-随着网站逐渐变成”互联网应用程序”，嵌入网页的JavaScript代码越来越庞大，越来越复杂。网页越来越像桌面程序，需要一个团队分工协作、进度管理、单元测试等等……开发者不得不使用软件工程的方法，管理网页的业务逻辑。
-
-JavaScript模块化编程，已经成为一个迫切的需求。理想情况下，开发者只需要实现核心的业务逻辑，其他都可以加载别人已经写好的模块。
-
-但是，JavaScript不是一种模块化编程语言，ES5不支持”类”（class），更遑论”模块”（module）了。ES6正式支持”类”和”模块”，但还没有成为主流。JavaScript社区做了很多努力，在现有的运行环境中，实现模块的效果。
-
-##### 3.3.1 基本的实现方法
-
-**模块是实现特定功能的一组属性和方法的封装**。
-
-只要把不同的函数（以及记录状态的变量）简单地放在一起，就算是一个模块。
-
-```javascript
-function m1() {
-  //...
-}
-function m2() {
+if (value instanceof Array) {
   //...
 }
 ```
 
-上面的函数 m1 和 m2，组成一个模块。使用的时候，直接调用就行了。
+但`instanceof`操作符的问题在于，它假定只有一个全局执行环境。如果网页包含多个框架，那实际上就会有两个以上不同的全局执行环境，从而存在两个以上不同版本的`Array`构造函数。如果需要从一个框架向另一个框架传入一个数组，那么传入的数组与在第二个框架中原生创建的数组分别具有各自不同的构造函数。
 
-这种做法的缺点很明显：”污染”了全局变量，无法保证不与其他模块发生变量名冲突，而且模块成员之间看不出直接关系。
-
-为了解决上面的缺点，可以把模块写成一个对象，所有的模块成员都放到这个对象里面。
+为了解决这个问题，ECMAScript5 新增了`Array.isArray()`方法。这个方法的目的是最终确定某个值是不是数组，而不论是在哪个全局作用域中创建的。
 
 ```javascript
-var module1 = new Object({
-　_count : 0,
-　m1 : function (){
-　　//...
-　},
-　m2 : function (){
-  　//...
-　}
+if (Array.isArray(value)) {
+  //...
+}
+```
+
+`Array.isArray`方法返回一个布尔值，表示参数是否为数组。并且它可以弥补`typeof`运算符的不足。
+
+```javascript
+var arr = [1, 2, 3];
+
+typeof arr; // "object"
+Array.isArray(arr); // true
+```
+
+#### 3.实例方法
+
+##### 3.1 转换方法
+
+1).`valueOf()`
+
+调用该方法，返回数组本身
+
+2).`toString()`
+
+调用数组的该方法，返回由数组中每个值的字符串形式拼接而成的以逗号隔开的字符串。实际上，为了创建这个字符串会调用数组每一项的`toString()`方法。
+
+```javascript
+var ary = [1, 2, 3, 4, 5];
+ary.toString(); //1,2,3,4,5
+```
+
+3).`toLocaleString()`
+
+一般返回值与`toString()`和`valueOf()`相同。当调用数组的`toLocaleString()`方法时，也会创建以数组值的字符串形式，但每一项调用的是`toLocaleString()`方法，而不是`toString()`方法。
+
+> 如果数组某一项的值是`null`或`undefined`，那么该值在`toLocaleString()`、`toString()`、`valueOf()`和`join()`方法返回的结果中以空字符串表示。
+
+4).`join("分隔符")`
+
+按照指定连接符将数组转换为字符串；
+
+---
+
+- 不改变原数组
+- 返回值：返回值是字符串
+- 参数类型：字符
+- 参数
+  - a.只接受一个分隔数组的可选字符或字符串（多传参数不起作用）
+  - b.如果不传参数或传递`undefined`，则默认是逗号；
+
+---
+
+如果数组成员是`undefined`或`null`或空位，会被转成空字符串。
+
+通过`call`方法，这个方法也可以用于字符串或类似数组的对象。
+
+```javascript
+Array.prototype.join.call("hello", "-");
+// "h-e-l-l-o"
+
+var obj = { 0: "a", 1: "b", length: 2 };
+Array.prototype.join.call(obj, "-");
+// 'a-b'
+```
+
+##### 3.2 栈方法
+
+ECMAScript 数组也提供了一种让数组的行为类似于其他结构的方法。具体来说，数组可以表现的像栈一样。栈是一种**LIFO（Last-In-First-Out）**的数据结构，而栈中项的插入（**推入**）和移除（**弹出**），只发生在一个位置--栈的顶部。
+
+1).**`push(...)`**
+
+在数组最后按照书写顺序逐个添加任意多项；
+
+---
+
+- 改变原数组
+- 返回值：返回增加后的数组长度；
+- 参数类型：任意类型
+- 参数：参数任意多，逗号隔开
+
+---
+
+2).**`pop()`**
+
+删除数组最后一项
+
+---
+
+- 改变原数组
+- 返回值：返回被删除项；
+- 参数：没有参数（传递参数也不报错）
+
+---
+
+> 对空数组使用`pop`方法，不会报错，而是返回`undefined`。
+
+`push`和`pop`结合使用，就构成了“后进先出”的**栈（stack）**结构。
+
+```javascript
+var arr = [];
+arr.push(1, 2);
+arr.push(3);
+arr.pop();
+arr; // [1, 2]
+```
+
+##### 3.3 队列方法
+
+队列数据结构的访问规则是**FIFO（First-In-First-Out）**。队列在列表的末端添加项，在前端删除项。
+
+1).**`shift()`**
+
+删除数组的第一项
+
+---
+
+- 改变原数组
+- 返回值：返回被删除项；
+- 参数：没有参数
+
+---
+
+2).**`unshift(...)`**
+
+在数组最前按照书写添加任意多项
+
+---
+
+- 改变原数组
+- 返回值：返回增加项以后的数组长度
+- 参数类型：任意类型
+- 参数：参数任意多，逗号隔开
+
+---
+
+##### 3.4 重排序方法
+
+1).`reverse()`
+
+反转数组排序（较其他方法比较快）
+
+---
+
+- 改变原数组
+- 返回值：返回新数组;
+- 参数：没有参数
+
+---
+
+2).**`sort()`**
+
+升序排列数组(默认按字典顺序)
+
+---
+
+- 改变原数组；
+- 返回值：返回新数组;
+- 参数：不需要参数；或者可以接受一个比较函数作为参数
+
+---
+
+可以接收一个比较函数，以便自定义排序：
+
+```javascript
+ary.sort(function(a, b) {
+  //a 当前项  b 当前项的后一项
+  return a - b; //完全排序：从小到大；
+  return b - a; //完全排序：从大到小；
 });
-```
 
-但是，这样的写法会暴露所有模块成员，内部状态可以被外部改写。比如，外部代码可以直接改变内部计数器的值。
-
-`module1._count = 5;`
-
-##### 3.3.2 封装私有变量：构造函数的写法
-
-我们可以利用构造函数，封装私有变量。
-
-```javascript
-function StringBuilder() {
-  var buffer = [];
-
-  this.add = function (str) {
-     buffer.push(str);
-  };
-
-  this.toString = function () {
-    return buffer.join('');
-  };
-}
-```
-
-这种方法将私有变量封装在构造函数中，违反了构造函数与实例对象相分离的原则。并且，非常耗费内存。
-
-```javascript
-function StringBuilder() {
-  this._buffer = [];
-}
-
-StringBuilder.prototype = {
-  constructor: StringBuilder,
-  add: function (str) {
-    this._buffer.push(str);
-  },
-  toString: function () {
-    return this._buffer.join('');
-  }
-};
-```
-
-这种方法将私有变量放入实例对象中，好处是看上去更自然，但是它的私有变量可以从外部读写，不是很安全。
-
-##### 3.3.3 封装私有变量：立即执行函数的写法
-
-使用“立即执行函数”（Immediately-Invoked Function Expression，IIFE），将相关的属性和方法封装在一个函数作用域里面，可以达到不暴露私有成员的目的。
-
-```javascript
-var module1 = (function () {
-　var _count = 0;
-　var m1 = function () {
-　  //...
-　};
-　var m2 = function () {
-　　//...
-　};
-　return {
-　　m1 : m1,
-　　m2 : m2
-　};
-})();
-```
-
-使用上面的写法，外部代码无法读取内部的_count变量。
-
-`console.info(module1._count); //undefined`
-
-这种模式就是JavaScript模块的基本写法。
-
-##### 3.3.4 模块的放大模式
-
-如果一个模块很大，必须分成几个部分，或者一个模块需要继承另一个模块，这时就有必要采用**放大模式（augmentation）**。
-
-```javascript
-var module1 = (function (mod){
-　mod.m3 = function () {
-　　//...
-　};
-　return mod;
-})(module1);
-```
-
-在浏览器环境中，模块的各个部分通常都是从网上获取的，有时无法知道哪个部分会先加载。如果采用上面的写法，第一个执行的部分有可能加载一个不存在空对象，这时就要采用**宽放大模式（Loose augmentation）**。
-
-```javascript
-var module1 = ( function (mod){
-　//...
-　return mod;
-})(window.module1 || {});
-```
-
-与”放大模式”相比，“宽放大模式”就是“立即执行函数”的参数可以是空对象。
-
-##### 3.3.5 输入全局变量
-
-独立性是模块的重要特点，模块内部最好不与程序的其他部分直接交互。
-
-为了在模块内部调用全局变量，必须显式地将其他变量输入模块。
-
-```javascript
-var module1 = (function ($, YAHOO) {
-　//...
-})(jQuery, YAHOO);
-```
-
-上面模块需要使用`jQuery`库和`YUI`库，就把这两个库（其实是两个模块）当作参数输入。这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显。
-
-立即执行函数还可以起到命名空间的作用。
-
-```javascript
-(function($, window, document) {
-
-  function go(num) {}
-
-  function handleEvents() {}
-
-  function initialize() {}
-
-  function dieCarouselDie() {}
-
-  //attach to the global scope
-  window.finalCarousel = {
-    init : initialize,
-    destroy : dieCouraselDie
-  }
-
-})( jQuery, window, document );
-```
-
-上面代码中，finalCarousel对象输出到全局，对外暴露init和destroy接口，内部方法go、handleEvents、initialize、dieCarouselDie都是外部无法调用的。
-
-### 4.prototype 对象
-
-面向对象编程很重要的一个方面，就是对象的继承。A 对象通过继承 B 对象，就能直接拥有 B 对象的所有属性和方法。这对于代码的复用是非常有用的。
-
-许多面向语言都支持两种继承方式：接口继承和实现继承。接口继承只继承方法签名，而实现继承则继承实际的方法。由于函数没有签名，所以无法实现接口继承，只支持实现继承，而且实现继承主要是依靠原型链来实现的。
-
-大部分面向对象的编程语言，都是通过**类（class）**来实现对象的继承。JavaScript 语言的继承则是通过**原型对象（prototype）**。
-
-#### 4.1.原型对象概述
-
-##### 4.1.1 构造函数的缺点
-
-JavaScript 通过构造函数生成新对象，因此构造函数可以视为对象的模板。实例对象的属性和方法，可以定义在构造函数内部。
-
-```javascript
-function Cat (name, color) {
-  this.name = name;
-  this.color = color;
-}
-
-var cat = new Cat('大毛', '白色');
-
-cat.name // '大毛'
-cat.color // '白色'
-```
-
-通过构造函数为实例对象定义属性，虽然很方便，但是有一个缺点。同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费。
-
-```javascript
-function Cat(name, color) {
-  this.name = name;
-  this.color = color;
-  this.meow = function () {
-    console.log('喵喵');
-  };
-}
-
-var cat1 = new Cat('大毛', '白色');
-var cat2 = new Cat('二毛', '黑色');
-
-cat1.meow === cat2.meow
-// false
-```
-
-由于meow方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个meow方法。这既没有必要，又浪费系统资源，因为所有meow方法都是同样的行为，完全应该共享。
-
-这个问题的解决方法，就是 JavaScript 的原型对象。
-
-##### 4.1.2 prototype 属性的作用
-
-**JavaScript 继承机制的设计思想就是，原型对象的所有属性和方法，都能被实例对象共享**。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
-
-下面，先看怎么为对象指定原型。JavaScript 规定，每个函数都有一个`prototype`属性，指向一个对象。
-
-```javascript
-function f() {}
-typeof f.prototype // "object"
-```
-
-对于普通函数来说，该属性基本无用。但是，对于构造函数来说，生成实例的时候，该属性会自动成为实例对象的原型。
-
-```javascript
-function Animal(name) {
-  this.name = name;
-}
-Animal.prototype.color = 'white';
-
-var cat1 = new Animal('大毛');
-var cat2 = new Animal('二毛');
-
-cat1.color // 'white'
-cat2.color // 'white'
-```
-
-上面代码中，构造函数Animal的`prototype`属性，就是实例对象cat1和cat2的原型对象。原型对象上添加一个color属性，结果，实例对象都共享了该属性。
-
-原型对象的属性不是实例对象自身的属性。只要修改原型对象，变动就立刻会体现在所有实例对象上。
-
-```javascript
-Animal.prototype.color = 'yellow';
-
-cat1.color // "yellow"
-cat2.color // "yellow"
-```
-
-当实例对象本身没有某个属性或方法的时候，它会到原型对象去寻找该属性或方法。这就是原型对象的特殊之处。
-
-如果实例对象自身就有某个属性或方法，它就不会再去原型对象寻找这个属性或方法。
-
-```javascript
-cat1.color = 'black';
-
-cat1.color // 'black'
-cat2.color // 'yellow'
-Animal.prototype.color // 'yellow';
-```
-
-总结一下，原型对象的作用，就是定义所有实例对象共享的属性和方法。这也是它被称为原型对象的原因，而实例对象可以视作从原型对象衍生出来的子对象。
-
-```javascript
-Animal.prototype.walk = function () {
-  console.log(this.name + ' is walking');
-};
-```
-
-##### 4.1.3 原型链
-
-JavaScript 规定，所有对象都有自己的原型对象。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。如此层层递进，就构成了实例与原型的链条，就会形成一个**原型链（prototype chain）**。
-
-> 简单回顾一下构造函数、原型和实例的关系：每一个构造函数Funtion都有一个原型对象`prototype`，原型对象都包含一个指向构造函数的指针`constructor`，而实例都包含一个指向原型对象的内部指针`__proto__`。
-
-如果一层层地上溯，所有对象的原型最终都可以上溯到`Object.prototype`，即`Object`构造函数的`prototype`属性。也就是说，所有对象都继承了`Object.prototype`的属性。这就是所有对象都有`valueOf`和`toString`方法的原因，因为这是从`Object.prototype`继承的。
-
-那么，`Object.prototype`对象有没有它的原型呢？回答是`Object.prototype`的原型是`null`。`null`没有任何属性和方法，也没有自己的原型。因此，原型链的尽头就是`null`。
-
-`Object.getPrototypeOf(Object.prototype); // null`
-
-```javascript
-function SuperType() {
-  this.property = true;
-}
-
-SuperType.prototype.getSuperValue = function () {
-  return this.property;
-};
-
-function SubType() {
-  this.subpropertype = false;
-}
-
-SubType.prototype.getSubValue = function () {
-  return this.subproperty + "1";
-};
-
-SubType.prototype = new SuperType();
-
-SubType.prototype.getSubValue = function () {
-  return this.subproperty + "2";
-};
-
-let instance = new SubType();
-
-console.log(instance.getSubValue());//undefined2
-```
-
-读取对象的某个属性时，JavaScript 引擎先寻找对象本身的属性，如果找不到，则通过`__proto__`到它的原型去找，如果还是找不到，就到原型的原型去找。如果直到最顶层的`Object.prototype`还是找不到，则返回`undefined`。如果对象自身和它的原型，都定义了一个同名属性，那么优先读取对象自身的属性，这叫做**覆盖（overriding）**。
-
-> 注意，一级级向上，在整个原型链上寻找某个属性，对性能是有影响的。所寻找的属性在越上层的原型对象，对性能的影响越大。如果寻找某个不存在的属性，将会遍历整个原型链。
-
-举例来说，如果让构造函数的`prototype`属性指向一个数组，就意味着实例对象可以调用数组方法。
-
-```javascript
-var MyArray = function () {};
-
-MyArray.prototype = new Array();
-MyArray.prototype.constructor = MyArray;
-
-var mine = new MyArray();
-mine.push(1, 2, 3);
-mine.length // 3
-mine instanceof Array // true
-```
-
-上面代码中，mine是构造函数MyArray的实例对象，由于`MyArray.prototype`指向一个数组实例，使得mine可以调用数组方法（这些方法定义在数组实例的`prototype`对象上面）。最后那行`instanceof`表达式，用来比较一个对象是否为某个构造函数的实例，结果就是证明mine为`Array`的实例。
-
-##### 4.1.4 constructor 属性
-
-`prototype`对象有一个`constructor`属性，默认指向`prototype`对象所在的构造函数。
-
-```javascript
-function P() {}
-P.prototype.constructor === P // true
-```
-
-由于`constructor`属性定义在`prototype`对象上面，意味着可以被所有实例对象继承。
-
-```javascript
-function P() {}
-var p = new P();
-
-p.constructor === P // true
-p.constructor === P.prototype.constructor // true
-p.hasOwnProperty('constructor') // false
-```
-
-上面代码中，p是构造函数P的实例对象，但是p自身没有`constructor`属性，该属性其实是读取原型链上面的`P.prototype.constructor`属性。
-
-`constructor`属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
-
-```javascript
-function F() {};
-var f = new F();
-
-f.constructor === F // true
-f.constructor === RegExp // false
-```
-
-上面代码中，`constructor`属性确定了实例对象f的构造函数是F，而不是`RegExp`。
-
-另一方面，有了`constructor`属性，就可以从一个实例对象新建另一个实例。
-
-```javascript
-function Constr() {}
-var x = new Constr();
-
-var y = new x.constructor();
-y instanceof Constr // true
-```
-
-上面代码中，x是构造函数Constr的实例，可以从x.constructor间接调用构造函数。这使得在实例方法中，调用自身的构造函数成为可能。
-
-```javascript
-Constr.prototype.createCopy = function () {
-  return new this.constructor();
-};
-```
-
-上面代码中，createCopy方法调用构造函数，新建另一个实例。
-
-`constructor`属性表示原型对象与构造函数之间的关联关系，如果修改了原型对象，一般会同时修改`constructor`属性，防止引用的时候出错。
-
-```javascript
-function Person(name) {
-  this.name = name;
-}
-
-Person.prototype.constructor === Person // true
-
-Person.prototype = {
-  method: function () {}
-};
-
-Person.prototype.constructor === Person // false
-Person.prototype.constructor === Object // true
-```
-
-上面代码中，构造函数Person的原型对象改掉了，但是没有修改`constructor`属性，导致这个属性不再指向Person。由于Person的新原型是一个普通对象，而普通对象的`contructor`属性指向Object构造函数，导致`Person.prototype.constructor`变成了`Object`。
-
-> 内置类的原型默认无法修改；只有浏览器默认开辟的堆内存才有`constructor`属性，若要修改地址（批量添加属性或方法），可以添加`constructor：类`，引回原地址；
-
-所以，修改原型对象时，一般要同时修改`constructor`属性的指向。
-
-```javascript
-// 坏的写法
-C.prototype = {
-  method1: function (...) { ... },
-  // ...
-};
-
-// 好的写法
-C.prototype = {
-  constructor: C,
-  method1: function (...) { ... },
-  // ...
-};
-
-// 更好的写法
-C.prototype.method1 = function (...) { ... };
-```
-
-上面代码中，要么将`constructor`属性重新指向原来的构造函数，要么只在原型对象上添加方法，这样可以保证`instanceof`运算符不会失真。
-
-如果不能确定`constructor`属性是什么函数，还有一个办法：通过`name`属性，从实例得到构造函数的名称。
-
-```javascript
-function Foo() {}
-var f = new Foo();
-f.constructor.name // "Foo"
-```
-
-#### 4.2.继承
-
-##### 4.2.1 原型继承
-
-原型继承是一种简化的继承机制，实际上，JavaScript就是一种基于原型的语言。
-
-在原型继承中，类和实例概念就被淡化了，一切都从对象角度来考虑。所以直接定义对象，该对象被其他对引用，这样就形成了一种继承关系，其中被引用对象就称之为**原型对象**；JavaScript可以根据原型链来查找对象之间的这种继承关系。
-
-基于原型的编程是面向对象编程的一种特定的形式。在这种编程模型中，不需要声明静态类，而可以**通过复制语句存在的原型对象来实现继承关系**。因此，基于原型的模型没有类的概念，原型继承中的类仅是一种模拟，从而不需要通过复制属性的方式进快速的实现继承。
-
-我们需要创建的两个对象一个是相互独立的，显然，仅仅通过原型这样的方式会带来高耦合性的，在实际程序设计过程中单独使用原型模式来创建对象无疑会带来一些潜在的弊端，这也是面向对象程序设计理念“低耦合高复用”所不允许的。
-
-```javascript
-//可以获得B的私有变量以及原型上的变量；但丢失自身原来原型上的变量
-A.prototype = new B();
-
-//合并对象(只能获得B的私有变量，无法获得B的原型上的变量；但可以保留自身原来原型上的变量)；
-//Object.assign(obj1,obj2)
-Object.assign(A.prototype, new B);
-
-//自定义assign方法；通过结合两者方法，使得实例可以获得两个类的私有属性和公有属性；
-function assign(obj1, obj2) {
-  for (var key in obj2) {
-    if (obj2.hasOwnProperty(key)) {
-      obj1[key] = obj2[key];
-    } else {
-      obj1.__proto__[key] = obj2[key];
-    }
+//比较函数
+function compare(value1, value2) {
+  if (value1 < value2) {
+    return -1;
+  } else if (value1 > value2) {
+    return 1;
+  } else {
+    return 0;
   }
 }
+
+//对于数值类型或者valueOf()方法返回数值类型的对象类型，可以使用一个更简单的比较函数
+function compare(value1, value2) {
+  return value2 - value1;
+}
 ```
 
-##### 4.2.2 call继承
+##### 3.5 操作方法
 
-在一个类中A执行另一个类B，并用`call`使该类B指向类A，从而使得A类的实例可以获得B类上的私有变量或属性，同时能保存自身原型上的公有变量或属性。
+1).`concat(...)`
+
+用来拼接数组，在原数组后面添加任意多项;
+
+---
+
+- 不改变原数组；
+- 返回值：返回新数组;
+- 参数类型：任意类型数据；
+- 参数：
+  - a.没有参数或者参数为 0 时，相当于原数组的复本
+  - b.非数组参数，简单添加
+
+---
+
+如果数组成员包括对象，`concat`方法返回当前数组的一个浅拷贝。所谓“**浅拷贝**”，指的是新数组拷贝的是对象的引用。
 
 ```javascript
-function A() {
-  this.a = 1;
-  B.call(this);
-};
+var obj = { a: 1 };
+var oldArray = [obj];
 
-function B() {
-  this.b = 2;
-}
+var newArray = oldArray.concat();
 
-B.prototype.getB = function () {
-};
-var a = new A();
-console.log(a);//A{a:1,b:2}
+obj.a = 2;
+newArray[0].a; // 2
 ```
 
-##### 4.2.3 寄生组合继承
+2).**`slice(startIndex[,endIndex])`**
 
-原型继承和`call`继承组合
+从参数指定位置开始复制截取（包含指定项）
+
+---
+
+- 不改变原数组；
+- 返回值：将获取的项组成新数组返回;
+- 参数类型：数值
+- 参数：
+  - a.没有参数或者参数为 0 时，相当于原数组的副本；
+  - b.一个参数，从该参数指定的位置开始复制
+  - c.二个参数，从第一个参数开始复制到第二个参数位置（不包含终止位）
+  - d.若参数为负数(倒数计位)，则加上数组长度来进行复制
+  - e.若第二个参数小于第一个参数，返回空数组
+
+---
+
+`slice`方法的一个重要应用，是将类似数组的对象转为真正的数组。
 
 ```javascript
-function A() {
-  this.a = 1;
-  B.call(this);
-};
+Array.prototype.slice.call({ 0: "a", 1: "b", length: 2 });
+// ['a', 'b']
 
-function B() {
-  this.b = 2;
+function fn(a, b, c) {
+  console.log(Array.prototype.slice.call(arguments));
+  return a * b + c;
 }
 
-B.prototype.getB = function () {};
-A.prototype.getA = function () {};
-Object.assign(A.prototype, B.prototype);
-var a = new A();
+console.log(fn(1, 2, 3));
+
+//[ 1, 2, 3]    5
+```
+
+3).**`splice(startIndex[,length,...])`**
+
+删除、插入、替换
+
+---
+
+- 改变原数组;
+- 返回值：始终返回一个数组（由删除项构成的）或者空数组（没有删除项）
+- 参数：多个
+  - a.第一个参数：指定删除的起始位置
+  - b.第二个参数：指定删除个数
+  - c.第三个参数：用来替换
+  - d.其他参数：替换
+
+---
+
+删除：可以删除任意项，需要 2 个参数：要删除的第一项的位置和要删除的项数
+
+插入：可以在任意位置插入任意多项，需要至少 3 个参数：起始位置、0（删除项数）以及要插入的项（可以多个）
+
+替换：插入且同时删除，需要至少 3 个参数：起始位置、要删除的项数以及要插入的任意项数（删除项数和插入项数不一定要等等）
+
+> 如果只提供第一个参数，等同于将原数组在指定位置拆分成两个数组。
+
+##### 3.6 位置方法
+
+1).**`indexOf(subStr[,startIndex])`**
+
+在数组中从头开始进行查找指定项
+
+---
+
+- 不改变原数组
+- 返回值：指定项第一次出现的索引，找不到就返回-1；
+- 参数类型：任意类型
+- 参数：
+  - a.第一个参数指定查找项
+  - b.第二个参数指定查找的起始位置；
+
+---
+
+2).**`lastIndexOf(subStr[,startIndex])`**
+
+作用同`indexOf()`，但从末尾开始进行查找指定项
+
+> 这两个方法在被调用时，比较数组的每一项用的是全等操作符，也就是说数据类型必须一样。这样就不能用来搜索`NaN`。
+
+##### 3.7 迭代方法
+
+每一个方法都接收两个参数：第一个参数是需要运行的函数；第二个参数是可选的，调用函数时可选的`this`的值；都不改变原数组。如果数组有空位，会跳过。
+
+传入这些方法中的函数接收三个参数：数组项的值、该项在数组中的位置和数组对象本身。
+
+1).**`forEach()`**
+
+`forEach`方法与`map`方法很相似，也是对数组的所有成员依次执行参数函数。但是，`forEach`方法不返回值，只用来操作数据。这就是说，如果数组遍历的目的是为了得到返回值，那么使用`map`方法，否则使用`forEach`方法。
+
+> 注意，`forEach`方法无法中断执行，总是会将所有成员遍历完。如果希望符合某种条件时，就中断遍历，要使用`for`循环。
+
+2).**`map()`**
+
+将数组的所有成员依次传入参数函数，然后把每一次的执行结果组成一个新数组返回。
+
+> 如果数组有空位，`map`方法的回调函数在这个位置不会执行，会跳过数组的空位。不会跳过`undefined`和`null`。
+
+3).**`filter()`**
+
+用来过滤数组成员，返回值为 true 的对应项构成的新数组；
+
+4).`every()`
+
+传入的函数对每一项都返回 true，这个方法才会返回 true；否则返回 flase。也就是说，迭代过程中出现 false 就停止执行。
+
+5).`some()`
+
+只要传入的数组中有一项返回 true，则方法返回 true。也就是说，迭代过程中出现 true 就停止执行。
+
+> 注意，对于空数组，`some`方法返回 false，`every`方法返回 true，回调函数都不会执行。
+
+##### 3.8 归并方法
+
+ES5 新增两个归并数组的方法。这两个方法会迭代数组所有的项，然后构建一个最终返回的值。这两个方法接收两个参数：一个在每一项上调用的函数和（可选的）作为归并基础的初始值。
+
+这两个方法不会改变原数组。它们的差别是，`reduce`是从左到右处理（从第一个成员到最后一个成员），`reduceRight`则是从右到左（从最后一个成员到第一个成员），其他完全一样。
+
+传给`reduce()`和`reduceRight()`的函数接收 4 个参数：
+
+---
+
+- prev: 积累变量(默认为数组的第一个成员)
+- next: 当前变量(默认为数组的第二个成员)
+- index 索引
+- 数组对象
+
+---
+
+只有前两个参数是必选的。这个函数返回的任何值都会作为第一个参数自动传给下一项。第一次迭代发生在数组的第二项，即如果要对累积变量指定初值，可以把它放在`reduce`方法和`reduceRight`方法的第二个参数。
+
+由于这两个方法会遍历数组，所以实际上还可以用来做一些遍历相关的操作。比如，找出字符长度最长的数组成员。
+
+```javascript
+function findLongest(s) {
+  return s.reduce((longest, entry) => {
+    console.log("longest " + longest, "entry " + entry);
+    return entry.length > longest.length ? entry : longest;
+  }, "");
+}
+
+console.log(findLongest(["aaa", "bb", "c"]));
+
+//reduce方法的第二个参数指定为'',即初始值为''
+//longest  entry aaa
+//longest aaa entry bb
+//longest aaa entry c
+// "aaa"
+```
+
+上面代码中，`reduce`的参数函数会将字符长度较长的那个数组成员，作为累积值。这导致遍历所有成员之后，累积值就是字符长度最长的那个成员。
+
+##### 3.9 ES6 新方法
+
+1).**`find()`**
+
+查找数组中某一项（只要`return`为 true 则停止查找）
+
+---
+
+- 不改变原数组
+- 返回值：返回查找项；找不到返回`undefined`
+- 参数类型：函数
+  - 第一个参数是需要运行的函数(该方法会给函数传入三个参数，同迭代方法)
+
+---
+
+```javascript
+let ary = [1, 2, 3, 4];
+let a = ary.find((item, i, l) => {
+  console.log(item, i, l);
+  return item > 4;
+});
 console.log(a);
-//A{a:1,b:2,[[__proto__]]{getA:f(),getB:f()}
-```
-
-##### 4.2.4 强制改变原型指向
-
-```javascript
-//只能改变引用类型数据或通过构造函数的方法产生的类型；
-function sum() {
-  arguments.__proto__ = Array.prototype;
-  return arguments.join("+");
-}
-console.log(sum(1, 2, 3, 4));
-//1+2+3+4
-
-var ary = [1, 2, 3, 4];
-console.log(ary.toString());//"1,2,3,4"
-ary.__proto__ = Object.prototype;
-console.log(ary.toString());//[object Array]
-
-var time = new Date;
-console.log(time.toString());
-//Sat Sep 23 2017 15:46:08 GMT+0800 (中国标准时间)
-time.__proto__ = Object.prototype;
-console.log(time.toString());//[object Date]
-```
-
-#### 4.3.instanceof 运算符
-
-`instanceof`运算符返回一个布尔值，表示对象是否为某个构造函数的实例。
-
-```javascript
-var v = new Vehicle();
-v instanceof Vehicle // true
-```
-
-`instanceof`运算符的左边是实例对象，右边是构造函数。原理是会检查右边构建函数的原型对象（`prototype`），是否在左边对象的原型链上。因此，下面两种写法是等价的。
-
-```javascript
-v instanceof Vehicle
-// 等同于
-Vehicle.prototype.isPrototypeOf(v)
-```
-
-由于`instanceof`检查整个原型链，因此同一个实例对象，可能会对多个构造函数都返回true。
-
-```javascript
-var d = new Date();
-d instanceof Date // true
-d instanceof Object // true
-```
-
-有一种特殊情况，就是左边对象的原型链上，只有`null`对象。这时，`instanceof`判断会失真。
-
-```javascript
-var obj = Object.create(null);
-typeof obj // "object"
-Object.create(null) instanceof Object // false
-```
-
-上面代码中，`Object.create(null)`返回一个新对象obj，它的原型是`null`。右边的构造函数`Object`的`prototype`属性，不在左边的原型链上，因此`instanceof`就认为obj不是`Object`的实例。但是，只要一个对象的原型不是`null`，`instanceof`运算符的判断就不会失真。
-
-`instanceof`运算符的一个用处，是判断值的类型。
-
-```javascript
-var x = [1, 2, 3];
-var y = {};
-x instanceof Array // true
-y instanceof Object // true
-```
-
-注意，`instanceof`运算符只能用于对象，不适用原始类型的值。
-
-```javascript
-var s = 'hello';
-s instanceof String // false
-```
-
-上面代码中，字符串不是`String`对象的实例（因为字符串不是对象），所以返回false。
-
-此外，对于`undefined`和`null`，`instanceOf`运算符总是返回false。
-
-```javascript
-undefined instanceof Object // false
-null instanceof Object // false
-```
-
-利用`instanceof`运算符，还可以巧妙地解决，调用构造函数时，忘了加`new`命令的问题。
-
-```javascript
-function Fubar (foo, bar) {
-  if (this instanceof Fubar) {
-    this._foo = foo;
-    this._bar = bar;
-  } else {
-    return new Fubar(foo, bar);
-  }
-}
-```
-
-上面代码使用`instanceof`运算符，在函数体内部判断`this`关键字是否为构造函数Fubar的实例。如果不是，就表明忘了加`new`命令。
-
-### 5.this 关键字
-
-#### 5.1.涵义
-
-`this`关键字是一个非常重要的语法点。毫不夸张地说，不理解它的含义，大部分开发任务都无法完成。
-
-之前已经提到，`this`可以用在构造函数之中，表示实例对象。除此之外，`this`还可以用在别的场合。但不管是什么场合，`this`都有一个共同点：它总是返回一个对象。
-
-简单说，`this`就是属性或方法“当前”所在的对象。
-
-`this.property`
-
-上面代码中，this就代表property属性当前所在的对象。
-
-下面是一个实际的例子。
-
-```javascript
-var person = {
-  name: '张三',
-  describe: function () {
-    return '姓名：'+ this.name;
-  }
-};
-
-person.describe()
-// "姓名：张三"
-```
-
-上面代码中，this.name表示name属性所在的那个对象。由于this.name是在describe方法中调用，而describe方法所在的当前对象是person，因此this指向person，this.name就是person.name。
-
-由于对象的属性可以赋给另一个对象，所以属性所在的当前对象是可变的，即`this`的指向是可变的。
-
-```javascript
-var A = {
-  name: '张三',
-  describe: function () {
-    return '姓名：'+ this.name;
-  }
-};
-
-var B = {
-  name: '李四'
-};
-
-B.describe = A.describe;
-B.describe()
-// "姓名：李四"
-```
-
-上面代码中，A.describe属性被赋给B，于是B.describe就表示describe方法所在的当前对象是B，所以this.name就指向B.name。
-
-稍稍重构这个例子，`this`的动态指向就能看得更清楚。
-
-```javascript
-function f() {
-  return '姓名：'+ this.name;
-}
-
-var A = {
-  name: '张三',
-  describe: f
-};
-
-var B = {
-  name: '李四',
-  describe: f
-};
-
-A.describe() // "姓名：张三"
-B.describe() // "姓名：李四"
-```
-
-上面代码中，函数f内部使用了`this`关键字，随着f所在的对象不同，`this`的指向也不同。
-
-只要函数被赋给另一个变量，`this`的指向就会变。
-
-```javascript
-var A = {
-  name: '张三',
-  describe: function () {
-    return '姓名：'+ this.name;
-  }
-};
-
-var name = '李四';
-var f = A.describe;
-f() // "姓名：李四"
-```
-
-上面代码中，A.describe被赋值给变量f，内部的`this`就会指向f运行时所在的对象（本例是顶层对象）。
-
-再看一个网页编程的例子。
-
-```javascript
-<input type="text" name="age" size=3 onChange="validate(this, 18, 99);">
-
-<script>
-function validate(obj, lowval, hival){
-  if ((obj.value < lowval) || (obj.value > hival))
-    console.log('Invalid Value!');
-}
-</script>
-```
-
-上面代码是一个文本输入框，每当用户输入一个值，就会调用`onChange`回调函数，验证这个值是否在指定范围。浏览器会向回调函数传入当前对象，因此`this`就代表传入当前对象（即文本框），然后就可以从this.value上面读到用户的输入值。
-
-总结一下，JavaScript 语言之中，一切皆对象，运行环境也是对象，所以函数都是在某个对象之中运行，`this`就是函数运行时所在的对象（环境）。这本来并不会让用户糊涂，但是 JavaScript 支持运行环境动态切换，也就是说，`this`的指向是动态的，没有办法事先确定到底指向哪个对象，这才是最让初学者感到困惑的地方。
-
-#### 5.2.使用场合
-
-- --
-
-全局作用域下，`this`（或者**self**）的指代是`window`；
-私有作用域下：
-
-- a.若函数执行时有执行主体则`this`指代执行主体，否则指代`window`；
-- b.给元素绑定事件时，`this`就指代被绑定的元素；
-- c.自执行函数的主体都是`window`；
-- d.当函数作为参数时，`this`指代的则是`window`；
-- e.在构造函数中，`this`指代构造出来的实例；
-- --
-
-##### 5.2.1 全局环境
-
-全局环境使用`this`，它指的就是顶层对象`window`。
-
-```javascript
-this === window // true
-
-function f() {
-  console.log(this === window);
-}
-f() // true
-```
-
-上面代码说明，不管是不是在函数内部，只要是在全局环境下运行，`this`就是指顶层对象`window`。
-
-##### 5.2.2 构造函数
-
-构造函数中的`this`，指的是实例对象。
-
-```javascript
-var Obj = function (p) {
-  this.p = p;
-};
-```
-
-上面代码定义了一个构造函数Obj。由于`this`指向实例对象，所以在构造函数内部定义this.p，就相当于定义实例对象有一个p属性。
-
-```javascript
-var o = new Obj('Hello World!');
-o.p // "Hello World!"
-```
-
-##### 5.2.3 对象的方法
-
-如果对象的方法里面包含`this`，`this`的指向就是方法运行时所在的对象。该方法赋值给另一个对象，就会改变`this`的指向。
-
-但是，这条规则很不容易把握。请看下面的代码。
-
-```javascript
-var obj ={
-  foo: function () {
-    console.log(this);
-  }
-};
-
-obj.foo() // obj
-```
-
-但是，下面这几种用法，都会改变`this`的指向。
-
-```javascript
-// 情况一
-(obj.foo = obj.foo)() // window
-// 情况二
-(false || obj.foo)() // window
-// 情况三
-(1, obj.foo)() // window
-```
-
-上面代码中，obj.foo就是一个值。这个值真正调用的时候，运行环境已经不是obj了，而是全局环境，所以this不再指向obj。
-
-可以这样理解，JavaScript 引擎内部，obj和obj.foo储存在两个内存地址，称为地址一和地址二。obj.foo()这样调用时，是从地址一调用地址二，因此地址二的运行环境是地址一，this指向obj。但是，上面三种情况，都是直接取出地址二进行调用，这样的话，运行环境就是全局环境，因此this指向全局环境。上面三种情况等同于下面的代码。
-
-```javascript
-// 情况一
-(obj.foo = function () {
-  console.log(this);
-})()
-// 等同于
-(function () {
-  console.log(this);
-})()
-
-// 情况二
-(false || function () {
-  console.log(this);
-})()
-
-// 情况三
-(1, function () {
-  console.log(this);
-})()
-```
-
-如果`this`所在的方法不在对象的第一层，这时`this`只是指向当前一层的对象，而不会继承更上面的层。
-
-```javascript
-var a = {
-  p: 'Hello',
-  b: {
-    m: function() {
-      console.log(this.p);
-    }
-  }
-};
-
-a.b.m() // undefined
-```
-
-上面代码中，a.b.m方法在a对象的第二层，该方法内部的`this`不是指向a，而是指向a.b，因为实际执行的是下面的代码。
-
-```javascript
-var b = {
-  m: function() {
-   console.log(this.p);
-  }
-};
-
-var a = {
-  p: 'Hello',
-  b: b
-};
-
-(a.b).m() // 等同于 b.m()
-```
-
-如果要达到预期效果，只有写成下面这样。
-
-```javascript
-var a = {
-  b: {
-    m: function() {
-      console.log(this.p);
-    },
-    p: 'Hello'
-  }
-};
-```
-
-如果这时将嵌套对象内部的方法赋值给一个变量，`this`依然会指向全局对象。
-
-```javascript
-var a = {
-  b: {
-    m: function() {
-      console.log(this.p);
-    },
-    p: 'Hello'
-  }
-};
-
-var hello = a.b.m;
-hello() // undefined
-```
-
-上面代码中，m是多层对象内部的一个方法。为求简便，将其赋值给hello变量，结果调用时，`this`指向了顶层对象。为了避免这个问题，可以只将m所在的对象赋值给hello，这样调用时，`this`的指向就不会变。
-
-```javascript
-var hello = a.b;
-hello.m() // Hello
-```
-
-#### 5.3.使用注意点
-
-##### 5.3.1 避免多层 this
-
-由于`this`的指向是不确定的，所以切勿在函数中包含多层的`this`。
-
-```javascript
-var o = {
-  f1: function () {
-    console.log(this);
-    var f2 = function () {
-      console.log(this);
-    }();
-  }
-}
-
-o.f1()
-// Object
-// Window
-```
-
-上面代码包含两层`this`，结果运行后，第一层指向对象o，第二层指向全局对象，因为实际执行的是下面的代码。
-
-```javascript
-var temp = function () {
-  console.log(this);
-};
-
-var o = {
-  f1: function () {
-    console.log(this);
-    var f2 = temp();
-  }
-}
-```
-
-一个解决方法是在第二层改用一个指向外层this的变量。
-
-```javascript
-var o = {
-  f1: function() {
-    console.log(this);
-    var that = this;
-    var f2 = function() {
-      console.log(that);
-    }();
-  }
-}
-
-o.f1()
-// Object
-// Object
-```
-
-上面代码定义了变量that，固定指向外层的`this`，然后在内层使用that，就不会发生`this`指向的改变。
-
-事实上，使用一个变量固定`this`的值，然后内层函数调用这个变量，是非常常见的做法，请务必掌握。
-
-JavaScript 提供了严格模式，也可以硬性避免这种问题。严格模式下，如果函数内部的`this`指向顶层对象，就会报错。
-
-```javascript
-var counter = {
-  count: 0
-};
-counter.inc = function () {
-  'use strict';
-  this.count++
-};
-var f = counter.inc;
-f()
-// TypeError: Cannot read property 'count' of undefined
-```
-
-上面代码中，inc方法通过`'use strict'`声明采用严格模式，这时内部的`this`一旦指向顶层对象，就会报错。
-
-##### 5.3.2 避免数组处理方法中的 this
-
-数组的`map`和`foreach`方法，允许提供一个函数作为参数。这个函数内部不应该使用`this`。
-
-```javascript
-var o = {
-  v: 'hello',
-  p: [ 'a1', 'a2' ],
-  f: function f() {
-    this.p.forEach(function (item) {
-      console.log(this.v + ' ' + item);
-    });
-  }
-}
-
-o.f()
-// undefined a1
-// undefined a2
-```
-
-上面代码中，`forEach`方法的回调函数中的`this`，其实是指向`window`对象，因此取不到o.v的值。原因跟上一段的多层`this`是一样的，就是内层的`this`不指向外部，而指向顶层对象。
-
-解决这个问题的一种方法，就是前面提到的，使用中间变量固定this。
-
-```javascript
-var o = {
-  v: 'hello',
-  p: [ 'a1', 'a2' ],
-  f: function f() {
-    var that = this;
-    this.p.forEach(function (item) {
-      console.log(that.v+' '+item);
-    });
-  }
-}
-
-o.f()
-// hello a1
-// hello a2
-```
-
-另一种方法是将`this`当作`forEach`方法的第二个参数，固定它的运行环境。
-
-```javascript
-var o = {
-  v: 'hello',
-  p: [ 'a1', 'a2' ],
-  f: function f() {
-    this.p.forEach(function (item) {
-      console.log(this.v + ' ' + item);
-    }, this);
-  }
-}
-
-o.f()
-// hello a1
-// hello a2
-```
-
-##### 5.3.3 避免回调函数中的 this
-
-回调函数中的`this`往往会改变指向，最好避免使用。
-
-```javascript
-var o = new Object();
-o.f = function () {
-  console.log(this === o);
-}
-
-// jQuery 的写法
-$('#button').on('click', o.f);
-```
-
-上面代码中，点击按钮以后，控制台会显示false。原因是此时`this`不再指向o对象，而是指向按钮的 DOM 对象，因为f方法是在按钮对象的环境中被调用的。这种细微的差别，很容易在编程中忽视，导致难以察觉的错误。
-
-为了解决这个问题，可以采用下面的一些方法对`this`进行绑定，也就是使得`this`固定指向某个对象，减少不确定性。
-
-#### 5.4.绑定 this 的方法
-
-`this`的动态切换，固然为 JavaScript 创造了巨大的灵活性，但也使得编程变得困难和模糊。有时，需要把`this`固定下来，避免出现意想不到的情况。JavaScript 提供了`call`、`apply`、`bind`这三个方法，来切换/固定`this`的指向。
-
-##### 5.4.1 Function.prototype.call()
-
-函数实例的`call`方法，可以指定函数内部`this`的指向（即函数执行时所在的作用域），然后在所指定的作用域中，调用该函数。
-
-```javascript
-var obj = {};
-
-var f = function () {
-  return this;
-};
-
-f() === window // true
-f.call(obj) === obj // true
-```
-
-`call`方法的参数，应该是一个对象。如果参数为空、`null`和`undefined`，则默认传入全局对象。
-
-- --
-
-非严格模式：第一个参数不传或者是 `null` & `undefined`，则`this`都是`window`
-
-- 若参数不是对象，默认转换为对象；
-
-严格模式：`this`代指
-
-- 无参数  -->  `this` = `undefined`；
-- `null`  -->  `this` = `null`；
-- `undefined`  -->  `this` = `undefined`；
-- 函数执行前面没有执行主体，`this`就是`undefined`；
-- --
-
-```javascript
-var n = 123;
-var obj = { n: 456 };
-
-function a() {
-  console.log(this.n);
-}
-
-a.call() // 123
-a.call(null) // 123
-a.call(undefined) // 123
-a.call(window) // 123
-a.call(obj) // 456
-```
-
-如果`call`方法的参数是一个原始值，那么这个原始值会自动转成对应的包装对象，然后传入`call`方法。
-
-```javascript
-var f = function () {
-  return this;
-};
-
-f.call(5)
-// Number {[[PrimitiveValue]]: 5}
-```
-
-上面代码中，`call`的参数为5，不是对象，会被自动转成包装对象（`Number`的实例），绑定f内部的`this`。
-
-`call`方法还可以接受多个参数。
-
-`func.call(thisValue, arg1, arg2, ...)`
-
-`call`的第一个参数就是`this`所要指向的那个对象，后面的参数则是函数调用时所需的参数。
-
-```javascript
-function add(a, b) {
-  return a + b;
-}
-
-add.call(this, 1, 2) // 3
-```
-
-上面代码中，`call`方法指定函数add内部的`this`绑定当前环境（对象），并且参数为1和2，因此函数add运行后得到3。
-
-`call`方法的一个应用是调用对象的原生方法。
-
-```javascript
-var obj = {};
-obj.hasOwnProperty('toString') // false
-
-// 覆盖掉继承的 hasOwnProperty 方法
-obj.hasOwnProperty = function () {
-  return true;
-};
-obj.hasOwnProperty('toString') // true
-
-Object.prototype.hasOwnProperty.call(obj, 'toString') // false
-```
-
-上面代码中，`hasOwnProperty`是obj对象继承的方法，如果这个方法一旦被覆盖，就不会得到正确结果。`call`方法可以解决这个问题，它将`hasOwnProperty`方法的原始定义放到obj对象上执行，这样无论obj上有没有同名方法，都不会影响结果。
-
-`call`原理
-
-```javascript
-var obj = {a: 1};
-Function.prototype.call = function () {
-  //this == 实例--f1
-  ary = [...arguments];
-  if (ary[0] == undefined) {
-    ary.shift();
-    eval("this(" + ary + ")");
-  } else {
-    var obj = Object(arguments[0]);
-    obj.__proto__.fn = this;
-    ary.shift();
-    eval("obj.fn(" + ary + ")");
-    obj.fn;
-    delete obj.__proto__.fn;
-  }
-}
-
-function f1() {
-  console.log("f1:" + this);
-  for (var i = 0; i < arguments.length; i++) {
-    console.log(arguments[i]);
-  }
-}
-
-function f2() {
-  console.log("f2:", this);
-  for (var i = 0; i < arguments.length; i++) {
-    console.log(arguments[i]);
-  }
-};
-
-var ary = [0, 2, 5], f3;
-f1(ary);//f1:win [0,2,5]
-f1.call(obj, ary);//f1:{a:1}  0 2 5
-
-f1.call.call(f2, ary);
-//f2: Number {[[PrimitiveValue]]: 0}  2  5
-
-f1.call.call(f3, ary);
-//obj.fn is not a function
-//f1.call.call is not a function
-
-f1.call.call.call(f2, ary);
-//f2: Number {[[PrimitiveValue]]: 2}  5
-
-f1.call.call.call.call(f2, ary);
-//f2: Number {[[PrimitiveValue]]: 5}
-
-f1.call.call.call.call.call(f2, ary);
-//f2: Window
-```
-
-两个及以上`call`（第一个参数必须是函数，作为参数传递给最后一个`call`；若不是，则会报错，this is not a function ，因为第一个参数不是函数，会把参数函数内的`this`变成`window`，而`window`不是函数，无法执行）等价于参数函数`.call`（除去第一个参数后的所有参数）。
-
-##### 4.2 Function.prototype.apply()
-
-`apply`方法的作用与`call`方法类似，也是改变`this`指向，然后再调用该函数。唯一的区别就是，它接收一个数组作为函数执行时的参数，使用格式如下。
-
-`func.apply(thisValue, [arg1, arg2, ...])`
-
-`apply`方法的第一个参数也是`this`所要指向的那个对象，如果设为`null`或`undefined`，则等同于指定全局对象。第二个参数则是一个数组，该数组的所有成员依次作为参数，传入原函数。原函数的参数，在`call`方法中必须一个个添加，但是在`apply`方法中，必须以数组形式添加。
-
-```javascript
-function f(x, y){
-  console.log(x + y);
-}
-
-f.call(null, 1, 1) // 2
-f.apply(null, [1, 1]) // 2
-```
-
-上面代码中，f函数本来接受两个参数，使用`apply`方法以后，就变成可以接受一个数组作为参数。
-
-利用这一点，可以做一些有趣的应用。
-
-1).找出数组最大元素
-
-JavaScript 不提供找出数组最大元素的函数。结合使用`apply`方法和`Math.max`方法，就可以返回数组的最大元素。
-
-```javascript
-var a = [10, 2, 4, 15, 9];
-Math.max.apply(null, a) // 15
-```
-
-2).将数组的空元素变为`undefined`
-
-通过`apply`方法，利用`Array`构造函数将数组的空元素变成`undefined`。
-
-```javascript
-Array.apply(null, ['a', ,'b'])
-// [ 'a', undefined, 'b' ]
-```
-
-空元素与`undefined`的差别在于，数组的`forEach`等方法会跳过空元素，但是不会跳过`undefined`。因此，遍历内部元素的时候，会得到不同的结果。
-
-```javascript
-var a = ['a', , 'b'];
-
-function print(i) {
-  console.log(i);
-}
-
-a.forEach(print)
-// a
-// b
-
-Array.apply(null, a).forEach(print)
-// a
-// undefined
-// b
-```
-
-3).转换类似数组的对象
-
-另外，利用数组对象的`slice`方法，可以将一个类似数组的对象（比如`arguments`对象）转为真正的数组。
-
-```javascript
-Array.prototype.slice.apply({0: 1, length: 1}) // [1]
-Array.prototype.slice.apply({0: 1}) // []
-Array.prototype.slice.apply({0: 1, length: 2}) // [1, undefined]
-Array.prototype.slice.apply({length: 1}) // [undefined]
-```
-
-上面代码的`apply`方法的参数都是对象，但是返回结果都是数组，这就起到了将对象转成数组的目的。从上面代码可以看到，这个方法起作用的前提是，被处理的对象必须有`length`属性，以及相对应的数字键。
-
-4).绑定回调函数的对象
-
-前面的按钮点击事件的例子，可以改写如下。
-
-```javascript
-var o = new Object();
-
-o.f = function () {
-  console.log(this === o);
-}
-
-var f = function (){
-  o.f.apply(o);
-  // 或者 o.f.call(o);
-};
-
-// jQuery 的写法
-$('#button').on('click', f);
-```
-
-上面代码中，点击按钮以后，控制台将会显示true。由于`apply`方法（或者`call`方法）不仅绑定函数执行时所在的对象，还会立即执行函数，因此不得不把绑定语句写在一个函数体内。更简洁的写法是采用下面介绍的bind方法。
-
-##### 5.4.3 Function.prototype.bind()
-
-`bind`方法用于将函数体内的`this`绑定到某个对象，然后返回一个新函数。
-
-```javascript
-var d = new Date();
-d.getTime() // 1481869925657
-
-var print = d.getTime;
-print() // Uncaught TypeError: this is not a Date object.
-```
-
-上面代码中，我们将d.getTime方法赋给变量print，然后调用print就报错了。这是因为`getTime`方法内部的`this`，绑定Date对象的实例，赋给变量print以后，内部的`this`已经不指向Date对象的实例了。
-
-`bind`方法可以解决这个问题。
-
-```javascript
-var print = d.getTime.bind(d);
-print() // 1481869925657
-```
-
-上面代码中，`bind`方法将`getTime`方法内部的`this`绑定到d对象，这时就可以安全地将这个方法赋值给其他变量了。
-
-`bind`方法的参数就是所要绑定`this`的对象，下面是一个更清晰的例子。
-
-```javascript
-var counter = {
-  count: 0,
-  inc: function () {
-    this.count++;
-  }
-};
-
-var func = counter.inc.bind(counter);
-func();
-counter.count // 1
-```
-
-上面代码中，counter.inc方法被赋值给变量func。这时必须用`bind`方法将inc内部的`this`，绑定到counter，否则就会出错。
-
-`this`绑定到其他对象也是可以的。
-
-```javascript
-var counter = {
-  count: 0,
-  inc: function () {
-    this.count++;
-  }
-};
-
-var obj = {
-  count: 100
-};
-var func = counter.inc.bind(obj);
-func();
-obj.count // 101
-```
-
-上面代码中，`bind`方法将inc方法内部的`this`，绑定到obj对象。结果调用func函数以后，递增的就是obj内部的count属性。
-
-`bind`还可以接受更多的参数，将这些参数绑定原函数的参数。
-
-```javascript
-var add = function (x, y) {
-  return x * this.m + y * this.n;
-}
-
-var obj = {
-  m: 2,
-  n: 2
-};
-
-var newAdd = add.bind(obj, 5);
-newAdd(5) // 20
-```
-
-上面代码中，`bind`方法除了绑定`this`对象，还将add函数的第一个参数x绑定成5，然后返回一个新函数newAdd，这个函数只要再接受一个参数y就能运行了。
-
-如果`bind`方法的第一个参数是`null`或`undefined`，等于将`this`绑定到全局对象，函数运行时`this`指向顶层对象。
-
-```javascript
-function add(x, y) {
-  return x + y;
-}
-
-var plus5 = add.bind(null, 5);
-plus5(10) // 15
-```
-
-上面代码中，函数add内部并没有`this`，使用`bind`方法的主要目的是绑定参数x，以后每次运行新函数plus5，就只需要提供另一个参数y就够了。而且因为add内部没有`this`，所以`bind`的第一个参数是`null`，不过这里如果是其他对象，也没有影响。
-
-`bind`方法有一些使用注意点。
-
-- --
-
-1).每一次返回一个新函数
-
-`bind`方法每运行一次，就返回一个新函数，这会产生一些问题。比如，监听事件的时候，不能写成下面这样。
-
-`element.addEventListener('click', o.m.bind(o));`
-
-上面代码中，`click`事件绑定`bind`方法生成的一个匿名函数。这样会导致无法取消绑定，所以，这样的代码是无效的。
-
-正确的方法是写成下面这样：
-
-```javascript
-var listener = o.m.bind(o);
-element.addEventListener('click', listener);
-//  ...
-element.removeEventListener('click', listener);
-```
-
-- --
-
-2).结合回调函数使用
-
-回调函数是 JavaScript 最常用的模式之一，但是一个常见的错误是，将包含`this`的方法直接当作回调函数。解决方法就是使用`bind`方法，将counter.inc绑定counter。
 
-```javascript
-var counter = {
-  count: 0,
-  inc: function () {
-    'use strict';
-    this.count++;
-  }
-};
-
-function callIt(callback) {
-  callback();
-}
-
-callIt(counter.inc.bind(counter));
-counter.count // 1
-```
-
-上面代码中，callIt方法会调用回调函数。这时如果直接把counter.inc传入，调用时counter.inc内部的`this`就会指向全局对象。使用`bind`方法将counter.inc绑定counter以后，就不会有这个问题，`this`总是指向counter。
-
-还有一种情况比较隐蔽，就是某些数组方法可以接受一个函数当作参数。这些函数内部的`this`指向，很可能也会出错。
-
-```javascript
-var obj = {
-  name: '张三',
-  times: [1, 2, 3],
-  print: function () {
-    this.times.forEach(function (n) {
-      console.log(this.name);
-    });
-  }
-};
-
-obj.print()
-// 没有任何输出
-```
-
-上面代码中，obj.print内部this.times的`this`是指向obj的，这个没有问题。但是，`forEach`方法的回调函数内部的this.name却是指向全局对象，导致没有办法取到值。稍微改动一下，就可以看得更清楚。
-
-```javascript
-obj.print = function () {
-  this.times.forEach(function (n) {
-    console.log(this === window);
-  });
-};
-
-obj.print()
-// true
-// true
-// true
-```
-
-解决这个问题，也是通过`bind`方法绑定`this`。
-
-```javascript
-obj.print = function () {
-  this.times.forEach(function (n) {
-    console.log(this.name);
-  }.bind(this));
-};
-
-obj.print()
-// 张三
-// 张三
-// 张三
-```
-
-- --
-
-3).结合`call`方法使用
-
-利用`bind`方法，可以改写一些 JavaScript 原生方法的使用形式，以数组的`slice`方法为例。
-
-```javascript
-[1, 2, 3].slice(0, 1) // [1]
-// 等同于
-Array.prototype.slice.call([1, 2, 3], 0, 1) // [1]
-```
-
-上面的代码中，数组的`slice`方法从[1, 2, 3]里面，按照指定位置和长度切分出另一个数组。这样做的本质是在[1, 2, 3]上面调用`Array.prototype.slice`方法，因此可以用call方法表达这个过程，得到同样的结果。
-
-`call`方法实质上是调用`Function.prototype.call`方法，因此上面的表达式可以用`bind`方法改写。
-
-```javascript
-var slice = Function.prototype.call.bind(Array.prototype.slice);
-slice([1, 2, 3], 0, 1) // [1]
-```
-
-上面代码的含义就是，将`Array.prototype.slice`变成`Function.prototype.call`方法所在的对象，调用时就变成了`Array.prototype.slice.call`。类似的写法还可以用于其他数组方法。
-
-```javascript
-var push = Function.prototype.call.bind(Array.prototype.push);
-var pop = Function.prototype.call.bind(Array.prototype.pop);
-
-var a = [1 ,2 ,3];
-push(a, 4)
-a // [1, 2, 3, 4]
-
-pop(a)
-a // [1, 2, 3]
-```
-
-如果再进一步，将`Function.prototype.call`方法绑定到`Function.prototype.bind`对象，就意味着`bind`的调用形式也可以被改写。
-
-```javascript
-function f() {
-  console.log(this.v);
-}
-
-var o = { v: 123 };
-var bind = Function.prototype.call.bind(Function.prototype.bind);
-bind(f, o)() // 123
-```
-
-上面代码的含义就是，将`Function.prototype.bind`方法绑定在`Function.prototype.call`上面，所以`bind`方法就可以直接使用，不需要在函数实例上使用。
-
-## 六.语法专题
-
-### 1.异步操作概述
-
-#### 1.1.单线程模型
-
-单线程模型指的是，JavaScript 只在一个线程上运行。也就是说，JavaScript 同时只能执行一个任务，其他任务都必须在后面排队等待。
-
-注意，JavaScript 只在一个线程上运行，不代表 JavaScript 引擎只有一个线程。事实上，JavaScript 引擎有多个线程，单个脚本只能在一个线程上运行（称为**主线程**），其他线程都是在后台配合。
-
-JavaScript 之所以采用单线程，而不是多线程，跟历史有关系。JavaScript 从诞生起就是单线程，原因是不想让浏览器变得太复杂，因为多线程需要共享资源、且有可能修改彼此的运行结果，对于一种网页脚本语言来说，这就太复杂了。
-
-如果 JavaScript 同时有两个线程，一个线程在网页 DOM 节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？是不是还要有锁机制？所以，为了避免复杂性，JavaScript 一开始就是单线程，这已经成了这门语言的核心特征，将来也不会改变。
-
-这种模式的好处是实现起来比较简单，执行环境相对单纯；坏处是只要有一个任务耗时很长，后面的任务都必须排队等着，会拖延整个程序的执行。常见的浏览器无响应（假死），往往就是因为某一段 JavaScript 代码长时间运行（比如死循环），导致整个页面卡在这个地方，其他任务无法执行。
-
-JavaScript 语言本身并不慢，慢的是读写外部数据，比如等待 Ajax 请求返回结果。这个时候，如果对方服务器迟迟没有响应，或者网络不通畅，就会导致脚本的长时间停滞。
-
-如果排队是因为计算量大，CPU 忙不过来，倒也算了，但是很多时候 CPU 是闲着的，因为 IO 操作（输入输出）很慢（比如 Ajax 操作从网络读取数据），不得不等着结果出来，再往下执行。JavaScript 语言的设计者意识到，这时 CPU 完全可以不管 IO 操作，挂起处于等待中的任务，先运行排在后面的任务。等到 IO 操作返回了结果，再回过头，把挂起的任务继续执行下去。这种机制就是 JavaScript 内部采用的**事件循环（Event Loop）**机制。
-
-单线程模型虽然对 JavaScript 构成了很大的限制，但也因此使它具备了其他语言不具备的优势。如果用得好，JavaScript 程序是不会出现堵塞的，这就是为什么 Node 可以用很少的资源，应付大流量访问的原因。
-
-为了利用多核 CPU 的计算能力，HTML5 提出 `Web Worker` 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制，且不得操作 DOM。所以，这个新标准并没有改变 JavaScript 单线程的本质。
-
-#### 1.2.同步任务和异步任务
-
-程序里面所有的任务，可以分成两类：**同步任务（synchronous）**和**异步任务（asynchronous）**。
-
-同步任务是那些没有被引擎挂起、在主线程上排队执行的任务。只有前一个任务执行完毕，才能执行后一个任务。
-
-异步任务是那些被引擎放在一边，不进入主线程、而进入任务队列的任务。只有引擎认为某个异步任务可以执行了（比如 Ajax 操作从服务器得到了结果），该任务（采用回调函数的形式）才会进入主线程执行。排在异步任务后面的代码，不用等待异步任务结束会马上运行，也就是说，异步任务不具有”堵塞“效应。
-
-举例来说，Ajax 操作可以当作同步任务处理，也可以当作异步任务处理，由开发者决定。如果是同步任务，主线程就等着 Ajax 操作返回结果，再往下执行；如果是异步任务，主线程在发出 Ajax 请求以后，就直接往下执行，等到 Ajax 操作有了结果，主线程再执行对应的回调函数。
-
-#### 1.3.任务队列和事件循环
-
-JavaScript 运行时，除了一个正在运行的主线程，引擎还提供一个**任务队列（task queue）**，里面是各种需要当前程序处理的异步任务。（实际上，根据异步任务的类型，存在多个任务队列。为了方便理解，这里假设只存在一个队列。）
-
-首先，主线程会去执行所有的同步任务。等到同步任务全部执行完，就会去看任务队列里面的异步任务。如果满足条件，那么异步任务就重新进入主线程开始执行，这时它就变成同步任务了。等到执行完，下一个异步任务再进入主线程开始执行。一旦任务队列清空，程序就结束执行。
-
-异步任务的写法通常是回调函数。一旦异步任务重新进入主线程，就会执行对应的回调函数。如果一个异步任务没有回调函数，就不会进入任务队列，也就是说，不会重新进入主线程，因为没有用回调函数指定下一步的操作。
-
-JavaScript 引擎怎么知道异步任务有没有结果，能不能进入主线程呢？答案就是引擎在不停地检查，一遍又一遍，只要同步任务执行完了，引擎就会去检查那些挂起来的异步任务，是不是可以进入主线程了。这种循环检查的机制，就叫做**事件循环（Event Loop）**。维基百科的定义是：“事件循环是一个程序结构，用于等待和发送消息和事件（a programming construct that waits for and dispatches events or messages in a program）”。
-
-#### 1.4.异步操作的模式
-
-##### 1.4.1 回调函数
-
-回调函数是异步操作最基本的方法。
-
-下面是两个函数f1和f2，编程的意图是f2必须等到f1执行完成，才能执行。
-
-```javascript
-function f1() {
-  // ...
-}
-function f2() {
-  // ...
-}
-f1();
-f2();
-```
-
-上面代码的问题在于，如果f1是异步操作，f2会立即执行，不会等到f1结束再执行。
-
-这时，可以考虑改写f1，把f2写成f1的回调函数。
-
-```javascript
-function f1(callback) {
-  // ...
-  callback();
-}
-function f2() {
-  // ...
-}
-f1(f2);
-```
-
-回调函数的优点是简单、容易理解和实现，缺点是不利于代码的阅读和维护，各个部分之间**高度耦合（coupling）**，使得程序结构混乱、流程难以追踪（尤其是多个回调函数嵌套的情况），而且每个任务只能指定一个回调函数。
-
-##### 1.4.2 事件监听
-
-另一种思路是采用**事件驱动模式**。异步任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
-
-还是以f1和f2为例。首先，为f1绑定一个事件（这里采用的 jQuery 的写法）。
-
-`f1.on('done', f2);`
-
-上面这行代码的意思是，当f1发生done事件，就执行f2。然后，对f1进行改写：
-
-```javascript
-function f1() {
-  setTimeout(function () {
-    // ...
-    f1.trigger('done');
-  }, 1000);
-}
+//1 0 [ 1, 2, 3, 4 ]
+//2 1 [ 1, 2, 3, 4 ]
+//3 2 [ 1, 2, 3, 4 ]
+//4 3 [ 1, 2, 3, 4 ]
+//undefined
 ```
 
-上面代码中，`f1.trigger('done')`表示，执行完成后，立即触发done事件，从而开始执行f2。
+2).**`findIndex()`**
 
-这种方法的优点是比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以**去耦合（decoupling）**，有利于实现模块化。缺点是整个程序都要变成事件驱动型，运行流程会变得很不清晰。阅读代码的时候，很难看出主流程。
+类似`find()`方法，不同的是返回指定查找项的索引；找不到返回`undefined`。
 
-##### 1.4.3 发布/订阅
+3).`includes()`
 
-事件完全可以理解成”信号“，如果存在一个”信号中心“，某个任务执行完成，就向信号中心**发布（publish）**一个信号，其他任务可以向信号中心**订阅（subscribe）**这个信号，从而知道什么时候自己可以开始执行。这就叫做**”发布/订阅模式”（publish-subscribe pattern）**，又称**“观察者模式”（observer pattern）**。
+---
 
-这个模式有多种实现，下面采用的是 Ben Alman 的 Tiny Pub/Sub，这是 jQuery 的一个插件。
+- 不改变原数组
+- 返回值：找到返回 true；找不到返回 false
+- 参数类型：任意类型
+  - 第一个参数是查找项
+  - 第二个参数指定开始查找的位置(也可以为负数)
 
-首先，f2向信号中心jQuery订阅done信号。
+---
 
-`jQuery.subscribe('done', f2);`
+> 数组空项和 `NaN` 都可以查找
 
-然后，f1进行如下改写。
-
-```javascript
-function f1() {
-  setTimeout(function () {
-    // ...
-    jQuery.publish('done');
-  }, 1000);
-}
-```
-
-上面代码中，`jQuery.publish('done')`的意思是，f1执行完成后，向信号中心jQuery发布done信号，从而引发f2的执行。
-
-f2完成执行后，可以**取消订阅（unsubscribe）**。
-
-`jQuery.unsubscribe('done', f2);`
-
-这种方法的性质与“事件监听”类似，但是明显优于后者。因为可以通过查看“消息中心”，了解存在多少信号、每个信号有多少订阅者，从而监控程序的运行。
-
-#### 1.5.异步操作的流程控制
-
-如果有多个异步操作，就存在一个流程控制的问题：如何确定异步操作执行的顺序，以及如何保证遵守这种顺序。
-
-```javascript
-function async(arg, callback) {
-  console.log('参数为 ' + arg +' , 1秒后返回结果');
-  setTimeout(function () { callback(arg * 2); }, 1000);
-}
-```
-
-上面代码的async函数是一个异步任务，非常耗时，每次执行需要1秒才能完成，然后再调用回调函数。
-
-如果有六个这样的异步任务，需要全部完成后，才能执行最后的final函数。请问应该如何安排操作流程？
-
-```javascript
-function final(value) {
-  console.log('完成: ', value);
-}
-
-async(1, function(value){
-  async(value, function(value){
-    async(value, function(value){
-      async(value, function(value){
-        async(value, function(value){
-          async(value, final);
-        });
-      });
-    });
-  });
-});
-```
-
-上面代码中，六个回调函数的嵌套，不仅写起来麻烦，容易出错，而且难以维护。
-
-##### 1.5.1 串行执行
-
-我们可以编写一个流程控制函数，让它来控制异步任务，一个任务完成以后，再执行另一个，这就叫**串行执行**。
-
 ```javascript
-var items = [ 1, 2, 3, 4, 5, 6 ];
-var results = [];
-
-function async(arg, callback) {
-  console.log('参数为 ' + arg +' , 1秒后返回结果');
-  setTimeout(function () { callback(arg * 2); }, 1000);
-}
-
-function final(value) {
-  console.log('完成: ', value);
-}
-
-function series(item) {
-  if(item) {
-    async( item, function(result) {
-      results.push(result);
-      return series(items.shift());
-    });
-  } else {
-    return final(results[results.length - 1]);
-  }
-}
+let ary = [1, 2, , 3, NaN];
 
-series(items.shift());
+ary.includes(2); //true
+ary.includes(); //true
+ary.includes(NaN); //true
+console.log(ary.includes(7)); //false
 ```
 
-上面代码中，函数series就是串行函数，它会依次执行异步任务，所有任务都完成后，才会执行final函数。items数组保存每一个异步任务的参数，results数组保存每一个异步任务的运行结果。
+##### 3.10 链式使用
 
-注意，上面的写法需要六秒，才能完成整个脚本。
+上面这些数组方法之中，有不少返回的还是数组，所以可以链式使用。
 
-##### 1.5.2 并行执行
-
-流程控制函数也可以是**并行执行**，即所有异步任务同时执行，等到全部完成以后，才执行final函数。
-
 ```javascript
-var items = [ 1, 2, 3, 4, 5, 6 ];
-var results = [];
-
-function async(arg, callback) {
-  console.log('参数为 ' + arg +' , 1秒后返回结果');
-  setTimeout(function () { callback(arg * 2); }, 1000);
-}
-
-function final(value) {
-  console.log('完成: ', value);
-}
+var users = [
+  { name: "tom", email: "tom@example.com" },
+  { name: "peter", email: "peter@example.com" }
+];
 
-items.forEach(function(item) {
-  async(item, function(result){
-    results.push(result);
-    if(results.length === items.length) {
-      final(results[results.length - 1]);
-    }
+users
+  .map(function(user) {
+    return user.email;
   })
+  .filter(function(email) {
+    return /^t/.test(email);
+  })
+  .forEach(console.log);
+
+//tom@example.com 0 [ 'tom@example.com' ]
+```
+
+### 3.包装对象
+
+#### 1.定义
+
+对象是 JavaScript 语言最主要的数据类型，三种原始类型的值——数值、字符串、布尔值——在一定条件下，也会自动转为对象，也就是原始类型的“包装对象”。
+
+所谓“**包装对象**”，就是分别与数值、字符串、布尔值相对应的`Number`、`String`、`Boolean`三个原生对象。这三个原生对象可以把原始类型的值变成（包装成）对象。
+
+```javascript
+var v1 = new Number(123);
+var v2 = new String("abc");
+var v3 = new Boolean(true);
+```
+
+上面代码中，基于原始类型的值，生成了三个对应的包装对象。
+
+```javascript
+typeof v1; // "object"
+typeof v2; // "object"
+typeof v3; // "object"
+
+v1 === 123; // false
+v2 === "abc"; // false
+v3 === true; // false
+```
+
+> 包装对象的最大目的，首先是使得 JavaScript 的对象涵盖所有的值，其次使得原始类型的值可以方便地调用某些方法。
+
+`Number`、`String`和`Boolean`如果不作为构造函数调用（即调用时不加`new`），常常用于将任意类型的值转为数值、字符串和布尔值。
+
+总结一下，这三个对象作为构造函数使用（带有`new`）时，可以将原始类型的值转为对象；作为普通函数使用时（不带有`new`），可以将任意类型的值，转为原始类型的值。
+
+#### 2.实例方法
+
+包装对象的实例可以使用`Object`对象提供的原生方法，主要是`valueOf`方法和`toString`方法。
+
+##### 2.1 valueOf
+
+`valueOf`方法返回包装对象实例对应的原始类型的值。
+
+```javascript
+new Number(123).valueOf(); // 123
+new String("abc").valueOf(); // "abc"
+new Boolean(true).valueOf(); // true
+```
+
+##### 2.2 toString
+
+`toString`方法返回对应的字符串形式。
+
+```javascript
+new Number(123).toString(); // "123"
+new String("abc").toString(); // "abc"
+new Boolean(true).toString(); // "true"
+```
+
+#### 3.原始类型与实例对象的自动转换
+
+原始类型的值，可以自动当作对象调用，即调用各种对象的方法和参数。这时，JavaScript 引擎会自动将原始类型的值转为包装对象实例，在使用后立刻销毁实例。
+
+比如，字符串可以调用`length`属性，返回字符串的长度。
+
+`'abc'.length // 3`
+
+上面代码中，abc 是一个字符串，本身不是对象，不能调用`length`属性。JavaScript 引擎自动将其转为包装对象，在这个对象上调用`length`属性。调用结束后，这个临时对象就会被销毁。这就叫原始类型与实例对象的自动转换。
+
+```javascript
+var str = "abc";
+str.length; // 3
+
+// 等同于
+var strObj = new String(str);
+// String {
+//   0: "a", 1: "b", 2: "c", length: 3, [[PrimitiveValue]]: "abc"
+// }
+strObj.length; // 3
+```
+
+自动转换生成的包装对象是只读的，无法修改。所以，字符串无法添加新属性。
+
+```javascript
+var s = "Hello World";
+s.x = 123;
+s.x; // undefined
+```
+
+另一方面，调用结束后，包装对象实例会自动销毁。这意味着，下一次调用字符串的属性时，实际是调用一个新生成的对象，而不是上一次调用时生成的那个对象，所以取不到赋值在上一个对象的属性。如果要为字符串添加属性，只有在它的原型对象`String.prototype`上定义。
+
+#### 4.自定义方法
+
+三种包装对象除了提供很多原生的实例方法，还可以在原型上添加自定义方法和属性，供原始类型的值直接调用。
+
+比如，我们可以新增一个 double 方法，使得字符串和数字翻倍。
+
+```javascript
+String.prototype.double = function() {
+  return this.valueOf() + this.valueOf();
+};
+
+"abc".double();
+// abcabc
+
+Number.prototype.double = function() {
+  return this.valueOf() + this.valueOf();
+};
+
+(123).double();
+// 246
+```
+
+> 注意，在数值调用方法时必须要加上圆括号，否则后面的点运算符（`.`）会被解释成小数点而出错。
+
+但是，这种自定义方法和属性的机制，只能定义在包装对象的原型上，如果直接对原始类型的变量添加属性，则无效。
+
+```javascript
+var s = "abc";
+s.p = function() {
+  return this.valueOf() + this.valueOf();
+};
+console.log(s.p); // undefined
+```
+
+#### 5.Boolean 对象
+
+##### 5.1 概述
+
+`Boolean`对象是 JavaScript 的三个包装对象之一。作为构造函数，它主要用于生成布尔值的包装对象实例。
+
+```javascript
+var b = new Boolean(true);
+
+typeof b; // "object"
+b.valueOf(); // true
+```
+
+##### 5.2 Boolean 函数的类型转换作用
+
+`Boolean`对象除了可以作为构造函数，还可以单独使用，将任意值转为布尔值。这时`Boolean`就是一个单纯的工具方法。
+
+最后，对于一些特殊值，`Boolean`对象前面加不加`new`，会得到完全相反的结果，必须小心。
+
+### 4.Number 对象
+
+#### 4.1.概述
+
+`Number`对象是数值对应的包装对象，可以作为构造函数使用，也可以作为工具函数使用。
+
+作为构造函数时，它用于生成值为数值的对象。
+
+作为工具函数时，它可以将任何类型的值转为数值。
+
+#### 4.2.属性
+
+`Number`对象拥有以下一些属性。
+
+---
+
+- `Number.POSITIVE_INFINITY`：正的无限，指向`Infinity`。
+- `Number.NEGATIVE_INFINITY`：负的无限，指向`-Infinity`。
+- `Number.NaN`：表示非数值，指向`NaN`。
+- `Number.MAX_VALUE`：表示最大的正数，相应的，最小的负数为`-Number.MAX_VALUE`。
+- `Number.MIN_VALUE`：表示最小的正数（即最接近 0 的正数，在 64 位浮点数体系中为`5e-324`），相应的，最接近 0 的负数为`-Number.MIN_VALUE`。
+- `Number.MAX_SAFE_INTEGER`：表示能够精确表示的最大整数，即`9007199254740991`。
+- `Number.MIN_SAFE_INTEGER`：表示能够精确表示的最小整数，即`-9007199254740991`。
+
+---
+
+#### 4.3.实例方法
+
+`Number`对象有 4 个实例方法，都跟将数值转换成指定格式有关。
+
+##### 4.3.1 number.toString
+
+`Number`对象部署了自己的`toString`方法，用来将一个数值转为字符串形式。
+
+`toString`方法可以接受一个参数，表示输出的进制。如果省略这个参数，默认将数值先转为十进制，再输出字符串；否则，就根据参数指定的进制，将一个数字转化成指定进制的字符串。
+
+```javascript
+(10)
+  .toString(2)(
+    // "1010"
+    10
+  )
+  .toString(8)(
+    // "12"
+    10
+  )
+  .toString(16); // "a"
+```
+
+只要能够让 JavaScript 引擎不混淆小数点和对象的点运算符，各种写法都能用。除了为 10 加上括号，还可以在 10 后面加两个点，JavaScript 会把第一个点理解成小数点（即 10.0），把第二个点理解成调用对象属性，从而得到正确结果。
+
+这实际上意味着，可以直接对一个小数使用`toString`方法。
+
+```javascript
+(10.5).toString(); // "10.5"
+(10.5).toString(2); // "1010.1"
+(10.5).toString(8); // "12.4"
+(10.5).toString(16); // "a.8"
+```
+
+通过方括号运算符也可以调用`toString`方法。
+
+```javascript
+(10)["toString"](2); // 1010
+(10)["toString"](8); // 12
+(10)["toString"](16); // a
+parseInt(1010, 2); // 10
+parseInt(1010); // 1010
+parseInt(012); // 10
+parseInt(0xa); // 10
+```
+
+`toString`方法只能将十进制的数，转为其他进制的字符串。如果要将其他进制的数，转回十进制，需要使用`parseInt`方法。
+
+##### 4.3.2 number.toFixed
+
+`toFixed`方法先将一个数转为指定位数的小数，然后返回这个小数对应的字符串。
+
+`toFixed`方法的参数为小数位数，有效范围为 0 到 20(现在是 0 - 100)，超出这个范围将抛出 `RangeError` 错误。
+
+```javascript
+//不传参数等价于传入0
+(2.123456).toFixed(); //2
+(2.423456).toFixed(0); //2
+
+(2.123).toFixed(2); //2.12
+(2.445).toFixed(2); //2.44
+(2.556).toFixed(2); //2.56
+(2.978).toFixed(2); //2.98
+
+console.log((2.978).toFixed(0)); //3
+console.log((2.978).toFixed(-1));
+//toFixed() digits argument must be between 0 and 100
+
+console.log((2.978).toFixed(100)); //2.98...
+console.log((2.978).toFixed(101));
+//toFixed() digits argument must be between 0 and 100
+```
+
+##### 4.3.3 number.toExponential
+
+`toExponential`方法用于将一个数转为科学计数法形式。
+
+`toExponential`方法的参数是小数点后有效数字的位数，范围为 0 到 20，超出这个范围，会抛出一个 `RangeError` 错误。
+
+##### 4.3.4 number.toPrecision
+
+`toPrecision`方法用于将一个数转为指定位数的有效数字。
+
+```javascript
+(1234.56)
+  .toPrecision(2)(
+    //1.2e+3
+    1234.56
+  )
+  .toPrecision(4)(
+    //1235
+    1234.46
+  )
+  .toPrecision(4); //1234
+```
+
+`toPrecision`方法的参数为有效数字的位数，范围是 1 到 21(现在是 1 - 100)，超出这个范围会抛出 `RangeError` 错误。
+
+> `toPrecision`方法用于四舍五入时不太可靠，跟浮点数不是精确储存有关。
+
+#### 4.4.自定义方法
+
+与其他对象一样，`Number.prototype`对象上面可以自定义方法，被`Number`的实例继承。
+
+```javascript
+Number.prototype.add = function(x) {
+  return this + x;
+};
+
+(8)["add"](2); // 10
+```
+
+在数值上调用某个方法，数值会自动转为`Number`的实例对象，所以就可以调用 add 方法了。由于 add 方法返回的还是数值，所以可以链式运算。
+
+### 5.String 对象
+
+#### 5.1.概述
+
+`String`对象是 JavaScript 原生提供的三个包装对象之一，用来生成字符串对象。
+
+字符串对象是一个类似数组的对象（很像数组，但不是数组）。
+
+```javascript
+new String("abc")(
+  // String {0: "a", 1: "b", 2: "c", length: 3}
+
+  new String("abc")
+)[1]; // "b"
+```
+
+除了用作构造函数，`String`对象还可以当作工具方法使用，将任意类型的值转为字符串。
+
+#### 5.2.静态方法
+
+##### 5.2.1 String.fromCharCode
+
+该方法的参数是一个或多个数值，代表 `Unicode` 码点，返回值是这些码点组成的字符串。
+
+```javascript
+String.fromCharCode(); // ""
+String.fromCharCode(97); // "a"
+String.fromCharCode(104, 101, 108, 108, 111);
+// "hello"
+```
+
+> 注意，该方法不支持 `Unicode` 码点大于`0xFFFF`的字符，即传入的参数不能大于`0xFFFF`（即十进制的 65535）。这是因为`String.fromCharCode`发现参数值大于`0xFFFF`，就会忽略多出的位。
+
+这种现象的根本原因在于，码点大于`0xFFFF`的字符占用四个字节，而 JavaScript 默认支持两个字节的字符。这种情况下，必须把`0x20BB7`拆成两个字符表示。
+
+```javascript
+String.fromCharCode(0xd842, 0xdfb7);
+// "𠮷"
+
+String.fromCharCode(0xd842, 0xdfb7).repeat(3);
+// "𠮷𠮷𠮷"
+```
+
+上面代码中，`0x20BB7`拆成两个字符`0xD842`和`0xDFB7`（即两个两字节字符，合成一个四字节字符），就能得到正确的结果。码点大于`0xFFFF`的字符的四字节表示法，由 UTF-16 编码方法决定。
+
+#### 5.3.实例属性
+
+##### 5.3.1 string.length
+
+字符串实例的`length`属性返回字符串的长度。
+
+#### 5.4.实例方法
+
+##### 5.4.1 字符方法
+
+访问字符串中特定的字符，这两个方法都接收一个参数，即字符索引；
+
+1).`string.charAt(n)`
+
+以单字符串的形式返回给定索引位置的字符；如果参数为负数，或大于等于字符串的长度，`charAt`返回空字符串。
+
+> JavaScript 没有字符数据类型。
+
+2).`string.charCodeAt(n)`
+
+返回字符串指定位置的 `Unicode` 码点（十进制表示），相当于`String.fromCharCode()`的逆操作。
+
+---
+
+- 返回值：字符/字符编码
+- 参数类型：字符索引
+- 参数：只有一个参数
+  - a.不传参数，`charAt()`返回首字符，`charCodeAt()`返回首字符的码点；
+  - b.若传入参数是负数或大于等于字符长度，`charAt()`会返回空字符；而`charCodeAt()`会返回`NaN`。
+
+---
+
+```javascript
+var str = "abcd";
+str.charAt(0); //a
+str.charCodeAt(0); //97
+String.fromCharCode(str.charCodeAt(0)); //a
+```
+
+> 注意，`charCodeAt`方法返回的 `Unicode` 码点不会大于 65536（`0xFFFF`），也就是说，只返回两个字节的字符的码点。
+> 如果遇到码点大于 65536 的字符（四个字节的字符），必需连续使用两次`charCodeAt`，不仅读入`charCodeAt(i)`，还要读入`charCodeAt(i+1)`，将两个值放在一起，才能得到准确的字符。
+
+##### 5.4.2 字符串操作方法
+
+1).`string.concat(value,...)`
+
+用于将一个或多个字符串按照顺序拼接到原字符串的末尾；
+
+---
+
+- 返回值：返回一个新字符串；
+- 参数类型：`String`
+- 参数：
+  - a.可以接受任意多参数，也就是说可以拼接任意多个字符串；实际更多用"`+`"，简便易行（特别是拼接多个）；
+  - b.若传入的参数不是字符串形式，则会转换为字符串参与拼接；
+  - c.若写成变量的形式，会在全局查找该变量，并将该变量的值代入，若在全局找不到该变量，则会报错；
+
+---
+
+2).**`string.slice(start[,end])`**
+
+复制字符串中从索引 start 到索引 end(包括 start,不包括 end)的字符
+
+---
+
+- 返回值:复制出来的新字符串
+- 参数类型：数值
+- 参数：
+  - a.不传参数表示全部查找,等价于克隆
+  - b.只传一个参数的时候:从索引 start 一直查找到最后
+  - c.第二个参数指定复制截止的位置（本身不复制）
+  - d.如果第二个参数比第一个参数小，为空字符串；
+  - e.如果第二个参数大于字符串的`length`的，默认是查找到最后
+  - f.如果参数是负值，将传入的负值与字符串的长度相加，遵循以上规则再进行复制（也可以看做从尾部倒数开始）；
+
+---
+
+3).**`string.substring(start[,end])`**
+
+复制字符串中从索引 start 到索引 end(包括 start,不包括 end)的字符
+
+---
+
+- 返回值:查找出的新的字符串
+- 参数类型：数值
+- 参数：
+  - a.不传参数表示全部查找
+  - b.只传一个参数的时候:从索引 n 一直查找到最后
+  - c.第二个参数指定复制截止的位置（本身不复制）
+  - d.如果第二个参数比第一个参数小，互换位置再执行查找；
+  - e.如果第二个参数超过字符长度，则默认复制到最后；
+  - f.如果参数是负值，将所有负值转换为 0，遵循以上规则再进行复制；
+
+---
+
+4).`string.substr(start[,length])`
+
+复制字符串中从索引 n 开始查找 m 个字符
+
+---
+
+- 返回值:查找出的新的字符串
+- 参数类型：数值
+- 参数：
+  - a.不传参数表示全部查找
+  - b.如果只有一个参数:从索引 n 一直查找到最后；
+  - c.第二个参数指定复制字符的长度
+  - d.如果第二个参数超过字符长度，则默认复制到最后；
+  - e.参数是负值：若第一个参数是负值，则加上字符串的长度；若第二个参数是负值，则将其变为 0，返回空字符串；
+
+---
+
+##### 5.4.3 字符串位置方法
+
+> **区分大小写**
+
+1).**`string.indexOf(substring[,start])` **
+
+在字符串中从前往后搜索，判断某个字符在不在这个字符串中（只在乎第一次出现），找不到子字符串则返回-1；
+
+---
+
+- 返回值：指定字符的索引或者-1；
+- 参数类型：字符(非字符类型被转化为字符)/数值
+- 参数：
+  - a.不传参数，默认为找不到子字符串，返回-1；
+  - b.第一个参数指定搜索的字符(包括空格和符号)；
+  - c.第二个参数，指定开始搜索的位置，默认为 0；
+  - d.若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入`str.length`；
+
+---
+
+2).**`string.lastIndexOf(substring[,start])`**
+
+在字符串中从后往前搜索，判断某个字符在不在这个字符串中（只在乎第一次匹配），找不到子字符串则返回-1；
+
+---
+
+- 返回值：指定字符的索引或者-1；
+- 参数类型：字符(非字符类型被转化为字符)/数值
+- 参数：
+  - a.不传参数，默认为找不到子字符串，返回-1；
+  - b.第一个参数指定搜索的字符(包括空格和符号)；
+  - c.第二个参数，指定开始搜索的位置，默认为`str.length`；
+  - d.若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入`str.length`；
+
+---
+
+> 对于`indexOf()`与`lastIndexOf()`，若是查找空字符或空数组时，则其返回值为第二个可选参数的值（没有就是默认值），注意当第二个参数的值大于字符长度时，返回值为字符长度，若是负数则返回 0。
+
+##### 5.4.4 空格处理
+
+1).`string.trim()`
+
+创建一个字符串的副本；删除前置及后缀的所有空格，然后返回结果；不修改原字符串；
+
+---
+
+- 返回值：新字符串
+- 没有参数，传参不报错，但是无效
+
+---
+
+> 该方法去除的不仅是空格，还包括制表符（`\t`、`\v`）、换行符（`\n`）和回车符（`\r`）。
+
+##### 5.4.5 字符串大小写转换方法
+
+1).`string.toUpperCase()`
+2).`string.toLowerCase()`
+3).`string.toLocaleLowerCase()`
+4).`string.toLocaleUpperCase()`
+
+> `toUpperCase()`和`toLowerCase()`借鉴`Java.lang.String`中的同名方法；
+> `toLocaleLowerCase()`和`toLocaleUpperCase()`是针对特定地区的实现；
+
+---
+
+- 返回值：新字符串
+- 没有参数，传参不报错，但是无效
+
+---
+
+> 对于`toLocaleLowerCase()`和`toLocaleUpperCase()`传入参数为`null`或`undefined`会报错：`Uncaught TypeError: Cannot convert undefined or null to object at String.toLocaleLowerCase (native)`
+
+##### 5.4.6 字符串的模式匹配方法
+
+1).**`string.match(str/reg)`**
+
+找到一个或多个正则表达式的匹配结果（在字符串上调用这个方法，本质上与调用`RegExp`的`exec()`方法相同）。
+
+---
+
+- 返回值：一个数组或`null`；
+- 参数类型：正则表达式/`RegExp`对象
+- 参数：只接受一个参数
+  - 不传参数，匹配项返回空字符
+
+---
+
+```javascript
+var s = "green yellow";
+
+console.log(s.match());
+//["", index: 0, input: "green yellow"]
+
+console.log(s.match(/(en)/));
+//["e", index: 2, input: "green yellow"]
+
+console.log(/(e)/g.exec(s));
+//["e", "e", index: 2, input: "green yellow"]
+```
+
+如果参数没有“`g`”标志，`match()`将只进行一次匹配。
+
+如果没有匹配结果，则返回`null`；若有匹配结果，第一项是匹配项，之后每一项保存正则表达式圆括号子表达式匹配的字符串（若有），倒数第二项是匹配项的首字符的索引；最后一项是原字符；
+
+如果参数有“`g`”标志，则`match()`进行一次全局搜索。全局匹配返回的数组和非全局匹配返回的数组内容很不一样。在全局匹配的情况下，数组元素包含`string`中每一个匹配子串，同时返回的数组没有`index`和`input`属性。
+
+> 注意:对于全局匹配，`match()`不会提供有关捕获组的信息，也不会记录每个匹配的子串在`string`中的位置。若想在全局搜索时获取这些信息，可以使用`RegExp.exec()`。
+
+2).`string.search(str/reg)`
+
+根据正则表达式在 string 中寻找匹配的字符串；
+
+---
+
+- 返回值：返回字符串中第一个匹配项的索引；如果找不到匹配项，则返回-1；
+- 参数类型：正则表达式/RegExp 对象
+- 参数：只接受一个参数
+
+---
+
+`search()`不执行全局匹配，会忽略“`g`”标志。也会忽略`regexp`的`lastIndex`属性，总是从开头位置开始搜索，这意味着它总是返回第一个匹配子串的位置。
+
+##### 5.4.7 字符串的替换
+
+1).**`string.replace(regexp[,replacement])`**
+
+替换给定正则表达式匹配的（一个或多个）子表达式；
+
+---
+
+- 返回值：新字符串，其中匹配的项(正则的最大匹配项)已替换为 replacement（可以组合）
+- 参数类型：`RegExp`对象/字符串，字符/function
+- 参数：
+  - a.不传参数，则返回原字符串
+  - b.第一个参数可以是一个`RegExp`对象或者一个字符串（这个字符串不会被转换为正则表达式）；
+  - c.只传一个参数：若能匹配，则将匹配项替换成`undefined`；若不能匹配，则返回原字符串
+  - d.第二个参数是替换文本，可以是一个字符串或者一个函数，用于在调用时生成对应的替换文本（如果第一个参数是字符串，只替换第一个子字符串，要想替换所有子字符串，提供一个正则表达式和全局标志）。
+  - e.如果第二个参数是字符串，那么还可以使用一些特殊的字符序列，将正则表达式操作得到的值插入到结果字符串中。
+
+---
+
+> 更具体的用法见`RegExp`的相关章节。
+
+##### 5.4.8 字符串变数组
+
+1).**`string.split(delimiter[,limit])`**
+
+基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放到一个数组中
+
+---
+
+- 返回值：返回一个字符串组成的数组（不包含分割文本，有捕获组的正则表达式这个情况）
+- 参数类型：字符串/RegExp 对象,数值；
+- 参数：
+  - a.不传参数，则默认将变成一个字符串数组；
+  - b.若分隔符不匹配，也是整体变成字符串；
+  - c.若分隔符出现在开头或结尾，则返回的数组的第一项或最后一项是空字符
+  - d.若分隔符是`""`或者匹配空字符的正则，会将字符串的每一项拆分成数组的一项，返回的数组具有与`string`一样长度的（只是在没有指定更小`limit`的情况下，注意这是一个特例，因为第一个字符之前后最后一个字符之后的空字符不匹配）
+  - e.可以接受可选的第二个参数，用于指定返回数组的大小，确保返回的数组不会超过既定大小；没有指定，则将切分整个字符串；
+  - f.如果第二个参数是包含圆括号的正则表达式，则匹配这些圆括号表达式的子串将包含在返回的数组中。
+
+---
+
+```javascript
+var s = "s1,s2,s3";
+console.log(s.split()); //["s1,s2,s3"]
+console.log(s.split(" ")); //["s1,s2,s3"]
+console.log(s.split(",")); //["s1", "s2", "s3"]
+console.log(s.split(/s/)); //["", "1,", "2,", "3"]
+console.log(s.split("")); //["s", "1", ",", "s", "2", ",", "s", "3"]
+```
+
+> 对`split()`中正则的支持因浏览器而异。尽管对于简单模式没有声明差别，但对于未发现匹配项以及带有捕获组的模式，匹配的行为就大相径庭了。差别如下：
+> IE8 及之前版本会忽略捕获组。ECMCA-262 规定应该把捕获组的内容拼接到结果数组中。IE 能正确地在结果中包含捕获组；
+> Firefox3.6 及之前版本在捕获组为捕获到匹配项时，会在结果中包含空字符；ECMCA-262 规定没有匹配项的捕获组在结果数组中应该用`undefined`表示；
+
+##### 5.4.9 字符串比较
+
+1).`string.localeCompare(target)`
+
+根据本地默认的排序比较两个字符串（逐个比较），
+
+---
+
+- 返回值：
+  - 如果`target`中的字符排在`string`字符串之前，则返回一个负数（大多数情况下是-1，具体值看具体情况）；
+  - 如果等于，返回 0；
+  - 如果排在后面，则返回正数（大多数情况下是 1，具体值看具体情况）；
+- 参数类型：字符串
+- 参数：一个
+
+---
+
+方法的最大特点，就是会考虑自然语言的顺序。举例来说，正常情况下，大写的英文字母小于小写字母。因为 JavaScript 采用的是 `Unicode` 码点比较，B 的码点是 66，而 a 的码点是 9。但是，`localeCompare`方法会考虑自然语言的排序情况，将 B 排在 a 的前面。
+
+`localeCompare`还可以有第二个参数，指定所使用的语言（默认是英语），然后根据该语言的规则进行比较。
+
+##### 5.4.10 ES6 新方法
+
+1).**`string.includes(string)`**
+
+判断某个字符或子字符串在不在某个字符串中
+
+---
+
+- 返回值:true/false, 有就是 true,没有就是 false;
+- 参数类型：`string`（非字符类型被强制转换为字符）
+- 参数：一个
+  - a.输入多个参数不报错，但只有第一个参数有效；
+  - b.不传参数则无法匹配，就会返回 false；
+
+---
+
+2).**`string.repeat(n)` ** 重复字符
+
+将字符串重复 n 次
+
+---
+
+- 返回值:重复后的新字符串;
+- 参数类型：非负数值
+- 参数：只有一个参数
+  - a.若参数是小数:只取整数部分（即向下取整）
+  - b.若参数是负数，则报错
+
+---
+
+3).`扩展运算符（...）`
+
+扩展运算符；在字符中的作用类似`split()`
+
+---
+
+- 返回值：
+  - a.单个字符串，没有中括号的情况下产生一连串的单字符串；
+  - b.若有中括号，会将单字符串放进一个数组返回；用小括号包裹会报错
+
+---
+
+```javascript
+var str = "meih";
+console.log(...str); //m e i h
+console.log(...(str + "a")); //m e i h a
+console.log([...str]); //["m", "e", "i", "h"]
+
+//可以将类数组转换为数组；
+function f1() {
+  console.log([...arguments]);
+}
+f1(1, 2, 3, 4); //[1, 2, 3, 4]
+```
+
+### 6.Math 对象
+
+ECMAScript 为数学公式和信息提供了一个公共位置，即 Math 对象。该对象不是构造函数，不能生成实例，所有的属性和方法都必须在 Math 对象上调用。
+
+#### 6.1.静态属性
+
+|    属性     |        说明         |
+| :---------: | :-----------------: |
+|   Math.E    |   自然对数的底数    |
+|  Math.LN10  |    10 的自然对数    |
+|  Math.LN2   |    2 的自然对数     |
+| Math.LOG2E  | 以 2 位底 e 的对数  |
+| Math.LOG10E | 以 10 为 e 底的对数 |
+|   Math.PI   |       π 的值        |
+| Math.SQRT2  |      (2)平方根      |
+
+> 属性都是大写并且是只读的，**存储值**
+
+#### 6.2.静态方法
+
+---
+
+- `Math.abs()`：绝对值
+- `Math.ceil()`：向上取整
+- `Math.floor()`：向下取整
+- `Math.max()`：最大值
+- `Math.min()`：最小值
+- `Math.pow()`：指数运算
+- `Math.sqrt()`：平方根
+- `Math.log()`：自然对数
+- `Math.exp()`：自然指数
+- `Math.round()`：四舍五入
+- `Math.randow()`：随机数
+
+---
+
+##### 6.2.1 Math.abs
+
+返回参数的绝对值
+
+##### 6.2.2 Math.min 和 Math.max
+
+用于返回一组数中的最大值或最小值，可以接收任意多的数值参数。如果参数为空, `Math.min`返回`Infinity`, `Math.max`返回`-Infinity`。
+
+```javascript
+// 若要找到数组中的最大/最小值，可以使用apply()方法
+//关键在于，把Math对象作为apply（）的第一个参数，正确的设置this，然后，可以将任何数组当做第二个参数；
+
+var values = [1, 3, 2, 6, 12];
+var max = Math.max.apply(Math, values);
+console.log(max); //12
+
+var min = Math.min.apply(Math, values);
+console.log(min); //1
+```
+
+##### 6.2.3 取整方法
+
+1).`Math.ceil()` 执行向上舍入
+2).`Math.floor()` 执行向下舍入
+3).`Math.round()` 执行标准舍入
+
+> `Math.round()`对于`-n.5`一律取值为`-n`;
+
+##### 6.2.4 Math.random
+
+1).`Math.random()`，返回一个大于等于 0，小于 1 的伪随机数。
+
+2).`Math.random()*(m-n)+n`，获得 n 到 m 之间的伪随机数（小数）；
+
+3).`Math.floor(Math.randow()*(max-min+1))+min;` 任意范围随机整数
+
+##### 6.2.5 Math.pow
+
+返回以第一个参数为底数、第二个参数为幂的指数值。
+
+##### 6.2.6 Math.sqrt
+
+返回参数值的平方根。如果参数是一个负值，则返回`NaN`。
+
+##### 6.2.7 Math.log
+
+返回以 e 为底的自然对数值。
+
+如果要计算以 10 为底的对数，可以先用`Math.log`求出自然对数，然后除以`Math.LN10`；求以 2 为底的对数，可以除以`Math.LN2`。
+
+##### 6.2.8 Math.exp
+
+返回常数 e 的参数次方。
+
+##### 6.2.10 三角函数方法
+
+Math 对象还提供一系列三角函数方法。
+
+---
+
+- `Math.sin()`：返回参数的正弦（参数为弧度值）
+- `Math.cos()`：返回参数的余弦（参数为弧度值）
+- `Math.tan()`：返回参数的正切（参数为弧度值）
+- `Math.asin()`：返回参数的反正弦（返回值为弧度值）
+- `Math.acos()`：返回参数的反余弦（返回值为弧度值）
+- `Math.atan()`：返回参数的反正切（返回值为弧度值）
+
+---
+
+> 注意，方法都是小写；
+
+### 7.Date 对象
+
+ECMAScript 中的`Date`类型是在早期 Java 中的`java.util.Date`类基础上构建的。为此，`Date`类型使用自 UTC（_Coordinated Universal Time_，国际协调时间）1970 年 1 月 1 日午夜（零时）开始经过的毫秒数来保存日期。在使用这种数据储存格式的条件下，`Date`类型保存的日期能精确到 1970 年 1 月 1 日之前或之后的 100 000 000 年。
+
+#### 7.1.普通函数的用法
+
+`Date`对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。
+
+```javascript
+Date();
+// Sat May 26 2018 12:00:51 GMT+0800 (中国标准时间)
+```
+
+注意，即使带有参数，`Date`作为普通函数使用时，返回的还是当前时间。
+
+```javascript
+Date(2000, 1, 1);
+// Sat May 26 2018 12:00:51 GMT+0800 (中国标准时间)
+```
+
+#### 7.2.构造函数的用法
+
+在调用`Date`构造函数时，不传递参数，新创建的对象自动获得当前日期和时间；若想根据特定的时间或日期创建日期对象，必须传入表示该日期的毫秒数（即从 1970 年 1 月 1 日午夜起至该日期经过的毫秒数）。
+
+```javascript
+var now = new Date();
+console.log(now);
+//Sat Mar 03 2018 22:28:29 GMT+0800 (中国标准时间)
+```
+
+`Date`实例有一个独特的地方。其他对象求值的时候，都是默认调用`.valueOf()`方法，但是`Date`实例求值的时候，默认调用的是`toString()`方法。这导致对`Date`实例求值，返回的是一个字符串，代表该实例对应的时间。
+
+关于 Date 构造函数的参数，有几点说明。
+
+第一点，参数可以是负整数，代表 1970 年元旦之前的时间。
+第二点，只要是能被`Date.parse()`方法解析的字符串，都可以当作参数。
+
+```javascript
+new Date("2013-2-15");
+new Date("2013/2/15");
+new Date("02/15/2013");
+new Date("2013-FEB-15");
+new Date("FEB, 15, 2013");
+new Date("FEB 15, 2013");
+new Date("Feberuary, 15, 2013");
+new Date("Feberuary 15, 2013");
+new Date("15 Feb 2013");
+new Date("15, Feberuary, 2013");
+// Fri Feb 15 2013 00:00:00 GMT+0800 (CST)
+```
+
+第三，参数为年、月、日等多个整数时，年和月是不能省略的，其他参数都可以省略的。也就是说，这时至少需要两个参数，因为如果只使用“年”这一个参数，Date 会将其解释为毫秒数。
+
+最后，各个参数的取值范围如下。
+
+---
+
+- 年：使用四位数年份，比如 2000。如果写成两位数或个位数，则加上 1900，即 10 代表 1910 年。如果是负数，表示公元前。
+- 月：0 表示一月，依次类推，11 表示 12 月。
+- 日：1 到 31。
+- 小时：0 到 23。
+- 分钟：0 到 59。
+- 秒：0 到 59
+- 毫秒：0 到 999。
+
+---
+
+> 注意，月份从 0 开始计算，但是，天数从 1 开始计算。另外，除了日期的默认值为 1，小时、分钟、秒钟和毫秒的默认值都是 0。
+
+这些参数如果超出了正常范围，会被自动折算。比如，如果月设为 15，就折算为下一年的 4 月。
+
+> 参数还可以使用负数，表示过去的时间。
+
+#### 7.3.日期的运算
+
+类型自动转换时，`Date`实例如果转为数值，则等于对应的毫秒数；如果转为字符串，则等于对应的日期字符串。所以，两个日期实例对象进行减法运算时，返回的是它们间隔的毫秒数；进行加法运算时，返回的是两个字符串连接而成的新字符串。
+
+```javascript
+var d1 = new Date(2000, 2, 1);
+var d2 = new Date(2000, 3, 1);
+
+d2 - d1;
+// 2678400000
+d2 + d1;
+// "Sat Apr 01 2000 00:00:00 GMT+0800 (CST)Wed Mar 01 2000 00:00:00 GMT+0800 (CST)"
+```
+
+#### 7.4.静态方法
+
+##### 7.4.1 Date.now
+
+`Date.now`方法返回当前时间距离时间零点（1970 年 1 月 1 日 00:00:00 UTC）的毫秒数，相当于 Unix 时间戳乘以 1000。
+
+> 对于不支持`Date.now()`方法的浏览器，可以使用`+`操作符获取`Date`对象的时间戳，也可以达到同样的目的。
+
+```javascript
+var start = +new Date();
+var startO = new Date();
+start; //1527307494273
+startO; //2018-05-26T04:04:54.273Z
+```
+
+##### 7.4.2 Date.parse
+
+`Date.parse`方法用来解析日期字符串，返回该时间距离时间零点（1970 年 1 月 1 日 00:00:00）的毫秒数。
+
+日期字符串应该符合 RFC 2822 和 ISO 8061 这两个标准，即 `YYYY-MM-DDTHH:mm:ss.sssZ` 格式，其中最后的 `Z` 表示时区。但是，其他格式也可以被解析，请看下面的例子。
+
+```javascript
+Date.parse("Aug 9, 1995");
+Date.parse("January 26, 2011 13:51:50");
+Date.parse("Mon, 25 Dec 1995 13:30:00 GMT");
+Date.parse("Mon, 25 Dec 1995 13:30:00 +0430");
+Date.parse("2011-10-10");
+Date.parse("2011-10-10T14:48:00");
+```
+
+如果解析失败，返回`NaN`。
+
+> 注意日期对象及其在不同浏览器中的实现不同。其中一种倾向是将超出范围的值替换成当前值，以便输出。例如，在解析“January 32,2007”时，有的的浏览器会将其解释为“February 1,2007”。而 Opera 则倾向于插入当前月份的当前日期，返回“January 当前日期,2007”。目前，对于超出范围的均返回`Invalid Date`（2018/3/3）。
+
+##### 7.4.3 Date.UTC
+
+`Date.UTC`方法接受年、月、日等变量作为参数，返回该时间距离时间零点（1970 年 1 月 1 日 00:00:00 UTC）的毫秒数。
+
+```javascript
+// 格式
+Date.UTC(year, month[, date[, hrs[, min[, sec[, ms]]]]])
+
+// 用法
+Date.UTC(2011, 0, 1, 2, 3, 4, 567)
+// 1293847384567
+```
+
+该方法的参数用法与`Date`构造函数完全一致，比如月从 0 开始计算，日期从 1 开始计算。区别在于`Date.UTC`方法的参数，会被解释为 UTC 时间（世界标准时间），`Date`构造函数的参数会被解释为当前时区的时间。
+
+> `Date`构造函数也可以直接接受`Date.UTC()`的参数，但是其日期和时间都是基于本地时区而非 GMT 来创建。因此，若第一个参数是数值，`Date`构造函数就会假设该值是日期中的年份，余下参数以此类推。
+
+#### 7.5.实例方法
+
+与其他引用类型一样，`Date`类型也重写了`toLocaleString()`,`toString()`和`valueOf()`方法。`Date`类型的`toLocaleString()`会按照与浏览器设置的地区相适应的格式返回日期和时间。这大致意味着时间格式中包含着 AM 或 PM，但不会包含时区信息。而`toString()`方法通常返回带有时区信息的日期和时间，其中时间一般以军用时间（0-23）表示。
+
+```javascript
+//chrome:
+var day = new Date();
+console.log(day.toLocaleString());
+//2018/5/26 下午2:20:03
+console.log(day.toString());
+//Sat May 26 2018 14:20:03 GMT+0800 (中国标准时间)
+console.log(day.valueOf());
+//1527315603560
+```
+
+> 这两中方法在不同的浏览器上的格式可谓大相径庭。实际上，这两者的差别仅在调试代码时比较有用。
+
+至于`Date`类型的`valueOf()`方法，不返回字符串，而是返回日期的毫秒数。因此，可以比较方便的使用比较操作符来比较日期。
+
+```javascript
+var da1 = new Date(2007, 0, 1);
+var da2 = new Date(2007, 1, 1);
+console.log(da1 < da2); //true
+```
+
+#### 7.6.日期格式化方法
+
+##### 7.6.1 `toDateString()`
+
+以特定于实现的格式显示周几，月，日，年
+
+##### 7.6.2 `toTimeString()`
+
+以特定于实现的格式显示时，分，秒，时区
+
+##### 7.6.3 `toLocaleDateString()`
+
+以特定于地区的格式显示周几，月，日，年
+
+##### 7.6.4 `toLocaleTimeString()`
+
+以特定于地区的格式显示时，分，秒
+
+##### 7.6.5 `toUTCString()`
+
+以特定于实现的格式显示完整的 UTC 日期
+
+> 以上方法因浏览器而异。
+
+```javascript
+var yk = new Date();
+console.log(yk.toDateString()); //Sat Mar 03 2018
+console.log(yk.toTimeString()); //23:53:53 GMT+0800 (中国标准时间)
+console.log(yk.toLocaleDateString()); //2018/3/3
+console.log(yk.toLocaleTimeString()); //下午11:53:53
+console.log(yk.toUTCString()); //Sat, 03 Mar 2018 15:53:53 GMT
+```
+
+#### 7.7.日期/时间组件方法
+
+> UTC 日期指的是在没有时区偏差的情况下（将日期转换为 GMT 时间）的日期值。
+
+##### 7.7.1 获取当前电脑上的时间
+
+如果传递参数，会将参数转换为本地时间
+
+```javascript
+var time = new Date();
+console.log(time);
+//Wed Aug 30 2017 11:42:27 GMT+0800 (中国标准时间)
+
+let time = new Date().toLocaleString();
+console.log(time); //2017/11/8 上午11:17:41
+```
+
+> 获取的是当前电脑上的时间，不能作为标准；一般以获取服务器的时间作为标准时间，请求头时间；
+
+##### 7.7.2 获取服务器的时间
+
+```javascript
+//获取服务器时间,只需获取一次
+
+let serverTime = null;
+let timer = null;
+
+let getServerTime = () => {
+  if (serverTime == null) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("get", "data.json");
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 2 && xhr.status == 200) {
+        serverTime = xhr.getResponseHeader("date");
+        serverTime = new Date(serverTime);
+      }
+    };
+    xhr.send(null);
+    return;
+  }
+  serverTime = new Date(serverTime.getTime() + 1000);
+  console.log(serverTime.toLocaleString());
+};
+
+// 用setTimeout代替setInterval
+function fn() {
+  window.clearTimeout(timer);
+  timer = window.setTimeout(fn, 1000);
+  return getServerTime();
+}
+
+timer = window.setTimeout(fn, 1000);
+```
+
+##### 7.7.3 获取/设置四位的年
+
+`var year=time.getFullYear();//2018`
+
+`var year=time.setFullYear(2007);//1172938101286`
+
+##### 7.7.4 获取月份 (0-11)
+
+`var month=time.getMonth();//2`
+
+`var month=time.setMonth(x/xx);//1520093403362`
+
+##### 7.7.5 获取星期 0-6（星期日-星期六）
+
+`var week=time.getDay();//0`
+
+##### 7.7.6 获取日
+
+`var day=time.getDate();//4`
+
+`var day=time.setDate(6);//1520266650087`
+
+##### 7.7.7 获取小时
+
+`var hours=time.getHours();//0`
+
+`var hours=time.setHours(16);//1520151503999`
+
+##### 7.7.8 获取分
+
+`var minute=time.getMinutes();//19`
+
+`var minute=time.setMinutes(23);//1520094216640`
+
+##### 7.7.9 获取秒
+
+`var second=time.getSeconds();//51`
+
+`var second=time.setSeconds();//1520094033978`
+
+##### 7.7.10 获取毫秒
+
+`var millisecond=time.getMilliseconds();//687`
+
+`var millisecond=time.setMilliseconds();//1520094130066`
+
+##### 7.7.11 getTime()
+
+将时间变成毫秒，与`valueOf()`方法的返回值相同
+
+```javascript
+let curTime = new Date();
+console.log(curTime);
+//Sun Nov 05 2017 11:24:52 GMT+0800 (中国标准时间)
+console.log(curTime.getTime());
+//1509852292756
+console.log(new Date(curTime.getTime()));
+//Sun Nov 05 2017 11:24:52 GMT+0800 (中国标准时间)
+```
+
+#### 7.8.定时器小问题
+
+> 清除定时器，清除的是指定序号的定时器；清除定时器的原理是阻止定时器中的函数执行，而无法清除计时器本身；
+
+##### 7.8.1 `window.setInterval()`
+
+- 有返回值，返回值是数字，代表的第 n 个定时器；
+- 第一个参数是要执行的函数；
+- 第二个参数是执行的周期，以毫秒计；
+
+##### 7.8.2 `window.clearInterval()`
+
+- 参数是定时器名
+- 不传递参数的时候，默认清除所有定时器；
+
+##### 7.8.3 `window.setTimeout()`/`window.clearTimeout()`
+
+用`setTimeout()`实现`setInterval()`效果
+
+```javascript
+var timer = null;
+
+function fn() {
+  window.clearTimeout(timer);
+  timer = window.setTimeout(fn, 1000);
+  /* ... */
+}
+
+timer = window.setTimeout(fn, 1000);
+```
+
+### 8.RegExp 对象
+
+#### 8.1.概述
+
+**正则表达式（regular expression）**是一种表达文本模式（即字符串结构）的方法，有点像字符串的模板，常常用来按照“给定模式”匹配文本。JavaScript 的正则表达式体系是参照 Perl 5 建立的。
+
+ECMAScript 通过`RegExp`类型来支持正则表达式。使用下面类似 Perl 的语法，就可以创建一个正则表达式。
+
+`var expression = /pattern/flags;`
+
+其中的**模式（pattern）**部分可以是任何简单或复杂的正则表达式，可以包括字符类。限定符、分组、先前查找以及反向引用。每个正则表达式都可以带有一个或多个**标志（flags）**，用以标明正则表达式的行为。
+
+`var reg=new RegExp('zxc','g');`
+
+上面两种写法是等价的，它们的主要区别是，第一种方法在引擎编译代码时，就会新建正则表达式，第二种方法在运行时新建正则表达式，所以前者的效率较高。而且，前者比较便利和直观，所以实际应用中，基本上都采用字面量定义正则表达式。
+
+`RegExp`构造函数还可以接受第二个参数，表示修饰符。
+
+#### 8.2.常见元字符
+
+大部分字符在正则表达式中，就是字面的含义，比如`/a/`匹配 a，`/b/`匹配 b。如果在正则表达式之中，某个字符只表示它字面的含义（就像前面的 a 和 b），那么它们就叫做**字面量字符（literal characters）**。
+
+还有一部分字符有特殊的含义，不代表字面的意思，称之为**元字符（metacharacters)**。一个元字符只能匹配一个字符。
+
+> 什么都不写是注释，有空格也算正则；
+
+与其它语言的正则表达式类似，模式中使用元字符都必须转义，因为这些元字符在正则表达式中都有一种或多种特殊用途：
+`( [ { \ ^ $ | ) ? * + . ] }`
+
+- 元字符表：
+
+|                                        字符                                        | 作用                                                                      |
+| :--------------------------------------------------------------------------------: | ------------------------------------------------------------------------- |
+|                                        `.`                                         | 匹配换行`\n`、回车`\r`、行分割符`\u2028`、段分隔符`\u2029`以外任何单字符  |
+| `\`|转义作用，将下一个普通字符标记为特殊值字符或将特殊字符转义成普通字符；后向引用 |
+|                                        `^`                                         | 匹配字符串的起始字符；若设置了 Multiline 模式，也匹配`\n`或`\r`之后的字符 |
+|                                        `$`                                         | 匹配字符串的终止字符；若设置了 Multiline 模式，也匹配`\n`或`\r`之前的字符 |
+|                                        `\d`                                        | 匹配一个数字字符，等价于`[0-9]`                                           |
+|                                        `\D`                                        | 匹配一个非数字字符，等价于`[^0-9]`                                        |
+|                                        `\w`                                        | 匹配包括下划线的单词字符，等价于`[A-Za-z0-9_]`                            |
+|                                        `\W`                                        | 匹配任何非单词字符，等价于`[^A-Za-z0-9_]`                                 |
+|                                        `\b`                                        | 匹配一个单词边界                                                          |
+|                                        `\B`                                        | 匹配一个非边界                                                            |
+|                                        `\s`                                        | 匹配空白符,包括空格、制表符等等，等价于`[\f\n\r\t\v]`                     |
+|                                        `\S`                                        | 匹配任何非空白符，等价于`[^\f\n\r\t\v]`                                   |
+|                                        `\f`                                        | 匹配换页符                                                                |
+|                                        `\n`                                        | 匹配换行符                                                                |
+|                                        `\r`                                        | 匹配回车符                                                                |
+|                                        `\t`                                        | 匹配制表符                                                                |
+|                                        `\v`                                        | 匹配垂直制表符                                                            |
+
+> 若正则表达式规定了开头和结尾，而中间又没有量词元字符，则限定了唯一的字符串；
+> 通常，正则表达式遇到换行符（`\n`）就会停止匹配。
+
+#### 8.3.量词元字符
+
+使用时，是加在字符后面，表示前面字符出现的次数；
+
+|  字符   | 作用                                                                        |
+| :-----: | --------------------------------------------------------------------------- |
+|   `*`   | 匹配零次或者多次                                                            |
+|   `+`   | 匹配一次或者多次                                                            |
+|   `?`   | 匹配零次或一次                                                              |
+|  `{n}`  | n 是非负整数，匹配确定的 n 次                                               |
+| `{n,}`  | n 是非负整数，至少匹配 n 次                                                 |
+| `{n,m}` | n,m 是非负整数，n<=m,匹配至少 n 次，至多 m 次；（逗号和数字之间不能有空格） |
+
+```javascript
+//匹配电话号码
+   /^1\d{10}$/
+
+//小数
+    /^-?0\.\d+$/
+    /^-?\d+\.\d+$/
+
+//匹配汉字
+    /[\u4e00-\u9fa5]/
+```
+
+#### 8.4.其他元字符
+
+|   字符   | 名                                       | 作用                               |
+| :------: | ---------------------------------------- | ---------------------------------- |
+|  `x\|y`  | 选择符                                   | 匹配 x 或 y，左右两边作为整体对待  |
+| `[xyz]`  | 字符类                                   | 字符集合，匹配包含的任意字符       |
+| `[^xyz]` | 脱字符                                   | 负值字符集合，匹配未包含的任意字符 |
+| `[a-z]`  | 连字符                                   | 字符范围，匹配指定范围内任意字符   |
+| `[^a-z]` | 负值字符范围，匹配任何不在指定范围的字符 |
+
+> 在中括号内，所有字符代表本身的意义，除了`^`（非）和 `-`（至）以及 `\`（转意）
+> 把 `-` 放在最后面，即可表示其本身意义；
+> 注意，脱字符`^`只有在字符类的第一个位置才有特殊含义，否则就是字面含义。
+
+#### 8.5.标志（修饰符）
+
+| 字符 | 作用                                                                                          |
+| :--: | --------------------------------------------------------------------------------------------- |
+| `g`  | 表示**全局（global）**模式，即模式将被应用于所有字符串                                        |
+| `i`  | 表示**不区分大小写（case-insensitive）**模式，即在确定匹配项时忽略模式与字符串的大小写        |
+| `m`  | 表示**多行（multiline）**模式，即在达到一行文本末尾还会继续查找下一行中是否存在于模式匹配的项 |
+
+> 加上 m 修饰符以后，`^` 和 `$`还会匹配行首和行尾，即 `^` 和 `$` 会识别换行符（`\n`）。
+
+```javascript
+var re = null,
+  i;
+for (i = 0; i < 5; i++) {
+  re = /cat/g;
+  console.log(re.test("catcat"));
+}
+for (i = 0; i < 5; i++) {
+  re = new RegExp("cat", "g");
+  console.log(re.test("catcat"));
+}
+```
+
+在第一个循环中，即使是循环体指定，但实际上只为`/cat/`创建了一个`RegExp`实例。由于实例属性不会重置，所以在循环中再次调用函数的时候会失败。这是因为第一次调用找到了匹配项，第二次匹配从上次匹配字符后面的字符开始，没有`RegExp`实例所以无法匹配。
+
+在第二个循环中，`RegExp`构造函数在每次循环中都会创建正则表达式，因为每次迭代都会创建新的`RegExp`实例，所以每次调用都会有返回值。
+
+ECMAScript5 明确规定，使用正则表达式字面量必须像直接调用`RegExp`构造函数一样，每次都会创建新的`RegExp`实例。
+
+#### 8.6.实例属性
+
+正则对象的实例属性分成两类。
+
+一类是修饰符相关，返回一个布尔值，表示对应的修饰符是否设置。
+
+---
+
+- `regexp.ignoreCase`：返回一个布尔值，表示是否设置了`i`修饰符。
+- `regexp.global`：返回一个布尔值，表示是否设置了`g`修饰符。
+- `regexp.multiline`：返回一个布尔值，表示是否设置了`m`修饰符。
+
+---
+
+> 上面三个属性都是只读的。
+
+另一类是与修饰符无关的属性，主要是下面两个。
+
+---
+
+- `regexp.lastIndex`：返回一个数值，表示下一次开始搜索的位置。该属性可读写，但是只在设置了`g`修饰符、进行连续搜索时有意义。
+- `regexp.source`：返回正则表达式的字符串形式（不包括反斜杠），该属性只读。
+
+---
+
+```javascript
+var pattern = /\[bc\]at/gi;
+console.log(pattern.global); //true
+console.log(pattern.ignoreCase); //true
+console.log(pattern.multiline); //false
+console.log(pattern.lastIndex); //0
+console.log(pattern.source); //\[bc\]at
+```
+
+> RegExp 实例继承的`toLocaleString()`和`toString()`方法都会返回正则表达式的字面量，与创建方式无关。`valueOf()`方法返回正则表达式本身。
+
+#### 8.7.实例方法
+
+##### 8.7.1 `regexp.exec()`
+
+该方法是专门为捕获组而设计的。接收一个参数，即要应用模式的字符串，任何返回包含第一个匹配项信息的数组；或者在没有匹配项的情况下返回`null`。
+
+返回的数组虽然是`Array`的实例，但是包含两个额外的属性：`index`和`input`。其中`index`表示匹配项在字符串中的位置，`input`表示应用正则表达式的字符串。在数组中，第一项是与整个模式匹配的字符串，其他项是模式中捕获组匹配的字符串（若没有捕获组，则只有一项）。
+
+对于`exec()`方法而言，即使在模式中设置了全局标志，但每次也只会返回一个匹配项（当前匹配），`lastIndex`属性值会增加。在不设置全局标志的情况下，在同一个字符串上多次调用，始终只返回第一个匹配项的信息，`lastIndex`属性值不会变化。
+
+> IE 在实现`lastIndex`属性上有偏差，即使在非全局模式下，也会变化。
+
+```javascript
+var str = "name561age21";
+var reg1 = /[a-z]+/g,
+  reg2 = /[a-z]+/,
+  reg3 = /([a-z])+/;
+console.log(reg1.exec(str));
+//["name", index: 0, input: "name561age21"]
+
+console.log(reg2.exec(str));
+//["name", index: 0, input: "name561age21"]
+
+console.log(reg3.exec(str));
+//["name", "e", index: 0, input: "name561age21"]
+//同一捕获组的匹配项，只返回之后一次的匹配项
+```
+
+> 正则实例对象的`lastIndex`属性不仅可读，还可写。设置了`g`修饰符的时候，只要手动设置了`lastIndex`的值，就会从指定位置开始匹配。
+
+##### 8.7.2 `regexp.test()`
+
+用来判断目标字符与模式是否匹配（在不需要知道其内容的情况下，该方法很便利）。接收一个字符串参数。匹配时返回 true，否则返回 false。
+
+如果正则表达式带有`g`修饰符，则每一次`test`方法都从上一次结束的位置开始向后匹配。
+
+带有`g`修饰符时，可以通过正则对象的`lastIndex`属性指定开始搜索的位置。`lastIndex`属性只对同一个正则表达式有效。
+
+```javascript
+var count = 0;
+while (/a/g.test("babaa")) count++;
+```
+
+上面代码会导致无限循环，因为`while`循环的每次匹配条件都是一个新的正则表达式，导致`lastIndex`属性总是等于 0。
+
+如果正则模式是一个空字符串，则匹配所有字符串。
+
+#### 8.8.RegExp 构造函数属性
+
+RegExp 构造函数包含一些属性（这些属性在其他语言中被看成是静态属性）。这些属性都适用于作用域中的所有正则表达式，并基于所执行的最近一次正则表达式操作而变化。这些属性的另一个独特之处，就是可以通过两种方式访问它们。（Opera 不支持断属性名）
+
+|    长属性名    | 断属性名 | 说明                                                         |
+| :------------: | :------: | ------------------------------------------------------------ |
+|    `input`     |   `$_`   | 最近一次要匹配的字符串；Opera 未实现                         |
+|  `lastMatch`   |   `$&`   | 最近一次的匹配项；Opera 未实现                               |
+|  `lastParen`   |   `$+`   | 最近一次匹配的捕获组；Opera 未实现                           |
+| `leftContext`  |   `$`    | `input`字符串中`lastMatch`之前的文本                         |
+|  `multiline`   |   `$*`   | 布尔值，表示是否所有表达式都使用多行模式；Opera 和 IE 未实现 |
+| `rightContext` |   `*'`   | `input`字符串中`lastMatch`之后的文本                         |
+
+```javascript
+var str = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+str.exec("2018-04-26");
+s1 = RegExp.$1;
+s2 = RegExp.$2;
+s3 = RegExp.$3;
+s1 + ":" + s2 + ":" + s3; //2018:04:26
+```
+
+> 这些断属性名不是有效的 ECMAScript 标识符，必须通过方括号来访问。
+
+还有多达 9 个用于分别存储捕获组的构造函数属性。访问语法：`RegExp.$1、...`。在调用`exec()`和`test()`方法时，这些属性会被自动填充。
+
+#### 8.9.模式的局限性
+
+尽管 ECMAScript 中的正则表达式功能还是比较完备，但任然缺少某些语言（特别是 perl）所支持的高级正则表达式特性。
+
+不支持的特性：
+
+---
+
+- 1).匹配字符串开始和结尾的`\A`和`\Z`（但支持以插入符号`^`和美元`$`符号来匹配字符串的开头和结尾）
+- 2).**向后查找（lookbehind）**（但完全支持**向前查找（lookhead）**）
+- 3).并集和交集类
+- 4).**原子组（atomic grouping）**
+- 5).`Unicode`支持（单个字符除外，如`\uFFFF`）
+- 6).命名的捕获组（但支持编号的捕获组）
+- 7).`s`(single，单行)和`x`(free-spacing,无间隔)匹配模式
+- 8).条件匹配
+- 9).正则表达式注释
+
+---
+
+#### 8.10.正则的特性：
+
+##### 8.10.1 懒惰性
+
+始终只会将第一次匹配的内容捕获出来；
+解决：加上修饰符`g`，标识全局捕获；
+
+```javascript
+var reg = /\d/g;
+var str = "haxi190365";
+
+function getExec(n) {
+  var ary = [];
+  var a = reg.exec(n);
+  while (a) {
+    ary.push(a[0]);
+    a = reg.exec(n);
+  }
+  return ary;
+}
+
+console.log(getExec(str));
+//[ "1", "9", "0", "3", "6", "5" ]
+```
+
+##### 8.10.2 贪婪性
+
+虽然只捕获一次，但是捕获的是内容最多的那个（取符合字符最多的那一组匹配）；
+
+解决：在量词后面加问号`？`（取符合字符最少的那一组匹配）；
+
+```javascript
+var reg = /\d+/;
+var str = "2017px0914";
+console.log(reg.exec(str)); //[2017]
+
+var reg = /\d+?/;
+var str = "2017px0914";
+console.log(reg.exec(str)); //[2]
+```
+
+#### 8.11.正则中的小括号的应用
+
+##### 8.11.1 分组
+
+`/(\w)ff\1/.test("dffd");`
+
+> `\1`代表第一个小分组匹配的内容（\1 指代的是（\w）的内容）。正则表达式内部，还可以用`\n`引用括号匹配的内容，n 是从 1 开始的自然数，表示对应顺序的括号，这种用法称之为**后向引用**；
+
+##### 8.11.2 分组捕获
+
+分组的内容会被捕获出来；
+
+```javascript
+var reg = /\w(\d)\w(\1)/;
+var str = "s8s8";
+console.log(reg.exec(str));
+//["s8s8", "8", "8", index: 0, input: "s8s8"]
+```
+
+> 注意，使用组匹配时，不宜同时使用`g`修饰符，否则`match`方法不会捕获分组的内容。必须加`g`，这时使用正则表达式的`exec`方法，配合循环，才能读到每一轮匹配的组捕获。
+
+##### 8.11.3 分组嵌套
+
+由外而内依次捕获；
+
+```javascript
+var reg = /\w(\d(\w)\d)/;
+var str = "z9f8";
+console.log(reg.exec(str));
+//["z9f8", "9f8", "f", index: 0, input: "z9f8"]
+```
+
+##### 8.11.4 非捕获
+
+`(?:)`称为**非捕获组（Non-capturing group）**，表示不返回该组匹配的内容，即匹配的结果中不计入这个括号。
+
+```javascript
+var reg = /\w{2}(\d{4})/;
+var str = "zf2017px0914";
+console.log(reg.exec(str)); //[zf2017]  [2017]
+
+var reg = /\w{2}(?:\d{4})/;
+var str = "zf2017px0914";
+console.log(reg.exec(str)); //[zf2017]
+```
+
+下面是用来分解网址的正则表达式。
+
+```javascript
+// 正常匹配
+var url = /(http|ftp):\/\/([^/\r\n]+)(\/[^\r\n]*)?/;
+
+url.exec("http://google.com/");
+// ["http://google.com/", "http", "google.com", "/"]
+
+// 非捕获组匹配
+var url = /(?:http|ftp):\/\/([^/\r\n]+)(\/[^\r\n]*)?/;
+
+url.exec("http://google.com/");
+// ["http://google.com/", "google.com", "/"]
+```
+
+#### 8.12.字符串方法在正则中的应用
+
+字符串的实例方法之中，有 4 种与正则表达式有关。
+
+---
+
+- `string.match()`：返回一个数组，成员是所有匹配的子字符串。
+- `string.search()`：按照给定的正则表达式进行搜索，返回一个整数，表示匹配开始的位置。
+- `string.replace()`：按照给定的正则表达式进行替换，返回替换后的字符串。
+- `string.split()`：按照给定规则进行字符串分割，返回一个数组，包含分割后的各个成员。
+
+---
+
+##### 8.12.1 string.match(regexp)
+
+正则表达式不加修饰符`g`得到的结果类似`exec()`方法；
+加了`g`修饰符以后，会返回所有匹配的结果，返回值也是一个数组，数组中没有`index`和`input`；匹配失败返回`null`。
+
+```javascript
+var reg = /\d/;
+var reg1 = /\d/g;
+var str = "qwe1709";
+console.log(str.match(reg));
+//["1", index: 2, input: "qwe1709"]
+
+console.log(str.match(reg1));
+//[ "1", "7", "0", "9" ]
+```
+
+> 设置正则表达式的`lastIndex`属性，对`match`方法无效，匹配总是从字符串的第一个字符开始。
+
+##### 8.12.2 exec() 和 match() 的区别
+
+`exec()`和`match()`都是用正则匹配内容，但：
+
+1).`exec()`处理分组功能更强；`match()`在没有分组的情况下，能更快捷的把多次匹配的内容保存到数组里；
+
+2).加上全局修饰符以后，`exec()`依旧只会捕获第一次匹配的内容，而`match()`会将所有匹配的内容都输出；
+
+3).`exec()`属于正则类的方法，`match()`属于字符串类的方法；
+
+##### 8.12.3 string.split()
+
+按正则匹配的内容将字符串拆分为数组。接受两个参数，第一个参数是正则表达式，表示分隔规则，第二个参数是返回数组的最大成员数。如果正则表达式带有括号，则括号匹配的部分也会作为数组成员返回。
+
+```javascript
+var str = "2017-9-14 16:38";
+console.log(str.split(/[ :-]/));
+//["2017", "9", "14", "16", "38"]
+```
+
+##### 8.12.4 string.search()
+
+返回第一个满足条件的匹配结果在整个字符串中的位置。如果没有任何匹配，则返回-1。
+
+```javascript
+var str = "sdf123";
+console.log(str.search(/\d/)); //2
+console.log(str.search(/\w/)); //0
+```
+
+##### 8.12.5 string.replace()
+
+在字符串中用一些字符替换另一些字符，或者换一个与正则表达式匹配的子串；返回值是一个字符串，是用第二个参数替换正则表达式第一次匹配或所有匹配之后得到的；正则表达式如果不加`g`修饰符，就替换第一个匹配成功的值，否则替换所有匹配成功的值。
+
+```javascript
+var str = "1,2,3,4,5,6";
+console.log(str.replace(/,/g, "+")); //1+2+3+4+5+6
+console.log(eval(str.replace(/,/g, "+"))); //21
+```
+
+replacement 中的 `$` 具有特定的含义：
+
+|            字符            | 意义                                         |
+| :------------------------: | -------------------------------------------- |
+|     **`$1`,...,`$99`**     | 匹配第 1~99 个 regexp 中圆括号子表达式的文本 |
+|          **\$&**           | 匹配整个模式的子串                           |
+| **\$`**|匹配子串的左边文本 |
+|          **\$'**           | 匹配子串右边的文本                           |
+|          **\$\$**          | 美元符号                                     |
+
+```javascript
+var s = "hello world";
+console.log(s.replace(/(l)/, "$&")); //hello world
+console.log(s.replace(/(l)/, "$`")); //hehelo world
+console.log(s.replace(/(l)/, "$'")); //helo worldlo world
+console.log(s.replace(/(l)/, "$$")); //he$lo world
+
+var text = "cat,bat,sat,fat";
+result = text.replace(/(.at)/g, "word($1)");
+console.log(result);
+//word(cat),word(bat),word(sat),word(fat)
+```
+
+当`replace()`方法的第二个参数是函数而不是字符串时，每次匹配都调用该函数（匹配多少次自执行多少次），将这个函数的返回的字符串当做替换文本使用；这个函数是自定义的替换规则；
+
+并且还要给这个函数传最少三个参数：
+
+---
+
+- 1).当正则没有分组的时候，传进去的第一个实参是正则捕获到的内容，第二个参数是捕获到的内容在原字符串中的索引位置，第三个参数是原字符串（输入字符串）；
+
+---
+
+- 2).当正则有分组的时候，第一个参数总是正则查找到的内容，后面依次是各个子正则查找到的内容；
+
+---
+
+- 3).传完查找到的内容之后，再把总正则查找到的内容在原字符串中的索引传进（就是`arguments[0]`在 str 中的索引位置）。最后把输入字符串（就是原字符串）传进去；
+
+---
+
+```javascript
+var str = "bbs456qwe789";
+var reg = /(\w{2})\d+/g;
+var s = str.replace(reg, function($1) {
+  console.log(arguments);
+  //Arguments(4) ["bs456", "bs", 1, "bbs456qwe789"]
+  //Arguments(4) ["we789", "we", 7, "bbs456qwe789"]
+
+  //$1 当前匹配的结果
+  console.log($1); // bs456   we789
+
+  //RegExp.$1的值是最后一次匹配的结果
+  console.log(RegExp.$1); // we  we
+  return "[" + arguments[1] + "]";
 });
+console.log(s); //b[bs]q[we]
 ```
 
-上面代码中，`forEach`方法会同时发起六个异步任务，等到它们全部完成以后，才会执行final函数。
+> 注意： 1.`/[^]/` 表示所有非空字符串，不是非空格； 2.`\1` 表示等同于第一个小组内容，这种用法称为反向引用； 3.`^` 在正则表达式开始部分表达开头的意思；但是在字符集中，表示非的意思； 4.`//` 在正则中最常用的：`reg=/^\s*$/;`
 
-相比而言，上面的写法只要一秒，就能完成整个脚本。这就是说，并行执行的效率较高，比起串行执行一次只能执行一个任务，较为节约时间。但是问题在于如果并行的任务较多，很容易耗尽系统资源，拖慢运行速度。因此有了第三种流程控制方式。
+##### 8.12.6 `lastIndex`
 
-##### 1.5.3 并行与串行的结合
+多次查找，如何知道下一次从哪个位置开始(⊙o⊙)?这就是正则（这个属性是正则对象的）的一个很重要的属性在发挥作用：`lastIndex`;
 
-所谓并行与串行的结合，就是设置一个门槛，每次最多只能并行执行n个异步任务，这样就避免了过分占用系统资源。
+每个正则实例都有`lastIndex`属性，他的作用是规定当前这次的匹配的开始位置；如果正则表达式没有`g`修饰符，那么`lastIndex`的值永远都是 0；
+
+#### 8.13.正向预查和负向预查
+
+零宽断言是一种零宽度的匹配，它匹配的内容不会保存到匹配结果中，也不会占用`index`宽度，最终匹配的结果只是一个位置。
+
+简单的说，它用于查找在某些内容之前或之后的东西(但返回结果并不包括这些内容)
+
+JavaScript 中只支持零宽先行断言。零宽断言返回的是位置而不是字符，零宽断言匹配成功后，其余表达式会基于这个返回的位置继续判断。
+
+##### 8.13.1 x(?=pattern)
+
+正向预查(正向先行断言)，要匹配的字符串，必须要满足 pattern 条件；
+
+##### 8.13.2 x(?!pattern)
+
+负向预查(负向先行断言)，要匹配的字符串，必须不满足 pattern 条件；
 
 ```javascript
-var items = [ 1, 2, 3, 4, 5, 6 ];
-var results = [];
-var running = 0;
-var limit = 2;
+var reg1 = /zhufeng(?!js)/;
+var reg2 = /zhufeng(?=js)/;
+var str = "zhufengjs";
+console.log(reg1.exec(str)); //null
+console.log(reg2.exec(str));
+//["zhufeng", index: 0, input: "zhufengjs"]
+```
 
-function async(arg, callback) {
-  console.log('参数为 ' + arg +' , 1秒后返回结果');
-  setTimeout(function () { callback(arg * 2); }, 1000);
+> 注意：括号里的内容只是条件，并不参与真正的捕获，只是检查后面的字符是否符合条件；
+
+#### 8.14.正则中的运算符优先级
+
+相同优先级的从左到右进行运算，不同优先级的运算先高后低。
+
+| 运算符                      | 描述                           |
+| --------------------------- | ------------------------------ |
+| `\`|转义符                  |
+| `(),(?:),(?=),[]`           | 圆括号和方括号                 |
+| `*,+,?,{n},{n,},{n,m}`      | 限定符                         |
+| `^,$,\任何元字符、任何字符` | 定位点和序列（即：位置和顺序） |
+| `|`                         | 替换，“或”操作                 |
+
+> 字符具有高于替换运算符的优先级，使得'm|food' 匹配 'm' 或 'food'。若要匹配 'mood' 或 'food'，请使用括号创建子表达式，从而产生 '(m|f)ood'。
+
+### 9.属性描述对象
+
+#### 9.1.概述
+
+JavaScript 提供了一个内部数据结构，用来描述对象的属性，控制它的行为，比如该属性是否可写、可遍历等等。这个内部数据结构称为**属性描述对象（attributes object）**。每个属性都有自己对应的属性描述对象，保存该属性的一些元信息。
+
+下面是属性描述对象的一个例子。
+
+```javascript
+{
+  value: 123,
+  writable: false,
+  enumerable: true,
+  configurable: false,
+  get: undefined,
+  set: undefined
 }
+```
 
-function final(value) {
-  console.log('完成: ', value);
-}
+属性描述对象提供 6 个元属性。
 
-function launcher() {
-  while(running < limit && items.length > 0) {
-    var item = items.shift();
-    async(item, function(result) {
-      results.push(result);
-      running--;
-      if(items.length > 0) {
-        launcher();
-      } else if(running == 0) {
-        final(results);
-      }
-    });
-    running++;
+1).`value`
+
+`value`是该属性的属性值，默认为`undefined`。
+
+2).`writable`
+
+`writable`是一个布尔值，表示属性值是否可改变（即是否可写），默认为 true。
+
+3).`enumerable`
+
+`enumerable`是一个布尔值，表示该属性是否可遍历，默认为 true。如果设为 false，会使得某些操作（比如`for...in`循环、`Object.keys()`）跳过该属性。
+
+4).`configurable`
+
+`configurable`是一个布尔值，表示可配置性，默认为 true。如果设为 false，将阻止某些操作改写该属性，比如无法删除该属性，也不得改变该属性的属性描述对象（value 属性除外）。也就是说，**`configurable`属性控制了属性描述对象的可写性**。
+
+5).`get`
+
+`get`是一个函数，表示该属性的**取值函数（getter）**，默认为`undefined`。
+
+6).`set`
+
+`set`是一个函数，表示该属性的**存值函数（setter）**，默认为`undefined`。
+
+#### 9.2.Object.getOwnPropertyDescriptor()
+
+`Object.getOwnPropertyDescriptor`方法可以获取属性描述对象。它的第一个参数是一个对象，第二个参数是一个字符串，对应该对象的某个属性名。
+
+```javascript
+var obj = { p: "a" };
+Object.getOwnPropertyDescriptor(obj, "p");
+
+// Object { value: "a",
+//   writable: true,
+//   enumerable: true,
+//   configurable: true
+// }
+
+Object.getOwnPropertyDescriptor(obj, "toString");
+// undefined
+```
+
+> 注意，`Object.getOwnPropertyDescriptor`方法只能用于对象自身的属性，不能用于继承的属性。
+
+#### 9.3.Object.getOwnPropertyNames()
+
+`Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象自身的全部属性的属性名，不管该属性是否可遍历。
+
+```javascript
+var obj = Object.defineProperties(
+  {},
+  {
+    p1: { value: 1, enumerable: true },
+    p2: { value: 2, enumerable: false }
   }
-}
+);
 
-launcher();
+Object.getOwnPropertyNames(obj);
+// ["p1", "p2"]
 ```
 
-上面代码中，最多只能同时运行两个异步任务。变量running记录当前正在运行的任务数，只要低于门槛值，就再启动一个新的任务，如果等于0，就表示所有任务都执行完了，这时就执行final函数。
-
-这段代码需要三秒完成整个脚本，处在串行执行和并行执行之间。通过调节limit变量，达到效率和资源的最佳平衡。
-
-### 2.定时器
-
-JavaScript 提供定时执行代码的功能，叫做**定时器（timer）**，主要由`setTimeout()`和`setInterval()`这两个函数来完成。它们向任务队列添加定时任务。
-
-#### 2.1.setTimeout()
-
-`setTimeout`函数用来指定某个函数或某段代码，在多少毫秒之后执行。它返回一个整数，表示定时器的编号，以后可以用来取消这个定时器。
-
-`var timerId = setTimeout(func|code, delay);`
-
-上面代码中，`setTimeout`函数接受两个参数，第一个参数`func|code`是将要推迟执行的函数名或者一段代码，第二个参数delay是推迟执行的毫秒数。
+这跟`Object.keys`的行为不同，`Object.keys`只返回对象自身的可遍历属性的全部属性名。
 
 ```javascript
-console.log(1);
-setTimeout('console.log(2)',1000);
-console.log(3);
-// 1
-// 3
-// 2
+Object.keys([]); // []
+Object.getOwnPropertyNames([]); // [ 'length' ]
+
+Object.keys(Object.prototype); // []
+Object.getOwnPropertyNames(Object.prototype);
+//['hasOwnProperty',
+// 'valueOf',
+// 'constructor',
+// 'toLocaleString',
+// 'isPrototypeOf',
+// 'propertyIsEnumerable',
+// 'toString']
 ```
 
-上面代码会先输出1和3，然后等待1000毫秒再输出2。
+#### 9.4.Object.defineProperty()/Object.defineProperties()
 
-> 注意，`console.log(2)`必须以字符串的形式，作为`setTimeout`的参数。
+`Object.defineProperty`方法允许通过属性描述对象，定义或修改一个属性，然后返回修改后的对象，它的用法如下：
 
-如果推迟执行的是函数，就直接将函数名，作为`setTimeout`的参数。
+`Object.defineProperty`方法接受三个参数，依次如下。
+
+---
+
+- a.object: 属性所在的对象
+- b.propertyName: 属性名（它应该是一个字符串）
+- c.attributesObject: 属性描述对象
+
+---
+
+举例来说，定义`obj.p`可以写成下面这样。
 
 ```javascript
-function f() {
-  console.log(2);
-}
+var obj = Object.defineProperty({}, "p", {
+  value: 123,
+  writable: false,
+  enumerable: true,
+  configurable: false
+});
 
-setTimeout(f, 1000);
+obj.p; // 123
+
+obj.p = 246;
+obj.p; // 123
 ```
 
-> `setTimeout`的第二个参数如果省略，则默认为0。
+上面代码中，`Object.defineProperty`方法定义了`obj.p`属性。由于属性描述对象的`writable`属性为 false，所以`obj.p`属性不可写。
 
-除了前两个参数，`setTimeout`还允许更多的参数。它们将依次传入推迟执行的函数（回调函数）。
+> 注意，这里的`Object.defineProperty`方法的第一个参数是`{}`（一个新建的空对象），p 属性直接定义在这个空对象上面，然后返回这个对象，这是`Object.defineProperty`的常见写法。
 
-```javascript
-setTimeout(function (a,b) {
-  console.log(a + b);
-}, 1000, 1, 1);
-```
+如果属性已经存在，`Object.defineProperty`方法相当于更新该属性的属性描述对象。
 
-上面代码中，`setTimeout`共有4个参数。最后那两个参数，将在1000毫秒之后回调函数执行时，作为回调函数的参数。
-
-还有一个需要注意的地方，如果回调函数是对象的方法，那么`setTimeout`使得方法内部的`this`关键字指向全局环境，而不是定义时所在的那个对象。
+如果一次性定义或修改多个属性，可以使用`Object.defineProperties`方法。
 
 ```javascript
-var x = 1;
-
-var obj = {
-  x: 2,
-  y: function () {
-    console.log(this.x);
-  }
-};
-
-setTimeout(obj.y, 1000) // 1
-```
-
-上面代码输出的是1，而不是2。因为当obj.y在1000毫秒后运行时，`this`所指向的已经不是obj了，而是全局环境。
-
-为了防止出现这个问题，一种解决方法是设置`setTimeout`时，将obj.y放入一个函数内。
-
-```javascript
-var x = 1;
-
-var obj = {
-  x: 2,
-  y: function () {
-    console.log(this.x);
-  }
-};
-
-setTimeout(function () {
-  obj.y();
-}, 1000);
-// 2
-```
-
-上面代码中，obj.y放在一个匿名函数之中，这使得obj.y在obj的作用域执行，而不是在全局作用域内执行，所以能够显示正确的值。
-
-另一种解决方法是，使用`bind`方法，将obj.y这个方法绑定在obj上面。
-
-```javascript
-var x = 1;
-
-var obj = {
-  x: 2,
-  y: function () {
-    console.log(this.x);
-  }
-};
-
-setTimeout(obj.y.bind(obj), 1000)
-// 2
-```
-
-#### 2.2.setInterval()
-
-`setInterval`函数的用法与`setTimeout`完全一致，区别仅仅在于`setInterval`指定某个任务每隔一段时间就执行一次，也就是无限次的定时执行。
-
-```javascript
-var i = 1
-var timer = setInterval(function() {
-  console.log(2);
-}, 1000)
-```
-
-上面代码中，每隔1000毫秒就输出一个2，会无限运行下去，直到关闭当前窗口。
-
-与`setTimeout`一样，除了前两个参数，`setInterval`方法还可以接受更多的参数，它们会传入回调函数。
-
-下面是一个通过`setInterval`方法实现网页动画的例子。
-
-```javascript
-var div = document.getElementById('someDiv');
-var opacity = 1;
-var fader = setInterval(function() {
-  opacity -= 0.1;
-  if (opacity >= 0) {
-    div.style.opacity = opacity;
-  } else {
-    clearInterval(fader);
-  }
-}, 100);
-```
-
-上面代码每隔100毫秒，设置一次div元素的透明度，直至其完全透明为止。
-
-`setInterval`的一个常见用途是实现轮询。下面是一个轮询 `URL` 的 `Hash` 值是否发生变化的例子。
-
-```javascript
-var hash = window.location.hash;
-var hashWatcher = setInterval(function() {
-  if (window.location.hash != hash) {
-    updatePage();
-  }
-}, 1000);
-```
-
-`setInterval`指定的是“开始执行”之间的间隔，并不考虑每次任务执行本身所消耗的时间。因此实际上，两次执行之间的间隔会小于指定的时间。比如，`setInterval`指定每 100ms 执行一次，每次执行需要 5ms，那么第一次执行结束后95毫秒，第二次执行就会开始。如果某次执行耗时特别长，比如需要105毫秒，那么它结束后，下一次执行就会立即开始。
-
-为了确保两次执行之间有固定的间隔，可以不用`setInterval`，而是每次执行结束后，使用`setTimeout`指定下一次执行的具体时间。
-
-```javascript
-var i = 1;
-var timer = setTimeout(function f() {
-  // ...
-  timer = setTimeout(f, 2000);
-}, 2000);
-```
-
-上面代码可以确保，下一次执行总是在本次执行结束之后的2000毫秒开始。
-
-#### 2.3.clearTimeout()，clearInterval()
-
-`setTimeout`和`setInterval`函数，都返回一个整数值，表示计数器编号。将该整数传入`clearTimeout`和`clearInterval`函数，就可以取消对应的定时器。
-
-```javascript
-var id1 = setTimeout(f, 1000);
-var id2 = setInterval(f, 1000);
-
-clearTimeout(id1);
-clearInterval(id2);
-```
-
-上面代码中，回调函数f不会再执行了，因为两个定时器都被取消了。
-
-`setTimeout`和`setInterval`返回的整数值是连续的，也就是说，第二个`setTimeout`方法返回的整数值，将比第一个的整数值大1。
-
-```javascript
-function f() {}
-setTimeout(f, 1000) // 10
-setTimeout(f, 1000) // 11
-setTimeout(f, 1000) // 12
-```
-
-上面代码中，连续调用三次`setTimeout`，返回值都比上一次大了1。
-
-利用这一点，可以写一个函数，取消当前所有的`setTimeout`定时器。
-
-```javascript
-(function() {
-  var gid = setInterval(clearAllTimeouts, 0);
-
-  function clearAllTimeouts() {
-    var id = setTimeout(function() {}, 0);
-    while (id > 0) {
-      if (id !== gid) {
-        clearTimeout(id);
-      }
-      id--;
+var obj = Object.defineProperties(
+  {},
+  {
+    p1: { value: 123, enumerable: true },
+    p2: { value: "abc", enumerable: true },
+    p3: {
+      get: function() {
+        return this.p1 + this.p2;
+      },
+      enumerable: true,
+      configurable: true
     }
   }
-})();
+);
+
+obj.p1; // 123
+obj.p2; // "abc"
+obj.p3; // "123abc"
 ```
 
-上面代码中，先调用`setTimeout`，得到一个计算器编号，然后把编号比它小的计数器全部取消。
+上面代码中，`Object.defineProperties`同时定义了 obj 对象的三个属性。其中，p3 属性定义了取值函数`get`，即每次读取该属性，都会调用这个取值函数。
 
-#### 2.4.实例：debounce 函数
-
-有时，我们不希望回调函数被频繁调用。比如，用户填入网页输入框的内容，希望通过 Ajax 方法传回服务器，jQuery 的写法如下。
-
-`$('textarea').on('keydown', ajaxAction);`
-
-这样写有一个很大的缺点，就是如果用户连续击键，就会连续触发`keydown`事件，造成大量的 Ajax 通信。这是不必要的，而且很可能产生性能问题。
-
-正确的做法应该是，设置一个门槛值，表示两次 Ajax 通信的最小间隔时间。如果在间隔时间内，发生新的`keydown`事件，则不触发 Ajax 通信，并且重新开始计时。如果过了指定时间，没有发生新的`keydown`事件，再将数据发送出去。
-
-这种做法叫做**防抖动（debounce）**。假定两次 Ajax 通信的间隔不得小于2500毫秒，上面的代码可以改写成下面这样。
+> 注意，一旦定义了取值函数`get`（或存值函数`set`），就不能将`writable`属性设为 true，或者同时定义`value`属性，否则会报错。
 
 ```javascript
-$('textarea').on('keydown', debounce(ajaxAction, 2500));
-
-function debounce(fn, delay){
-  var timer = null; // 声明计时器
-  return function() {
-    var context = this;
-    var args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      fn.apply(context, args);
-    }, delay);
-  };
-}
-```
-
-上面代码中，只要在2500毫秒之内，用户再次击键，就会取消上一次的定时器，然后再新建一个定时器。这样就保证了回调函数之间的调用间隔，至少是2500毫秒。
-
-#### 2.5.运行机制
-
-`setTimeout`和`setInterval`的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间。如果到了，就执行对应的代码；如果不到，就继续等待。
-
-这意味着，`setTimeout`和`setInterval`指定的回调函数，必须等到本轮事件循环的所有同步任务都执行完，才会开始执行。由于前面的任务到底需要多少时间执行完，是不确定的，所以没有办法保证，`setTimeout`和`setInterval`指定的任务，一定会按照预定时间执行。
-
-```javascript
-setTimeout(someTask, 100);
-veryLongTask();
-```
-
-上面代码的`setTimeout`，指定100毫秒以后运行一个任务。但是，如果后面的veryLongTask函数（同步任务）运行时间非常长，过了100毫秒还无法结束，那么被推迟运行的`someTask`就只有等着，等到veryLongTask运行结束，才轮到它执行。
-
-再看一个setInterval的例子。
-
-```javascript
-setInterval(function () {
-  console.log(2);
-}, 1000);
-
-sleep(3000);
-```
-
-上面代码中，`setInterval`要求每隔1000毫秒，就输出一个2。但是，紧接着的sleep语句需要3000毫秒才能完成，那么`setInterval`就必须推迟到3000毫秒之后才开始生效。注意，生效后`setInterval`不会产生累积效应，即不会一下子输出三个2，而是只会输出一个2。
-
-#### 2.6.setTimeout(f, 0)
-
-##### 2.6.1 含义
-
-`setTimeout`的作用是将代码推迟到指定时间执行，如果指定时间为0，即`setTimeout(f, 0)`，那么会立刻执行吗？
-
-答案是不会。因为上一节说过，必须要等到当前脚本的同步任务，全部处理完以后，才会执行`setTimeout`指定的回调函数f。也就是说，`setTimeout(f, 0)`会在下一轮事件循环一开始就执行。
-
-```javascript
-setTimeout(function () {
-  console.log(1);
-}, 0);
-console.log(2);
-// 2
-// 1
-```
-
-上面代码先输出2，再输出1。因为2是同步任务，在本轮事件循环执行，而1是下一轮事件循环执行。
-
-总之，`setTimeout(f, 0)`这种写法的目的是，尽可能早地执行f，但是并不能保证立刻就执行f。
-
-##### 2.6.2 应用
-
-`setTimeout(f, 0)`有几个非常重要的用途。它的一大应用是，可以调整事件的发生顺序。比如，网页开发中，某个事件先发生在子元素，然后冒泡到父元素，即子元素的事件回调函数，会早于父元素的事件回调函数触发。如果，想让父元素的事件回调函数先发生，就要用到`setTimeout(f, 0)`。
-
-```javascript
-// HTML 代码如下
-// <input type="button" id="myButton" value="click">
-
-var input = document.getElementById('myButton');
-
-input.onclick = function A() {
-  setTimeout(function B() {
-    input.value +=' input';
-  }, 0)
-};
-
-document.body.onclick = function C() {
-  input.value += ' body'
-};
-```
-
-上面代码在点击按钮后，先触发回调函数A，然后触发函数C。函数A中，`setTimeout`将函数B推迟到下一轮事件循环执行，这样就起到了，先触发父元素的回调函数C的目的了。
-
-另一个应用是，用户自定义的回调函数，通常在浏览器的默认动作之前触发。比如，用户在输入框输入文本，`keypress`事件会在浏览器接收文本之前触发。因此，下面的回调函数是达不到目的的。
-
-```javascript
-// HTML 代码如下
-// <input type="text" id="input-box">
-
-document.getElementById('input-box').onkeypress = function (event) {
-  this.value = this.value.toUpperCase();
-}
-```
-
-上面代码想在用户每次输入文本后，立即将字符转为大写。但是实际上，它只能将本次输入前的字符转为大写，因为浏览器此时还没接收到新的文本，所以`this.value`取不到最新输入的那个字符。只有用`setTimeout`改写，上面的代码才能发挥作用。
-
-```javascript
-document.getElementById('input-box').onkeypress = function() {
-  var self = this;
-  setTimeout(function() {
-    self.value = self.value.toUpperCase();
-  }, 0);
-}
-```
-
-上面代码将代码放入`setTimeout`之中，就能使得它在浏览器接收到文本之后触发。
-
-由于`setTimeout(f, 0)`实际上意味着，将任务放到浏览器最早可得的空闲时段执行，所以那些计算量大、耗时长的任务，常常会被放到几个小部分，分别放到`setTimeout(f, 0)`里面执行。
-
-```javascript
-var div = document.getElementsByTagName('div')[0];
-
-// 写法一
-for (var i = 0xA00000; i < 0xFFFFFF; i++) {
-  div.style.backgroundColor = '#' + i.toString(16);
-}
-
-// 写法二
-var timer;
-var i=0x100000;
-
-function func() {
-  timer = setTimeout(func, 0);
-  div.style.backgroundColor = '#' + i.toString(16);
-  if (i++ == 0xFFFFFF) clearTimeout(timer);
-}
-
-timer = setTimeout(func, 0);
-```
-
-上面代码有两种写法，都是改变一个网页元素的背景色。写法一会造成浏览器“堵塞”，因为 JavaScript 执行速度远高于 DOM，会造成大量 DOM 操作“堆积”，而写法二就不会，这就是`setTimeout(f, 0)`的好处。
-
-另一个使用这种技巧的例子是代码高亮的处理。如果代码块很大，一次性处理，可能会对性能造成很大的压力，那么将其分成一个个小块，一次处理一块，比如写成`setTimeout(highlightNext, 50)`的样子，性能压力就会减轻。
-
-### 3.Promise 对象
-
-#### 3.1.概述
-
-`Promise` 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到**代理作用（proxy）**，充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。`Promise` 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。
-
-首先，`Promise` 是一个对象，也是一个构造函数。
-
-```javascript
-function f1(resolve, reject) {
-  // 异步代码...
-}
-
-var p1 = new Promise(f1);
-```
-
-上面代码中，`Promise`构造函数接受一个回调函数f1作为参数，f1里面是异步操作的代码。然后，返回的p1就是一个 `Promise` 实例。
-
-`Promise` 的设计思想是，所有异步任务都返回一个 `Promise` 实例。`Promise` 实例有一个`then`方法，用来指定下一步的回调函数。
-
-```javascript
-var p1 = new Promise(f1);
-p1.then(f2);
-```
-
-上面代码中，f1的异步操作执行完成，就会执行f2。
-
-传统的写法可能需要把f2作为回调函数传入f1，比如写成f1(f2)，异步操作完成后，在f1内部调用f2。`Promise` 使得f1和f2变成了链式写法。不仅改善了可读性，而且对于多层嵌套的回调函数尤其方便。
-
-```javascript
-// 传统写法
-step1(function (value1) {
-  step2(value1, function(value2) {
-    step3(value2, function(value3) {
-      step4(value3, function(value4) {
-        // ...
-      });
-    });
-  });
-});
-
-// Promise 的写法
-(new Promise(step1))
-  .then(step2)
-  .then(step3)
-  .then(step4);
-```
-
-从上面代码可以看到，采用 `Promises` 以后，程序流程变得非常清楚，十分易读。
-
-总的来说，传统的回调函数写法使得代码混成一团，变得横向发展而不是向下发展。`Promise` 就是解决这个问题，使得异步流程可以写成同步流程。
-
-`Promise` 原本只是社区提出的一个构想，一些函数库率先实现了这个功能。ECMAScript 6 将其写入语言标准，目前 JavaScript 原生支持 `Promise` 对象。
-
-#### 3.2.Promise 对象的状态
-
-`Promise` 对象通过自身的状态，来控制异步操作。`Promise` 实例具有三种状态。
-
-- --
-- 异步操作未完成（pending）
-- 异步操作成功（fulfilled）
-- 异步操作失败（rejected）
-- --
-
-上面三种状态里面，fulfilled和rejected合在一起称为**resolved**（已定型）。
-
-这三种的状态的变化途径只有两种。
-
-- 从“未完成”到“成功”
-- 从“未完成”到“失败”
-
-一旦状态发生变化，就凝固了，不会再有新的状态变化。这也是 `Promise` 这个名字的由来，它的英语意思是“承诺”，一旦承诺成效，就不得再改变了。这也意味着，`Promise` 实例的状态变化只可能发生一次。
-
-因此，`Promise` 的最终结果只有两种。
-
-- --
-- 异步操作成功，`Promise` 实例传回一个值（value），状态变为fulfilled。
-- 异步操作失败，`Promise` 实例抛出一个错误（error），状态变为rejected。
-- --
-
-#### 3.3.Promise 构造函数
-
-JavaScript 提供原生的`Promise`构造函数，用来生成 `Promise` 实例。
-
-```javascript
-var promise = new Promise(function (resolve, reject) {
-  // ...
-
-  if (/* 异步操作成功 */){
-    resolve(value);
-  } else { /* 异步操作失败 */
-    reject(new Error());
+var obj = {};
+
+Object.defineProperty(obj, "p", {
+  value: 123,
+  get: function() {
+    return 456;
   }
 });
-```
-
-上面代码中，`Promise`构造函数接受一个函数作为参数，该函数的两个参数分别是`resolve`和`reject`。它们是两个函数，由 JavaScript 引擎提供，不用自己实现。
-
-`resolve`函数的作用是，将`Promise`实例的状态从“未完成”变为“成功”（即从pending变为fulfilled），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去。
-
-`reject`函数的作用是，将`Promise`实例的状态从“未完成”变为“失败”（即从pending变为rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。
-
-下面是一个例子。
-
-```javascript
-function timeout(ms) {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, ms, 'done');
-  });
-}
-
-timeout(100)
-```
-
-上面代码中，timeout(100)返回一个 `Promise` 实例。100毫秒以后，该实例的状态会变为fulfilled。
-
-#### 3.4.Promise.prototype.then()
-
-`Promise` 实例的`then`方法，用来添加回调函数。
-
-`then`方法可以接受两个回调函数，第一个是异步操作成功时（变为fulfilled状态）时的回调函数，第二个是异步操作失败（变为rejected）时的回调函数（该参数可以省略）。一旦状态改变，就调用相应的回调函数。
-
-```javascript
-var p1 = new Promise(function (resolve, reject) {
-  resolve('成功');
-});
-p1.then(console.log, console.error);
-// "成功"
-
-var p2 = new Promise(function (resolve, reject) {
-  reject(new Error('失败'));
-});
-p2.then(console.log, console.error);
-// Error: 失败
-```
-
-上面代码中，p1和p2都是`Promise` 实例，它们的`then`方法绑定两个回调函数：成功时的回调函数`console.log`，失败时的回调函数`console.error`（可以省略）。p1的状态变为成功，p2的状态变为失败，对应的回调函数会收到异步操作传回的值，然后在控制台输出。
-
-`then`方法可以链式使用。
-
-```javascript
-p1
-  .then(step1)
-  .then(step2)
-  .then(step3)
-  .then(
-    console.log,
-    console.error
-  );
-```
-
-上面代码中，p1后面有四个then，意味依次有四个回调函数。只要前一步的状态变为fulfilled，就会依次执行紧跟在后面的回调函数。
-
-最后一个`then`方法，回调函数是`console.log`和`console.error`，用法上有一点重要的区别。`console.log`只显示step3的返回值，而`console.error`可以显示p1、step1、step2、step3之中任意一个发生的错误。举例来说，如果step1的状态变为rejected，那么step2和step3都不会执行了（因为它们是resolved的回调函数）。`Promise` 开始寻找，接下来第一个为rejected的回调函数，在上面代码中是`console.error`。这就是说，`Promise` 对象的报错具有传递性。
-
-#### 3.5.then() 用法辨析
-
-`Promise` 的用法，简单说就是一句话：使用`then`方法添加回调函数。但是，不同的写法有一些细微的差别，请看下面四种写法，它们的差别在哪里？
-
-```javascript
-// 写法一
-f1().then(function () {
-  return f2();
-});
-
-// 写法二
-f1().then(function () {
-  f2();
-});
-
-// 写法三
-f1().then(f2());
-
-// 写法四
-f1().then(f2);
-```
-
-写法一的f3回调函数的参数，是f2函数的运行结果。
-
-```javascript
-f1().then(function () {
-  return f2();
-}).then(f3);
-```
-
-写法二的f3回调函数的参数是`undefined`。
-
-```javascript
-f1().then(function () {
-  f2();
-  return;
-}).then(f3);
-```
-
-写法三的f3回调函数的参数，是f2函数返回的函数的运行结果。
-
-```javascript
-f1().then(f2())
-  .then(f3);
-```
-
-写法四与写法一只有一个差别，那就是f2会接收到f1()返回的结果。
-
-```javascript
-f1().then(f2)
-  .then(f3);
-```
-
-#### 3.6.Promise 的实例
-
-##### 3.6.1 加载图片
-
-我们可以把图片的加载写成一个`Promise`对象。
-
-```javascript
-var preloadImage = function (path) {
-  return new Promise(function (resolve, reject) {
-    var image = new Image();
-    image.onload  = resolve;
-    image.onerror = reject;
-    image.src = path;
-  });
-};
-```
-
-##### 3.6.2 Ajax 操作
-
-Ajax 操作是典型的异步操作，传统上往往写成下面这样。
-
-```javascript
-function search(term, onload, onerror) {
-  var xhr, results, url;
-  url = 'http://example.com/search?q=' + term;
-
-  xhr = new XMLHttpRequest();
-  xhr.open('GET', url, true);
-
-  xhr.onload = function (e) {
-    if (this.status === 200) {
-      results = JSON.parse(this.responseText);
-      onload(results);
-    }
-  };
-  xhr.onerror = function (e) {
-    onerror(e);
-  };
-
-  xhr.send();
-}
-
-search('Hello World', console.log, console.error);
-```
-
-如果使用 `Promise` 对象，就可以写成下面这样。
-
-```javascript
-function search(term) {
-  var url = 'http://example.com/search?q=' + term;
-  var xhr = new XMLHttpRequest();
-  var result;
-
-  var p = new Promise(function (resolve, reject) {
-    xhr.open('GET', url, true);
-    xhr.onload = function (e) {
-      if (this.status === 200) {
-        result = JSON.parse(this.responseText);
-        resolve(result);
-      }
-    };
-    xhr.onerror = function (e) {
-      reject(e);
-    };
-    xhr.send();
-  });
-
-  return p;
-}
-
-search('Hello World').then(console.log, console.error);
-```
-
-加载图片的例子，也可以用 Ajax 操作完成。
-
-```javascript
-function imgLoad(url) {
-  return new Promise(function (resolve, reject) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url);
-    request.responseType = 'blob';
-    request.onload = function () {
-      if (request.status === 200) {
-        resolve(request.response);
-      } else {
-        reject(new Error('图片加载失败：' + request.statusText));
-      }
-    };
-    request.onerror = function () {
-      reject(new Error('发生网络错误'));
-    };
-    request.send();
-  });
-}
-```
-
-#### 3.7.小结
-
-`Promise` 的优点在于，让回调函数变成了规范的链式写法，程序流程可以看得很清楚。它有一整套接口，可以实现许多强大的功能，比如同时执行多个异步操作，等到它们的状态都改变以后，再执行一个回调函数；再比如，为多个回调函数中抛出的错误，统一指定处理方法等等。
-
-而且，`Promise` 还有一个传统写法没有的好处：它的状态一旦改变，无论何时查询，都能得到这个状态。这意味着，无论何时为 `Promise` 实例添加回调函数，该函数都能正确执行。所以，你不用担心是否错过了某个事件或信号。如果是传统写法，通过监听事件来执行回调函数，一旦错过了事件，再添加回调函数是不会执行的。
-
-`Promise` 的缺点是，编写的难度比传统写法高，而且阅读代码也不是一眼可以看懂。你只会看到一堆`then`，必须自己在`then`的回调函数里面理清逻辑。
-
-#### 3.8.微任务
-
-`Promise` 的回调函数属于异步任务，会在同步任务之后执行。
-
-```javascript
-new Promise(function (resolve, reject) {
-  resolve(1);
-}).then(console.log);
-
-console.log(2);
-// 2
-// 1
-```
-
-但是，`Promise` 的回调函数不是正常的异步任务，而是**微任务（microtask）**。它们的区别在于，正常任务追加到下一轮事件循环，微任务追加到本轮事件循环。这意味着，微任务的执行时间一定早于正常异步任务。
-
-```javascript
-setTimeout(function() {
-  console.log(1);
-}, 0);
-
-new Promise(function (resolve, reject) {
-  resolve(2);
-}).then(console.log);
-
-console.log(3);
-// 3
-// 2
-// 1
-```
-
-上面代码的输出结果是321。这说明`then`的回调函数的执行时间，早于`setTimeout(fn, 0)`。因为`then`是本轮事件循环执行，`setTimeout(fn, 0)`在下一轮事件循环开始时执行。
-
-### 4.严格模式
-
-除了正常的运行模式，JavaScript 还有第二种运行模式：**严格模式（strict mode）**。顾名思义，这种模式采用更加严格的 JavaScript 语法。
-
-同样的代码，在正常模式和严格模式中，可能会有不一样的运行结果。一些在正常模式下可以运行的语句，在严格模式下将不能运行。
-
-#### 4.1.设计目的
-
-早期的 JavaScript 语言有很多设计不合理的地方，但是为了兼容以前的代码，又不能改变老的语法，只能不断添加新的语法，引导程序员使用新语法。
-
-严格模式是从 ES5 进入标准的，主要目的有以下几个。
-
-- --
-- 明确禁止一些不合理、不严谨的语法，减少 JavaScript 语言的一些怪异行为。
-- 增加更多报错的场合，消除代码运行的一些不安全之处，保证代码运行的安全。
-- 提高编译器效率，增加运行速度。
-- 为未来新版本的 JavaScript 语法做好铺垫。
-- --
-
-总之，严格模式体现了 JavaScript 更合理、更安全、更严谨的发展方向。
-
-#### 4.2.启用方法
-
-进入严格模式的标志，是一行字符串`use strict`。
-
-`'use strict';`
-
-老版本的引擎会把它当作一行普通字符串，加以忽略。新版本的引擎就会进入严格模式。
-
-严格模式可以用于整个脚本，也可以只用于单个函数。
-
-1).整个脚本文件
-
-`use strict`放在脚本文件的第一行，整个脚本都将以严格模式运行。如果这行语句不在第一行就无效，整个脚本会以正常模式运行。(严格地说，只要前面不是产生实际运行结果的语句，`use strict`可以不在第一行，比如直接跟在一个空的分号后面，或者跟在注释后面。)
-
-```javascript
-<script>
-  'use strict';
-  console.log('这是严格模式');
-</script>
-
-<script>
-  console.log('这是正常模式');
-</script>
-```
-
-如果`use strict`写成下面这样，则不起作用，严格模式必须从代码一开始就生效。
-
-```javascript
-<script>
-  console.log('这是正常模式');
-  'use strict';
-</script>
-```
-
-2).单个函数
-
-`use strict`放在函数体的第一行，则整个函数以严格模式运行。
-
-```javascript
-function strict() {
-  'use strict';
-  return '这是严格模式';
-}
-
-function strict2() {
-  'use strict';
-  function f() {
-    return '这也是严格模式';
+// TypeError: Invalid property.
+// A property cannot both have accessors and be writable or have a value
+
+Object.defineProperty(obj, "p", {
+  writable: true,
+  get: function() {
+    return 456;
   }
-  return f();
-}
-
-function notStrict() {
-  return '这是正常模式';
-}
+});
+// TypeError: Invalid property descriptor.
+// Cannot both specify accessors and a value or writable attribute
 ```
 
-有时，需要把不同的脚本合并在一个文件里面。如果一个脚本是严格模式，另一个脚本不是，它们的合并就可能出错。严格模式的脚本在前，则合并后的脚本都是严格模式；如果正常模式的脚本在前，则合并后的脚本都是正常模式。这两种情况下，合并后的结果都是不正确的。这时可以考虑把整个脚本文件放在一个立即执行的匿名函数之中。
+`Object.defineProperty()`和`Object.defineProperties()`的第三个参数，是一个属性对象。它的`writable`、`configurable`、`enumerable`这三个属性的默认值都为 false。
 
 ```javascript
-(function () {
-  'use strict';
-  // some code here
-})();
+var obj = {};
+Object.defineProperty(obj, "foo", {});
+Object.getOwnPropertyDescriptor(obj, "foo");
+
+// {
+//   value: undefined,
+//   writable: false,
+//   enumerable: false,
+//   configurable: falsee
+// }
 ```
 
-#### 4.3.显式报错
+#### 9.5.Object.prototype.propertyIsEnumerable()
 
-严格模式使得 JavaScript 的语法变得更严格，更多的操作会显式报错。其中有些操作，在正常模式下只会默默地失败，不会报错。
-
-##### 4.3.1 只读属性不可写
-
-严格模式下，设置字符串的`length`属性，会报错。
+实例对象的`propertyIsEnumerable`方法返回一个布尔值，用来判断某个属性是否可遍历。
 
 ```javascript
-'use strict';
-'abc'.length = 5;
-// TypeError: Cannot assign to read only property 'length' of string 'abc'
+var obj = {};
+obj.p = 123;
+
+obj.propertyIsEnumerable("p"); // true
+obj.propertyIsEnumerable("toString"); // false
 ```
 
-上面代码报错，因为`length`是只读属性，严格模式下不可写。正常模式下，改变`length`属性是无效的，但不会报错。
+上面代码中，`obj.p`是可遍历的，而继承自原型对象的`obj.toString`属性是不可遍历的。
 
-严格模式下，对只读属性赋值，或者删除**不可配置（non-configurable）**属性都会报错。
+#### 9.6.元属性
+
+属性描述对象的各个属性称为“**元属性**”，因为它们可以看作是控制属性的属性。
+
+##### 9.6.1 value
+
+`value`属性是目标属性的值。
 
 ```javascript
-// 对只读属性赋值会报错
-'use strict';
-Object.defineProperty({}, 'a', {
+var obj = {};
+obj.p = 123;
+
+Object.getOwnPropertyDescriptor(obj, "p").value;
+// 123
+
+Object.defineProperty(obj, "p", { value: 246 });
+obj.p; // 246
+```
+
+##### 9.6.2 writable
+
+`writable`属性是一个布尔值，决定了目标属性的值是否可以被改变。
+
+```javascript
+var obj = {};
+
+Object.defineProperty(obj, "a", {
   value: 37,
   writable: false
 });
-obj.a = 123;
-// TypeError: Cannot assign to read only property 'a' of object #<Object>
 
-// 删除不可配置的属性会报错
-'use strict';
-var obj = Object.defineProperty({}, 'p', {
+obj.a; // 37
+obj.a = 25;
+obj.a; // 37
+```
+
+注意，正常模式下，对`writable`为 false 的属性赋值不会报错，只会默默失败。但是，严格模式下会报错，即使对 a 属性重新赋予一个同样的值。
+
+```javascript
+"use strict";
+var obj = {};
+
+Object.defineProperty(obj, "a", {
+  value: 37,
+  writable: false
+});
+
+obj.a = 37;
+// Uncaught TypeError: Cannot assign to read only property 'a' of object
+```
+
+如果原型对象的某个属性的`writable`为 false，那么子对象将无法自定义这个属性。
+
+```javascript
+var proto = Object.defineProperty({}, "foo", {
+  value: "a",
+  writable: false
+});
+
+var obj = Object.create(proto);
+
+obj.foo = "b";
+obj.foo; // 'a'
+```
+
+上面代码中，proto 是原型对象，它的 foo 属性不可写。obj 对象继承 proto，也不可以再自定义这个属性了。如果是严格模式，这样做还会抛出一个错误。
+
+但是，有一个规避方法，就是通过覆盖属性描述对象，绕过这个限制。原因是这种情况下，原型链会被完全忽视。
+
+```javascript
+var proto = Object.defineProperty({}, "foo", {
+  value: "a",
+  writable: false
+});
+
+var obj = Object.create(proto);
+Object.defineProperty(obj, "foo", {
+  value: "b"
+});
+
+obj.foo; // "b"
+```
+
+##### 9.6.3 enumerable
+
+`enumerable`（可遍历性）返回一个布尔值，表示目标属性是否可遍历。
+
+JavaScript 的早期版本，`for...in`循环是基于`in`运算符的。我们知道，`in`运算符不管某个属性是对象自身的还是继承的，都会返回 true。
+
+```javascript
+var obj = {};
+"toString" in obj; // true
+```
+
+这显然不太合理，后来就引入了“可遍历性”这个概念。只有可遍历的属性，才会被`for...in`循环遍历，同时还规定`toString`这一类实例对象继承的原生属性，都是不可遍历的，这样就保证了`for...in`循环的可用性。
+
+具体来说，如果一个属性的`enumerable`为 false，下面三个操作不会取到该属性。
+
+---
+
+- `for..in`循环
+- `Object.keys`方法
+- `JSON.stringify`方法
+
+---
+
+因此，`enumerable`可以用来设置“秘密”属性。
+
+```javascript
+var obj = {};
+
+Object.defineProperty(obj, "x", {
+  value: 123,
+  enumerable: false
+});
+
+obj.x; // 123
+
+let count = 0;
+for (var key in obj) {
+  count++;
+  console.log("key " + "[" + key + "]");
+}
+
+console.log(count); // 0
+// 没有可遍历属性时，基本就是没有执行
+
+Object.keys(obj); // []
+JSON.stringify(obj); // "{}"
+```
+
+上面代码中，obj.x 属性的`enumerable`为 false，所以一般的遍历操作都无法获取该属性，使得它有点像“秘密”属性，但不是真正的私有属性，还是可以直接获取它的值。
+
+> 注意，获取可遍历属性中，`for...in`循环包括继承的属性，`Object.keys`方法不包括继承的属性。如果需要获取对象自身的所有属性，不管是否可遍历，可以使用`Object.getOwnPropertyNames`方法。
+
+另外，`JSON.stringify`方法会排除`enumerable`为 false 的属性，有时可以利用这一点。如果对象的 `JSON` 格式输出要排除某些属性，就可以把这些属性的`enumerable`设为 false。
+
+##### 9.6.4 configurable
+
+`configurable`(可配置性）返回一个布尔值，决定了是否可以修改属性描述对象。也就是说，`configurable`为 false 时，`writable`、`enumerable`和`configurable`都不能被修改了。
+
+```javascript
+var obj = Object.defineProperty({}, "p", {
+  value: 1,
+  writable: false,
+  enumerable: false,
+  configurable: false
+});
+
+Object.defineProperty(obj, "p", { value: 2 });
+// TypeError: Cannot redefine property: p
+
+Object.defineProperty(obj, "p", { writable: true });
+// TypeError: Cannot redefine property: p
+
+Object.defineProperty(obj, "p", { enumerable: true });
+// TypeError: Cannot redefine property: p
+
+Object.defineProperty(obj, "p", { configurable: true });
+// TypeError: Cannot redefine property: p
+```
+
+注意，`writable`只有在 false 改为 true 会报错，true 改为 false 是允许的。
+
+```javascript
+var obj = Object.defineProperty({}, "p", {
+  writable: true,
+  configurable: false
+});
+
+Object.defineProperty(obj, "p", { writable: false });
+// 修改成功
+```
+
+至于`value`，只要`writable`和`configurable`有一个为 true，就允许改动。
+
+```javascript
+var o1 = Object.defineProperty({}, "p", {
+  value: 1,
+  writable: true,
+  configurable: false
+});
+
+Object.defineProperty(o1, "p", { value: 2 });
+// 修改成功
+
+var o2 = Object.defineProperty({}, "p", {
+  value: 1,
+  writable: false,
+  configurable: true
+});
+
+Object.defineProperty(o2, "p", { value: 2 });
+// 修改成功
+```
+
+另外，`configurable`为 false 时，直接目标属性赋值，不报错，但不会成功。如果是严格模式，还会报错。
+
+```javascript
+var obj = Object.defineProperty({}, "p", {
   value: 1,
   configurable: false
 });
-delete obj.p
-// TypeError: Cannot delete property 'p' of #<Object>
+
+obj.p = 2;
+obj.p; // 1
 ```
 
-##### 4.3.2 只设置了取值器的属性不可写
-
-严格模式下，对一个只有取值器、没有存值器的属性赋值，会报错。
+可配置性决定了目标属性是否可以被删除（`delete`）。
 
 ```javascript
-'use strict';
-var obj = {
-  get v() { return 1; }
-};
-obj.v = 2;
-// Uncaught TypeError: Cannot set property v of #<Object> which has only a getter
+var obj = Object.defineProperties(
+  {},
+  {
+    p1: { value: 1, configurable: true },
+    p2: { value: 2, configurable: false }
+  }
+);
+
+delete obj.p1; // true
+delete obj.p2; // false
+
+obj.p1; // undefined
+obj.p2; // 2
 ```
 
-##### 4.3.3 禁止扩展的对象不可扩展
+#### 9.7.存取器
 
-严格模式下，对禁止扩展的对象添加新属性，会报错。
+除了直接定义以外，属性还可以用**存取器（accessor）**定义。其中，存值函数称为`setter`，使用属性描述对象的`set`属性；取值函数称为`getter`，使用属性描述对象的`get`属性。
 
-```javascript
-'use strict';
-var obj = {};
-Object.preventExtensions(obj);
-obj.v = 1;
-// Uncaught TypeError: Cannot add property v, object is not extensible
-```
-
-##### 4.3.4 eval、arguments 不可用作标识名
-
-严格模式下，使用`eval`或者`arguments`作为标识名，将会报错。下面的语句都会报错。
+一旦对目标属性定义了存取器，那么存取的时候，都将执行对应的函数。利用这个功能，可以实现许多高级特性，比如某个属性禁止赋值。
 
 ```javascript
-'use strict';
-var eval = 17;
-var arguments = 17;
-var obj = { set p(arguments) { } };
-try { } catch (arguments) { }
-function x(eval) { }
-function arguments() { }
-var y = function eval() { };
-var f = new Function('arguments', "'use strict'; return 17;");
-// SyntaxError: Unexpected eval or arguments in strict mode
-```
-
-##### 4.3.5 函数不能有重名的参数
-
-正常模式下，如果函数有多个重名的参数，可以用`arguments[i]`读取。严格模式下，这属于语法错误。
-
-```javascript
-function f(a, a, b) {
-  'use strict';
-  return a + b;
-}
-// Uncaught SyntaxError: Duplicate parameter name not allowed in this context
-```
-
-##### 4.3.6 禁止八进制的前缀0表示法
-
-正常模式下，整数的第一位如果是0，表示这是八进制数，比如0100等于十进制的64。严格模式禁止这种表示法，整数第一位为0，将报错。
-
-```javascript
-'use strict';
-var n = 0100;
-// Uncaught SyntaxError: Octal literals are not allowed in strict mode.
-```
-
-#### 4.4.增强的安全措施
-
-严格模式增强了安全保护，从语法上防止了一些不小心会出现的错误。
-
-##### 4.4.1 全局变量显式声明
-
-正常模式中，如果一个变量没有声明就赋值，默认是全局变量。严格模式禁止这种用法，全局变量必须显式声明。
-
-```javascript
-'use strict';
-
-v = 1; // 报错，v未声明
-
-for (i = 0; i < 2; i++) { // 报错，i 未声明
-  // ...
-}
-
-function f() {
-  x = 123;
-}
-f() // 报错，未声明就创建一个全局变量
-```
-
-因此，严格模式下，变量都必须先声明，然后再使用。
-
-##### 4.4.2 禁止 this 关键字指向全局对象
-
-正常模式下，函数内部的`this`可能会指向全局对象，严格模式禁止这种用法，避免无意间创造全局变量。
-
-```javascript
-// 正常模式
-function f() {
-  console.log(this === window);
-}
-f() // true
-
-// 严格模式
-function f() {
-  'use strict';
-  console.log(this === undefined);
-}
-f() // true
-```
-
-这种限制对于构造函数尤其有用。使用构造函数时，有时忘了加`new`，这时`this`不再指向全局对象，而是报错。
-
-```javascript
-function f() {
-  'use strict';
-  this.a = 1;
-};
-
-f();// 报错，this 未定义
-```
-
-严格模式下，函数直接调用时（不使用`new`调用），函数内部的`this`表示`undefined`（未定义），因此可以用`call`、`apply`和`bind`方法，将任意值绑定在`this`上面。正常模式下，`this`指向全局对象，如果绑定的值是非对象，将被自动转为对象再绑定上去，而`null`和`undefined`这两个无法转成对象的值，将被忽略。
-
-```javascript
-// 正常模式
-function fun() {
-  return this;
-}
-
-fun() // window
-fun.call(2) // Number {2}
-fun.call(true) // Boolean {true}
-fun.call(null) // window
-fun.call(undefined) // window
-
-// 严格模式
-'use strict';
-function fun() {
-  return this;
-}
-
-fun() //undefined
-fun.call(2) // 2
-fun.call(true) // true
-fun.call(null) // null
-fun.call(undefined) // undefined
-```
-
-##### 4.4.3 禁止使用 fn.callee、fn.caller
-
-函数内部不得使用`fn.callee`、`fn.caller`，否则会报错。这意味着不能在函数内部得到调用栈了。
-
-```javascript
-function f1() {
-  'use strict';
-  f1.caller;    // 报错
-  f1.arguments; // 报错
-}
-
-f1();
-```
-
-##### 4.4.4 禁止使用 arguments.callee、arguments.caller
-
-`arguments.callee`和`arguments.caller`是两个历史遗留的变量，从来没有标准化过，现在已经取消了。正常模式下调用它们没有什么作用，但是不会报错。严格模式明确规定，函数内部使用`arguments.callee`、`arguments.caller`将会报错。
-
-##### 4.4.5 禁止删除变量
-
-严格模式下无法删除变量，如果使用`delete`命令删除一个变量，会报错。只有对象的属性，且属性的描述对象的`configurable`属性设置为true，才能被`delete`命令删除。
-
-```javascript
-'use strict';
-var x;
-delete x; // 语法错误
-
-var obj = Object.create(null, {
-  x: {
-    value: 1,
-    configurable: true
+var obj = Object.defineProperty({}, "p", {
+  get: function() {
+    return "getter";
+  },
+  set: function(value) {
+    console.log("setter: " + value);
   }
 });
-delete obj.x; // 删除成功
+
+obj.p; // "getter"
+obj.p = 123; // "setter: 123"
 ```
 
-#### 4.5.静态绑定
-
-JavaScript 语言的一个特点，就是允许“动态绑定”，即某些属性和方法到底属于哪一个对象，不是在编译时确定的，而是在**运行时（runtime）**确定的。
-
-严格模式对动态绑定做了一些限制。某些情况下，只允许静态绑定。也就是说，属性和方法到底归属哪个对象，必须在编译阶段就确定。这样做有利于编译效率的提高，也使得代码更容易阅读，更少出现意外。
-
-具体来说，涉及以下几个方面。
-
-##### 4.5.1 禁止使用 with 语句
-
-严格模式下，使用`with`语句将报错。因为`with`语句无法在编译时就确定，某个属性到底归属哪个对象，从而影响了编译效果。
+JavaScript 还提供了存取器的另一种写法。
 
 ```javascript
-'use strict';
-var v  = 1;
-var obj = {};
-
-with (obj) {
-  v = 2;
-}
-// Uncaught SyntaxError: Strict mode code may not include a with statement
+var obj = {
+  get p() {
+    return "getter";
+  },
+  set p(value) {
+    console.log("setter: " + value);
+  }
+};
 ```
 
-##### 4.5.2 创设 eval 作用域
+上面的写法与定义属性描述对象是等价的，而且使用更广泛。
 
-正常模式下，JavaScript 语言有两种变量作用域：全局作用域和函数作用域。严格模式创设了第三种作用域：`eval`作用域。
+> 注意，取值函数`get`不能接受参数，存值函数`set`只能接受一个参数（即属性的值）。
 
-正常模式下，`eval`语句的作用域，取决于它处于全局作用域，还是函数作用域。严格模式下，`eval`语句本身就是一个作用域，不再能够在其所运行的作用域创设新的变量了，也就是说，`eval`所生成的变量只能用于`eval`内部。
+存取器往往用于，属性的值依赖对象内部数据的场合。
 
 ```javascript
-(function () {
-  'use strict';
-  var x = 2;
-  console.log(eval('var x = 5; x')) // 5
-  console.log(x) // 2
-})()
+var obj = {
+  $n: 5,
+  get next() {
+    return this.$n;
+  },
+  set next(n) {
+    if (n >= this.$n) {
+      this.$n = n;
+    } else {
+      throw new Error("新的值必须大于当前值");
+    }
+  }
+};
+
+obj.next; // 5
+
+obj.next = 10;
+obj.next; // 10
+
+obj.next = 5;
+// Uncaught Error: 新的值必须大于当前值
 ```
 
-上面代码中，由于`eval`语句内部是一个独立作用域，所以内部的变量x不会泄露到外部。
+#### 9.8.对象的拷贝
 
-注意，如果希望`eval`语句也使用严格模式，有两种方式。
+有时，我们需要将一个对象的所有属性，拷贝到另一个对象，可以用下面的方法实现。
 
 ```javascript
-// 方式一
-function f1(str){
-  'use strict';
-  return eval(str);
-}
-f1('undeclared_variable = 1'); // 报错
+var extend = function(to, from) {
+  for (var property in from) {
+    to[property] = from[property];
+  }
+  return to;
+};
 
-// 方式二
-function f2(str){
-  return eval(str);
-}
-f2('"use strict";undeclared_variable = 1')  // 报错
+extend(
+  {},
+  {
+    a: 1
+  }
+);
+// {a: 1}
 ```
 
-上面两种写法，`eval`内部使用的都是严格模式。
-
-##### 4.5.3 arguments 不再追踪参数的变化
-
-变量`arguments`代表函数的参数。严格模式下，函数内部改变参数与arguments的联系被切断了，两者不再存在联动关系。
+上面这个方法的问题在于，如果遇到存取器定义的属性，会只拷贝值。
 
 ```javascript
-function f(a) {
-  a = 2;
-  return [a, arguments[0]];
-}
-f(1); // 正常模式为[2, 2]
-
-function f(a) {
-  'use strict';
-  a = 2;
-  return [a, arguments[0]];
-}
-f(1); // 严格模式为[2, 1]
+extend(
+  {},
+  {
+    get a() {
+      return 1;
+    }
+  }
+);
+// {a: 1}
 ```
 
-#### 4.6.向下一个版本的 JavaScript 过渡
-
-JavaScript语言的下一个版本是 ECMAScript 6，为了平稳过渡，严格模式引入了一些 ES6 语法。
-
-##### 4.6.1 非函数代码块不得声明函数
-
-ES6 会引入块级作用域。为了与新版本接轨，ES5 的严格模式只允许在全局作用域或函数作用域声明函数。也就是说，不允许在非函数的代码块内声明函数。
+为了解决这个问题，我们可以通过`Object.defineProperty`方法来拷贝属性。
 
 ```javascript
-'use strict';
-if (true) {
-  function f1() { } // 语法错误
-}
+var extend = function(to, from) {
+  for (var property in from) {
+    if (!from.hasOwnProperty(property)) continue;
+    //将私有属性 “定义” to对象上
+    Object.defineProperty(
+      to,
+      property,
+      Object.getOwnPropertyDescriptor(from, property)
+    );
+  }
 
-for (var i = 0; i < 5; i++) {
-  function f2() { } // 语法错误
+  return to;
+};
+
+//Object.keys
+var extend = function(to, from) {
+  Object.keys(from).forEach(item => {
+    Object.defineProperty(
+      to,
+      item,
+      Object.getOwnPropertyDescriptor(from, item)
+    );
+  });
+
+  return to;
+};
+
+extend(
+  {},
+  {
+    get a() {
+      return 1;
+    }
+  }
+);
+// { get a(){ return 1 } })
+```
+
+> 注意，`hasOwnProperty`那一行用来过滤掉继承的属性，否则会报错，因为`Object.getOwnPropertyDescriptor`读不到继承属性的属性描述对象。
+
+#### 9.9.控制对象状态
+
+有时需要冻结对象的读写状态，防止对象被改变。JavaScript 提供了三种冻结方法，最弱的一种是`Object.preventExtensions`，其次是`Object.seal`，最强的是`Object.freeze`。
+
+##### 9.9.1 Object.preventExtensions()
+
+`Object.preventExtensions`方法可以使得一个对象无法再添加新的属性。
+
+```javascript
+var obj = new Object();
+Object.preventExtensions(obj);
+
+Object.defineProperty(obj, "p", {
+  value: "hello"
+});
+// TypeError: Cannot define property:p, object is not extensible.
+
+//不报错但无效；严格模式报错
+obj.p = 1;
+obj.p; // undefined
+```
+
+##### 9.9.2 Object.isExtensible()
+
+`Object.isExtensible`方法用于检查一个对象是否使用了`Object.preventExtensions`方法。也就是说，检查是否可以为一个对象添加属性。
+
+```javascript
+var obj = new Object();
+
+Object.isExtensible(obj); // true
+Object.preventExtensions(obj);
+Object.isExtensible(obj); // false
+```
+
+##### 9.9.3 Object.seal()
+
+`Object.seal`方法使得一个对象既无法添加新属性，也无法删除旧属性。
+
+```javascript
+var obj = { p: "hello" };
+Object.seal(obj);
+
+delete obj.p;
+obj.p; // "hello"
+
+obj.x = "world";
+obj.x; // undefined
+```
+
+`Object.seal`实质是把属性描述对象的`configurable`属性设为 false，因此属性描述对象不再能改变了。
+
+```javascript
+var obj = {
+  p: "a"
+};
+
+// seal方法之前
+Object.getOwnPropertyDescriptor(obj, "p");
+// Object {
+//   value: "a",
+//   writable: true,
+//   enumerable: true,
+//   configurable: true
+// }
+
+Object.seal(obj);
+
+// seal方法之后
+Object.getOwnPropertyDescriptor(obj, "p");
+// Object {
+//   value: "a",
+//   writable: true,
+//   enumerable: true,
+//   configurable: false
+// }
+
+Object.defineProperty(obj, "p", {
+  enumerable: false
+});
+// TypeError: Cannot redefine property: p
+```
+
+上面代码中，使用`Object.seal`方法之后，属性描述对象的`configurable`属性就变成了 false，然后改变`enumerable`属性就会报错(将`writable`属性改为 false 不会报错)。
+
+`Object.seal`只是禁止新增或删除属性，并不影响修改某个属性的值。是因为此时`p`属性的可写性由`writable`决定。
+
+```javascript
+var obj = { p: "a" };
+Object.seal(obj);
+obj.p = "b";
+obj.p; // 'b'
+```
+
+##### 9.9.4 Object.isSealed()
+
+`Object.isSealed`方法用于检查一个对象是否使用了`Object.seal`方法。
+
+```javascript
+var obj = { p: "a" };
+
+Object.seal(obj);
+Object.isSealed(obj); // true
+```
+
+这时，`Object.isExtensible`方法也返回 false。
+
+```javascript
+var obj = { p: 'a' };
+
+Object.seal(obj);
+Object.isExtensible(obj)； // false
+```
+
+##### 9.9.5 Object.freeze()
+
+`Object.freeze`方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得这个对象实际上变成了常量。
+
+```javascript
+var obj = {
+  p: "hello"
+};
+
+Object.freeze(obj);
+
+//这些操作并不报错，只是默默地失败。如果在严格模式下，则会报错
+obj.p = "world";
+obj.p; // "hello"
+
+obj.t = "hello";
+obj.t; // undefined
+
+delete obj.p; // false
+obj.p; // "hello"
+```
+
+##### 9.9.6 Object.isFrozen()
+
+`Object.isFrozen`方法用于检查一个对象是否使用了`Object.freeze`方法。
+
+```javascript
+var obj = {
+  p: "hello"
+};
+
+Object.freeze(obj);
+Object.isFrozen(obj); // true
+```
+
+> 使用`Object.freeze`方法以后，`Object.isSealed`将会返回 true，`Object.isExtensible`返回 false。
+
+`Object.isFrozen`的一个用途是，确认某个对象没有被冻结后，再对它的属性赋值。
+
+```javascript
+var obj = {
+  p: "hello"
+};
+
+Object.freeze(obj);
+
+if (!Object.isFrozen(obj)) {
+  obj.p = "world";
 }
 ```
 
-注意，如果是 ES6 环境，上面的代码不会报错，因为 ES6 允许在代码块之中声明函数。
+##### 9.9.7 局限性
 
-##### 4.6.2 保留字
+上面的三个方法锁定对象的可写性有一个漏洞：可以通过改变原型对象，来为对象增加属性。
 
-为了向将来 JavaScript 的新版本过渡，严格模式新增了一些保留字（`implements、interface、let、package、private、protected、public、static、yield`等）。使用这些词作为变量名将会报错。
+```javascript
+var obj = new Object();
+Object.preventExtensions(obj);
+
+var proto = Object.getPrototypeOf(obj);
+proto.t = "hello";
+obj.t;
+// hello
+```
+
+一种解决方案是，把 obj 的原型也冻结住。
+
+```javascript
+var obj = new Object();
+Object.preventExtensions(obj);
+
+var proto = Object.getPrototypeOf(obj);
+Object.preventExtensions(proto);
+
+proto.t = "hello";
+obj.t; // undefined
+```
+
+另外一个局限是，如果属性值是对象，上面这些方法只能冻结属性指向的对象，而不能冻结对象本身的内容。
+
+```javascript
+var obj = {
+  foo: 1,
+  bar: ["a", "b"]
+};
+Object.freeze(obj);
+
+obj.bar.push("c");
+obj.bar; // ["a", "b", "c"]
+```
