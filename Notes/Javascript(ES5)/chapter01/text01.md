@@ -2,9 +2,18 @@
 
 ## 1 单线程
 
-Javascript 语言的执行环境是**单线程（single thread）**，这种模式的好处是实现起来比较简单，执行环境相对单纯；坏处是只要有一个任务耗时很长，后面的任务都必须排队等着，会拖延整个程序的执行。
+Javascript 语言的执行环境是**单线程（single threaded）**，这种模式的好处是实现起来比较简单，执行环境相对单纯；坏处是只要有一个任务耗时很长，后面的任务都必须排队等着，会拖延整个程序的执行。
+
+而浏览器是**事件驱动**的（Event driven），浏览器中很多行为是**异步**（Asynchronous）的，会创建事件并放入执行队列中。
 
 常见的浏览器无响应（假死），往往就是因为某一段 Javascript 代码长时间运行（比如死循环），导致整个页面卡在这个地方，其他任务无法执行。
+
+虽然 JS 运行在浏览器中，是单线程的，每个 window 一个 JS 线程，但浏览器不是单线程的，例如 Webkit 或是 Gecko 引擎，都可能有如下线程：
+
+- javascript 引擎线程
+- 界面渲染线程
+- 浏览器事件触发线程
+- Http 请求线程
 
 HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制，且不得操作 DOM。所以，这个新标准并没有改变 JavaScript 单线程的本质。
 
@@ -192,7 +201,55 @@ process.nextTick(function foo() {
 
 另外，由于 `process.nextTick` 指定的回调函数是在本次"事件循环"触发，而 `setImmediate` 指定的是在下次"事件循环"触发，所以很显然，前者总是比后者发生得早，而且执行效率也高（因为不用检查"任务队列"）。
 
-## 5 延迟脚本
+## 5 非阻塞 js 的实现 (non-blicking javascript)
+
+js 在浏览器中需要被下载、解释并执行这三步。在 `html`、 `body` 标签中的 `script` 都是阻塞的。尽管 Chrome 可以实现多线程并行下载外部资源，例如：script file、image、frame 等（css 比较复杂，在 IE 中不阻塞下载，但 Firefox 阻塞下载）。但是，由于 js 是单线程的，所以尽管浏览器可以并发加快 js 的下载，但必须依次执行。所以 chrome 中 image 图片资源是可以并发下载的，但外部 js 文件并发下载没有多大意义。
+
+要实现非阻塞 js 有两个方法：
+
+首先一种办法是 HTML5 的 `defer` 和 `async` 关键字：
+
+```javascript
+// defer
+<script type="text/javascript" defer src="foo.js"></script>
+// async
+<script type="text/javascript" async src="foo.js"></script>
+```
+
+然后第二种方法是动态加载 js：
+
+```javascript
+function loadJs(jsurl, head, callback) {
+  var script = document.createElement("script");
+  script.setAttribute("type", "text/javascript");
+
+  if (callback) {
+    if (script.readyState) {
+      //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == "loaded" || script.readyState == "complete") {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else {
+      //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+  }
+  script.setAttribute("src", jsurl);
+
+  if (head) {
+    document.getElementsByTagName("head")[0].appendChild(script);
+  } else {
+    document.body.appendChild(script);
+  }
+}
+```
+
+## 6 延迟脚本
 
 1).`<script src="url" defer></script>` 先加载 HTML & CSS，完成后再加载 js 文件；局限：只能作用于外部式；
 
@@ -216,7 +273,7 @@ $(document).ready(function(){
 });
 ```
 
-## 6 异步脚本
+## 7 异步脚本
 
 HTML5 为 `<script>` 元素定义了 `async` 属性。这个属性类似 `defer`，都用于改变处理脚本的行为。同样也只适用于外部脚本，并告诉浏览器立即下载文件。但与 `defer` 不同的是，标记为 `async` 的脚本并不保证按照指定它们的顺序执行。
 
@@ -224,7 +281,7 @@ HTML5 为 `<script>` 元素定义了 `async` 属性。这个属性类似 `defer`
 
 异步脚本一定会在页面的 `load` 事件前执行，但可能会在 `DOMContentLoaded` 事件触发之前后之后执行。
 
-## 7 将 js 引入的方式
+## 8 将 js 引入的方式
 
 1.行内式：（不推荐：安全性能低，可被修改）；
 
@@ -236,26 +293,26 @@ HTML5 为 `<script>` 元素定义了 `async` 属性。这个属性类似 `defer`
 
 CSS 和 js 可以放在 HTML 中任意位置，但是实际会将 CSS 样式放在 `<head>` 之中，JavaScript 样式放在 `<body>` 的最后面（HTML 页面从上往下加载，先加载 `<HTML>` 标签，才能进行样式效应设计），这与其功能作用有关；而把 CSS 放在 `<head>` ，是为了先加载 CSS 样式再加载 HTML。
 
-## 8 js 页面输出方式
+## 9 js 页面输出方式
 
-### 8.1 `alert()`
+### 9.1 `alert()`
 
 1).在浏览器的弹出框显示内容，但会阻碍页面加载；
 2).输出内容皆为字符串，默认调用 `toString()` 方法变成字符串；
 3).没有返回值；
 
-### 8.2 `confirm()`
+### 9.2 `confirm()`
 
 带确定和取消两个选择键的弹出框；
 1).在浏览器的弹出框显示内容，但会阻碍页面加载；
 2).输出内容皆为字符串，默认调用 `toString()` 方法变成字符串；
 3).有返回值，返回值为 true（确定）或 false（取消）；
 
-### 8.3 `document.write()`
+### 9.3 `document.write()`
 
 在页面中输出显示内容；
 
-### 8.4 `console.log()`
+### 9.4 `console.log()`
 
 1).在控制台输出内容（最常用的一种方式）；经常用来调试；
 
@@ -265,7 +322,7 @@ CSS 和 js 可以放在 HTML 中任意位置，但是实际会将 CSS 样式放�
 
 `console.dir()` 详细打印；
 
-### 8.5 `innerHTML/innerText`
+### 9.5 `innerHTML/innerText`
 
 `innerHTML`
 
@@ -283,7 +340,7 @@ CSS 和 js 可以放在 HTML 中任意位置，但是实际会将 CSS 样式放�
 | `ele.innerHTML='';`  | 修改 |
 | `ele.innerHTML+='';` | 增加 |
 
-## 9 语句和表达式
+## 10 语句和表达式
 
 JavaScript 程序的执行单位为**行（line）**，也就是一行一行地执行。一般情况下，每一行就是一个语句。
 
@@ -301,7 +358,7 @@ JavaScript 程序的执行单位为**行（line）**，也就是一行一行地�
 
 表达式不需要分号结尾。一旦在表达式后面添加分号，则 JavaScript 引擎就将表达式视为语句，这样会产生一些没有任何意义的语句。
 
-## 10 变量
+## 11 变量
 
 变量是对“值”的具名引用。变量就是为“值”起名，然后引用这个名字，就等同于引用这个值。变量的名字就是变量名。
 
@@ -309,7 +366,7 @@ JavaScript 是一种动态类型语言，也就是说，变量的类型没有限
 
 ECMAScript 的变量是松散类型的，即可以用保存任何类型的数据。换句话说，每个变量仅仅是一个用于保存值的占位符而已。
 
-## 11 标识符
+## 12 标识符
 
 **标识符（identifier）**指的是用来识别各种值的合法名称。最常见的标识符就是变量名，以及函数名。JavaScript 语言的标识符对大小写敏感，所以 `a` 和 `A` 是两个不同的标识符。
 
@@ -326,8 +383,12 @@ ECMAScript 的变量是松散类型的，即可以用保存任何类型的数据
 
 > JavaScript 有一些保留字和关键字，不能用作标识符。
 
-## 12 区块
+## 13 区块
 
-JavaScript 使用大括号( `{}` )，将多个相关的语句组合在一起，称为**“区块”（block）**。
+JavaScript 使用大括号( `{}` )，将多个相关的语句组合在一起，称为**区块**（block）。
 
-对于 `var` 命令来说，JavaScript 的区块不构成单独的**作用域（scope）**。
+对于 `var` 命令来说，JavaScript 的区块不构成单独的**作用域**（scope）。
+
+参考：
+
+[Javascript 是单线程的深入分析](https://www.cnblogs.com/Mainz/p/3552717.html)

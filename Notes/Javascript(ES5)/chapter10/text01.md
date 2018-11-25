@@ -1,256 +1,329 @@
-## 十一.编程风格
+# 十一.错误处理机制
 
-### 1.概述
+## 1 Error 实例对象
 
-”编程风格“（programming style）指的是编写代码的样式规则。不同的程序员，往往有不同的编程风格。
+JavaScript 解析或运行时，一旦发生错误，引擎就会抛出一个错误对象。JavaScript 原生提供`Error`构造函数，所有抛出的错误都是这个构造函数的实例。
 
-有人说，编译器的规范叫做”**语法规则**“（grammar），这是程序员必须遵守的；而编译器忽略的部分，就叫”**编程风格**“（programming style），这是程序员可以自由选择的。这种说法不完全正确，程序员固然可以自由选择编程风格，但是好的编程风格有助于写出质量更高、错误更少、更易于维护的程序。
+```JavaScript
+var err = new Error('出错了');
+err.message // "出错了"
+```
 
-所以，编程风格的选择不应该基于个人爱好、熟悉程度、打字量等因素，而要考虑如何尽量使代码清晰易读、减少出错。你选择的，不是你喜欢的风格，而是一种能够清晰表达你的意图的风格。这一点，对于 JavaScript 这种语法自由度很高的语言尤其重要。
+上面代码中，我们调用`Error`构造函数，生成一个实例对象 err。`Error`构造函数接受一个参数，表示错误提示，可以从实例的`message`属性读到这个参数。抛出`Error`实例对象以后，整个程序就中断在发生错误的地方，不再往下执行。
 
-必须牢记的一点是，如果你选定了一种“编程风格”，就应该坚持遵守，切忌多种风格混用。如果你加入他人的项目，就应该遵守现有的风格。
+JavaScript 语言标准只提到，`Error`实例对象必须有`message`属性，表示出错时的提示信息，没有提到其他属性。大多数 JavaScript 引擎，对`Error`实例还提供`name`和`stack`属性，分别表示错误的名称和错误的堆栈，但它们是非标准的，不是每种实现都有。
 
-### 2.缩进
+- message：错误提示信息
+- name：错误名称（非标准属性）
+- stack：错误的堆栈（非标准属性）
 
-行首的空格和 Tab 键，都可以产生代码缩进效果（indent）。
+使用`name`和`message`这两个属性，可以对发生什么错误有一个大概的了解。
 
-Tab 键可以节省击键次数，但不同的文本编辑器对 Tab 的显示不尽相同，有的显示四个空格，有的显示两个空格，所以有人觉得，空格键可以使得显示效果更统一。
-
-无论你选择哪一种方法，都是可以接受的，要做的就是始终坚持这一种选择。不要一会使用 Tab 键，一会使用空格键。
-
-### 3.区块
-
-如果循环和判断的代码体只有一行，JavaScript 允许该区块（block）省略大括号。建议总是使用大括号表示区块。
-
-另外，区块起首的大括号的位置，有许多不同的写法。最流行的有两种，一种是起首的大括号另起一行。
-
-```javascript
-block;
-{
-  // ...
+```JavaScript
+if (error.name) {
+  console.log(error.name + ': ' + error.message);
 }
 ```
 
-另一种是起首的大括号跟在关键字的后面。
+`stack`属性用来查看错误发生时的堆栈。
 
-```javascript
-block {
-  // ...
-}
-```
-
-一般来说，这两种写法都可以接受。但是，JavaScript 要使用后一种，因为 JavaScript 会自动添加句末的分号，导致一些难以察觉的错误。
-
-```javascript
-return;
-{
-  key: value;
+```JavaScript
+function throwit() {
+  throw new Error('');
 }
 
-// 相当于
-return;
-{
-  key: value;
-}
-```
-
-上面的代码的原意，是要返回一个对象，但实际上返回的是 undefined，因为 JavaScript 自动在 return 语句后面添加了分号。
-
-### 4.圆括号
-
-圆括号（parentheses）在 JavaScript 中有两种作用，一种表示函数的调用，另一种表示表达式的组合（grouping）。
-
-建议可以用空格，区分这两种不同的括号。
-
-- 1.表示函数调用时，函数名与左括号之间没有空格。
-
-- 2.表示函数定义时，函数名与左括号之间没有空格。
-
-- 3.其他情况时，前面位置的语法元素与左括号之间，都有一个空格。
-
-### 5.行尾的分号
-
-分号表示一条语句的结束。JavaScript 允许省略行尾的分号。事实上，确实有一些开发者行尾从来不写分号。但是，由于下面要讨论的原因，建议还是不要省略这个分号。
-
-#### 1.不使用分号的情况
-
-首先，以下三种情况，语法规定本来就不需要在结尾添加分号。
-
-##### 1.1 for 和 while 循环
-
-> 注意，do...while 循环是有分号的。
-
-##### 1.2 分支语句：if，switch，try
-
-##### 1.3 函数的声明语句
-
-> 注意，函数表达式仍然要使用分号。
-
-以上三种情况，如果使用了分号，并不会出错。因为，解释引擎会把这个分号解释为空语句。
-
-#### 2.分号的自动添加
-
-除了上三种情况，所有语句都应该使用分号。但是，如果没有使用分号，大多数情况下，JavaScript 会自动添加。
-
-这种语法特性被称为“分号的自动添加”（Automatic Semicolon Insertion，简称 **ASI**）。
-
-因此，有人提倡省略句尾的分号。麻烦的是，如果下一行的开始可以与本行的结尾连在一起解释，JavaScript 就不会自动添加分号。
-
-上面代码都会多行放在一起解释，不会每一行自动添加分号。
-
-只有下一行的开始与本行的结尾，无法放在一起解释，JavaScript 引擎才会自动添加分号。
-
-另外，如果一行的起首是“自增”（`++`）或“自减”（`--`）运算符，则它们的前面会自动添加分号。
-
-如果`continue`、`break`、`return`和`throw`这四个语句后面，直接跟换行符，则会自动添加分号。这意味着，如果`return`语句返回的是一个对象的字面量，起首的大括号一定要写在同一行，否则得不到预期结果。
-
-#### 3.小结
-
-由于解释引擎自动添加分号的行为难以预测，因此编写代码的时候不应该省略行尾的分号。
-
-不应该省略结尾的分号，还有一个原因。有些 JavaScript 代码压缩器（uglifier）不会自动添加分号，因此遇到没有分号的结尾，就会让代码保持原状，而不是压缩成一行，使得压缩无法得到最优的结果。
-
-另外，不写结尾的分号，可能会导致脚本合并出错。所以，有的代码库在第一行语句开始前，会加上一个分号。
-
-```javascript
-var a = 1;
-// ...
-```
-
-上面这种写法就可以避免与其他脚本合并时，排在前面的脚本最后一行语句没有分号，导致运行出错的问题。
-
-### 6.全局变量
-
-JavaScript 最大的语法缺点，可能就是全局变量对于任何一个代码块，都是可读可写。这对代码的模块化和重复使用，非常不利。
-
-因此，建议避免使用全局变量。如果不得不使用，可以考虑用大写字母表示变量名，这样更容易看出这是全局变量，比如`UPPER_CASE`。
-
-### 7.变量声明
-
-JavaScript 会自动将变量声明”提升“（hoist）到代码块（block）的头部。
-
-这意味着，变量 x 是`if`代码块之前就存在了。为了避免可能出现的问题，最好把变量声明都放在代码块的头部。
-
-```javascript
-for (var i = 0; i < 10; i++) {
-  // ...
-}
-
-// 写成
-var i;
-for (i = 0; i < 10; i++) {
-  // ...
-}
-```
-
-上面这样的写法，就容易看出存在一个全局的循环变量 i。
-
-另外，所有函数都应该在使用之前定义。函数内部的变量声明，都应该放在函数的头部。
-
-### 8.with 语句
-
-`with`可以减少代码的书写，但是会造成混淆。
-
-```javascript
-with (o) {
-  foo = bar;
-}
-```
-
-上面的代码，可以有四种运行结果：
-
-```javascript
-o.foo = bar;
-o.foo = o.bar;
-foo = bar;
-foo = o.bar;
-```
-
-这四种结果都可能发生，取决于不同的变量是否有定义。因此，不要使用`with`语句。
-
-### 9.相等和严格相等
-
-JavaScript 有两个表示相等的运算符：”相等“（`==`）和”严格相等“（`===`）。
-
-相等运算符会自动转换变量类型，造成很多意想不到的情况。
-
-因此，建议不要使用相等运算符（`==`），只使用严格相等运算符（`===`）。
-
-### 10.语句的合并
-
-有些程序员追求简洁，喜欢合并不同目的的语句。比如，原来的语句是
-
-```javascript
-a = b;
-if (a) {
-  // ...
-}
-```
-
-他喜欢写成下面这样。
-
-```javascript
-if ((a = b)) {
-  // ...
-}
-```
-
-虽然语句少了一行，但是可读性大打折扣，而且会造成误读。
-
-建议不要将不同目的的语句，合并成一行。
-
-### 11.自增和自减运算符
-
-自增（`++`）和自减（`--`）运算符，放在变量的前面或后面，返回的值不一样，很容易发生错误。事实上，所有的`++`运算符都可以用`+= 1`代替。
-
-建议自增（`++`）和自减（`--`）运算符尽量使用`+=`和`-=`代替。
-
-### 12.switch…case 结构
-
-`switch...case`结构要求，在每一个`case`的最后一行必须是`break`语句，否则会接着运行下一个`case`。这样不仅容易忘记，还会造成代码的冗长。
-
-而且，`switch...case`不使用大括号，不利于代码形式的统一。此外，这种结构类似于`goto`语句，容易造成程序流程的混乱，使得代码结构混乱不堪，不符合面向对象编程的原则。
-
-```javascript
-function doAction(action) {
-  switch (action) {
-    case "hack":
-      return "hack";
-      break;
-    case "slash":
-      return "slash";
-      break;
-    case "run":
-      return "run";
-      break;
-    default:
-      throw new Error("Invalid action.");
+function catchit() {
+  try {
+    throwit();
+  } catch(e) {
+    console.log(e.stack); // print stack trace
   }
 }
+
+catchit()
+// Error
+//    at throwit (~/examples/throwcatch.js:9:11)
+//    at catchit (~/examples/throwcatch.js:3:9)
+//    at repl:1:5
 ```
 
-上面的代码建议改写成对象结构。
+上面代码中，错误堆栈的最内层是 throwit 函数，然后是 catchit 函数，最后是函数的运行环境。
 
-```javascript
-function doAction(action) {
-  var actions = {
-    hack: function() {
-      return "hack";
-    },
-    slash: function() {
-      return "slash";
-    },
-    run: function() {
-      return "run";
-    }
-  };
+### 2.原生错误类型
 
-  if (typeof actions[action] !== "function") {
-    throw new Error("Invalid action.");
-  }
+`Error`实例对象是最一般的错误类型，在它的基础上，JavaScript 还定义了其他 6 种错误对象。也就是说，存在`Error`的 6 个派生对象。
 
-  return actions[action]();
+#### 1.SyntaxError 对象
+
+`SyntaxError`对象是解析代码时发生的语法错误。
+
+#### 2.ReferenceError 对象
+
+`ReferenceError`对象是引用一个不存在的变量时发生的错误。
+
+另一种触发场景是，将一个值分配给无法分配的对象，比如对函数的运行结果或者 this 赋值。
+
+#### 3.RangeError 对象
+
+`RangeError`对象是一个值超出有效范围时发生的错误。主要有几种情况，一是数组长度为负数，二是`Number`对象的方法参数超出范围，以及函数堆栈超过最大值。
+
+#### 4.TypeError 对象
+
+`TypeError`对象是变量或参数不是预期类型时发生的错误。比如，对字符串、布尔值、数值等原始类型的值使用 new 命令，就会抛出这种错误，因为 new 命令的参数应该是一个构造函数。
+
+调用对象不存在的方法，也会抛出 TypeError 错误，因为方法的值是`undefined`，而不是一个函数。
+
+#### 5.URIError 对象
+
+`URIError`对象是 URI 相关函数的参数不正确时抛出的错误，主要涉及`encodeURI()`、`decodeURI()`、`encodeURIComponent()`、`decodeURIComponent()`、`escape()`和`unescape()`这六个函数。
+
+#### 6.EvalError 对象
+
+`eval`函数没有被正确执行时，会抛出`EvalError`错误。该错误类型已经不再使用了，只是为了保证与以前代码兼容，才继续保留。
+
+#### 7.总结
+
+以上这 6 种派生错误，连同原始的`Error`对象，都是构造函数。开发者可以使用它们，手动生成错误对象的实例。这些构造函数都接受一个函数，代表错误提示信息（message）。
+
+```JavaScript
+var err1 = new Error('出错了！');
+var err2 = new RangeError('出错了，变量超出有效范围！');
+var err3 = new TypeError('出错了，变量类型无效！');
+
+err1.message // "出错了！"
+err2.message // "出错了，变量超出有效范围！"
+err3.message // "出错了，变量类型无效！"
+```
+
+### 3.自定义错误
+
+除了 JavaScript 原生提供的七种错误对象，还可以定义自己的错误对象。
+
+```JavaScript
+function UserError(message) {
+  this.message = message || '默认信息';
+  this.name = 'UserError';
+}
+
+UserError.prototype = new Error();
+UserError.prototype.constructor = UserError;
+```
+
+上面代码自定义一个错误对象`UserError`，让它继承`Error`对象。然后，就可以生成这种自定义类型的错误了。
+
+`new UserError('这是自定义的错误！');`
+
+### 4.throw 语句
+
+`throw`语句的作用是手动中断程序执行，抛出一个错误。
+
+```JavaScript
+if (x < 0) {
+  throw new Error('x 必须为正数');
+}
+// Uncaught ReferenceError: x is not defined
+```
+
+上面代码中，如果变量 x 小于 0，就手动抛出一个错误，告诉用户 x 的值不正确，整个程序就会在这里中断执行。可以看到，`throw`抛出的错误就是它的参数，这里是一个 Error 实例。`throw`也可以抛出自定义错误。
+
+实际上，`throw`可以抛出任何类型的值。也就是说，它的参数可以是任何值。
+
+对于 JavaScript 引擎来说，遇到`throw`语句，程序就中止了。引擎会接收到`throw`抛出的信息，可能是一个错误实例，也可能是其他类型的值。
+
+### 5.try…catch 结构
+
+一旦发生错误，程序就中止执行了。JavaScript 提供了`try...catch`结构，允许对错误进行处理，选择是否往下执行。
+
+```JavaScript
+try {
+  throw new Error('出错了!');
+} catch (e) {
+  console.log(e.name + ": " + e.message);
+  console.log(e.stack);
+}
+// Error: 出错了!
+//   at <anonymous>:3:9
+//   ...
+```
+
+上面代码中，`try`代码块抛出错误（上例用的是`throw`语句），JavaScript 引擎就立即把代码的执行，转到`catch`代码块，或者说错误被`catch`代码块捕获了。`catch`接受一个参数，表示`try`代码块抛出的值。
+
+如果你不确定某些代码是否会报错，就可以把它们放在`try...catch`代码块之中，便于进一步对错误进行处理。
+
+```JavaScript
+try {
+  f();
+} catch(e) {
+  // 处理错误
 }
 ```
 
-因此，建议`switch...case`结构可以用对象结构代替。
+`catch`代码块捕获错误之后，程序不会中断，会按照正常流程继续执行下去。
+
+`catch`代码块之中，还可以再抛出错误，甚至使用嵌套的`try...catch`结构。
+
+```JavaScript
+var n = 100;
+
+try {
+  throw n;
+} catch (e) {
+  if (e <= 50) {
+    // ...
+  } else {
+    throw e;
+  }
+}
+// Uncaught 100
+```
+
+上面代码中，`catch`代码之中又抛出了一个错误。
+
+为了捕捉不同类型的错误，`catch`代码块之中可以加入判断语句。
+
+```JavaScript
+try {
+  foo.bar();
+} catch (e) {
+  if (e instanceof EvalError) {
+    console.log(e.name + ": " + e.message);
+  } else if (e instanceof RangeError) {
+    console.log(e.name + ": " + e.message);
+  }
+  // ...
+}
+```
+
+上面代码中，`catch`捕获错误之后，会判断错误类型（`EvalError`还是`RangeError`），进行不同的处理。
+
+### 6.finally 代码块
+
+`try...catch`结构允许在最后添加一个`finally`代码块，表示不管是否出现错误，都必需在最后运行的语句。
+
+```JavaScript
+function cleansUp() {
+  try {
+    throw new Error('出错了……');
+    console.log('此行不会执行');
+  } finally {
+    console.log('完成清理工作');
+  }
+}
+
+cleansUp()
+// 完成清理工作
+// Error: 出错了……
+```
+
+上面代码中，由于没有`catch`语句块，所以错误没有捕获。执行`finally`代码块以后，程序就中断在错误抛出的地方。
+
+```JavaScript
+function idle(x) {
+  try {
+    console.log(x);
+    return 'result';
+  } finally {
+    console.log("FINALLY");
+  }
+}
+
+idle('hello')
+// hello
+// FINALLY
+// "result"
+```
+
+上面代码说明，`try`代码块没有发生错误，而且里面还包括`return`语句，但是`finally`代码块依然会执行。注意，只有在其执行完毕后，才会显示`return`语句的值。
+
+下面的例子说明，`return`语句的执行是排在`finally`代码之前，只是等`finally`代码执行完毕后才返回。
+
+```JavaScript
+var count = 0;
+function countUp() {
+  try {
+    return count;
+  } finally {
+    count++;
+  }
+}
+
+countUp()
+// 0
+count
+// 1
+```
+
+上面代码说明，`return`语句的`count`的值，是在`finally`代码块运行之前就获取了。
+
+下面是`finally`代码块用法的典型场景。
+
+```JavaScript
+openFile();
+
+try {
+  writeFile(Data);
+} catch(e) {
+  handleError(e);
+} finally {
+  closeFile();
+}
+```
+
+上面代码首先打开一个文件，然后在`try`代码块中写入文件，如果没有发生错误，则运行`finally`代码块关闭文件；一旦发生错误，则先使用`catch`代码块处理错误，再使用`finally`代码块关闭文件。
+
+下面的例子充分反映了`try...catch...finally`这三者之间的执行顺序。
+
+```JavaScript
+function f() {
+  try {
+    console.log(0);
+    throw 'bug';
+  } catch(e) {
+    console.log(1);
+    return true; // 这句原本会延迟到 finally 代码块结束再执行
+    console.log(2); // 不会运行
+  } finally {
+    console.log(3);
+    return false; // 这句会覆盖掉前面那句 return
+    console.log(4); // 不会运行
+  }
+
+  console.log(5); // 不会运行
+}
+
+var result = f();
+// 0
+// 1
+// 3
+
+result
+// false
+```
+
+上面代码中，`catch`代码块结束执行之前，会先执行`finally`代码块。
+
+`catch`代码块之中，触发转入`finally`代码快的标志，不仅有`return`语句，还有`throw`语句。
+
+```JavaScript
+function f() {
+  try {
+    throw '出错了！';
+  } catch(e) {
+    console.log('捕捉到内部错误');
+    throw e; // 这句原本会等到finally结束再执行
+  } finally {
+    return false; // 直接返回
+  }
+}
+
+try {
+  f();
+} catch(e) {
+  // 此处不会执行
+  console.log('caught outer "bogus"');
+}
+
+//  捕捉到内部错误
+```
+
+上面代码中，进入`catch`代码块之后，一遇到`throw`语句，就会去执行`finally`代码块，其中有`return false`语句，因此就直接返回了，不再会回去执行`catch`代码块剩下的部分了。
