@@ -10,24 +10,50 @@
 
 <body>
   <script>
-    setTimeout(function () {
-      console.log("定时器开始啦");
-    });
+    // setTimeout(function () {
+    //   console.log("定时器开始啦");
+    // });
 
-    new Promise(function (resolve) {
-      console.log("马上执行for循环啦");
-      for (var i = 0; i < 10000; i++) {
-        i == 99 && resolve();
-      }
-    }).then(function () {
-      console.log("执行then函数啦");
-    });
-    console.log("代码执行结束");
+    // new Promise(function (resolve) {
+    //   console.log("马上执行for循环啦");
+    //   for (var i = 0; i < 10000; i++) {
+    //     i == 99 && resolve();
+    //   }
+    // }).then(function () {
+    //   console.log("执行then函数啦");
+    // });
+    // console.log("代码执行结束");
 
     // 马上执行for循环啦
     // 代码执行结束
     // 执行then函数啦
     // 定时器开始啦
+  </script>
+  <script>
+    setTimeout(() => console.log('setTimeout1'), 0);
+    setTimeout(() => {
+      console.log('setTimeout2');
+      Promise.resolve().then(() => {
+        console.log('promise3');
+        Promise.resolve().then(() => {
+          console.log('promise4');
+        })
+        console.log(5)
+      })
+      setTimeout(() => console.log('setTimeout4'), 0);
+    }, 0);
+    setTimeout(() => console.log('setTimeout3'), 0);
+    Promise.resolve().then(() => {
+      console.log('promise1');
+    })
+    //promise1
+    //setTimeout1
+    //setTimeout2
+    //promise3
+    //5
+    //promise4
+    //setTimeout4 --setTimeout3
+    //setTimeout3 --setTimeout3
   </script>
 </body>
 
