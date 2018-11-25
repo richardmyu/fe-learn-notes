@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>stack</title>
+</head>
+
+<body>
+  <script>
+    setTimeout(function () {
+      console.log("定时器开始啦");
+    });
+
+    new Promise(function (resolve) {
+      console.log("马上执行for循环啦");
+      for (var i = 0; i < 10000; i++) {
+        i == 99 && resolve();
+      }
+    }).then(function () {
+      console.log("执行then函数啦");
+    });
+    console.log("代码执行结束");
+
+    // 马上执行for循环啦
+    // 代码执行结束
+    // 执行then函数啦
+    // 定时器开始啦
+  </script>
+</body>
+
+</html>
