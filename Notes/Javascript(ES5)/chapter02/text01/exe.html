@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // var t = "甜甜";
+
+    // function fn(str) {
+    //   return str + str;
+    // }
+
+    // console.log(t); //甜甜
+    // console.log(fn(t)); //甜甜甜甜
+    // console.log(window.t); //甜甜
+    // console.log(window.fn); //f fn(str){...}
+  </script>
+  <script>
+    function F() {
+      var t = 'tian';
+
+      function fn(str) {
+        var tt = 'tiantian';
+
+        function fnn(str) {
+          var ttt = 123;
+          console.dir(F);
+          // [[Scopes]]: Scopes[1]
+          // 0: Global {type: "global", name: "", object: Window}
+
+          console.dir(fn);
+          // [[Scopes]]: Scopes[2]
+          // 0: Closure (F) {type: "closure", name: "F", object: {…}}
+          // 1: Global {type: "global", name: "", object: Window}
+
+          console.dir(fnn);
+          // [[Scopes]]: Scopes[3]
+          // 0: Closure (fn) {type: "closure", name: "fn", object: {…}}
+          // 1: Closure (F) {type: "closure", name: "F", object: {…}}
+          // 2: Global {type: "global", name: "", object: Window}
+        }
+        fnn();
+      }
+      fn();
+    }
+    F();
+  </script>
+</body>
+
+</html>
