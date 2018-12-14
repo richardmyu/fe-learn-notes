@@ -1,0 +1,267 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+strong {
+  font-weight: 600 !important;
+}
+
+em {
+  font-style: italic !important;
+}
+
+html {
+  width: 100%;
+  min-width: 1200px;
+}
+
+body {
+  font-size: 100%;
+  min-width: 1200px;
+  background: #fff;
+  font-family: "Microsoft YaHei", "Arial", "黑体", "宋体", sans-serif;
+}
+
+ol,
+ul,
+li {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th,
+caption {
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  font-size: 100%;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+th,
+var {
+  font-style: normal;
+  font-weight: normal;
+}
+
+a {
+  color: #555;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+img {
+  border: none;
+  vertical-align: middle;
+}
+
+input,
+textarea,
+select,
+button {
+  font: 14px "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: inline-block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/* HTML5 display-role reset for older browsers */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+@media screen and (min-width: 1200px) {
+  html {
+    font-size: 62.5px !important;
+  }
+}
+
+@media screen and (min-width: 1366px) {
+  html {
+    font-size: 71.14583333px !important;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  html {
+    font-size: 66.66666667px !important;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  html {
+    font-size: 75px !important;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  html {
+    font-size: 83.33333333px !important;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  html {
+    font-size: 100px !important;
+  }
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #999999;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: #999999;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #999999;
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+  color: #999999;
+}

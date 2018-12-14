@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+import Home from "@/components/Home/Home"
+
 import BasicButton from "@/components/Basic/BasicButton/BasicButton";
 import BasicColor from "@/components/Basic/BasicColor/BasicColor";
 import BasicContainer from "@/components/Basic/BasicContainer/BasicContainer";
@@ -29,7 +32,7 @@ import FormSwitch from "@/components/Form/FormSwitch/FormSwitch";
 import FormTimePicker from "@/components/Form/FormTimePicker/FormTimePicker";
 import FormTransfer from "@/components/Form/FormTransfer/FormTransfer";
 import FormUpload from "@/components/Form/FormUpload/FormUpload";
-import FormCascader from "@/components/Form/FornCascader/FornCascader";
+import FormCascader from "@/components/Form/FormCascader/FormCascader";
 
 import NavigationBreadcrumb from "@/components/Navigation/NavigationBreadcrumb/NavigationBreadcrumb";
 import NavigationDropdown from "@/components/Navigation/NavigationDropdown/NavigationDropdown";
@@ -37,185 +40,256 @@ import NavigationNavMenu from "@/components/Navigation/NavigationNavMenu/Navigat
 import NavigationSteps from "@/components/Navigation/NavigationSteps/NavigationSteps";
 import NavigationTabs from "@/components/Navigation/NavigationTabs/NavigationTabs";
 
+import NoticeAlert from "@/components/Notice/NoticeAlert/NoticeAlert";
+import NoticeLoading from "@/components/Notice/NoticeLoading/NoticeLoading";
+import NoticeMessage from "@/components/Notice/NoticeMessage/NoticeMessage";
+import NoticeMessageBox from "@/components/Notice/NoticeMessageBox/NoticeMessageBox";
+import NoticeNotification from "@/components/Notice/NoticeNotification/NoticeNotification";
 
+import OthersCard from "@/components/Others/OthersCard/OthersCard";
+import OthersCarousel from "@/components/Others/OthersCarousel/OthersCarousel";
+import OthersCollapse from "@/components/Others/OthersCollapse/OthersCollapse";
+import OthersDialog from "@/components/Others/OthersDialog/OthersDialog";
+import OthersPopover from "@/components/Others/OthersPopover/OthersPopover";
+import OthersTooltip from "@/components/Others/OthersTooltip/OthersTooltip";
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
+  routes: [{
+    path: "/",
+    redirect: "/home",
+    },
     {
-      path: "/Home",
+      path: "/home",
       name: "Home",
       component: Home
     },
 
     {
-      path: "/BasicButton",
+      path: "/basicButton",
       name: "BasicButton",
       component: BasicButton
     },
     {
-      path: "/BasicColor",
+      path: "/basicColor",
       name: "BasicColor",
       component: BasicColor
     },
     {
-      path: "/BasicContainer",
+      path: "/basicContainer",
       name: "BasicContainer",
       component: BasicContainer
     },
     {
-      path: "/BasicIcon",
+      path: "/basicIcon",
       name: "BasicIcon",
       component: BasicIcon
     },
     {
-      path: "/BasicLayout",
+      path: "/basicLayout",
       name: "BasicLayout",
       component: BasicLayout
     },
     {
-      path: "/BasicTypography",
+      path: "/basicTypography",
       name: "BasicTypography",
       component: BasicTypography
     },
 
     {
-      path: "/DateBadge",
+      path: "/dateBadge",
       name: "DateBadge",
       component: DateBadge
     },
     {
-      path: "/DatePagination",
+      path: "/datePagination",
       name: "DatePagination",
       component: DatePagination
     },
     {
-      path: "/DateProgress",
+      path: "/dateProgress",
       name: "DateProgress",
       component: DateProgress
     },
     {
-      path: "/DateTable",
+      path: "/dateTable",
       name: "DateTable",
       component: DateTable
     },
     {
-      path: "/DateTag",
+      path: "/dateTag",
       name: "DateTag",
       component: DateTag
     },
     {
-      path: "/DateTree",
+      path: "/dateTree",
       name: "DateTree",
       component: DateTree
     },
 
     {
       path: "/Form",
-      name: "Form",
+      name: "form",
       component: Form
     },
     {
-      path: "/FormCheckbox",
+      path: "/formCheckbox",
       name: "FormCheckbox",
       component: FormCheckbox
     },
     {
-      path: "/FormColorPicker",
+      path: "/formColorPicker",
       name: "FormColorPicker",
       component: FormColorPicker
     },
     {
-      path: "/FormDatePicker",
+      path: "/formDatePicker",
       name: "FormDatePicker",
       component: FormDatePicker
     },
     {
-      path: "/FormDateTimePicker",
+      path: "/formDateTimePicker",
       name: "FormDateTimePicker",
       component: FormDateTimePicker
     },
     {
-      path: "/FormInput",
+      path: "/formInput",
       name: "FormInput",
       component: FormInput
     },
     {
-      path: "/FormInputNumber",
+      path: "/formInputNumber",
       name: "FormInputNumber",
       component: FormInputNumber
     },
     {
-      path: "/FormRadio",
+      path: "/formRadio",
       name: "FormRadio",
       component: FormRadio
     },
     {
-      path: "/FormRate",
+      path: "/formRate",
       name: "FormRate",
       component: FormRate
     },
     {
-      path: "/FormSelect",
+      path: "/formSelect",
       name: "FormSelect",
       component: FormSelect
     },
     {
-      path: "/FormSlider",
+      path: "/formSlider",
       name: "FormSlider",
       component: FormSlider
     },
     {
-      path: "/FormSwitch",
+      path: "/formSwitch",
       name: "FormSwitch",
       component: FormSwitch
     },
     {
-      path: "/FormTimePicker",
+      path: "/formTimePicker",
       name: "FormTimePicker",
       component: FormTimePicker
     },
     {
-      path: "/FormTransfer",
+      path: "/formTransfer",
       name: "FormTransfer",
       component: FormTransfer
     },
     {
-      path: "/FormUpload",
+      path: "/formUpload",
       name: "FormUpload",
       component: FormUpload
     },
     {
-      path: "/FormCascader",
+      path: "/formCascader",
       name: "FormCascader",
       component: FormCascader
     },
 
     {
-      path: "/NavigationBreadcrumb",
+      path: "/navigationBreadcrumb",
       name: "NavigationBreadcrumb",
       component: NavigationBreadcrumb
     },
     {
-      path: "/NavigationDropdown",
+      path: "/navigationDropdown",
       name: "NavigationDropdown",
       component: NavigationDropdown
     },
     {
-      path: "/NavigationNavMenu",
+      path: "/navigationNavMenu",
       name: "NavigationNavMenu",
       component: NavigationNavMenu
     },
     {
-      path: "/NavigationSteps",
+      path: "/navigationSteps",
       name: "NavigationSteps",
       component: NavigationSteps
     },
     {
-      path: "/NavigationTabs",
+      path: "/navigationTabs",
       name: "NavigationTabs",
       component: NavigationTabs
-    }
+    },
+
+    {
+      path: "/noticeAlert",
+      name: "NoticeAlert",
+      component: NoticeAlert
+    },
+    {
+      path: "/noticeLoading",
+      name: "NoticeLoading",
+      component: NoticeLoading
+    },
+    {
+      path: "/noticeMessage",
+      name: "NoticeMessage",
+      component: NoticeMessage
+    },
+    {
+      path: "/noticeMessageBox",
+      name: "NoticeMessageBox",
+      component: NoticeMessageBox
+    },
+    {
+      path: "/noticeNotification",
+      name: "NoticeNotification",
+      component: NoticeNotification
+    },
+
+    {
+      path: "/othersCard",
+      name: "OthersCard",
+      component: OthersCard
+    },
+    {
+      path: "/othersCarousel",
+      name: "OthersCarousel",
+      component: OthersCarousel
+    },
+    {
+      path: "/othersCollapse",
+      name: "OthersCollapse",
+      component: OthersCollapse
+    },
+    {
+      path: "/othersDialog",
+      name: "OthersDialog",
+      component: OthersDialog
+    },
+    {
+      path: "/othersPopover",
+      name: "OthersPopover",
+      component: OthersPopover
+    },
+    {
+      path: "/othersTooltip",
+      name: "OthersTooltip",
+      component: OthersTooltip
+    },
   ]
 });
