@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-import Home from "@/components/Home/Home"
+import Home from "@/components/Home/Home";
 
 import BasicButton from "@/components/Basic/BasicButton/BasicButton";
 import BasicColor from "@/components/Basic/BasicColor/BasicColor";
@@ -53,12 +53,13 @@ import OthersDialog from "@/components/Others/OthersDialog/OthersDialog";
 import OthersPopover from "@/components/Others/OthersPopover/OthersPopover";
 import OthersTooltip from "@/components/Others/OthersTooltip/OthersTooltip";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  routes: [{
-    path: "/",
-    redirect: "/home",
+  routes: [
+    {
+      path: "/",
+      redirect: "/home"
     },
     {
       path: "/home",
@@ -67,229 +68,229 @@ export default new Router({
     },
 
     {
-      path: "/basicButton",
+      path: "/button",
       name: "BasicButton",
       component: BasicButton
     },
     {
-      path: "/basicColor",
+      path: "/color",
       name: "BasicColor",
       component: BasicColor
     },
     {
-      path: "/basicContainer",
+      path: "/container",
       name: "BasicContainer",
       component: BasicContainer
     },
     {
-      path: "/basicIcon",
+      path: "/icon",
       name: "BasicIcon",
       component: BasicIcon
     },
     {
-      path: "/basicLayout",
+      path: "/layout",
       name: "BasicLayout",
       component: BasicLayout
     },
     {
-      path: "/basicTypography",
+      path: "/typography",
       name: "BasicTypography",
       component: BasicTypography
     },
 
     {
-      path: "/dateBadge",
+      path: "/badge",
       name: "DateBadge",
       component: DateBadge
     },
     {
-      path: "/datePagination",
+      path: "/pagination",
       name: "DatePagination",
       component: DatePagination
     },
     {
-      path: "/dateProgress",
+      path: "/progress",
       name: "DateProgress",
       component: DateProgress
     },
     {
-      path: "/dateTable",
+      path: "/table",
       name: "DateTable",
       component: DateTable
     },
     {
-      path: "/dateTag",
+      path: "/tag",
       name: "DateTag",
       component: DateTag
     },
     {
-      path: "/dateTree",
+      path: "/tree",
       name: "DateTree",
       component: DateTree
     },
 
     {
-      path: "/Form",
-      name: "form",
+      path: "/form",
+      name: "Form",
       component: Form
     },
     {
-      path: "/formCheckbox",
+      path: "/cascader",
+      name: "FormCascader",
+      component: FormCascader
+    },
+    {
+      path: "/checkbox",
       name: "FormCheckbox",
       component: FormCheckbox
     },
     {
-      path: "/formColorPicker",
+      path: "/colorPicker",
       name: "FormColorPicker",
       component: FormColorPicker
     },
     {
-      path: "/formDatePicker",
+      path: "/datePicker",
       name: "FormDatePicker",
       component: FormDatePicker
     },
     {
-      path: "/formDateTimePicker",
+      path: "/dateTimePicker",
       name: "FormDateTimePicker",
       component: FormDateTimePicker
     },
     {
-      path: "/formInput",
+      path: "/input",
       name: "FormInput",
       component: FormInput
     },
     {
-      path: "/formInputNumber",
+      path: "/inputNumber",
       name: "FormInputNumber",
       component: FormInputNumber
     },
     {
-      path: "/formRadio",
+      path: "/radio",
       name: "FormRadio",
       component: FormRadio
     },
     {
-      path: "/formRate",
+      path: "/rate",
       name: "FormRate",
       component: FormRate
     },
     {
-      path: "/formSelect",
+      path: "/select",
       name: "FormSelect",
       component: FormSelect
     },
     {
-      path: "/formSlider",
+      path: "/slider",
       name: "FormSlider",
       component: FormSlider
     },
     {
-      path: "/formSwitch",
+      path: "/switch",
       name: "FormSwitch",
       component: FormSwitch
     },
     {
-      path: "/formTimePicker",
+      path: "/timePicker",
       name: "FormTimePicker",
       component: FormTimePicker
     },
     {
-      path: "/formTransfer",
+      path: "/transfer",
       name: "FormTransfer",
       component: FormTransfer
     },
     {
-      path: "/formUpload",
+      path: "/upload",
       name: "FormUpload",
       component: FormUpload
     },
-    {
-      path: "/formCascader",
-      name: "FormCascader",
-      component: FormCascader
-    },
 
     {
-      path: "/navigationBreadcrumb",
+      path: "/breadcrumb",
       name: "NavigationBreadcrumb",
       component: NavigationBreadcrumb
     },
     {
-      path: "/navigationDropdown",
+      path: "/dropdown",
       name: "NavigationDropdown",
       component: NavigationDropdown
     },
     {
-      path: "/navigationNavMenu",
+      path: "/navMenu",
       name: "NavigationNavMenu",
       component: NavigationNavMenu
     },
     {
-      path: "/navigationSteps",
+      path: "/steps",
       name: "NavigationSteps",
       component: NavigationSteps
     },
     {
-      path: "/navigationTabs",
+      path: "/tabs",
       name: "NavigationTabs",
       component: NavigationTabs
     },
 
     {
-      path: "/noticeAlert",
+      path: "/alert",
       name: "NoticeAlert",
       component: NoticeAlert
     },
     {
-      path: "/noticeLoading",
+      path: "/loading",
       name: "NoticeLoading",
       component: NoticeLoading
     },
     {
-      path: "/noticeMessage",
+      path: "/message",
       name: "NoticeMessage",
       component: NoticeMessage
     },
     {
-      path: "/noticeMessageBox",
+      path: "/messageBox",
       name: "NoticeMessageBox",
       component: NoticeMessageBox
     },
     {
-      path: "/noticeNotification",
+      path: "/notification",
       name: "NoticeNotification",
       component: NoticeNotification
     },
 
     {
-      path: "/othersCard",
+      path: "/card",
       name: "OthersCard",
       component: OthersCard
     },
     {
-      path: "/othersCarousel",
+      path: "/carousel",
       name: "OthersCarousel",
       component: OthersCarousel
     },
     {
-      path: "/othersCollapse",
+      path: "/collapse",
       name: "OthersCollapse",
       component: OthersCollapse
     },
     {
-      path: "/othersDialog",
+      path: "/dialog",
       name: "OthersDialog",
       component: OthersDialog
     },
     {
-      path: "/othersPopover",
+      path: "/popover",
       name: "OthersPopover",
       component: OthersPopover
     },
     {
-      path: "/othersTooltip",
+      path: "/tooltip",
       name: "OthersTooltip",
       component: OthersTooltip
-    },
+    }
   ]
 });

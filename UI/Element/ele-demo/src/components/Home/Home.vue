@@ -6,84 +6,167 @@
 
     <div class="content">
       <section class="item">
-      <div class="item_title">Basic</div>
-      <ul class="item_content">
-        <li><router-link to="/BasicButton" >Button</router-link></li>
-        <li><router-link to="/BasicColor" >Color</router-link></li>
-        <li><router-link to="/BasicContainer" >Container</router-link></li>
-        <li><router-link to="/BasicIcon" >Icon</router-link></li>
-        <li><router-link to="/BasicLayout" >Layout</router-link></li>
-        <li><router-link to="/BasicTypography" >Typography</router-link></li>
-      </ul>
-    </section>
+        <div class="item_title">Basic</div>
+        <ul class="item_content">
+          <li>
+            <router-link to="/button">Button</router-link>
+          </li>
+          <li>
+            <router-link to="/color">Color</router-link>
+          </li>
+          <li>
+            <router-link to="/container">Container</router-link>
+          </li>
+          <li>
+            <router-link to="/icon">Icon</router-link>
+          </li>
+          <li>
+            <router-link to="/layout">Layout</router-link>
+          </li>
+          <li>
+            <router-link to="/typography">Typography</router-link>
+          </li>
+        </ul>
+      </section>
 
-    <section class="item">
-      <div class="item_title">Date</div>
-      <ul class="item_content">
-        <li><router-link to="/DateProgress" >Progress</router-link></li>
-        <li><router-link to="/DateTable" >Table</router-link></li>
-        <li><router-link to="/DateTag" >Tag</router-link></li>
-        <li><router-link to="/DateTree" >Tree</router-link></li>
-      </ul>
-    </section>
+      <section class="item">
+        <div class="item_title">Date</div>
+        <ul class="item_content">
+          <li>
+            <router-link to="/progress">Progress</router-link>
+          </li>
+          <li>
+            <router-link to="/table">Table</router-link>
+          </li>
+          <li>
+            <router-link to="/tag">Tag</router-link>
+          </li>
+          <li>
+            <router-link to="/tree">Tree</router-link>
+          </li>
+        </ul>
+      </section>
 
-    <section class="item">
-      <div class="item_title">Form</div>
-      <ul class="item_content">
-        <li><router-link to="/Form" >Form</router-link></li>
-        <li><router-link to="/FormCheckbox" >Checkbox</router-link></li>
-        <li><router-link to="/FormColorPicker" >ColorPicker</router-link></li>
-        <li><router-link to="/FormDatePicker" >DatePicker</router-link></li>
-        <li><router-link to="/FormDateTimePicker" >DateTimePicker</router-link></li>
-        <li><router-link to="/FormInput" >Input</router-link></li>
-        <li><router-link to="/FormInputNumber" >InputNumber</router-link></li>
-        <li><router-link to="/FormRadio" >Radio</router-link></li>
-        <li><router-link to="/FormRate" >Rate</router-link></li>
-        <li><router-link to="/FormSelect" >Select</router-link></li>
-        <li><router-link to="/FormSlider" >Slider</router-link></li>
-        <li><router-link to="/FormSwitch" >Switch</router-link></li>
-        <li><router-link to="/FormTimePicker" >TimePicker</router-link></li>
-        <li><router-link to="/FormTransfer" >Transfer</router-link></li>
-        <li><router-link to="/FormUpload" >Upload</router-link></li>
-        <li><router-link to="/FormCascader" >Cascader</router-link></li>
-      </ul>
-    </section>
+      <section class="item">
+        <div class="item_title">Form</div>
+        <ul class="item_content">
+          <li>
+            <router-link to="/form">Form</router-link>
+          </li>
+          <li>
+            <router-link to="/cascader">Cascader</router-link>
+          </li>
+          <li>
+            <router-link to="/checkbox">Checkbox</router-link>
+          </li>
+          <li>
+            <router-link to="/colorPicker">ColorPicker</router-link>
+          </li>
+          <li>
+            <router-link to="/datePicker">DatePicker</router-link>
+          </li>
+          <li>
+            <router-link to="/dateTimePicker">DateTimePicker</router-link>
+          </li>
+          <li>
+            <router-link to="/input">Input</router-link>
+          </li>
+          <li>
+            <router-link to="/inputNumber">InputNumber</router-link>
+          </li>
+          <li>
+            <router-link to="/radio">Radio</router-link>
+          </li>
+          <li>
+            <router-link to="/rate">Rate</router-link>
+          </li>
+          <li>
+            <router-link to="/select">Select</router-link>
+          </li>
+          <li>
+            <router-link to="/slider">Slider</router-link>
+          </li>
+          <li>
+            <router-link to="/switch">Switch</router-link>
+          </li>
+          <li>
+            <router-link to="/timePicker">TimePicker</router-link>
+          </li>
+          <li>
+            <router-link to="/transfer">Transfer</router-link>
+          </li>
+          <li>
+            <router-link to="/upload">Upload</router-link>
+          </li>
+        </ul>
+      </section>
 
-    <section class="item">
-      <div class="item_title">Navigation</div>
-      <ul class="item_content">
-        <li><router-link to="/NavigationBreadcrumb" >Breadcrumb</router-link></li>
-        <li><router-link to="/NavigationDropdown" >Dropdown</router-link></li>
-        <li><router-link to="/NavigationNavMenu" >NavMenu</router-link></li>
-        <li><router-link to="/NavigationSteps" >Steps</router-link></li>
-        <li><router-link to="/NavigationTabs" >Tabs</router-link></li>
-      </ul>
-    </section>
+      <section class="item">
+        <div class="item_title">Navigation</div>
+        <ul class="item_content">
+          <li>
+            <router-link to="/breadcrumb">Breadcrumb</router-link>
+          </li>
+          <li>
+            <router-link to="/dropdown">Dropdown</router-link>
+          </li>
+          <li>
+            <router-link to="/navMenu">NavMenu</router-link>
+          </li>
+          <li>
+            <router-link to="/steps">Steps</router-link>
+          </li>
+          <li>
+            <router-link to="/tabs">Tabs</router-link>
+          </li>
+        </ul>
+      </section>
 
-    <section class="item">
-      <div class="item_title">Notice</div>
-      <ul class="item_content">
-        <li><router-link to="/NoticeAlert" >Alert</router-link></li>
-        <li><router-link to="/NoticeLoading" >Loading</router-link></li>
-        <li><router-link to="/NoticeMessage" >Message</router-link></li>
-        <li><router-link to="/NoticeMessageBox" >MessageBox</router-link></li>
-        <li><router-link to="/NoticeNotification" >Notification</router-link></li>
-      </ul>
-    </section>
+      <section class="item">
+        <div class="item_title">Notice</div>
+        <ul class="item_content">
+          <li>
+            <router-link to="/alert">Alert</router-link>
+          </li>
+          <li>
+            <router-link to="/loading">Loading</router-link>
+          </li>
+          <li>
+            <router-link to="/message">Message</router-link>
+          </li>
+          <li>
+            <router-link to="/messageBox">MessageBox</router-link>
+          </li>
+          <li>
+            <router-link to="/notification">Notification</router-link>
+          </li>
+        </ul>
+      </section>
 
-    <section class="item">
-      <div class="item_title">Others</div>
-      <ul class="item_content">
-        <li><router-link to="/OthersCard" >Card</router-link></li>
-        <li><router-link to="/OthersCarousel" >Carousel</router-link></li>
-        <li><router-link to="/OthersCollapse" >Collapse</router-link></li>
-        <li><router-link to="/OthersDialog" >Dialog</router-link></li>
-        <li><router-link to="/OthersPopover" >Popover</router-link></li>
-        <li><router-link to="/OthersTooltip" >Tooltip</router-link></li>
-      </ul>
-    </section>
+      <section class="item">
+        <div class="item_title">Others</div>
+        <ul class="item_content">
+          <li>
+            <router-link to="/card">Card</router-link>
+          </li>
+          <li>
+            <router-link to="/carousel">Carousel</router-link>
+          </li>
+          <li>
+            <router-link to="/collapse">Collapse</router-link>
+          </li>
+          <li>
+            <router-link to="/dialog">Dialog</router-link>
+          </li>
+          <li>
+            <router-link to="/popover">Popover</router-link>
+          </li>
+          <li>
+            <router-link to="/tooltip">Tooltip</router-link>
+          </li>
+        </ul>
+      </section>
     </div>
-
   </div>
 </template>
 
@@ -98,9 +181,9 @@ export default {
   computed: {},
   watch: {},
   methods: {},
-  beforeCreated() {},
-  created() {},
-  mounted() {}
+  beforeCreated() { },
+  created() { },
+  mounted() { }
 };
 </script>
 
