@@ -1,5 +1,5 @@
 <template>
- <div class="container"></div>
+ <div class="container">upload</div>
 </template>
 
 <script type="text/ecmascript-6">

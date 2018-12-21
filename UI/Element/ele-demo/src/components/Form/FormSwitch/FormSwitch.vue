@@ -1,5 +1,5 @@
 <template>
- <div class="container"></div>
+ <div class="container">switch</div>
 </template>
 
 <script type="text/ecmascript-6">

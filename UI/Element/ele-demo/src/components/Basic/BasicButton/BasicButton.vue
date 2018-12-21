@@ -1,20 +1,20 @@
 <template>
- <div class="container"></div>
+  <div class="container">button</div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
- data() {
-   return {}
- },
- props: '',
- components: {},
- computed: {},
- watch: {},
- methods: {},
- beforeCreated() {},
- created() {},
- mounted() {},
+  data() {
+    return {}
+  },
+  props: '',
+  components: {},
+  computed: {},
+  watch: {},
+  methods: {},
+  beforeCreated() { },
+  created() { },
+  mounted() { },
 }
 </script>
 

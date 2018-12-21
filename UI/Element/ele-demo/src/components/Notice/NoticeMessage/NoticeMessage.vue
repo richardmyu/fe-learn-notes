@@ -1,5 +1,5 @@
 <template>
- <div class="container"></div>
+ <div class="container">message</div>
 </template>
 
 <script type="text/ecmascript-6">
