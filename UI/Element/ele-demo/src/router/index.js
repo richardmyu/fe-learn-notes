@@ -70,63 +70,71 @@ export default new Router({
     },
 
     {
-      path: "/button",
+      path: "/basic",
+      redirect: "/basic/button"
+    },
+    {
+      path: "/basic/button",
       name: "BasicButton",
       component: BasicButton
     },
     {
-      path: "/color",
+      path: "/basic/color",
       name: "BasicColor",
       component: BasicColor
     },
     {
-      path: "/container",
+      path: "/basic/container",
       name: "BasicContainer",
       component: BasicContainer
     },
     {
-      path: "/icon",
+      path: "/basic/icon",
       name: "BasicIcon",
       component: BasicIcon
     },
     {
-      path: "/layout",
+      path: "/basic/layout",
       name: "BasicLayout",
       component: BasicLayout
     },
     {
-      path: "/typography",
+      path: "/basic/typography",
       name: "BasicTypography",
       component: BasicTypography
     },
 
     {
-      path: "/badge",
+      path: "/date",
+      redirect: "/date/badge"
+    },
+    {
+      path: "/date/badge",
       name: "DateBadge",
       component: DateBadge
     },
     {
-      path: "/pagination",
+      path: "/date/pagination",
       name: "DatePagination",
       component: DatePagination
     },
     {
-      path: "/progress",
+      path: "/date/progress",
       name: "DateProgress",
       component: DateProgress
     },
     {
-      path: "/table",
+      path: "/date/table",
       name: "DateTable",
       component: DateTable
     },
     {
-      path: "/tag",
+      path: "/date/tag",
       name: "DateTag",
       component: DateTag
     },
     {
-      path: "/tree",
+      path: "/date/tree",
       name: "DateTree",
       component: DateTree
     },
@@ -137,163 +145,176 @@ export default new Router({
       component: Form
     },
     {
-      path: "/cascader",
+      path: "/form/cascader",
       name: "FormCascader",
       component: FormCascader
     },
     {
-      path: "/checkbox",
+      path: "/form/checkbox",
       name: "FormCheckbox",
       component: FormCheckbox
     },
     {
-      path: "/colorPicker",
+      path: "/form/colorPicker",
       name: "FormColorPicker",
       component: FormColorPicker
     },
     {
-      path: "/datePicker",
+      path: "/form/datePicker",
       name: "FormDatePicker",
       component: FormDatePicker
     },
     {
-      path: "/dateTimePicker",
+      path: "/form/dateTimePicker",
       name: "FormDateTimePicker",
       component: FormDateTimePicker
     },
     {
-      path: "/input",
+      path: "/form/input",
       name: "FormInput",
       component: FormInput
     },
     {
-      path: "/inputNumber",
+      path: "/form/inputNumber",
       name: "FormInputNumber",
       component: FormInputNumber
     },
     {
-      path: "/radio",
+      path: "/form/radio",
       name: "FormRadio",
       component: FormRadio
     },
     {
-      path: "/rate",
+      path: "/form/rate",
       name: "FormRate",
       component: FormRate
     },
     {
-      path: "/select",
+      path: "/form/select",
       name: "FormSelect",
       component: FormSelect
     },
     {
-      path: "/slider",
+      path: "/form/slider",
       name: "FormSlider",
       component: FormSlider
     },
     {
-      path: "/switch",
+      path: "/form/switch",
       name: "FormSwitch",
       component: FormSwitch
     },
     {
-      path: "/timePicker",
+      path: "/form/timePicker",
       name: "FormTimePicker",
       component: FormTimePicker
     },
     {
-      path: "/transfer",
+      path: "/form/transfer",
       name: "FormTransfer",
       component: FormTransfer
     },
     {
-      path: "/upload",
+      path: "/form/upload",
       name: "FormUpload",
       component: FormUpload
     },
 
     {
-      path: "/breadcrumb",
+      path: "/navigation",
+      redirect: "/navigation/breadcrumb"
+    },
+    {
+      path: "/navigation/breadcrumb",
       name: "NavigationBreadcrumb",
       component: NavigationBreadcrumb
     },
     {
-      path: "/dropdown",
+      path: "/navigation/dropdown",
       name: "NavigationDropdown",
       component: NavigationDropdown
     },
     {
-      path: "/navMenu",
+      path: "/navigation/navMenu",
       name: "NavigationNavMenu",
       component: NavigationNavMenu
     },
     {
-      path: "/steps",
+      path: "/navigation/steps",
       name: "NavigationSteps",
       component: NavigationSteps
     },
     {
-      path: "/tabs",
+      path: "/navigation/tabs",
       name: "NavigationTabs",
       component: NavigationTabs
     },
 
     {
-      path: "/alert",
+      path: "/notice",
+      redirect: "/notice/alert"
+    },
+    {
+      path: "/notice/alert",
       name: "NoticeAlert",
       component: NoticeAlert
     },
     {
-      path: "/loading",
+      path: "/notice/loading",
       name: "NoticeLoading",
       component: NoticeLoading
     },
     {
-      path: "/message",
+      path: "/notice/message",
       name: "NoticeMessage",
       component: NoticeMessage
     },
     {
-      path: "/messageBox",
+      path: "/notice/messageBox",
       name: "NoticeMessageBox",
       component: NoticeMessageBox
     },
     {
-      path: "/notification",
+      path: "/notice/notification",
       name: "NoticeNotification",
       component: NoticeNotification
     },
 
     {
-      path: "/card",
+      path: "/other",
+      redirect: "/other/card"
+    },
+    {
+      path: "/other/card",
       name: "OthersCard",
       component: OthersCard
     },
     {
-      path: "/carousel",
+      path: "/other/carousel",
       name: "OthersCarousel",
       component: OthersCarousel
     },
     {
-      path: "/collapse",
+      path: "/other/collapse",
       name: "OthersCollapse",
       component: OthersCollapse
     },
     {
-      path: "/dialog",
+      path: "/other/dialog",
       name: "OthersDialog",
       component: OthersDialog
     },
     {
-      path: "/popover",
+      path: "/other/popover",
       name: "OthersPopover",
       component: OthersPopover
     },
     {
-      path: "/tooltip",
+      path: "/other/tooltip",
       name: "OthersTooltip",
       component: OthersTooltip
     },
+
     {
       path: "/transition",
       name: "Transition",

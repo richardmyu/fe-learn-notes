@@ -18,22 +18,22 @@
         <div class="item_title">Basic</div>
         <ul class="item_content">
           <li>
-            <router-link to="/button">Button</router-link>
+            <router-link to="/basic/button">Button</router-link>
           </li>
           <li>
-            <router-link to="/color">Color</router-link>
+            <router-link to="/basic/color">Color</router-link>
           </li>
           <li>
-            <router-link to="/container">Container</router-link>
+            <router-link to="/basic/container">Container</router-link>
           </li>
           <li>
-            <router-link to="/icon">Icon</router-link>
+            <router-link to="/basic/icon">Icon</router-link>
           </li>
           <li>
-            <router-link to="/layout">Layout</router-link>
+            <router-link to="/basic/layout">Layout</router-link>
           </li>
           <li>
-            <router-link to="/typography">Typography</router-link>
+            <router-link to="/basic/typography">Typography</router-link>
           </li>
         </ul>
       </section>
@@ -42,16 +42,16 @@
         <div class="item_title">Date</div>
         <ul class="item_content">
           <li>
-            <router-link to="/progress">Progress</router-link>
+            <router-link to="/date/progress">Progress</router-link>
           </li>
           <li>
-            <router-link to="/table">Table</router-link>
+            <router-link to="/date/table">Table</router-link>
           </li>
           <li>
-            <router-link to="/tag">Tag</router-link>
+            <router-link to="/date/tag">Tag</router-link>
           </li>
           <li>
-            <router-link to="/tree">Tree</router-link>
+            <router-link to="/date/tree">Tree</router-link>
           </li>
         </ul>
       </section>
@@ -63,49 +63,49 @@
             <router-link to="/form">Form</router-link>
           </li>
           <li>
-            <router-link to="/cascader">Cascader</router-link>
+            <router-link to="/form/cascader">Cascader</router-link>
           </li>
           <li>
-            <router-link to="/checkbox">Checkbox</router-link>
+            <router-link to="/form/checkbox">Checkbox</router-link>
           </li>
           <li>
-            <router-link to="/colorPicker">ColorPicker</router-link>
+            <router-link to="/form/colorPicker">ColorPicker</router-link>
           </li>
           <li>
-            <router-link to="/datePicker">DatePicker</router-link>
+            <router-link to="/form/datePicker">DatePicker</router-link>
           </li>
           <li>
-            <router-link to="/dateTimePicker">DateTimePicker</router-link>
+            <router-link to="/form/dateTimePicker">DateTimePicker</router-link>
           </li>
           <li>
-            <router-link to="/input">Input</router-link>
+            <router-link to="/form/input">Input</router-link>
           </li>
           <li>
-            <router-link to="/inputNumber">InputNumber</router-link>
+            <router-link to="/form/inputNumber">InputNumber</router-link>
           </li>
           <li>
-            <router-link to="/radio">Radio</router-link>
+            <router-link to="/form/radio">Radio</router-link>
           </li>
           <li>
-            <router-link to="/rate">Rate</router-link>
+            <router-link to="/form/rate">Rate</router-link>
           </li>
           <li>
-            <router-link to="/select">Select</router-link>
+            <router-link to="/form/select">Select</router-link>
           </li>
           <li>
-            <router-link to="/slider">Slider</router-link>
+            <router-link to="/form/slider">Slider</router-link>
           </li>
           <li>
-            <router-link to="/switch">Switch</router-link>
+            <router-link to="/form/switch">Switch</router-link>
           </li>
           <li>
-            <router-link to="/timePicker">TimePicker</router-link>
+            <router-link to="/form/timePicker">TimePicker</router-link>
           </li>
           <li>
-            <router-link to="/transfer">Transfer</router-link>
+            <router-link to="/form/transfer">Transfer</router-link>
           </li>
           <li>
-            <router-link to="/upload">Upload</router-link>
+            <router-link to="/form/upload">Upload</router-link>
           </li>
         </ul>
       </section>
@@ -114,19 +114,19 @@
         <div class="item_title">Navigation</div>
         <ul class="item_content">
           <li>
-            <router-link to="/breadcrumb">Breadcrumb</router-link>
+            <router-link to="/navigation/breadcrumb">Breadcrumb</router-link>
           </li>
           <li>
-            <router-link to="/dropdown">Dropdown</router-link>
+            <router-link to="/navigation/dropdown">Dropdown</router-link>
           </li>
           <li>
-            <router-link to="/navMenu">NavMenu</router-link>
+            <router-link to="/navigation/navMenu">NavMenu</router-link>
           </li>
           <li>
-            <router-link to="/steps">Steps</router-link>
+            <router-link to="/navigation/steps">Steps</router-link>
           </li>
           <li>
-            <router-link to="/tabs">Tabs</router-link>
+            <router-link to="/navigation/tabs">Tabs</router-link>
           </li>
         </ul>
       </section>
@@ -135,19 +135,19 @@
         <div class="item_title">Notice</div>
         <ul class="item_content">
           <li>
-            <router-link to="/alert">Alert</router-link>
+            <router-link to="/notice/alert">Alert</router-link>
           </li>
           <li>
-            <router-link to="/loading">Loading</router-link>
+            <router-link to="/notice/loading">Loading</router-link>
           </li>
           <li>
-            <router-link to="/message">Message</router-link>
+            <router-link to="/notice/message">Message</router-link>
           </li>
           <li>
-            <router-link to="/messageBox">MessageBox</router-link>
+            <router-link to="/notice/messageBox">MessageBox</router-link>
           </li>
           <li>
-            <router-link to="/notification">Notification</router-link>
+            <router-link to="/notice/notification">Notification</router-link>
           </li>
         </ul>
       </section>
@@ -156,22 +156,22 @@
         <div class="item_title">Others</div>
         <ul class="item_content">
           <li>
-            <router-link to="/card">Card</router-link>
+            <router-link to="/other/card">Card</router-link>
           </li>
           <li>
-            <router-link to="/carousel">Carousel</router-link>
+            <router-link to="/other/carousel">Carousel</router-link>
           </li>
           <li>
-            <router-link to="/collapse">Collapse</router-link>
+            <router-link to="/other/collapse">Collapse</router-link>
           </li>
           <li>
-            <router-link to="/dialog">Dialog</router-link>
+            <router-link to="/other/dialog">Dialog</router-link>
           </li>
           <li>
-            <router-link to="/popover">Popover</router-link>
+            <router-link to="/other/popover">Popover</router-link>
           </li>
           <li>
-            <router-link to="/tooltip">Tooltip</router-link>
+            <router-link to="/other/tooltip">Tooltip</router-link>
           </li>
         </ul>
       </section>
