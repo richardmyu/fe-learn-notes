@@ -6,6 +6,15 @@
 
     <div class="content">
       <section class="item">
+        <div class="item_title">Transition</div>
+        <ul class="item_content">
+          <li>
+            <router-link to="/transition">Transition</router-link>
+          </li>
+        </ul>
+      </section>
+
+      <section class="item">
         <div class="item_title">Basic</div>
         <ul class="item_content">
           <li>
@@ -194,7 +203,6 @@ export default {
   box-sizing: border-box;
   padding: 30px 200px;
   font-size: 20px;
-  text-align: center;
 }
 
 .title h1 {
@@ -205,9 +213,8 @@ export default {
 
 .content {
   width: 100%;
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 0 30px;
 }
 
 .item {
@@ -221,7 +228,7 @@ export default {
 }
 
 .item .item_content {
-  padding-left: 30px;
+  padding-left: 40px;
 }
 
 .item .item_content li {

@@ -53,6 +53,8 @@ import OthersDialog from "@/components/Others/OthersDialog/OthersDialog";
 import OthersPopover from "@/components/Others/OthersPopover/OthersPopover";
 import OthersTooltip from "@/components/Others/OthersTooltip/OthersTooltip";
 
+import Transition from "@/components/Transition/Transition";
+
 Vue.use(Router);
 
 export default new Router({
@@ -291,6 +293,11 @@ export default new Router({
       path: "/tooltip",
       name: "OthersTooltip",
       component: OthersTooltip
+    },
+    {
+      path: "/transition",
+      name: "Transition",
+      component: Transition
     }
   ]
 });

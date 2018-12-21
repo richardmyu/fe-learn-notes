@@ -1,10 +1,10 @@
 <template>
-  <div class="layout-container">
-    <div class="layout-title">
+  <div class="container">
+    <div class="container-title">
       <h1>Layout 布局</h1>
       <p>通过基础的 24 分栏，迅速简便地创建布局。</p>
     </div>
-    <div class="layout-content">
+    <div class="container-content">
       <!-- 基础布局 -->
       <section class="content-item">
         <div class="item-title">
@@ -399,45 +399,6 @@ export default {
 
 <style></style>
 <style scoped lang="less">
-.layout-container {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 30px;
-  font-size: 18px;
-  color: #777777;
-  .layout-title {
-    text-align: center;
-    margin-bottom: 60px;
-    h1 {
-      font-size: 36px;
-      margin-bottom: 10px;
-      color: #000000;
-    }
-  }
-  .layout-content {
-    .content-item {
-      margin-bottom: 70px;
-      .item-title {
-        margin-bottom: 30px;
-        h3 {
-          font-size: 24px;
-          margin-bottom: 10px;
-        }
-        p {
-          margin-bottom: 10px;
-        }
-      }
-      .item-demo {
-        box-sizing: border-box;
-        padding: 20px;
-        box-shadow: 0 0 10px 3px #666666;
-        border-radius: 3px;
-        margin-bottom: 30px;
-      }
-    }
-  }
-}
-
 .el-row {
   margin-bottom: 20px;
   text-align: center;
