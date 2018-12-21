@@ -30,6 +30,10 @@ export default {
         margin-bottom: 10px;
         color: #000000;
       }
+      p{
+        text-align: left;
+        margin-bottom: 10px;
+      }
     }
     .container-content {
       .content-item {
