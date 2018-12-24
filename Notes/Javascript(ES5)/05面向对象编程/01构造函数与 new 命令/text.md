@@ -8,7 +8,7 @@ JavaScript 语言具有很强的面向对象编程能力。
 
 **面向对象编程（Object Oriented Programming，缩写为 OOP）**是目前主流的编程范式。它将真实世界各种复杂的关系，抽象为一个个对象，然后由对象之间的分工与合作，完成对真实世界的模拟。
 
-每一个对象都是功能中心，具有明确分工，可以完成接受信息、处理数据、发出信息等任务。对象可以复用，通过继承机制还可以定制。因此，面向对象编程具有灵活、代码可复用、高度模块化等特点，容易维护和开发，比起由一系列函数或指令组成的传统的**过程式编程（procedural programming）**，更适合多人合作的大型软件项目。
+每一个对象都是功能中心，具有明确分工，可以完成接受信息、处理数据、发出信息等任务。对象可以复用，通过继承机制还可以定制。因此，面向对象编程具有*灵活*、_代码可复用_、*高度模块化*等特点，容易维护和开发，比起由一系列函数或指令组成的传统的**过程式编程（procedural programming）**，更适合多人合作的大型软件项目。
 
 对象是单个实物的抽象；对象是一个容器，封装了**属性（property）**和**方法（method）**。属性是对象的状态，方法是对象的行为（完成某种任务）。
 
@@ -91,7 +91,7 @@ Fubar();
 // TypeError: Cannot set property '_foo' of undefined
 ```
 
-上面代码的`use strict`命令保证了构造函数在严格模式下运行。由于严格模式中，函数内部的`this`不能指向全局对象，默认等于`undefined`，导致不加`new`调用会报错（JavaScript 不允许对`undefined`添加属性）。
+上面代码的`use strict`命令保证了构造函数在严格模式下运行。由于严格模式中，函数内部的`this`不能指向全局对象，默认等于`undefined`，导致不加`new`调用会报错（JavaScript 不允许对`undefined`或`null`添加属性）。
 
 另一个解决办法，构造函数内部判断是否使用`new`命令，如果发现没有使用，则直接返回一个实例对象。
 
@@ -105,10 +105,12 @@ function Fubar(foo, bar) {
   this.bar = bar;
 }
 
-Fubar(1, 2).foo(
-  // 1
-  new Fubar(1, 2)
-).foo; // 1
+console.log(Fubar(1, 2));
+//Fubar {foo: 1, bar: 2}
+console.log(new Fubar(1, 2));
+//Fubar {foo: 1, bar: 2}
+console.log(Fubar(1, 2).foo); //1
+console.log(new Fubar(1, 2).foo); //1
 ```
 
 ##### 1.3.2 new 命令的原理
@@ -181,7 +183,7 @@ function _new(constructor, params) {
   // 创建一个空对象，继承构造函数的 prototype 属性
   var context = Object.create(constructor.prototype);
 
-  // 执行构造函数
+  // 执行构造函数(将 this 指向空对象)
   var result = constructor.apply(context, args);
 
   // 如果返回结果是对象，就直接返回，否则返回 context 对象
@@ -240,5 +242,5 @@ var person1 = {
 var person2 = Object.create(person1);
 
 person2.name; // 张三
-person2.greeting(); // Hi! I'm 张三.
+person2.greeting(); // Hi! I'm 张三
 ```

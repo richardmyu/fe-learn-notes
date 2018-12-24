@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Object 对象的相关方法</title>
+  </head>
+  <body>
+    <script>
+      // 空对象的原型是 Object.prototype
+      console.log(Object.getPrototypeOf({}) === Object.prototype); // true
+
+      // Object.prototype 的原型是 null
+      console.log(Object.getPrototypeOf(Object.prototype) === null); // true
+
+      // 函数的原型是 Function.prototype
+      function f() {}
+      console.log(Object.getPrototypeOf(f) === Function.prototype); // true
+
+      // console.log(Object.getPrototypeOf(null));//Cannot convert undefined or null to object
+      // console.log(Object.getPrototypeOf(undefined));
+      // Cannot convert undefined or null to object
+
+      var a = {};
+      var b = { x: 1 };
+      Object.setPrototypeOf(a, b);
+
+      console.log(Object.getPrototypeOf(a) === b); //true
+      console.log(a.x); // 1
+    </script>
+    <script>
+      var F = function() {
+        this.foo = "bar";
+      };
+
+      var f1 = new F();
+      // 等同于
+      var f2 = Object.setPrototypeOf({}, F.prototype);
+      console.log(f1.foo); //bar
+      console.log(f2.foo); //undefined
+      F.call(f2);
+      console.log(f2.foo); //bar
+    </script>
+    <script>
+      var A = {
+        print: function() {
+          console.log("hello");
+        }
+      };
+
+      // 实例对象
+      var B = Object.create(A);
+
+      console.log(Object.getPrototypeOf(B) === A); // true
+      B.print(); // hello
+      console.log(B.print === A.print); // true
+    </script>
+    <script>
+      function inheritedPropertyNames(obj) {
+        var props = {};
+        while (obj) {
+          Object.getOwnPropertyNames(obj).forEach(function(p) {
+            props[p] = true;
+          });
+          obj = Object.getPrototypeOf(obj);
+        }
+        return Object.getOwnPropertyNames(props);
+      }
+      console.log(inheritedPropertyNames(Date));
+    </script>
+    <script></script>
+    <script></script>
+    <script></script>
+    <script></script>
+    <script></script>
+  </body>
+</html>

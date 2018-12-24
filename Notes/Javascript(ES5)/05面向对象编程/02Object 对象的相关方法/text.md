@@ -47,6 +47,7 @@ var F = function() {
 var f = new F();
 // 等同于
 var f = Object.setPrototypeOf({}, F.prototype);
+// !!! 注意要改变this的指向
 F.call(f);
 ```
 
@@ -195,7 +196,7 @@ obj.__proto__ = p;
 Object.getPrototypeOf(obj) === p; // true
 ```
 
-根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeof()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
+根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
 
 原型链可以用`__proto__`很直观地表示。
 
@@ -274,7 +275,7 @@ c.constructor.prototype === p; // true
 
 #### 2.7.Object.getOwnPropertyNames()
 
-`Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
+`Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名，但不区分是否可遍历属性。
 
 ```javascript
 Object.getOwnPropertyNames(Date);
@@ -289,7 +290,7 @@ Object.getOwnPropertyNames(Date);
 
 #### 2.8.Object.prototype.hasOwnProperty()
 
-对象实例的`hasOwnProperty`方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上。
+对象实例的`hasOwnProperty`方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上(用来判断某个属性是否来自本身即是否私有)。
 
 ```javascript
 Date.hasOwnProperty("length"); // true
