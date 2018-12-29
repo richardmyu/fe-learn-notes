@@ -1,5 +1,19 @@
 ### 3.面向对象编程的模式
 
+#### 3.0.模式
+
+##### 3.0.1 构造函数模式
+
+为了解决从原型对象生成实例的问题，Javascript 提供了一个构造函数（Constructor）模式。
+
+所谓"构造函数"，其实就是一个普通函数，但是内部使用了 `this` 变量。对构造函数使用 `new` 运算符，就能生成实例，并且 `this` 变量会绑定在实例对象上，同时实例会自动包含一个 `constructor` 属性，指向它们的构造函数。
+
+构造函数方法很好用，但是存在一个浪费内存的问题 -- 即没有共享属性和方法，每次生成的实例的属性和方法都是私有的，这样就引入 Prototype 模式。
+
+##### 3.0.2 Prototype 模式
+
+Javascript 规定，每一个构造函数都有一个 `prototype` 属性，指向另一个对象。这个对象的所有属性和方法，都会被构造函数的实例继承。这意味着，我们可以把那些不变的属性和方法，直接定义在 `prototype` 对象上。
+
 #### 3.1.构造函数的继承
 
 让一个构造函数继承另一个构造函数，是非常常见的需求。
@@ -72,7 +86,6 @@ Rectangle.prototype.constructor = Rectangle;
 ```javascript
 var rect = new Rectangle();
 rect.move(1, 1); // 'Shape moved.'
-
 rect instanceof Rectangle; // true
 rect instanceof Shape; // true
 ```
@@ -88,7 +101,144 @@ ClassB.prototype.print = function() {
 
 上面代码中，子类 B 的 print 方法先调用父类 A 的 print 方法，再部署自己的代码。这就等于继承了父类 A 的 print 方法。
 
-#### 3.2.多重继承
+#### 3.2.非构造函数的继承
+
+##### 3.2.1 什么是"非构造函数"的继承？
+
+比如，现在有一个对象，叫做"中国人"。
+
+```javascript
+var Chinese = {
+  nation: "中国"
+};
+```
+
+还有一个对象，叫做"医生"。
+
+```javascript
+var Doctor = {
+  career: "医生"
+};
+```
+
+请问怎样才能让"医生"去继承"中国人"，也就是说，我怎样才能生成一个"中国医生"的对象？
+
+这里要注意，这两个对象都是普通对象，不是构造函数，无法使用构造函数方法实现"继承"。
+
+##### 3.2.2 object()方法
+
+json 格式的发明人 Douglas Crockford，提出了一个 `object()` 函数，可以做到这一点。
+
+```javascript
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
+}
+```
+
+这个 `object()` 函数，其实只做一件事，就是把子对象的 `prototype` 属性，指向父对象，从而使得子对象与父对象连在一起。
+
+使用的时候，第一步先在父对象的基础上，生成子对象：
+
+`var Doctor = object(Chinese);`
+
+然后，再加上子对象本身的属性：
+
+`Doctor.career = '医生';`
+
+这时，子对象已经继承了父对象的属性了。
+
+`alert(Doctor.nation); //中国`
+
+##### 3.2.3 浅拷贝
+
+除了使用"prototype 链"以外，还有另一种思路：把父对象的属性，全部拷贝给子对象，也能实现继承。
+
+下面这个函数，就是在做拷贝：
+
+```javascript
+function extendCopy(p) {
+  var c = {};
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p;
+  return c;
+}
+```
+
+使用的时候，这样写：
+
+```javascript
+var Doctor = extendCopy(Chinese);
+Doctor.career = "医生";
+alert(Doctor.nation); // 中国
+```
+
+但是，这样的拷贝有一个问题。那就是，如果父对象的属性等于数组或另一个对象，那么实际上，子对象获得的只是一个内存地址，而不是真正拷贝，因此存在父对象被篡改的可能。
+
+请看，现在给 Chinese 添加一个"出生地"属性，它的值是一个数组。
+
+`Chinese.birthPlaces = ['北京','上海','香港'];`
+
+通过 `extendCopy()` 函数，Doctor 继承了 Chinese。
+
+`var Doctor = extendCopy(Chinese);`
+
+然后，我们为 Doctor 的"出生地"添加一个城市：
+
+`Doctor.birthPlaces.push('厦门');`
+
+发生了什么事？Chinese 的"出生地"也被改掉了！
+
+```javascript
+alert(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
+alert(Chinese.birthPlaces); //北京, 上海, 香港, 厦门
+```
+
+所以，`extendCopy()`只是拷贝基本类型的数据，我们把这种拷贝叫做"浅拷贝"。这是早期 jQuery 实现继承的方式。
+
+##### 3.2.4 深拷贝
+
+所谓"深拷贝"，就是能够实现真正意义上的数组和对象的拷贝。它的实现并不难，只要递归调用"浅拷贝"就行了。
+
+```javascript
+function deepCopy(p, c) {
+  var c = c || {};
+  for (var i in p) {
+    if (typeof p[i] === "object") {
+      c[i] = p[i].constructor === Array ? [] : {};
+      deepCopy(p[i], c[i]);
+    } else {
+      c[i] = p[i];
+    }
+  }
+  return c;
+}
+```
+
+使用的时候这样写：
+
+`var Doctor = deepCopy(Chinese);`
+
+现在，给父对象加一个属性，值为数组。然后，在子对象上修改这个属性：
+
+```javascript
+Chinese.birthPlaces = ["北京", "上海", "香港"];
+Doctor.birthPlaces.push("厦门");
+```
+
+这时，父对象就不会受到影响了。
+
+```javascript
+alert(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
+alert(Chinese.birthPlaces); //北京, 上海, 香港
+```
+
+目前，jQuery 库使用的就是这种继承方法。
+
+#### 3.3.多重继承
 
 JavaScript 不提供多重继承功能，即不允许一个对象同时继承多个对象。但是，可以通过变通方法，实现这个功能。
 
@@ -121,7 +271,7 @@ s.world; // 'world'
 
 上面代码中，子类 S 同时继承了父类 M1 和 M2。这种模式又称为 **Mixin（混入）**。
 
-#### 3.3.模块
+#### 3.4.模块
 
 随着网站逐渐变成”互联网应用程序”，嵌入网页的 JavaScript 代码越来越庞大，越来越复杂。网页越来越像桌面程序，需要一个团队分工协作、进度管理、单元测试等等……开发者不得不使用软件工程的方法，管理网页的业务逻辑。
 
@@ -129,7 +279,7 @@ JavaScript 模块化编程，已经成为一个迫切的需求。理想情况下
 
 但是，JavaScript 不是一种模块化编程语言，ES5 不支持”类”（class），更遑论”模块”（module）了。ES6 正式支持”类”和”模块”，但还没有成为主流。JavaScript 社区做了很多努力，在现有的运行环境中，实现模块的效果。
 
-##### 3.3.1 基本的实现方法
+##### 3.4.1 基本的实现方法
 
 **模块是实现特定功能的一组属性和方法的封装**。
 
@@ -166,7 +316,7 @@ var module1 = new Object({
 
 `module1._count = 5;`
 
-##### 3.3.2 封装私有变量：构造函数的写法
+##### 3.4.2 封装私有变量：构造函数的写法
 
 我们可以利用构造函数，封装私有变量。
 
@@ -204,7 +354,7 @@ StringBuilder.prototype = {
 
 这种方法将私有变量放入实例对象中，好处是看上去更自然，但是它的私有变量可以从外部读写，不是很安全。
 
-##### 3.3.3 封装私有变量：立即执行函数的写法
+##### 3.4.3 封装私有变量：立即执行函数的写法
 
 使用“立即执行函数”（Immediately-Invoked Function Expression，IIFE），将相关的属性和方法封装在一个函数作用域里面，可以达到不暴露私有成员的目的。
 
@@ -230,7 +380,7 @@ var module1 = (function() {
 
 这种模式就是 JavaScript 模块的基本写法。
 
-##### 3.3.4 模块的放大模式
+##### 3.4.4 模块的放大模式
 
 如果一个模块很大，必须分成几个部分，或者一个模块需要继承另一个模块，这时就有必要采用**放大模式（augmentation）**。
 
@@ -254,7 +404,7 @@ var module1 = (function(mod) {
 
 与”放大模式”相比，“宽放大模式”就是“立即执行函数”的参数可以是空对象。
 
-##### 3.3.5 输入全局变量
+##### 3.4.5 输入全局变量
 
 独立性是模块的重要特点，模块内部最好不与程序的其他部分直接交互。
 

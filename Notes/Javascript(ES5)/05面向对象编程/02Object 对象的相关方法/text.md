@@ -13,7 +13,7 @@ Object.getPrototypeOf(f) === F.prototype; // true
 下面是几种特殊对象的原型。
 
 ```javascript
-// 空对象的原型是 Object.prototype
+// 空对象(也包括其他对象)的原型是 Object.prototype
 Object.getPrototypeOf({}) === Object.prototype; // true
 
 // Object.prototype 的原型是 null
@@ -31,8 +31,8 @@ Object.getPrototypeOf(f) === Function.prototype; // true
 ```javascript
 var a = {};
 var b = { x: 1 };
-Object.setPrototypeOf(a, b);
 
+Object.setPrototypeOf(a, b) === a; //true
 Object.getPrototypeOf(a) === b; //true
 a.x; // 1
 ```
@@ -47,13 +47,13 @@ var F = function() {
 var f = new F();
 // 等同于
 var f = Object.setPrototypeOf({}, F.prototype);
-// !!! 注意要改变this的指向
+// !!! 注意要改变this的指向 ？？？
 F.call(f);
 ```
 
 #### 2.3.Object.create()
 
-该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例完全继承原型对象的属性。
+该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例*完全继承*原型对象的属性。
 
 ```javascript
 // 原型对象
@@ -74,16 +74,20 @@ B.print === A.print; // true
 实际上，`Object.create`方法可以用下面的代码代替。
 
 ```javascript
-if (typeof Object.create !== "function") {
-  Object.create = function(obj) {
-    function F() {}
-    F.prototype = obj;
-    return new F();
-  };
-}
+// 模拟 Object.create
+let _create = function(obj) {
+  function F() {}
+  F.prototype = obj;
+  return new F();
+};
+let aa = { a: 111 };
+let bb = _create(aa);
+Object.getPrototypeOf(bb) === aa; //true
+bb.a; //111
+bb.a === aa.a; //true
 ```
 
-上面代码表明，`Object.create`方法的实质是新建一个空的构造函数 F，然后让 F.prototype 属性指向参数对象 obj，最后返回一个 F 的实例，从而实现让该实例继承 obj 的属性。
+上面代码表明，`Object.create`方法的实质是新建一个空的构造函数 F，然后让 `F.prototype` 属性指向参数对象 obj，最后返回一个 F 的实例，从而实现让该实例继承 obj 的属性。
 
 下面三种方式生成的新对象是等价的。
 
@@ -112,7 +116,7 @@ Object.create(123);
 // TypeError: Object prototype may only be an Object or null
 ```
 
-`object.create`方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
+`object.create`方法生成的新对象，**动态继承**了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
 
 ```javascript
 var obj1 = { p: 1 };
@@ -184,6 +188,8 @@ Object.prototype.isPrototypeOf(Object.create(null)); // false
 
 上面代码中，由于`Object.prototype`处于原型链的最顶端，所以对各种实例都返回 true，只有直接继承自`null`的对象除外。
 
+> 注释：`Object.prototype` 继承自 `null` ，但 `null` 不在原型链中，故由 `null` 直接继承而来的对象跟 `Object.prototype` 是并级的，而也不在原型链中，当然这都基于 `Object.prototype` 处于原型链的最顶端，至于为什么是，不知道？？？
+
 #### 2.5.`Object.prototype.__proto__`
 
 实例对象的`__proto__`属性，返回该对象的原型。该属性可读写。
@@ -196,7 +202,7 @@ obj.__proto__ = p;
 Object.getPrototypeOf(obj) === p; // true
 ```
 
-根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
+根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用 `Object.getPrototypeOf()` 和 `Object.setPrototypeOf()`，进行原型对象的读写操作。
 
 原型链可以用`__proto__`很直观地表示。
 
@@ -204,6 +210,7 @@ Object.getPrototypeOf(obj) === p; // true
 var A = {
   name: "张三"
 };
+
 var B = {
   name: "李四"
 };

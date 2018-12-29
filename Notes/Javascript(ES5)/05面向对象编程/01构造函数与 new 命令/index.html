@@ -8,54 +8,56 @@
   </head>
   <body>
     <script>
-      // var Vehicle = function(p) {
-      //   this.price = p;
-      //   console.log(this);
-      // };
+      var Vehicle = function(p) {
+        this.price = p;
+        console.log(this);
+      };
 
-      // var v = new Vehicle(100);
-      // console.log(v.price);
+      var v = new Vehicle(100);
+      var v = Vehicle(100);
+      console.log(v);
+      console.log(price);
 
-      // function Fubar(foo, bar) {
-      //   "use strict";
-      //   this._foo = foo;
-      //   this._bar = bar;
-      // }
+      function Fubar(foo, bar) {
+        "use strict";
+        this._foo = foo;
+        this._bar = bar;
+      }
 
-      // Fubar();
+      Fubar();
     </script>
     <script>
-      // function Fubar(foo, bar) {
-      //   if (!(this instanceof Fubar)) {
-      //     return new Fubar(foo, bar);
-      //   }
+      function Fubar(foo, bar) {
+        if (!(this instanceof Fubar)) {
+          return new Fubar(foo, bar);
+        }
 
-      //   this.foo = foo;
-      //   this.bar = bar;
-      // }
+        this.foo = foo;
+        this.bar = bar;
+      }
 
-      // console.log(Fubar(1, 2));
-      // //Fubar {foo: 1, bar: 2}
-      // console.log(new Fubar(1, 2));
-      // //Fubar {foo: 1, bar: 2}
-      // console.log(Fubar(1,2).foo);//1
-      // console.log(new Fubar(1,2).foo);//1
+      console.log(Fubar(1, 2));
+      //Fubar {foo: 1, bar: 2}
+      console.log(new Fubar(1, 2));
+      //Fubar {foo: 1, bar: 2}
+      console.log(Fubar(1, 2).foo); //1
+      console.log(new Fubar(1, 2).foo); //1
     </script>
     <script>
+      // new 命令的原理
       function _new(constructor, params) {
         //constructor  构造函数
         //params  构造函数参数
 
         // 将 arguments 对象转为数组
         var args = [].slice.call(arguments);
-
         // 取出构造函数
         var constructor = args.shift();
 
-        // 创建一个空对象，继承构造函数的 prototype 属性
+        // 1.创建一个空对象；2.将这个空对象的原型指向构造函数的 prototype 属性
         var context = Object.create(constructor.prototype);
 
-        // 执行构造函数(将 this 指向空对象)
+        // 3.将此空对象赋值给 this；4.执行构造函数内的代码
         var result = constructor.apply(context, args);
 
         // 如果返回结果是对象，就直接返回，否则返回 context 对象
@@ -91,14 +93,39 @@
       //Kids {name: "bab", age: 2, sex: "女"}
     </script>
     <script>
-      // function f() {
-      //   if (!new.target) {
-      //     throw new Error("请使用 new 命令调用！");
-      //   }
-      //   // ...
-      // }
+      function f() {
+        console.log(new.target === f);
+      }
 
-      // f(); // Uncaught Error: 请使用 new 命令调用！
+      f(); // false
+      new f(); // true
+      function getMessage() {
+        return "this is a message";
+      }
+
+      var msg = new getMessage();
+
+      console.log(msg); // {}
+      console.log(typeof msg); // "object"
+      // 没有返回值
+      function getMessages() {
+        let a = 100;
+      }
+
+      var msgs = new getMessages();
+
+      console.log(msgs); // {}
+      console.log(typeof msgs); // "object"
+    </script>
+    <script>
+      function f() {
+        if (!new.target) {
+          throw new Error("请使用 new 命令调用！");
+        }
+        // ...
+      }
+
+      f(); // Uncaught Error: 请使用 new 命令调用！
     </script>
     <script>
       var person1 = {

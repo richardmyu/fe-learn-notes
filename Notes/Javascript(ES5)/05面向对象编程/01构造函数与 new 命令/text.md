@@ -18,7 +18,7 @@ JavaScript 语言具有很强的面向对象编程能力。
 
 典型的面向对象编程语言（比如 C++ 和 Java），都有**类（class）**这个概念。所谓“类”就是对象的模板，对象就是“类”的实例。但是，JavaScript 语言的对象体系，不是基于“类”的，而是基于**构造函数（constructor）**和**原型（prototype）**。
 
-JavaScript 语言使用构造函数作为对象的模板。所谓”构造函数”，就是专门用来生成实例对象的函数。它就是对象的模板，描述实例对象的基本结构。一个构造函数，可以生成多个实例对象，这些实例对象都有相同的结构。
+JavaScript 语言使用构造函数作为对象的模板。**所谓”构造函数”，就是专门用来生成实例对象的函数**。它就是对象的模板，描述实例对象的基本结构。一个构造函数，可以生成多个实例对象，这些实例对象都有相同的结构。
 
 构造函数就是一个普通的函数，但是有自己的特征和用法。为了与普通函数区别，构造函数名字的第一个字母通常大写。
 
@@ -72,8 +72,8 @@ var Vehicle = function() {
 };
 
 var v = Vehicle();
-v; // undefined
-price; // 1000
+console.log(v); // undefined
+console.log(price); // 1000
 ```
 
 因此，应该非常小心，避免不使用`new`命令、直接调用构造函数。
@@ -152,9 +152,10 @@ new Vehicle().price;
 // 2000
 ```
 
-另一方面，如果对普通函数（内部没有`this`关键字的函数）使用`new`命令，则会返回一个空对象或指定对象。
+另一方面，如果对普通函数（内部没有`this`关键字的函数）使用`new`命令，则会返回一个空对象或指定对象（不论有没有 return 语句）。
 
 ```javascript
+// 有明确的返回值
 function getMessage() {
   return "this is a message";
 }
@@ -163,6 +164,16 @@ var msg = new getMessage();
 
 msg; // {}
 typeof msg; // "object"
+
+// 没有返回值
+function getMessages() {
+  let a = 100;
+}
+
+var msgs = new getMessages();
+
+console.log(msgs); // {}
+console.log(typeof msgs); // "object"
 ```
 
 这是因为`new`命令总是返回一个对象，要么是实例对象，要么是`return`语句指定的对象。
@@ -176,14 +187,13 @@ function _new(constructor, params) {
 
   // 将 arguments 对象转为数组
   var args = [].slice.call(arguments);
-
   // 取出构造函数
   var constructor = args.shift();
 
-  // 创建一个空对象，继承构造函数的 prototype 属性
+  // 1.创建一个空对象；2.将这个空对象的原型指向构造函数的 prototype 属性
   var context = Object.create(constructor.prototype);
 
-  // 执行构造函数(将 this 指向空对象)
+  // 3.将此空对象赋值给 this；4.执行构造函数内的代码
   var result = constructor.apply(context, args);
 
   // 如果返回结果是对象，就直接返回，否则返回 context 对象

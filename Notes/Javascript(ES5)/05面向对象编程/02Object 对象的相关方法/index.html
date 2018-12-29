@@ -7,7 +7,9 @@
     <title>Object 对象的相关方法</title>
   </head>
   <body>
-    <script>
+    <!-- <script>
+      let obj = { a: 123 };
+      console.log(Object.getPrototypeOf(obj) === Object.prototype); //true
       // 空对象的原型是 Object.prototype
       console.log(Object.getPrototypeOf({}) === Object.prototype); // true
 
@@ -28,8 +30,16 @@
 
       console.log(Object.getPrototypeOf(a) === b); //true
       console.log(a.x); // 1
-    </script>
-    <script>
+    </script> -->
+    <!-- <script>
+      console.log("===============================");
+      var a = {};
+      var b = { x: 1 };
+      console.log(Object.setPrototypeOf(a, b) === a); //true
+
+      console.log(Object.getPrototypeOf(a) === b); //true
+      console.log(a.x); // 1
+      console.log("===============================");
       var F = function() {
         this.foo = "bar";
       };
@@ -41,8 +51,11 @@
       console.log(f2.foo); //undefined
       F.call(f2);
       console.log(f2.foo); //bar
-    </script>
-    <script>
+      console.log(Object.getPrototypeOf(f2)); //{constructor: ƒ}
+      console.log(Object.getPrototypeOf(f2) === F.prototype); //true{constructor: ƒ}
+      console.log("===============================");
+    </script> -->
+    <!-- <script>
       var A = {
         print: function() {
           console.log("hello");
@@ -55,22 +68,79 @@
       console.log(Object.getPrototypeOf(B) === A); // true
       B.print(); // hello
       console.log(B.print === A.print); // true
+      console.log("======= 模拟 Object.create ===========");
+      // 模拟 Object.create
+      let _create = function(obj) {
+        function F() {}
+        F.prototype = obj;
+        return new F();
+      };
+      let aa = { a: 111 };
+      let bb = _create(aa);
+      console.log(Object.getPrototypeOf(bb) === aa); //true
+      console.log(bb.a); //111
+      console.log(bb.a === aa.a); //true
+    </script> -->
+    <script>
+      /* var obj = Object.create(
+        {},
+        {
+          p1: {
+            value: 123,
+            enumerable: true,
+            configurable: true,
+            writable: true
+          },
+          p2: {
+            value: "abc",
+            enumerable: true,
+            configurable: true,
+            writable: true
+          }
+        }
+      );
+      console.log(obj);//{p1: 123, p2: "abc"} */
     </script>
     <script>
-      function inheritedPropertyNames(obj) {
-        var props = {};
-        while (obj) {
-          Object.getOwnPropertyNames(obj).forEach(function(p) {
-            props[p] = true;
-          });
-          obj = Object.getPrototypeOf(obj);
-        }
-        return Object.getOwnPropertyNames(props);
-      }
-      console.log(inheritedPropertyNames(Date));
+      /* console.log(Object.prototype.isPrototypeOf({})); //true
+      console.log(Object.prototype.isPrototypeOf([])); //true
+      console.log(Object.prototype.isPrototypeOf(/xyz/)); //true
+      console.log(Object.prototype.isPrototypeOf(null)); //false
+      console.log(Object.create(null)); //{}
+      console.log(Object.prototype.isPrototypeOf(Object.create(null))); //false */
     </script>
-    <script></script>
-    <script></script>
+    <script>
+      /* var obj = {};
+      var p = {};
+
+      obj.__proto__ = p;
+      console.log(Object.getPrototypeOf(obj) === p); // true */
+
+      /* var A = {
+        name: "张三"
+      };
+
+      var B = {
+        name: "李四"
+      };
+
+      var proto = {
+        print: function() {
+          console.log(this.name);
+        }
+      };
+
+      //Object.setPrototypeOf(A, proto);
+      A.__proto__ = proto;
+      B.__proto__ = proto;
+
+      A.print(); // 张三
+      B.print(); // 李四
+
+      console.log(A.print === B.print); // true
+      console.log(A.print === proto.print); // true
+      console.log(B.print === proto.print); // true */
+    </script>
     <script></script>
     <script></script>
     <script></script>
