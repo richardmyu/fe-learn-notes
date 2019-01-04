@@ -8,7 +8,7 @@
   </head>
   <body>
     <script>
-      var Vehicle = function(p) {
+      /* var Vehicle = function(p) {
         this.price = p;
         console.log(this);
       };
@@ -16,18 +16,36 @@
       var v = new Vehicle(100);
       var v = Vehicle(100);
       console.log(v);
-      console.log(price);
+      console.log(price); */
 
-      function Fubar(foo, bar) {
+      /* var Fn = function() {
+        this.price = 100;
+        var Nf = function() {
+          this.pri = 10;
+        };
+        // Nf();
+      };
+      var a = Fn();
+      console.log(a); //undefined
+      console.log(price); //100
+      console.log(pri); //not define if Nf() 10 */
+
+      /* function Fubar(foo, bar) {
         "use strict";
         this._foo = foo;
         this._bar = bar;
       }
 
-      Fubar();
+      // Fubar(); */
+
+      function Fn() {
+        this.price = 100;
+      }
+      var fn = new Fn();
+      console.log(fn);//Fn {price: 100}
     </script>
     <script>
-      function Fubar(foo, bar) {
+      /* function Fubar(foo, bar) {
         if (!(this instanceof Fubar)) {
           return new Fubar(foo, bar);
         }
@@ -41,7 +59,7 @@
       console.log(new Fubar(1, 2));
       //Fubar {foo: 1, bar: 2}
       console.log(Fubar(1, 2).foo); //1
-      console.log(new Fubar(1, 2).foo); //1
+      console.log(new Fubar(1, 2).foo); //1 */
     </script>
     <script>
       // new 命令的原理
@@ -64,7 +82,7 @@
         return typeof result === "object" && result != null ? result : context;
       }
 
-      // 构造函数
+      /* // 构造函数
       function Person(name, age) {
         this.name = name;
         this.age = age;
@@ -90,10 +108,10 @@
       console.log(kid1);
       //Kids {name: "bab", age: 2, sex: "男"}
       console.log(kid2);
-      //Kids {name: "bab", age: 2, sex: "女"}
+      //Kids {name: "bab", age: 2, sex: "女"} */
     </script>
     <script>
-      function f() {
+      /* function f() {
         console.log(new.target === f);
       }
 
@@ -115,31 +133,17 @@
       var msgs = new getMessages();
 
       console.log(msgs); // {}
-      console.log(typeof msgs); // "object"
+      console.log(typeof msgs); // "object" */
     </script>
     <script>
-      function f() {
+      /* function f() {
         if (!new.target) {
           throw new Error("请使用 new 命令调用！");
         }
         // ...
       }
 
-      f(); // Uncaught Error: 请使用 new 命令调用！
-    </script>
-    <script>
-      var person1 = {
-        name: "张三",
-        age: 38,
-        greeting: function() {
-          console.log("Hi! I'm " + this.name + ".");
-        }
-      };
-
-      var person2 = Object.create(person1);
-
-      console.log(person2.name); // 张三
-      person2.greeting(); // Hi! I'm 张三
+      f(); // Uncaught Error: 请使用 new 命令调用！ */
     </script>
   </body>
 </html>

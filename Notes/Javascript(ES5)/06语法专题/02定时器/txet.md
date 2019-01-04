@@ -205,7 +205,7 @@ setTimeout(f, 1000); // 12
 
 上面代码中，先调用`setTimeout`，得到一个计算器编号，然后把编号比它小的计数器全部取消。
 
-#### 2.4.实例：debounce 函数
+#### 2.4.debounce 函数
 
 有时，我们不希望回调函数被频繁调用。比如，用户填入网页输入框的内容，希望通过 Ajax 方法传回服务器，jQuery 的写法如下。
 
@@ -237,7 +237,7 @@ function debounce(fn, delay) {
 
 #### 2.5.运行机制
 
-`setTimeout`和`setInterval`的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间。如果到了，就执行对应的代码；如果不到，就继续等待。
+`setTimeout`和`setInterval`的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间；如果到了，就执行对应的代码；如果不到，就继续等待。
 
 这意味着，`setTimeout`和`setInterval`指定的回调函数，必须等到本轮事件循环的所有同步任务都执行完，才会开始执行。由于前面的任务到底需要多少时间执行完，是不确定的，所以没有办法保证，`setTimeout`和`setInterval`指定的任务，一定会按照预定时间执行。
 
@@ -345,7 +345,9 @@ var i = 0x100000;
 function func() {
   timer = setTimeout(func, 0);
   div.style.backgroundColor = "#" + i.toString(16);
-  if (i++ == 0xffffff) clearTimeout(timer);
+  if (i++ == 0xffffff) {
+    clearTimeout(timer);
+  }
 }
 
 timer = setTimeout(func, 0);

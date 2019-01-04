@@ -38,7 +38,7 @@ Sub.prototype.constructor = Sub;
 Sub.prototype.method = "...";
 ```
 
-上面代码中，`Sub.prototype`是子类的原型，要将它赋值为`Object.create(Super.prototype)`，而不是直接等于`Super.prototype`。否则后面两行对`Sub.prototype`的操作，会连父类的原型`Super.prototype`一起修改掉。
+上面代码中，`Sub.prototype`是子类的原型，要将它赋值为`Object.create(Super.prototype)`，而不是直接等于`Super.prototype`（？？？）。否则后面两行对`Sub.prototype`的操作，会连父类的原型`Super.prototype`一起修改掉。
 
 ---
 

@@ -149,7 +149,7 @@ p1.then(step1)
   .then(console.log, console.error);
 ```
 
-上面代码中，p1 后面有四个 then，意味依次有四个回调函数。只要前一步的状态变为 fulfilled，就会依次执行紧跟在后面的回调函数。
+上面代码中，p1 后面有四个 `then`，意味依次有四个回调函数。只要前一步的状态变为 fulfilled，就会依次执行紧跟在后面的回调函数（如果抛出错误呢？？？）。
 
 最后一个`then`方法，回调函数是`console.log`和`console.error`，用法上有一点重要的区别。`console.log`只显示 step3 的返回值，而`console.error`可以显示 p1、step1、step2、step3 之中任意一个发生的错误。举例来说，如果 step1 的状态变为 rejected，那么 step2 和 step3 都不会执行了（因为它们是 resolved 的回调函数）。`Promise` 开始寻找，接下来第一个为 rejected 的回调函数，在上面代码中是`console.error`。这就是说，`Promise` 对象的报错具有传递性。
 
@@ -204,7 +204,7 @@ f1()
   .then(f3);
 ```
 
-写法四与写法一只有一个差别，那就是 f2 会接收到 f1()返回的结果。
+写法四与写法一只有一个差别，那就是 f2 会接收到 f1()返回的结果(???)。
 
 ```javascript
 f1()

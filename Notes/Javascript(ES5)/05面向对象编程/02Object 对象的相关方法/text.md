@@ -26,7 +26,7 @@ Object.getPrototypeOf(f) === Function.prototype; // true
 
 #### 2.2.Object.setPrototypeOf()
 
-`Object.setPrototypeOf`方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。
+`Object.setPrototypeOf`方法为对象设置原型，返回该对象。它接受两个参数，第一个是参数对象，第二个是原型对象。
 
 ```javascript
 var a = {};
@@ -53,7 +53,7 @@ F.call(f);
 
 #### 2.3.Object.create()
 
-该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例*完全继承*原型对象的属性。
+该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例 完全继承 原型对象的属性。
 
 ```javascript
 // 原型对象
@@ -80,6 +80,7 @@ let _create = function(obj) {
   F.prototype = obj;
   return new F();
 };
+
 let aa = { a: 111 };
 let bb = _create(aa);
 Object.getPrototypeOf(bb) === aa; //true
@@ -87,7 +88,7 @@ bb.a; //111
 bb.a === aa.a; //true
 ```
 
-上面代码表明，`Object.create`方法的实质是新建一个空的构造函数 F，然后让 `F.prototype` 属性指向参数对象 obj，最后返回一个 F 的实例，从而实现让该实例继承 obj 的属性。
+上面代码表明，`Object.create`方法的实质是新建一个空的构造函数 F，然后让 `F.prototype` 属性指向参数对象 obj，最后返回一个 F 的实例，从而实现让该实例继承 obj 的属性。（这样做有什么好处呢？？？）
 
 下面三种方式生成的新对象是等价的。
 
@@ -116,7 +117,7 @@ Object.create(123);
 // TypeError: Object prototype may only be an Object or null
 ```
 
-`object.create`方法生成的新对象，**动态继承**了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
+- 1.`object.create`方法生成的新对象，**动态继承**了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
 
 ```javascript
 var obj1 = { p: 1 };
@@ -126,7 +127,7 @@ obj1.p = 2;
 obj2.p; // 2
 ```
 
-除了对象的原型，`Object.create`方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性。
+- 2.除了对象的原型，`Object.create`方法还可以接受第二个参数。该参数是一个**属性描述对象**，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性。
 
 ```javascript
 var obj = Object.create(
@@ -153,7 +154,7 @@ obj.p1 = 123;
 obj.p2 = "abc";
 ```
 
-`Object.create`方法生成的对象，继承了它的原型对象的构造函数。
+- 3.`Object.create`方法生成的对象，继承了它的原型对象的构造函数。
 
 ```javascript
 function A() {}
@@ -177,7 +178,7 @@ o2.isPrototypeOf(o3); // true
 o1.isPrototypeOf(o3); // true
 ```
 
-上面代码中，o1 和 o2 都是 o3 的原型。这表明只要实例对象处在参数对象的原型链上，`isPrototypeOf`方法都返回 true。
+上面代码中，o1 和 o2 都是 o3 的原型。这表明只要实例对象处在参数对象的原型链上，`isPrototypeOf` 方法都返回 true。
 
 ```javascript
 Object.prototype.isPrototypeOf({}); // true
@@ -186,7 +187,7 @@ Object.prototype.isPrototypeOf(/xyz/); // true
 Object.prototype.isPrototypeOf(Object.create(null)); // false
 ```
 
-上面代码中，由于`Object.prototype`处于原型链的最顶端，所以对各种实例都返回 true，只有直接继承自`null`的对象除外。
+上面代码中，由于 `Object.prototype` 处于原型链的最顶端，所以对各种实例都返回 true，只有直接继承自 `null` 的对象除外。
 
 > 注释：`Object.prototype` 继承自 `null` ，但 `null` 不在原型链中，故由 `null` 直接继承而来的对象跟 `Object.prototype` 是并级的，而也不在原型链中，当然这都基于 `Object.prototype` 处于原型链的最顶端，至于为什么是，不知道？？？
 
@@ -244,6 +245,8 @@ obj.__proto__ === Object.prototype;
 // true
 obj.__proto__ === obj.constructor.prototype;
 // true
+
+obj.constructor; //Object()
 ```
 
 因此，获取实例对象 obj 的原型对象，有三种方法。
@@ -257,18 +260,18 @@ Object.getPrototypeOf(obj);
 上面三种方法之中，前两种都不是很可靠。`__proto__`属性只有浏览器才需要部署，其他环境可以不部署。而`obj.constructor.prototype`在手动改变原型对象时，可能会失效。
 
 ```javascript
-var P = function() {};
-var p = new P();
+var Q = function() {};
+var q = new Q();
 
-var C = function() {};
+var A = function() {};
 
-C.prototype = p;
-var c = new C();
+A.prototype = q;
+var a = new A();
 
-c.constructor.prototype === p; // false
+a.constructor.prototype === q; // false
 ```
 
-上面代码中，构造函数 C 的原型对象被改成了 p，但是实例对象的`c.constructor.prototype`却没有指向 p。所以，在改变原型对象时，一般要同时设置`constructor`属性。
+上面代码中，构造函数 A 的原型对象被改成了 q，但是实例对象的`c.constructor.prototype`却没有指向 q。所以，在改变原型对象时，一般要同时设置`constructor`属性。
 
 ```javascript
 C.prototype = p;
@@ -285,19 +288,34 @@ c.constructor.prototype === p; // true
 `Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名，但不区分是否可遍历属性。
 
 ```javascript
-Object.getOwnPropertyNames(Date);
-// ["parse", "arguments", "UTC", "caller", "name", "prototype", "now", "length"]
+console.log(Object.getOwnPropertyNames(Date));
+//["length", "name", "prototype", "now", "parse", "UTC"]
+console.log(Object.keys(Date)); //[]
+
+console.log(Object.getOwnPropertyNames(Math));
+//["abs", "acos", "acosh", "asin", ... , "SQRT2"]
+console.log(Object.keys(Math)); //[]
+
+console.log(Object.getOwnPropertyNames(Array));
+//["length", "name", "prototype", "isArray", "from", "of"]
+console.log(Object.keys(Array)); //[]
+
+console.log(Object.getOwnPropertyNames(Object));
+// ["length", "name", "prototype", ..., "entries", "values"]
+console.log(Object.keys(Object)); //[]
+
+console.log(Object.getOwnPropertyNames(RegExp));
+//["length", "name", "prototype", "input", ..., "$8", "$9"]
+console.log(Object.keys(RegExp)); //[]
 ```
 
 对象本身的属性之中，有的是可以遍历的，有的是不可以遍历的。`Object.getOwnPropertyNames`方法返回所有键名，不管是否可以遍历。只获取那些可以遍历的属性，使用`Object.keys`方法。
-
-`Object.keys(Date) // []`
 
 > `Date`对象所有自身的属性，都是不可以遍历的。
 
 #### 2.8.Object.prototype.hasOwnProperty()
 
-对象实例的`hasOwnProperty`方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上(用来判断某个属性是否来自本身即是否私有)。
+对象实例的`hasOwnProperty`方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上(用来判断某个属性是否来自本身即是否私有，不区分是否可遍历性)。
 
 ```javascript
 Date.hasOwnProperty("length"); // true

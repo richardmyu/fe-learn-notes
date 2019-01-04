@@ -1,4 +1,3 @@
-
 ### 5.this 关键字
 
 #### 5.1.涵义
@@ -156,7 +155,7 @@ o.p; // "Hello World!"
 
 ##### 5.2.3 对象的方法
 
-如果对象的方法里面包含`this`，`this`的指向就是方法运行时所在的对象。该方法赋值给另一个对象，就会改变`this`的指向。
+如果对象的方法里面包含`this`，`this`的指向就是方法 运行时 所在的对象。该方法赋值给另一个对象，就会改变`this`的指向。
 
 但是，这条规则很不容易把握。请看下面的代码。
 
@@ -174,47 +173,43 @@ obj.foo(); // obj
 
 ```javascript
 // 情况一
-(obj.foo = obj.foo)()(
-  // window
-  // 情况二
-  false || obj.foo
-)()(
-  // window
-  // 情况三
-  1,
-  obj.foo
-)(); // window
+(obj.foo = obj.foo)(); // window
+
+// 情况二
+(false || obj.foo)(); // window
+
+// 情况三
+(1, obj.foo)(); // window
 ```
 
 上面代码中，obj.foo 就是一个值。这个值真正调用的时候，运行环境已经不是 obj 了，而是全局环境，所以 this 不再指向 obj。
 
-可以这样理解，JavaScript 引擎内部，obj 和 obj.foo 储存在两个内存地址，称为地址一和地址二。obj.foo()这样调用时，是从地址一调用地址二，因此地址二的运行环境是地址一，this 指向 obj。但是，上面三种情况，都是直接取出地址二进行调用，这样的话，运行环境就是全局环境，因此 this 指向全局环境。上面三种情况等同于下面的代码。
+可以这样理解，JavaScript 引擎内部，obj 和 obj.foo 储存在两个内存地址，称为地址一和地址二。`obj.foo()` 这样调用时，是从地址一调用地址二，因此地址二的运行环境是地址一，this 指向 obj。但是，上面三种情况，都是直接取出地址二进行调用，这样的话，运行环境就是全局环境，因此 `this` 指向全局环境。上面三种情况等同于下面的代码。
 
 ```javascript
 // 情况一
 (obj.foo = function() {
   console.log(this);
-})()(
-  // 等同于
+})();
+// 等同于
+(function() {
+  console.log(this);
+})();
+
+// 情况二
+(false ||
   function() {
     console.log(this);
-  }
-)()(
-  // 情况二
-  false ||
-    function() {
-      console.log(this);
-    }
-)()(
-  // 情况三
-  1,
-  function() {
-    console.log(this);
-  }
-)();
+  })();
+
+// 情况三
+(1,
+function() {
+  console.log(this);
+})();
 ```
 
-如果`this`所在的方法不在对象的第一层，这时`this`只是指向当前一层的对象，而不会继承更上面的层。
+如果 `this` 所在的方法不在对象的第一层，这时 `this` 只是指向当前一层的对象，而不会继承更上面的层。
 
 ```javascript
 var a = {
@@ -286,7 +281,7 @@ hello.m(); // Hello
 
 ##### 5.3.1 避免多层 this
 
-由于`this`的指向是不确定的，所以切勿在函数中包含多层的`this`。
+由于 `this` 的指向是不确定的，所以切勿在函数中包含多层的`this`。
 
 ```javascript
 var o = {
@@ -340,7 +335,9 @@ o.f1();
 
 事实上，使用一个变量固定`this`的值，然后内层函数调用这个变量，是非常常见的做法，请务必掌握。
 
-JavaScript 提供了严格模式，也可以硬性避免这种问题。严格模式下，如果函数内部的`this`指向顶层对象，就会报错。
+JavaScript 提供了严格模式，也可以硬性避免这种问题。
+
+> 严格模式下，如果函数内部的`this`指向顶层对象，就会报错。
 
 ```javascript
 var counter = {
@@ -359,7 +356,7 @@ f();
 
 ##### 5.3.2 避免数组处理方法中的 this
 
-数组的`map`和`foreach`方法，允许提供一个函数作为参数。这个函数内部不应该使用`this`。
+数组的`map`和`foreach`方法，允许提供一个函数作为参数(函数作为参数，内部 `this` 指向全局)。这个函数内部不应该使用`this`。
 
 ```javascript
 var o = {
@@ -485,7 +482,7 @@ a.call(window); // 123
 a.call(obj); // 456
 ```
 
-如果`call`方法的参数是一个原始值，那么这个原始值会自动转成对应的包装对象，然后传入`call`方法。
+如果`call`方法的参数是一个原始值，那么这个原始值会自动转成对应的 包装对象，然后传入`call`方法。
 
 ```javascript
 var f = function() {
