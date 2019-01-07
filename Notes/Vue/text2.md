@@ -12,7 +12,7 @@
 
 如果几个异步操作之间并没有前后顺序之分,但需要等多个异步操作都完成后才能执行后续的任务，无法实现并行节约时间
 
-```
+```javascript
 const fs = require('fs');
 let school = {};
 fs.readFile('./name.txt','utf8',function (err,data) {
@@ -27,7 +27,8 @@ console.log(school);
 ##### 1.2如何解决回调地狱
 
 在需要多个操作的时候，会导致多个回调函数嵌套，导致代码不够直观，就是常说的回调地狱
-```
+
+```javascript
 const fs = require('fs');
 fs.readFile('./content.txt','utf8',function (err,data) {
     if(err)console.log(err);
@@ -46,7 +47,7 @@ Promise本意是承诺，在程序中的意思就是承诺我过一段时间后�
 
 例如媳妇说想买个包，这时候他就要"等待"我的回复，我可以过两天买，如果买了表示"成功"，如果我最后拒绝表示"失败"，当然我也有可能一直拖一辈子
 
-```
+```javascript
 Pending Promise对象实例创建时候的初始状态
 Fulfilled 可以理解为成功的状态
 Rejected 可以理解为失败的状态
@@ -57,7 +58,7 @@ then 方法就是用来指定Promise 对象的状态改变时确定执行的操�
 
 ##### 4.1 promise的方法会立刻执行
 
-```
+```javascript
 let promise = new Promise(()=>{
     console.log('hello');
 });
@@ -66,7 +67,7 @@ console.log('world');
 
 ##### 4.2 promise也可以代表一个未来的值
 
-```
+```javascript
 const fs = require('fs');
 let promise = new Promise((resolve,reject)=>{
     fs.readFile('./content.txt','utf8',function (err,data) {
@@ -81,7 +82,7 @@ promise.then(data =>{
 
 ##### 4.3 代表一个用于不会返回的值
 
-```
+```javascript
 const fs = require('fs');
 let promise = new Promise((resolve,reject)=>{});
 promise.then(data =>{
@@ -91,7 +92,7 @@ promise.then(data =>{
 
 ##### 4.4 应用状态实现抛硬币
 
-```
+```javascript
 function flip_coin() {
     return new Promise((resolve,reject)=>{
         setTimeout(function () {
@@ -113,7 +114,7 @@ flip_coin().then(data=>{
 
 #### 5.实现简单的Promise
 
-```
+```javascript
 function Promise(fn) {
     fn((data)=>{
         this.resolve(data)
@@ -138,7 +139,7 @@ Promise.prototype.then = function (success,error) {
 
 可以采用`then`的第二个参数捕获失败，也可以通过`catch`函数进行捕获
 
-```
+```javascript
 function flip_coin() {
     return new Promise((resolve,reject)=>{
         throw Error('没有硬币')
@@ -155,7 +156,7 @@ flip_coin().then(data=>{
 
 接受一个数组，数组内都是`Promise`实例，返回一个`Promise`实例，这个`Promise`实例的状态转移取决于参数的`Promise`实例的状态变化。当参数中所有的实例都处于`resolve`状态时，返回的`Promise`实例会变为`resolve`状态。如果参数中任意一个实例处于`reject`状态，返回的`Promise`实例变为`reject`状态
 
-```
+```javascript
 const fs = require('fs');
 let p1 =  new Promise((resolve,reject)=>{
     fs.readFile('./name.txt','utf8',function (err,data) {
@@ -178,7 +179,7 @@ Promise.all([p1,p2]).then(([res1,res2])=>{
 
 接受一个数组，数组内都是`Promise`实例,返回一个`Promise`实例，这个`Promise`实例的状态转移取决于参数的`Promise`实例的状态变化。当参数中任何一个实例处于`resolve`状态时，返回的`Promise`实例会变为`resolve`状态。如果参数中任意一个实例处于`reject`状态，返回的`Promise`实例变为`reject`状态。
 
-```
+```javascript
 const fs = require('fs');
 let p1 =  new Promise((resolve,reject)=>{
     fs.readFile('./name.txt','utf8',function (err,data) {
@@ -198,7 +199,8 @@ Promise.race([p1,p2]).then(([res1,res2])=>{
 #### 9.Promise.resolve
 
 返回一个`Promise`实例，这个实例处于`resolve`状态。
-```
+
+```javascript
 Promise.resolve('成功').then(data=>{
     console.log(data);
 })
@@ -208,7 +210,7 @@ Promise.resolve('成功').then(data=>{
 
 返回一个`Promise`实例，这个实例处于`reject`状态
 
-```
+```javascript
 Promise.reject('失败').then(data=>{
     console.log(data);
 },re=>{
@@ -218,7 +220,7 @@ Promise.reject('失败').then(data=>{
 
 #### 11.封装ajax
 
-```
+```javascript
 function ajax({url=new Error('url必须提供'),method='GET',async=true,dataType='json'}){
   return new Promise(function(resolve,reject){
      var xhr = new XMLHttpRequest();
@@ -240,7 +242,7 @@ function ajax({url=new Error('url必须提供'),method='GET',async=true,dataType
 
 #### 12.chain中返回结果
 
-```
+```javascript
 Promise.resolve([1,2,3])
 .then(arr=>{
     return [...arr,4]
@@ -255,7 +257,7 @@ Promise.resolve([1,2,3])
 
 `then`中的结果是`promise`的`resolve`后的结果
 
-```
+```javascript
 Promise.resolve('user').then(data=>{
     return new Promise(function (resolve,reject) {
         fetch('/'+data).then(res=>res.json().then((json)=>{
@@ -281,7 +283,7 @@ Promise.resolve('user').then(data=>{
 
 本质是语法糖，`await`与`async`要连用，`await`后只能跟`promise`
 
-```
+```javascript
 async function getHello() {
     return new Promise((resolve,reject) => {
         setTimeout(function () {
@@ -342,7 +344,7 @@ vm: view-Model 视图模型
 
 #### 5.hello,vue.js
 
-```
+```javascript
 <div id="app">
     {{message}}
 </div>

@@ -1,36 +1,5 @@
 # HTML5和CSS3
 
-<!-- TOC -->
-
-- [HTML5和CSS3](#html5%E5%92%8Ccss3)
-  - [HTML5](#html5)
-    - [新增标签](#%E6%96%B0%E5%A2%9E%E6%A0%87%E7%AD%BE)
-        - [audio display: none;](#audio-display-none)
-        - [video](#video)
-        - [article display: block;](#article-display-block)
-        - [section](#section)
-        - [nav](#nav)
-        - [aside](#aside)
-        - [header](#header)
-        - [footer](#footer)
-        - [hgroup](#hgroup)
-        - [address](#address)
-        - [time](#time)
-        - [figure/figcation](#figurefigcation)
-        - [mark](#mark)
-        - [新增的全局属性](#%E6%96%B0%E5%A2%9E%E7%9A%84%E5%85%A8%E5%B1%80%E5%B1%9E%E6%80%A7)
-    - [WebSocket](#websocket)
-        - [什么是 WebSocket](#%E4%BB%80%E4%B9%88%E6%98%AF-websocket)
-  - [CSS3](#css3)
-        - [Border-radius](#border-radius)
-        - [Border-image](#border-image)
-        - [Outline](#outline)
-        - [Box](#box)
-    - [5.阴影](#5%E9%98%B4%E5%BD%B1)
-        - [Flexible Box ****](#flexible-box)
-
-<!-- /TOC -->
-
 ## HTML5
 
 ### 新增标签

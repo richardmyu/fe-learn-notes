@@ -1,11 +1,8 @@
 # Vue案例
 
-@(框架学习)[vue]
-
-
 ##### 案例一
 
-```
+```javascript
 //bootstrap 栅格化布局 默认12列 （有一些框架可能是24列）
 //常见的样式 基本样式 + 增强样式
 //default 灰色 success 绿色 danger 红色 warning 警告色 info浅蓝色 primary 蓝色
@@ -111,7 +108,7 @@ let vm = new Vue({
 
 ##### 案例二
 
-```
+```javascript
     let vm = new Vue({
         el:'#app',
         // 根据下面的checkbox计算出来的结果给全选赋值
