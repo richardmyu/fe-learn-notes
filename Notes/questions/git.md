@@ -21,15 +21,15 @@ Username for 'https://github.com':
 
 ##### 问题分析
 
-每次都需要输入用户名和密码是因为你采用的是 https 方式提交代码，如果采用的是 ssh 方式只需要在版本库中添加用户的 sha 的key就可以实现提交时无需输入用户名和密码。
+每次都需要输入用户名和密码是因为你采用的是 https 方式提交代码，如果采用的是 ssh 方式只需要在版本库中添加用户的 sha 的 key 就可以实现提交时无需输入用户名和密码。
 
 ##### 解决
 
-补上用户名，随后输入密码。但是每次都要提交很麻烦，改https提交为ssh提交。
+补上用户名，随后输入密码。但是每次都要提交很麻烦，改 https 提交为 ssh 提交。
 
 重新设置ssh提交：
 
-```
+```javascript
 git remote rm origin
 git remote add origin git@github.com:username/repository.git
 git push -u origin master
@@ -41,7 +41,7 @@ git push -u origin master
 
 在本地创建的一个分支gh-pages，在master上合并该分支时报错：
 
-```
+```javascript
 $ git merge gh-pages
 fatal: refusing to merge unrelated histories
 ```
@@ -52,7 +52,7 @@ fatal: refusing to merge unrelated histories
 
 #### 4.`git push origin master` 错误
 
-```
+```javascript
 fatal: 'origin' does not appear to be a git repository
 fatal: Could not read from remote repository.
 
@@ -73,7 +73,7 @@ Please make sure you have the correct access rights and the repository exists.
 
 此时报错：
 
-```
+```javascript
 To github.com:richardmyu/learngit.git
  ! [rejected]        master -> master (fetch first)
 error: failed to push some refs to 'git@github.com:richardmyu/learngit.git'
@@ -88,7 +88,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 `git pull origin`
 
-```
+```javascript
 warning: no common commits
 remote: Counting objects: 6, done.
 remote: Compressing objects: 100% (2/2), done.
@@ -103,7 +103,7 @@ for your current branch, you must specify a branch on the command line.
 
 再次执行推送：
 
-```
+```javascript
 $ git push -u origin master
 To github.com:richardmyu/learngit.git
  ! [rejected]        master -> master (non-fast-forward)
@@ -133,7 +133,7 @@ GitHub远程仓库中的README.md文件不在本地仓库中。 (是否就是说
 
 结果报错：
 
-```
+```javascript
 fatal: Cannot update paths and switch to branch 'dev' at the same time.
 Did you intend to checkout 'origin/dev' which can not be resolved as commit?
 ```
@@ -155,7 +155,7 @@ Did you intend to checkout 'origin/dev' which can not be resolved as commit?
 
 再次`git pull`，然后进入
 
-```
+```javascript
 # Please enter a commit message to explain why this merge is necessary
 #especiially if it merge an updated upstream into a topic branch
 #...
@@ -168,7 +168,7 @@ Did you intend to checkout 'origin/dev' which can not be resolved as commit?
 
 先`Esc`，再`: wq`,强制退出；界面如下：
 
-```
+```javascript
 $ git pull
 Merge made by the 'recursive' strategy.
  test/msg.txt | 0
@@ -182,7 +182,7 @@ Merge made by the 'recursive' strategy.
 
 关联本地分支与远程分支出错：
 
-```
+```javascript
 $ git branch --set-upstream-to=origin/dev dev
 warning: refname 'origin/dev' is ambiguous.
 fatal: Ambiguous object name: 'origin/dev'.
@@ -205,7 +205,7 @@ fatal: Ambiguous object name: 'origin/dev'.
 
 克隆远程仓库，本地拉取
 
-```
+```javascript
 fatal: Not a git repository (or any of the parent directories): .git
 ```
 
@@ -223,7 +223,7 @@ fatal: Not a git repository (or any of the parent directories): .git
 
 从远处仓库通过ssh方式克隆到本地，删除文件，执行	`git add .`报错：
 
-```
+```javascript
 fatal: Not a git repository (or any of the parent directories): .git
 ```
 
@@ -244,7 +244,7 @@ fatal: Not a git repository (or any of the parent directories): .git
 
 执行`hexo d`报错
 
-```
+```javascript
 fatal: HttpRequestException encountered.
    ▒▒▒▒▒▒▒▒ʱ▒▒▒▒
 bash: /dev/tty: No such device or address
@@ -264,7 +264,7 @@ fatal: could not read Username for 'https://github.com': No error
 
 ##### 解决
 
-```
+```javascript
 deploy:
   type: git
   //用git不用https
@@ -275,7 +275,7 @@ deploy:
 
 ##### 问题描述
 
-```
+```javascript
 $ hexo g
 INFO  Start processing
 FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html

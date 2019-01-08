@@ -1,14 +1,15 @@
-# HTML5和CSS3
+# HTML5 和 CSS3
 
 ## HTML5
 
 ### 新增标签
 
-##### audio     display: none;
+##### audio display: none;
 
 - 处理音频，因为有些浏览器不支持某些音频格式。需要转化或者准备多个
-详细介绍：w3c[enter link description here](http://www.w3school.com.cn/tags/html_ref_audio_video_dom.asp)
-```
+  详细介绍：w3c[enter link description here](http://www.w3school.com.cn/tags/html_ref_audio_video_dom.asp)
+
+```javascript
 <audio controls>你的浏览器不支持audio
     <source src="test.mp3" type="audio/mp3">
     <source src="test.ogg" type="audio/ogg">
@@ -18,52 +19,55 @@
 ##### video
 
 播放视频，注意兼容性。（转化工具：Miro Video Converter）
-```
+
+```javascript
 <video controls width="640px" height="320px" poster="test.png">你的浏览器不支持video
     <source src="test.mp4" type="video/mp4">
     <source src="test.webm" type="video/webm">
 </video>
 ```
 
-##### article      display: block;
+##### article display: block;
 
-代表的是一块独立的内容(模块)，例如一篇文章，帖子。类似于html4中的div元素，是div的细分。
-```
+代表的是一块独立的内容(模块)，例如一篇文章，帖子。类似于 html4 中的 div 元素，是 div 的细分。
+
+```javascript
 <article>
-    <header>
-        <h1>呆萌的来历</h1>
-    </header>
-    <p>呆萌来源于一个同学的名字，他就叫呆萌。。。</p>
-    <footer>
-        <p>发表日期:2015:3:29</p>
-    </footer>
+  <header>
+    <h1>呆萌的来历</h1>
+  </header>
+  <p>呆萌来源于一个同学的名字，他就叫呆萌。。。</p>
+  <footer>
+    <p>发表日期:2015:3:29</p>
+  </footer>
 </article>
 ```
 
 ##### section
 
-翻译为“部分”，比如页眉页脚或者文章中的区块(觉得还是div方便吧，但是这个和上面的都是为了语义化好点)
+翻译为“部分”，比如页眉页脚或者文章中的区块(觉得还是 div 方便吧，但是这个和上面的都是为了语义化好点)
 
-> 当没有标题时，不要使用section。
-> 当article,aside,nav元素更适合时，不要使用section元素。
-> 不要讲其当做设置样式的容器，那是div做的
+> 当没有标题时，不要使用 section。
+> 当 article,aside,nav 元素更适合时，不要使用 section 元素。
+> 不要讲其当做设置样式的容器，那是 div 做的
 
-```
+```javascript
 <section>
-    <header>
-        <h1>呆萌的来历</h1>
-    </header>
-    <p>呆萌来源于一个同学的名字，他就叫呆萌。。。</p>
-    <footer>
-        <p>发表日期:2015:3:29</p>
-    </footer>
+  <header>
+    <h1>呆萌的来历</h1>
+  </header>
+  <p>呆萌来源于一个同学的名字，他就叫呆萌。。。</p>
+  <footer>
+    <p>发表日期:2015:3:29</p>
+  </footer>
 </section>
 ```
 
 ##### nav
 
-导航栏的语义化标签，类似于div
-```
+导航栏的语义化标签，类似于 div
+
+```javascript
 <nav>
   <ul>
     <li>联系信息</li>
@@ -79,15 +83,15 @@
 
 ##### header
 
-区块的头部部分，一个网页内可以拥有多个header
+区块的头部部分，一个网页内可以拥有多个 header
 
 ##### footer
 
-区块的底部部分，通常包括脚注信息.类似于header，可以放在section，article，div，body等元素中。
+区块的底部部分，通常包括脚注信息.类似于 header，可以放在 section，article，div，body 等元素中。
 
 ##### hgroup
 
-将标题进行分组，适用于含有多个h系列标签
+将标题进行分组，适用于含有多个 h 系列标签
 
 ##### address
 
@@ -103,7 +107,7 @@
 
 ##### mark
 
-高亮显示，类似于strong
+高亮显示，类似于 strong
 
 ##### 新增的全局属性
 
@@ -113,17 +117,18 @@ spellcheck：对输入内容进行拼写和语法检查（input(type=text)）,te
 
 ### WebSocket
 
-WebSocket的出现，使得浏览器具备了实时双向通信的能力。
+WebSocket 的出现，使得浏览器具备了实时双向通信的能力。
 
 ##### 什么是 WebSocket
 
-HTML5开始提供的一种浏览器与服务器进行双向通讯的网络技术，属于应用层协议。它基于TCP传输协议，并复用HTTP的握手通道。
+HTML5 开始提供的一种浏览器与服务器进行双向通讯的网络技术，属于应用层协议。它基于 TCP 传输协议，并复用 HTTP 的握手通道。
 
 ## CSS3
 
 ##### Border-radius
 
 - 1.`border-radius`:是一个简写属性，用于设置四个 `border-radius` 属性(即圆角边框)
+
   - `length` 定义圆角的形状
   - `%` 以百分比定义圆角的形状
 
@@ -197,8 +202,7 @@ HTML5开始提供的一种浏览器与服务器进行双向通讯的网络技术
   - `invert` 默认。执行颜色反转。可使轮廓在不同的背景颜色中都是可见
   - `inherit` 规定应该从父元素继承轮廓颜色的设置
 
-
-- 3.`outline-style`:设置轮廓的样式
+* 3.`outline-style`:设置轮廓的样式
   - `none` 默认。定义无轮廓
   - `dotted` 定义点状的轮廓
   - `dashed` 定义虚线轮廓
@@ -240,8 +244,8 @@ HTML5开始提供的一种浏览器与服务器进行双向通讯的网络技术
 ### 5.阴影
 
 - `text-shadow`是给文本添加阴影效果，`box-shadow`是给元素块添加周边阴影效果。
-- 基本语法是：`{box-shadow：[inset]  x-offset  y-offset  blur-radius  spread-radius  color}`
-对象选择器 {box-shadow:[投影方式] X轴偏移量 Y轴偏移量阴影模糊半径 阴影扩展半径 阴影颜色}
+- 基本语法是：`{box-shadow：[inset] x-offset y-offset blur-radius spread-radius color}`
+  对象选择器 {box-shadow:[投影方式] X 轴偏移量 Y 轴偏移量阴影模糊半径 阴影扩展半径 阴影颜色}
 
 `box-shadow`属性的参数设置取值：
 
@@ -251,13 +255,13 @@ HTML5开始提供的一种浏览器与服务器进行双向通讯的网络技术
 
 - Y-offset:阴影垂直偏移量，其值也可以是正负值。如果为正值，阴影在对象的底部，其值为负值时，阴影在对象的顶部；
 
-- 阴影模糊半径：此参数可选，，但其值只能是为正值，如果其值为0时，表示阴影不具有模糊效果，其值越大阴影的边缘就越模糊；
+- 阴影模糊半径：此参数可选，，但其值只能是为正值，如果其值为 0 时，表示阴影不具有模糊效果，其值越大阴影的边缘就越模糊；
 
 - 阴影扩展半径：此参数可选，其值可以是正负值，如果值为正，则整个阴影都延展扩大，反之值为负值时，则缩小；
 
-- 阴影颜色：此参数可选。如不设定颜色，浏览器会取默认色，但各浏览器默认取色不一致，特别是在webkit内核下的safari和chrome浏览器下表现为透明色，在Firefox/Opera下表现为黑色（已验证），建议不要省略此参数。
+- 阴影颜色：此参数可选。如不设定颜色，浏览器会取默认色，但各浏览器默认取色不一致，特别是在 webkit 内核下的 safari 和 chrome 浏览器下表现为透明色，在 Firefox/Opera 下表现为黑色（已验证），建议不要省略此参数。
 
-> 为了兼容各主流浏览器并支持这些主流浏览器的较低版本，在基于Webkit的Chrome和Safari等浏览器上使用box-shadow属性时，我们需要将属性的名称写成-webkit-box-shadow的形式。Firefox浏览器则需要写成-moz-box-shadow的形式。
+> 为了兼容各主流浏览器并支持这些主流浏览器的较低版本，在基于 Webkit 的 Chrome 和 Safari 等浏览器上使用 box-shadow 属性时，我们需要将属性的名称写成-webkit-box-shadow 的形式。Firefox 浏览器则需要写成-moz-box-shadow 的形式。
 
 > 语法：`box-shadow: h-shadow v-shadow blur spread color inset;`
 > 注释：`box-shadow` 向框添加一个或多个阴影。该属性是由逗号分隔的阴影列表，每个阴影由 2-4 个长度值、可选的颜色值以及可选的 `inset` 关键词来规定。省略长度的值是 0。
@@ -308,10 +312,10 @@ HTML5开始提供的一种浏览器与服务器进行双向通讯的网络技术
 > 目前没有浏览器支持 `rotation-point` 属性。
 > 提示：`rotation-point` 属性需要与 `rotation` 属性结合使用。
 
-##### Flexible Box ****
+##### Flexible Box \*\*\*\*
 
 - 1.`box-align`:规定如何对齐框的子元素
-  - `start`	对于正常方向的框，每个子元素的上边缘沿着框的顶边放置。对于反方向的框，每个子元素的下边缘沿着框的底边放置
+  - `start` 对于正常方向的框，每个子元素的上边缘沿着框的顶边放置。对于反方向的框，每个子元素的下边缘沿着框的底边放置
   - `end` 对于正常方向的框，每个子元素的下边缘沿着框的底边放置。对于反方向的框，每个子元素的上边缘沿着框的顶边放置
   - `center` 均等地分割多余的空间，一半位于子元素之上，另一半位于子元素之下
   - `baseline` 如果 `box-orient` 是`inline-axis`或`horizontal`，所有子元素均与其基线对齐
