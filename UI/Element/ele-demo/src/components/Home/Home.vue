@@ -42,6 +42,12 @@
         <div class="item_title">Date</div>
         <ul class="item_content">
           <li>
+            <router-link to="/date/badge">Badge</router-link>
+          </li>
+          <li>
+            <router-link to="/date/pagination">Pagination</router-link>
+          </li>
+          <li>
             <router-link to="/date/progress">Progress</router-link>
           </li>
           <li>
