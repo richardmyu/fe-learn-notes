@@ -33,7 +33,7 @@ export default {
         {
           id: 4,
           name: 'vue-cropper 剪裁图片并上传',
-          url: '/vueCropper'
+          url: '/imageCropper'
         },
         {
           id: 5,

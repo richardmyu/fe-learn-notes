@@ -1,7 +1,12 @@
 <template>
   <div class="container">
     <!-- Or manually control the data synchronization（或手动控制数据流） -->
-    <quill-editor :content="content" :options="editorOption" @change="onEditorChange($event)"></quill-editor>
+    <div class="manuallyControlData">
+      <quill-editor :content="content" :options="editorOption" @change="onEditorChange($event)"></quill-editor>
+      <div class="content ql-container ql-snow">
+        <div class="ql-editor" v-html="content"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -62,7 +67,7 @@ export default {
   watch: {},
   methods: {
     onEditorChange({ quill, html, text }) {
-      console.log('editor change!',text)
+      console.log('editor change!', text)
       this.content = html
     }
   },
@@ -73,4 +78,23 @@ export default {
 </script>
 
 <style></style>
-<style scoped></style>
+<style scoped>
+.manuallyControlData {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.manuallyControlData .quill-editor,
+.manuallyControlData .content {
+  width: 600px;
+  min-width: 300px;
+}
+
+.manuallyControlData .content {
+  height: 500px;
+  box-sizing: border-box;
+  margin-left: 30px;
+  box-shadow: 0 0 6px 1px #aaaaaa, 0 0 8px 2px #cccccc, 0 0 10px 3px #eeeeee;
+}
+</style>

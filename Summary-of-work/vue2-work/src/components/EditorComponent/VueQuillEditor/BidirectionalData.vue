@@ -10,6 +10,7 @@
         @focus="onEditorFocus($event)"
         @ready="onEditorReady($event)"
       ></quill-editor>
+      <!-- 实现文本与富文本编辑时的样式一致，引入一下特定类名，调用相同的样式 -->
       <div class="content ql-container ql-snow">
         <div class="ql-editor" v-html="content"></div>
       </div>

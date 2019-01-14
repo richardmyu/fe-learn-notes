@@ -4,7 +4,7 @@ import Home from "@/components/Home/Home";
 import BidirectionalData from "@/components/EditorComponent/VueQuillEditor/BidirectionalData";
 import ManuallyControlData from "@/components/EditorComponent/VueQuillEditor/ManuallyControlData";
 import ImgUpload from "@/components/ImageComponent/ImgUpload/ImgUpload";
-import VueCropper from "@/components/ImageComponent/VueCropper/VueCropper";
+import ImageCropper from "@/components/ImageComponent/ImageCropper/ImageCropper";
 import VueQuillEditorImgUpload from "@/components/ImageComponent/VueQuillEditorImgUpload/VueQuillEditorImgUpload";
 
 Vue.use(Router);
@@ -36,9 +36,9 @@ export default new Router({
       component: ImgUpload
     },
     {
-      path: "/vueCropper",
-      name: "VueCropper",
-      component: VueCropper
+      path: "/imageCropper",
+      name: "ImageCropper",
+      component: ImageCropper
     },
     {
       path: "/vueQuillEditorImgUpload",
