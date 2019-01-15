@@ -190,12 +190,14 @@
         </div>
         <div class="item-demo">
           <div class="block">
-            <p>组件值：{{ value13 }}</p>
+            <p>组件值：{{ value14 }}</p>
             <el-date-picker
-              v-model="value13"
+              v-model="value14"
               type="daterange"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
               :default-time="['00:00:00', '23:59:59']">
             </el-date-picker>
           </div>
@@ -210,6 +212,7 @@
         </div>
         <div class="item-demo">
           <div class="block">
+            <p>组件值：{{ year.start }}-{{year.end}}</p>
             <el-date-picker
               v-model="year.start"
               type="year"
