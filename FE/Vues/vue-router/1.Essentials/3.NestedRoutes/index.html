@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>嵌套路由</title>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <div id="app">
+      <p>
+        <router-link to="/user/foo">/user/foo</router-link>
+        <router-link to="/user/foo/profile">/user/foo/profile</router-link>
+        <router-link to="/user/foo/posts">/user/foo/posts</router-link>
+      </p>
+      <router-view></router-view>
+    </div>
+
+    <script>
+      // 这里的 <router-view> 是最顶层的出口，渲染最高级路由匹配到的组件。同样地，一个被渲染组件同样可以包含自己的嵌套 <router-view>。
+
+      const User = {
+        template: `
+          <div class="user">
+            <h2>User {{ $route.params.id }}</h2>
+            <router-view></router-view>
+          </div>
+        `
+      };
+
+      const UserHome = { template: "<div>Home</div>" };
+      const UserProfile = { template: "<div>Profile</div>" };
+      const UserPosts = { template: "<div>Posts</div>" };
+
+      // 要在嵌套的出口中渲染组件，需要在 VueRouter 的参数中使用 children 配置
+
+      const router = new VueRouter({
+        routes: [
+          {
+            path: "/user/:id",
+            component: User,
+            children: [
+              {
+                // 当 /user/:id 匹配成功，
+                // UserHome 会被渲染在 User 的 <router-view> 中
+                path: "",
+                component: UserHome
+              },
+              {
+                // 当 /user/:id/profile 匹配成功，
+                // UserProfile 会被渲染在 User 的 <router-view> 中
+                path: "profile",
+                component: UserProfile
+              },
+              {
+                // 当 /user/:id/posts 匹配成功
+                // UserPosts 会被渲染在 User 的 <router-view> 中
+                path: "posts",
+                component: UserPosts
+              }
+            ]
+          }
+        ]
+      });
+
+      const app = new Vue({ router }).$mount("#app");
+    </script>
+  </body>
+</html>
