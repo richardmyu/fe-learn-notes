@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>全局后置钩子</title>
+  <style lang=""></style>
+</head>
+
+<body>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+  <div id="app">
+    <router-view></router-view>
+  </div>
+
+  <script>
+    const router = new VueRouter({
+      routes: {}
+    });
+
+    // 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：
+
+    router.afterEach((to, from) => {
+      // ...
+    });
+
+    const app = new Vue({
+      router
+    }).$mount("#app");
+  </script>
+</body>
+
+</html>

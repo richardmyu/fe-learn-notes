@@ -44,9 +44,25 @@
             path: "/user/:id",
             components: { default: User, sidebar: Sidebar },
             props: { default: true, sidebar: false }
+          },
+
+          // 函数模式
+          // 你可以创建一个函数返回 props。这样你便可以将参数转换成另一种类型，将静态值与基于路由的值结合等等。
+          {
+            path: "/search",
+            component: SearchUser,
+            props: route => ({ query: route.query.q })
           }
+
+          // URL / search ? q = vue 会将 { query: 'vue' } 作为属性传递给 SearchUser 组件。
+
+          // 请尽可能保持 props 函数为无状态的，因为它只会在路由发生变化时起作用。如果你需要状态来定义 props，请使用包装组件，这样 Vue 才可以对状态变化做出反应。
         ]
       });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
     </script>
   </body>
 </html>

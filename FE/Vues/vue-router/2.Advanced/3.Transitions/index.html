@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>单个路由的过渡</title>
+    <style lang=""></style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <div id="app"><router-view></router-view></div>
+
+    <script>
+      // <router-view> 是基本的动态组件，所以我们可以用 <transition> 组件给它添加一些过渡效果，Transition 的所有功能 在这里同样适用。
+
+      // 如果你想让每个路由组件有各自的过渡效果，可以在各路由组件内使用 < transition > 并设置不同的 name。
+      const Foo = {
+        template: `
+          <transition name="slide">
+            <div class="foo">...</div>
+          </transition>
+        `
+      };
+
+      const Bar = {
+        template: `
+          <transition name="fade">
+            <div class="bar">...</div>
+          </transition>
+        `
+      };
+
+      const router = new VueRouter({
+        routes: {}
+      });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

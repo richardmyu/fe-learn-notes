@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>路由懒加载</title>
+    <style lang=""></style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <div id="app"><router-view></router-view></div>
+
+    <script>
+      // 结合 Vue 的异步组件和 Webpack 的代码分割功能，轻松实现路由组件的懒加载。
+
+      // 首先，可以将异步组件定义为返回一个 Promise 的工厂函数(该函数返回的 Promise 应该 resolve 组件本身) ：
+      const Foo = () =>
+        Promise.resolve({
+          /* 组件定义对象 */
+        });
+
+      // 第二，在 Webpack 2 中，我们可以使用动态 import语法来定义代码分块点(split point) ：
+      import("./Foo.vue"); // 返回 Promise
+
+      // 如果您使用的是 Babel，你将需要添加 syntax - dynamic -import 插件，才能使 Babel 可以正确地解析语法。
+
+      // 结合这两者，这就是如何定义一个能够被 Webpack 自动代码分割的异步组件。
+      const Foo = () => import("./Foo.vue");
+
+      // 在路由配置中什么都不需要改变，只需要像往常一样使用 Foo：
+      const router = new VueRouter({
+        routes: [{ path: "/foo", component: Foo }]
+      });
+    </script>
+  </body>
+</html>
