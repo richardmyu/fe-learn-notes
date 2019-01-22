@@ -180,28 +180,43 @@ function UserError(message) {
 
 UserError.prototype = new Error();
 UserError.prototype.constructor = UserError;
+
 let typeE = new UserError("类型错误");
 console.log(typeE.name, typeE.message);
 ```
 
 上面代码自定义一个错误对象 `UserError`，让它继承 `Error` 对象。然后，就可以生成这种自定义类型的错误了。
 
-`new UserError('这是自定义的错误！');`
-
 ### 4.throw 语句
 
-`throw` 语句的作用是手动中断程序执行，抛出一个错误。
+`throw` 语句的作用是手动 中断 程序执行，抛出一个错误。
 
 ```JavaScript
 if (x < 0) {
   throw new Error('x 必须为正数');
 }
 // Uncaught ReferenceError: x is not defined
+console.log("23"); // 没有执行
+
+throw new Error("哈哈哈哈哈");
+// Uncaught Error: 哈哈哈哈哈
+
+throw new Error(null);
+// Uncaught Error: null
+
+throw new Error(undefined);
+// Uncaught Error
+
+throw new Error(123);
+// Uncaught Error: 123
+
+throw new Error({});
+// Uncaught Error: [object Object]
 ```
 
-上面代码中，如果变量 x 小于 0，就手动抛出一个错误，告诉用户 x 的值不正确，整个程序就会在这里中断执行。可以看到，`throw` 抛出的错误就是它的参数，这里是一个 Error 实例。`throw` 也可以抛出自定义错误。
+可以看到，`throw` 抛出的错误就是它的参数，这里是一个 `Error` 实例。`throw` 也可以抛出自定义错误。
 
-实际上，`throw` 可以抛出任何类型的值。也就是说，它的参数可以是任何值。
+> 实际上，`throw` 可以抛出任何类型的值。也就是说，它的参数可以是任何值。
 
 对于 JavaScript 引擎来说，遇到 `throw` 语句，程序就中止了。引擎会接收到 `throw` 抛出的信息，可能是一个错误实例，也可能是其他类型的值。
 
@@ -211,14 +226,11 @@ if (x < 0) {
 
 ```JavaScript
 try {
-  throw new Error('出错了!');
+  throw new Error("出错了!");
 } catch (e) {
-  console.log(e.name + ": " + e.message);
-  console.log(e.stack);
+  console.error(e.name + ": " + e.message);
 }
 // Error: 出错了!
-//   at <anonymous>:3:9
-//   ...
 ```
 
 上面代码中，`try` 代码块抛出错误（上例用的是`throw`语句），JavaScript 引擎就立即把代码的执行，转到 `catch` 代码块，或者说错误被 `catch` 代码块捕获了。`catch` 接受一个参数，表示 `try` 代码块抛出的值。
@@ -252,8 +264,6 @@ try {
 // Uncaught 100
 ```
 
-上面代码中，`catch` 代码之中又抛出了一个错误。
-
 为了捕捉不同类型的错误，`catch` 代码块之中可以加入判断语句。
 
 ```JavaScript
@@ -268,8 +278,6 @@ try {
   // ...
 }
 ```
-
-上面代码中，`catch` 捕获错误之后，会判断错误类型（`EvalError` 还是 `RangeError`），进行不同的处理。
 
 ### 6.finally 代码块
 
@@ -302,7 +310,7 @@ function idle(x) {
   }
 }
 
-idle('hello')
+console.log(idle("hello"));
 // hello
 // FINALLY
 // "result"
@@ -322,9 +330,9 @@ function countUp() {
   }
 }
 
-countUp()
+console.log(countUp());
 // 0
-count
+console.log(count);
 // 1
 ```
 
@@ -367,17 +375,14 @@ function f() {
 }
 
 var result = f();
+console.log(result);
 // 0
 // 1
 // 3
-
-result
 // false
 ```
 
-上面代码中，`catch` 代码块结束执行之前，会先执行 `finally` 代码块。
-
-`catch` 代码块之中，触发转入 `finally` 代码快的标志，不仅有 `return` 语句，还有 `throw` 语句。
+`catch` 代码块之中，触发转入 `finally` 代码块的标志，不仅有 `return` 语句，还有 `throw` 语句。
 
 ```JavaScript
 function f() {
@@ -398,7 +403,9 @@ try {
   console.log('caught outer "bogus"');
 }
 
-//  捕捉到内部错误
+// 捕捉到内部错误
 ```
 
 上面代码中，进入 `catch` 代码块之后，一遇到 `throw` 语句，就会去执行 `finally` 代码块，其中有 `return false` 语句，因此就直接返回了，不再会回去执行 `catch` 代码块剩下的部分了。
+
+> 

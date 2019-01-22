@@ -91,7 +91,7 @@
       console.log(err2.message); // "出错了，变量超出有效范围！"
       console.log(err3.message); // "出错了，变量类型无效！" */
 
-      function UserError(message) {
+      /* function UserError(message) {
         this.message = message || "默认信息";
         this.name = "UserError";
       }
@@ -100,7 +100,111 @@
       UserError.prototype.constructor = UserError;
 
       let typeE = new UserError("类型错误");
-      console.log(typeE.name, typeE.message);
+      console.log(typeE.name, typeE.message); */
+
+      /* if (x < 0) {
+        throw new Error("x 必须为正数");
+      }
+      // Uncaught ReferenceError: x is not defined
+      console.log("23"); */
+
+      // throw new Error("哈哈哈哈哈");
+      // Uncaught Error: 哈哈哈哈哈
+
+      // throw new Error(null);
+      // Uncaught Error: null
+
+      // throw new Error(undefined);
+      // Uncaught Error
+
+      // throw new Error(123);
+      // Uncaught Error: 123
+
+      // throw new Error({});
+      // Uncaught Error: [object Object]
+
+      /* try {
+        throw new Error("出错了!");
+      } catch (e) {
+        console.error(e.name + ": " + e.message);
+      } */
+
+      /* function cleansUp() {
+        try {
+          throw new Error("出错了……");
+          console.log("此行不会执行");
+        } finally {
+          console.log("完成清理工作");
+        }
+      }
+
+      cleansUp(); */
+
+      /* function idle(x) {
+        try {
+          console.log(x);
+          return "result";
+        } finally {
+          console.log("FINALLY");
+        }
+      }
+
+      console.log(idle("hello")); */
+
+      /* var count = 0;
+      function countUp() {
+        try {
+          return count;
+        } finally {
+          count++;
+        }
+      }
+
+      console.log(countUp());
+      // 0
+      console.log(count);
+      // 1 */
+
+      /* function f() {
+        try {
+          console.log(0);
+          throw "bug";
+        } catch (e) {
+          console.log(1);
+          return true; // 这句原本会延迟到 finally 代码块结束再执行
+          console.log(2); // 不会运行
+        } finally {
+          console.log(3);
+          return false; // 这句会覆盖掉前面那句 return
+          console.log(4); // 不会运行
+        }
+
+        console.log(5); // 不会运行
+      }
+
+      var result = f();
+
+      console.log(result); */
+
+      function f() {
+        try {
+          throw "出错了！";
+        } catch (e) {
+          console.log("捕捉到内部错误");
+          throw e; // 这句原本会等到finally结束再执行
+        } finally {
+          return false; // 直接返回
+        }
+      }
+
+      try {
+        f();
+      } catch (e) {
+        // 此处不会执行
+        console.log('caught outer "bogus"');
+      }
+
+      // 捕捉到内部错误
     </script>
   </body>
 </html>
