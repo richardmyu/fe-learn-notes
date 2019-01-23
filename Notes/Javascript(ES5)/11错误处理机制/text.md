@@ -9,13 +9,13 @@ var err = new Error('出错了');
 err.message // "出错了"
 ```
 
-上面代码中，我们调用 `Error` 构造函数，生成一个实例对象 err。`Error` 构造函数接受一个参数，表示错误提示，可以从实例的 `message` 属性读到这个参数。抛出 `Error` 实例对象以后，整个程序就中断在发生错误的地方，不再往下执行。
+上面代码中，我们调用 `Error` 构造函数，生成一个实例对象。`Error` 构造函数接受一个参数，表示错误提示，可以从实例的 `message` 属性读到这个参数。抛出(使用 `throw` 语法) `Error` 实例对象以后，整个程序就中断在发生错误的地方，不再往下执行。
 
 JavaScript 语言标准只提到，`Error` 实例对象必须有 `message` 属性，表示出错时的提示信息，没有提到其他属性。大多数 JavaScript 引擎，对 `Error` 实例还提供 `name` 和 `stack` 属性，分别表示错误的名称和错误的堆栈，但它们是非标准的，不是每种实现都有。
 
-- message：错误提示信息
-- name：错误名称（非标准属性）
-- stack：错误的堆栈（非标准属性）
+- `message`：错误提示信息
+- `name`：错误名称（非标准属性）
+- `stack`：错误的堆栈（非标准属性）
 
 使用 `name` 和 `message` 这两个属性，可以对发生什么错误有一个大概的了解。
 
@@ -43,18 +43,23 @@ function catchIt() {
 catchIt();
 
 // Error
+// 错误堆栈的最内层是 `throwIt` 函数
     // at throwIt (file:///C:/.../index.html:22:15)
+
+// 然后是 `catchIt` 函数
     // at catchIt (file:///C:/.../index.html:27:11)
+
+// 最后是函数的运行环境
     // at file:///C:/.../index.html:33:7
 ```
-
-上面代码中，错误堆栈的最内层是 throwIt 函数，然后是 catchIt 函数，最后是函数的运行环境。
 
 ### 2.原生错误类型
 
 `Error` 实例对象是最一般的错误类型，在它的基础上，JavaScript 还定义了其他 6 种错误对象。也就是说，存在 `Error` 的 6 个派生对象。
 
 #### 1.SyntaxError 对象
+
+> 语法错误
 
 `SyntaxError` 对象是解析代码时发生的语法错误。
 
@@ -65,6 +70,8 @@ console.log(b);
 ```
 
 #### 2.ReferenceError 对象
+
+> 引用不存在的变量或者对不能赋值的对象进行赋值
 
 `ReferenceError` 对象是引用一个不存在的变量时发生的错误。
 
@@ -123,17 +130,16 @@ let s = new "str"();
 let n = new 123();
 // Uncaught TypeError: 123 is not a constructor
 
-
 // condition 2
 null.toString();
-// Uncaught TypeError: Cannot read property 'toString' of null 
+// Uncaught TypeError: Cannot read property 'toString' of null
 
 undefined.toString();
 // Uncaught TypeError: Cannot read property 'toString' of undefined
 
 let obj = {};
 console.log(obj.start); // undefined
-obj.start(); 
+obj.start();
 //Uncaught TypeError: obj.start is not a function
 ```
 
@@ -143,10 +149,10 @@ obj.start();
 
 ```javascript
 // condition 1
-encodeURI('\uD800');
+encodeURI("\uD800");
 // Uncaught URIError: URI malformed
 
-encodeURIComponent('\uD800');
+encodeURIComponent("\uD800");
 // Uncaught URIError: URI malformed
 ```
 
@@ -156,7 +162,7 @@ encodeURIComponent('\uD800');
 
 #### 7.总结
 
-以上这 6 种派生错误，连同原始的 `Error` 对象，都是构造函数。开发者可以使用它们，手动生成错误对象的实例。这些构造函数都接受一个函数，代表错误提示信息（message）。
+以上这 6 种派生错误，连同原始的 `Error` 对象，都是构造函数。开发者可以使用它们，手动生成错误对象的实例。这些构造函数都接受一个函数，代表错误提示信息（`message`）。
 
 ```JavaScript
 var err1 = new Error('出错了！');
@@ -336,7 +342,29 @@ console.log(count);
 // 1
 ```
 
-上面代码说明，`return` 语句的 `count` 的值，是在 `finally` 代码块运行之前就获取了。
+上面代码说明，在 `try` 中 `return` 语句的 `count` 的值，是在 `finally` 代码块运行之前就获取了。
+
+```JavaScript
+// catch 中也会在 finally 之前获取值，在 finally 执行之后再输出
+var count = 0;
+function countUp() {
+  try {
+    // return count;
+    throw count;
+  } catch{
+    console.log(count);
+    return "catch";
+  }finally {
+    count++;
+    console.log(count);
+  }
+}
+
+console.log(countUp());
+// 0
+// 1
+// catch
+```
 
 下面是 `finally` 代码块用法的典型场景。
 
@@ -367,7 +395,7 @@ function f() {
     console.log(2); // 不会运行
   } finally {
     console.log(3);
-    return false; // 这句会覆盖掉前面那句 return
+    return false; // 这句会覆盖掉前面那句 return（直接返回）
     console.log(4); // 不会运行
   }
 
@@ -385,6 +413,7 @@ console.log(result);
 `catch` 代码块之中，触发转入 `finally` 代码块的标志，不仅有 `return` 语句，还有 `throw` 语句。
 
 ```JavaScript
+//
 function f() {
   try {
     throw '出错了！';
@@ -406,6 +435,4 @@ try {
 // 捕捉到内部错误
 ```
 
-上面代码中，进入 `catch` 代码块之后，一遇到 `throw` 语句，就会去执行 `finally` 代码块，其中有 `return false` 语句，因此就直接返回了，不再会回去执行 `catch` 代码块剩下的部分了。
-
-> 
+进入 `catch` 代码块之后，一遇到 `throw` 语句或者 `return` 语句，就会去执行 `finally` 代码块，若其中有 `return false` 语句，因此就直接返回了，不再会回去执行 `catch` 代码块剩下的部分了。
