@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* function f(key, value) {
+        if (key === "a") {
+          return value + 10;
+        }
+        return value;
+      }
+
+      console.log(JSON.parse('{"a": 1, "b": 2}', f)); */
+
+      // console.log(JSON.parse('{"a": undefined, "b": 2}'));
+      // Uncaught SyntaxError: Unexpected token u in JSON at position 6
+      // console.log(JSON.parse('{"a": function (){}, "b": 2}'));
+      // Uncaught SyntaxError: Unexpected token u in JSON at position 7
+      // console.log(JSON.parse("[undefined, 1, 2]"));
+      // Uncaught SyntaxError: Unexpected token u in JSON at position 1
+      // console.log(JSON.parse("[function (){}, 1, 2]"));
+      // Uncaught SyntaxError: Unexpected token u in JSON at position 2
+      // console.log(JSON.parse('"/\./"'));
+      // Uncaught SyntaxError: Unexpected token / in JSON at position 0
+
+      /* console.log(JSON.stringify({ a: undefined, b: 2 }));
+      // {"b":2}
+      console.log(JSON.stringify({ a: function() {}, b: 2 }));
+      // {"b":2}
+      console.log(JSON.stringify([undefined, 1, 2]));
+      // [null,1,2]
+      console.log(JSON.stringify([function() {}, 1, 2]));
+      // [null,1,2]
+      console.log(JSON.stringify(/\./));
+      // "/./" */
+
+      /* var obj = {
+        prop1: "value1",
+        prop2: "value2",
+        prop3: "value3"
+      };
+
+      var selectedProperties = ["prop1", "prop2"];
+
+      console.log(JSON.stringify(obj, selectedProperties)); */
+
+      /* function f(key,value) {
+        console.log(key);
+        //
+        // a
+        // b
+        if (typeof value === "number") {
+          value = 2 * value;
+        }
+        return value;
+      }
+
+      console.log(JSON.stringify({ a: 1, b: 2 }, f)); */
+
+      /* function f(key, value) {
+        console.log(value);
+        // Obj {a: 1, b: 2}
+        // 1
+        // 2
+        if (typeof value === "number") {
+          value = 2 * value;
+        }
+        return value;
+      }
+
+      console.log(JSON.stringify({ a: 1, b: 2 }, f));
+      // { "a": 2, "b": 4 } */
+
+      /* var o = { a: { b: 1 } };
+
+      function f(key, value) {
+        console.log("[" + key + "]:", value);
+        return value;
+      }
+
+      console.log(JSON.stringify(o, f));
+      // []:obj {a: {…}}
+      // [a]:obj {b: 1}
+      // [b]:1
+      // {"a":{"b":1}} */
+
+      /* var o = { a: 1 };
+
+      function f(key, value) {
+        console.log(key, value);
+        if (typeof value === "object") {
+          return { b: 2 };
+        }
+        return value * 2;
+      }
+
+      console.log(JSON.stringify(o, f));
+      // "{"b": 4}" */
+
+      /* function f(key, value) {
+        if (typeof value === "string") {
+          return undefined;
+        }
+        return value;
+      }
+
+      console.log(JSON.stringify({ a: "abc", b: 123 }, f)); */
+
+      /* console.log(JSON.stringify({ p1: 1, p2: 2 }, null, 10));
+      console.log(JSON.stringify({ p1: 1, p2: 2 }, null, 11));
+
+      console.log(JSON.stringify({ p1: 1, p2: 2 }, null, "***----***"));
+      console.log(JSON.stringify({ p1: 1, p2: 2 }, null, "***----***+")); */
+
+      /* var user = {
+        firstName: "三",
+        lastName: "张",
+
+        get fullName() {
+          return this.lastName + this.firstName;
+        },
+
+        toJSON: function () {
+          return {
+            name: this.lastName + this.firstName
+          };
+        }
+      };
+
+      console.log(JSON.stringify(user)); */
+
+      /* var date = new Date("2015-01-01");
+      console.log(date.toJSON()); // "2015-01-01T00:00:00.000Z"
+      console.log(JSON.stringify(date)); // ""2015-01-01T00:00:00.000Z"" */
+
+      var obj = {
+        reg: /foo/
+      };
+
+      // 不设置 toJSON 方法时
+      console.log(JSON.stringify(obj)); // "{"reg":{}}"
+
+      // 设置 toJSON 方法时
+      RegExp.prototype.toJSON = RegExp.prototype.toString;
+      console.log(JSON.stringify(/foo/)); // ""/foo/""
+    </script>
+  </body>
+</html>
