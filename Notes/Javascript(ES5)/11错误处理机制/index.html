@@ -663,7 +663,7 @@
           // 捕获异常 收敛一些
         }); */
 
-      function thirdFunction() {
+      /* function thirdFunction() {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             reject("收敛一些");
@@ -711,7 +711,7 @@
         // 1
         // 2-
         // 3-
-        // 4-
+        // 4- */
 
       /* function thirdFunction() {
         return new Promise((resolve, reject) => {
@@ -766,6 +766,222 @@
       // 3-
       // 4-
       // 捕获异常 收敛一些 */
+
+      /* function* generatorA() {
+        console.log("a");
+        yield;
+        console.log("b");
+      }
+      const genA = generatorA();
+      genA.next(); // a
+      genA.next(); // b */
+
+      /* function* generatorB(count) {
+        console.log(count);
+        const result = yield 5;
+        console.log(result * count);
+      }
+      const genB = generatorB(2);
+      genB.next(); // 2
+      const genBValue = genB.next(7).value; // 14
+      console.log(genBValue); // genBValue undefined */
+
+      /* const timeOut = (time = 0) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(time + 200);
+          }, time);
+        });
+
+      async function main() {
+        const result1 = await timeOut(200);
+        console.log(result1); // 400
+        const result2 = await timeOut(result1);
+        console.log(result2); // 600
+        const result3 = await timeOut(result2);
+        console.log(result3); // 800
+      }
+
+      main(); */
+
+      /* const timeOut = (time = 0) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(time + 200);
+          }, time);
+        });
+
+      function* main() {
+        const result1 = yield timeOut(200);
+        console.log(result1);
+        const result2 = yield timeOut(result1);
+        console.log(result2);
+        const result3 = yield timeOut(result2);
+        console.log(result3);
+      }
+
+      function step(generator) {
+        const gen = generator();
+        // 由于其传值，返回步骤交错的特性，记录上一次 yield 传过来的值，在下一个 next 返回过去
+        let lastValue;
+        // 包裹为 Promise，并执行表达式
+        return () =>
+          Promise.resolve(gen.next(lastValue).value).then(value => {
+            lastValue = value;
+            return lastValue;
+          });
+      }
+
+      const run = step(main);
+
+      function recursive(promise) {
+        promise().then(result => {
+          if (result) {
+            recursive(promise);
+          }
+        });
+      }
+
+      recursive(run);
+      // 400
+      // 600
+      // 800 */
+
+      /* function fetch(callback) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject();
+          });
+        });
+      }
+
+      async function main() {
+        const result = await fetch();
+        console.log("请求处理", result); // 永远不会执行
+      }
+
+      main(); */
+
+      /* function c() {
+        console.log("c");
+        console.trace();
+      }
+
+      function b() {
+        console.log("b");
+        c();
+      }
+
+      function a() {
+        console.log("a");
+        b();
+      }
+
+      a();
+      // a
+      // b
+      // c */
+
+      /* function c() {
+        console.log("c");
+      }
+
+      function b() {
+        console.log("b");
+        c();
+        console.trace();
+      }
+
+      function a() {
+        console.log("a");
+        b();
+      }
+
+      a();
+      // a
+      // b
+      // c */
+    </script>
+    <script></script>
+    <script>
+      /* try {
+        try {
+          throw new Error("Nested error.");
+        } catch (nestedErr) {
+          console.log("Nested catch"); // This runs
+        }
+      } catch (err) {
+        console.log("This will not run."); // no exe
+      } */
+
+      /* try {
+        throw new Error("First error");
+      } catch (err) {
+        console.log("First catch running"); // This runs
+        try {
+          throw new Error("Second error");
+        } catch (nestedErr) {
+          console.log("Second catch running."); // This runs
+        }
+      } */
+
+      /* try {
+        console.log("The try block is running..."); // This runs
+      } finally {
+        try {
+          throw new Error("Error inside finally.");
+        } catch (err) {
+          console.log("Caught an error inside the finally block.");
+          // This runs
+        }
+      } */
+
+      /* function runWithoutThrowing(func) {
+        try {
+          func();
+        } catch (e) {
+          console.log("There was an error, but I will not throw it.");
+          console.log("The error's message was: " + e.message);
+        }
+      }
+
+      function funcThatThrowsError() {
+        throw new TypeError("I am a TypeError.");
+      }
+
+      runWithoutThrowing(funcThatThrowsError);
+      // There was an error, but I will not throw it.
+      // The error's message was: I am a TypeError. */
+
+      /* function runWithoutThrowing(func) {
+        try {
+          func();
+        } catch (e) {
+          console.log("There was an error, but I will not throw it.");
+          console.log("The error's message was: " + e.message);
+        }
+      }
+
+      function funcThatThrowsError() {
+        throw "I am a String.";
+      }
+
+      runWithoutThrowing(funcThatThrowsError);
+      // There was an error, but I will not throw it.
+      // The error's message was: undefined. */
+
+      /* const fs = require("fs");
+
+        fs.readdir("./text.md", function callback(err, dirs) {
+          if (err instanceof Error) {
+            // `readdir` will throw an error because that directory does not exist
+            // We will now be able to use the error object passed by it in our callback function
+            console.log("Error Message: " + err.message);
+            console.log("See? We can use Errors without using try statements.");
+          } else {
+            console.log(dirs);
+          }
+        }); */
     </script>
   </body>
 </html>
