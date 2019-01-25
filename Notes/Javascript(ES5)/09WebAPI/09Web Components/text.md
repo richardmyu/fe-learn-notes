@@ -1,3 +1,5 @@
+# Web Components
+
 ## 1.概述
 
 各种网站往往需要一些相同的模块，比如日历、调色板等等，这种模块就被称为“组件”（component）。Web Component 就是网页组件式开发的技术规范。
@@ -45,10 +47,10 @@ if (supportsTemplate()) {
 
 下面是一个模板的例子。
 
-```
+```html
 <template id="profileTemplate">
   <div class="profile">
-    <img src="" class="profile__img">
+    <img src="" class="profile__img" />
     <div class="profile__name"></div>
     <div class="profile__social"></div>
   </div>
@@ -75,16 +77,16 @@ document.body.appendChild(clone);
 
 接受 `template` 插入的元素，叫做宿主元素（host）。在 `template` 之中，可以对宿主元素设置样式。
 
-```javascript
+```html
 <template>
-<style>
-  :host {
-    background: #f8f8f8;
-  }
-  :host(:hover) {
-    background: #ccc;
-  }
-</style>
+  <style>
+    :host {
+      background: #f8f8f8;
+    }
+    :host(:hover) {
+      background: #ccc;
+    }
+  </style>
 </template>
 ```
 
@@ -306,12 +308,12 @@ document.body.appendChild(shadowRoot);
 
 下面的例子是指定网页中某个现存的元素，作为 `Shadow DOM` 的根元素。
 
-```javascript
+```html
 <button>Hello, world!</button>
 <script>
-  var host = document.querySelector('button');
+  var host = document.querySelector("button");
   var root = host.createShadowRoot();
-  root.textContent = '你好';
+  root.textContent = "你好";
 </script>
 ```
 
@@ -327,7 +329,7 @@ shadow.innerHTML += "<style>p { color: red };</style>";
 
 下面的例子是为 `Shadow DOM` 加上独立的模板。
 
-```javascript
+```html
 <div id="nameTag">张三</div>
 
 <template id="nameTagTemplate">
@@ -338,12 +340,8 @@ shadow.innerHTML += "<style>p { color: red };</style>";
   </style>
 
   <div class="outer">
-    <div class="boilerplate">
-      Hi! My name is
-    </div>
-    <div class="name">
-      Bob
-    </div>
+    <div class="boilerplate">Hi! My name is</div>
+    <div class="name">Bob</div>
   </div>
 </template>
 ```
@@ -388,9 +386,9 @@ if (supportsImports()) {
 
 如果 B 与 A 不在同一个域，那么 A 所在的域必须打开 `CORS`。
 
-```javascript
-<!-- example.com必须打开CORS -->
-<link rel="import" href="http://example.com/elements.html">
+```html
+<!-- example.com 必须打开 CORS -->
+<link rel="import" href="http://example.com/elements.html" />
 ```
 
 除了用 `link` 标签，也可以用 JavaScript 调用 `link` 元素，完成 `HTML Import`。
@@ -406,18 +404,22 @@ document.head.appendChild(link);
 
 `HTML Import` 加载成功时，会在 `link` 元素上触发 `load` 事件，加载失败时（比如 404 错误）会触发 `error` 事件，可以对这两个事件指定回调函数。
 
-```javascript
+```html
 <script async>
   function handleLoad(e) {
-    console.log('Loaded import: ' + e.target.href);
+    console.log("Loaded import: " + e.target.href);
   }
   function handleError(e) {
-    console.log('Error loading import: ' + e.target.href);
+    console.log("Error loading import: " + e.target.href);
   }
 </script>
 
-<link rel="import" href="file.html"
-      onload="handleLoad(event)" onerror="handleError(event)">
+<link
+  rel="import"
+  href="file.html"
+  onload="handleLoad(event)"
+  onerror="handleError(event)"
+/>
 ```
 
 上面代码中，`handleLoad` 和 `handleError` 函数的定义，必须在 `link` 元素的前面。因为浏览器元素遇到 `link` 元素时，立刻解析并加载外部网页（同步操作），如果这时没有对这两个函数定义，就会报错。
@@ -461,10 +463,10 @@ document.body.appendChild(el.cloneNode(true));
 ```javascript
 // 以下代码位于被加载（import）的外部网页
 
-// importDoc指向被加载的DOM
+// importDoc 指向被加载的 DOM
 var importDoc = document.currentScript.ownerDocument;
 
-// mainDoc指向主文档的DOM
+// mainDoc 指向主文档的 DOM
 var mainDoc = document;
 
 // 将子页面的样式表添加主文档
@@ -480,17 +482,16 @@ mainDoc.head.appendChild(styles.cloneNode(true));
 
 对于 `Web Component` 来说，`HTML Import`的一个重要应用是在所加载的网页中，自动登记 `Custom Element`。
 
-```javascript
+```html
 <script>
   // 定义并登记<say-hi>
   var proto = Object.create(HTMLElement.prototype);
 
   proto.createdCallback = function() {
-    this.innerHTML = 'Hello, <b>' +
-                     (this.getAttribute('name') || '?') + '</b>';
+    this.innerHTML = "Hello, <b>" + (this.getAttribute("name") || "?") + "</b>";
   };
 
-  document.registerElement('say-hi', {prototype: proto});
+  document.registerElement("say-hi", { prototype: proto });
 </script>
 
 <template id="t">
@@ -499,8 +500,7 @@ mainDoc.head.appendChild(styles.cloneNode(true));
       color: red;
     }
   </style>
-  <span>I'm a shadow-element using Shadow DOM!</span>
-  <content></content>
+  <span>I'm a shadow-element using Shadow DOM!</span> <content></content>
 </template>
 
 <script>
@@ -511,28 +511,26 @@ mainDoc.head.appendChild(styles.cloneNode(true));
     var proto2 = Object.create(HTMLElement.prototype);
 
     proto2.createdCallback = function() {
-      var template = importDoc.querySelector('#t');
+      var template = importDoc.querySelector("#t");
       var clone = document.importNode(template.content, true);
       var root = this.createShadowRoot();
       root.appendChild(clone);
     };
 
-    document.registerElement('shadow-element', {prototype: proto2});
+    document.registerElement("shadow-element", { prototype: proto2 });
   })();
 </script>
 ```
 
 上面代码定义并登记了两个元素：`<say-hi>` 和 `<shadow-element>`。在主页面使用这两个元素，非常简单。
 
-```javascript
+```html
 <head>
-  <link rel="import" href="elements.html">
+  <link rel="import" href="elements.html" />
 </head>
 <body>
   <say-hi name="Eric"></say-hi>
-  <shadow-element>
-    <div>( I'm in the light dom )</div>
-  </shadow-element>
+  <shadow-element> <div>( I'm in the light dom )</div> </shadow-element>
 </body>
 ```
 
@@ -546,9 +544,9 @@ mainDoc.head.appendChild(styles.cloneNode(true));
 
 `Polymer.js` 提供的组件，可以直接插入网页，比如下面的 `google-map`。。
 
-```javascript
+```html
 <script src="components/platform/platform.js"></script>
-<link rel="import" href="google-map.html">
+<link rel="import" href="google-map.html" />
 <google-map lat="37.790" long="-122.390"></google-map>
 ```
 
@@ -558,7 +556,7 @@ mainDoc.head.appendChild(styles.cloneNode(true));
 
 自定义标签与其他标签的用法完全相同，也可以使用 CSS 指定它的样式。
 
-```javascript
+```css
 polymer-ui-clock {
   width: 320px;
   height: 320px;
@@ -608,8 +606,8 @@ bower install Polymer/polymer-ui-elements
 
 下面是一个最简单的自定义组件的例子。
 
-```javascript
-<link rel="import" href="../bower_components/polymer/polymer.html">
+```html
+<link rel="import" href="../bower_components/polymer/polymer.html" />
 
 <polymer-element name="lorem-element">
   <template>
@@ -638,9 +636,9 @@ bower install Polymer/polymer-ui-elements
 
 在调用组件的网页中，首先加载 `polymer.js` 库和组件文件。
 
-```javascript
+```html
 <script src="components/platform/platform.js"></script>
-<link rel="import" href="w3c-disclosure.html">
+<link rel="import" href="w3c-disclosure.html" />
 ```
 
 然后，分成两种情况。如果组件不基于任何现有的 HTML 网页元素（即定义的时候没有使用 `extends` 属性），则可以直接使用组件。

@@ -1,3 +1,5 @@
+# requestAnimationFrame
+
 ## 1.概述
 
 `requestAnimationFrame` 是浏览器用于定时循环操作的一个接口，类似于 `setTimeout`，主要用途是按帧对网页进行重绘。

@@ -1,4 +1,6 @@
-全屏API可以控制浏览器的全屏显示，让一个Element节点（以及子节点）占满用户的整个屏幕。目前各大浏览器的最新版本都支持这个API（包括IE11），但是使用的时候需要加上浏览器前缀。
+# Fullscreen API：全屏操作
+
+全屏 API 可以控制浏览器的全屏显示，让一个 Element 节点（以及子节点）占满用户的整个屏幕。目前各大浏览器的最新版本都支持这个 API（包括 IE11），但是使用的时候需要加上浏览器前缀。
 
 ## 1.方法
 
@@ -8,13 +10,13 @@
 
 ```javascript
 function launchFullscreen(element) {
-  if(element.requestFullscreen) {
+  if (element.requestFullscreen) {
     element.requestFullscreen();
-  } else if(element.mozRequestFullScreen) {
+  } else if (element.mozRequestFullScreen) {
     element.mozRequestFullScreen();
-  } else if(element.msRequestFullscreen){
+  } else if (element.msRequestFullscreen) {
     element.msRequestFullscreen();
-  } else if(element.webkitRequestFullscreen) {
+  } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullScreen();
   }
 }
@@ -23,7 +25,7 @@ launchFullscreen(document.documentElement);
 launchFullscreen(document.getElementById("videoElement"));
 ```
 
-放大一个节点时，Firefox 和 Chrome 在行为上略有不同。Firefox 自动为该节点增加一条 CSS 规则，将该元素放大至全屏状态，`width: 100%; height: 100%`，而Chrome 则是将该节点放在屏幕的中央，保持原来大小，其他部分变黑。为了让 Chrome 的行为与 Firefox 保持一致，可以自定义一条 CSS 规则。
+放大一个节点时，Firefox 和 Chrome 在行为上略有不同。Firefox 自动为该节点增加一条 CSS 规则，将该元素放大至全屏状态，`width: 100%; height: 100%`，而 Chrome 则是将该节点放在屏幕的中央，保持原来大小，其他部分变黑。为了让 Chrome 的行为与 Firefox 保持一致，可以自定义一条 CSS 规则。
 
 ```css
 :-webkit-full-screen #myvideo {
@@ -69,7 +71,7 @@ var fullscreenElement =
 
 ### 2.2 document.fullscreenEnabled
 
-fullscreenEnabled属性返回一个布尔值，表示当前文档是否可以切换到全屏状态。
+fullscreenEnabled 属性返回一个布尔值，表示当前文档是否可以切换到全屏状态。
 
 ```javascript
 var fullscreenEnabled =
@@ -81,7 +83,7 @@ var fullscreenEnabled =
 if (fullscreenEnabled) {
   videoElement.requestFullScreen();
 } else {
-  console.log('浏览器当前不能全屏');
+  console.log("浏览器当前不能全屏");
 }
 ```
 
@@ -94,18 +96,18 @@ if (fullscreenEnabled) {
 - `fullscreenerror` 事件：浏览器无法进入全屏时触发，可能是技术原因，也可能是用户拒绝。
 
 ```javascript
-document.addEventListener("fullscreenchange", function( event ) {
+document.addEventListener("fullscreenchange", function(event) {
   if (document.fullscreenElement) {
-    console.log('进入全屏');
+    console.log("进入全屏");
   } else {
-    console.log('退出全屏');
+    console.log("退出全屏");
   }
 });
 ```
 
 上面代码在发生 `fullscreenchange` 事件时，通过 `fullscreenElement` 属性判断，到底是进入全屏还是退出全屏。
 
-## 4.全屏状态的CSS
+## 4.全屏状态的 CSS
 
 全屏状态下，大多数浏览器的 CSS 支持 `:full-screen` 伪类，只有 IE11 支持 `:fullscreen` 伪类。使用这个伪类，可以对全屏状态设置单独的 CSS 属性。
 
@@ -122,11 +124,13 @@ document.addEventListener("fullscreenchange", function( event ) {
   /* properties */
 }
 
-:full-screen { /*pre-spec */
+:full-screen {
+  /*pre-spec */
   /* properties */
 }
 
-:fullscreen { /* spec */
+:fullscreen {
+  /* spec */
   /* properties */
 }
 
