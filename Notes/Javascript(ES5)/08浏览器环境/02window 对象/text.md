@@ -538,7 +538,7 @@ onerror.num = 0;
 
 ---
 
-除了以上字符，其他字符出现在 URL 之中都必须转义，规则是根据操作系统的默认编码，将每个字节转为百分号（`%`）加上两个大写的十六进制字母。比如，`UTF-8`的操作系统上，`http://www.example.com/q=春节`这个 URL 之中，汉字“春节”不是 URL 的合法字符，所以被浏览器自动转成`http://www.example.com/q=%E6%98%A5%E8%8A%82`。其中，“春”转成了`%E6%98%A5`，“节”转成了“`%E8%8A%82`”。这是因为“春”和”节“的 UTF-8 编码分别是`E6 98 A5`和`E8 8A 82`，将每个字节前面加上百分号，就构成了**URL 编码**。
+除了以上字符，其他字符出现在 URL 之中都必须转义，规则是根据操作系统的默认编码，将每个字节转为百分号（`%`）加上两个大写的十六进制字母。比如，`UTF-8` 的操作系统上，`http://www.example.com/q=春节` 这个 URL 之中，汉字“春节”不是 URL 的合法字符，所以被浏览器自动转成 `http://www.example.com/q=%E6%98%A5%E8%8A%82`。其中，“春”转成了 `%E6%98%A5`，“节”转成了 “`%E8%8A%82`”。这是因为“春”和”节“的 UTF-8 编码分别是 `E6 98 A5` 和 `E8 8A 82`，将每个字节前面加上百分号，就构成了**URL 编码**。
 
 JavaScript 提供四个 URL 的编码/解码方法。
 
@@ -562,7 +562,7 @@ encodeURI("http://www.example.com/q=春节");
 
 ##### 8.2 encodeURIComponent
 
-`encodeURIComponent`只转除了语义字符之外的字符，元字符也会被转义。因此，它的参数通常是 URL 的路径或参数值，而不是整个 URL。
+`encodeURIComponent` 只转除了语义字符之外的字符，元字符也会被转义。因此，它的参数通常是 URL 的路径或参数值，而不是整个 URL。
 
 ```javascript
 encodeURIComponent("春节");
@@ -571,11 +571,11 @@ encodeURIComponent("http://www.example.com/q=春节");
 // "http%3A%2F%2Fwww.example.com%2Fq%3D%E6%98%A5%E8%8A%82"
 ```
 
-上面代码中，`encodeURIComponent`会连 URL 元字符一起转义，所以通常只用它转 URL 的片段。
+上面代码中，`encodeURIComponent` 会连 URL 元字符一起转义，所以通常只用它转 URL 的片段。
 
 ##### 8.3 decodeURI
 
-`decodeURI`用于还原转义后的 URL。它是`encodeURI`方法的逆运算。
+`decodeURI` 用于还原转义后的 URL。它是 `encodeURI` 方法的逆运算。
 
 ```javascript
 decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
@@ -584,19 +584,19 @@ decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
 
 ##### 8.4 decodeURIComponent
 
-`decodeURIComponent`用于还原转义后的 URL 片段。它是`encodeURIComponent`方法的逆运算。
+`decodeURIComponent` 用于还原转义后的 URL 片段。它是 `encodeURIComponent` 方法的逆运算。
 
 `decodeURIComponent('%E6%98%A5%E8%8A%82')// "春节"`
 
 #### 9.alert()，prompt()，confirm()
 
-`alert()`、`prompt()`、`confirm()`都是浏览器与用户互动的全局方法。它们会弹出不同的对话框，要求用户做出回应。
+`alert()`、`prompt()`、`confirm()` 都是浏览器与用户互动的全局方法。它们会弹出不同的对话框，要求用户做出回应。
 
-需要注意的是，`alert()`、`prompt()`、`confirm()`这三个方法弹出的对话框，都是浏览器统一规定的式样，是无法定制的。
+需要注意的是，`alert()`、`prompt()`、`confirm()` 这三个方法弹出的对话框，都是浏览器统一规定的式样，是无法定制的。
 
 1).`alert`
 
-`alert`方法弹出的对话框，只有一个“确定”按钮，往往用来通知用户某些信息。
+`alert` 方法弹出的对话框，只有一个“确定”按钮，往往用来通知用户某些信息。
 
 ```javascript
 // 格式
@@ -608,11 +608,11 @@ alert("Hello World");
 
 用户只有点击“确定”按钮，对话框才会消失。在对话框弹出期间，浏览器窗口处于冻结状态，如果不点“确定”按钮，用户什么也干不了。
 
-`alert`方法的参数只能是字符串，没法使用 CSS 样式，但是可以用`\n`指定换行。
+`alert` 方法的参数只能是字符串，没法使用 CSS 样式，但是可以用 `\n` 指定换行。
 
 2).`prompt`
 
-`prompt`方法弹出的对话框，在提示文字的下方，还有一个输入框，要求用户输入信息，并有“确定”和“取消”两个按钮。它往往用来获取用户输入的数据。
+`prompt` 方法弹出的对话框，在提示文字的下方，还有一个输入框，要求用户输入信息，并有“确定”和“取消”两个按钮。它往往用来获取用户输入的数据。
 
 ```javascript
 // 格式
@@ -624,21 +624,21 @@ var result = prompt('您的年龄？', 25)
 
 上面代码会跳出一个对话框，文字提示为“您的年龄？”，要求用户在对话框中输入自己的年龄（默认显示 25）。
 
-`prompt`方法的返回值是一个字符串（有可能为空）或者`null`，具体分成三种情况。
+`prompt` 方法的返回值是一个字符串（有可能为空）或者 `null`，具体分成三种情况。
 
 ---
 
 - 用户输入信息，并点击“确定”，则用户输入的信息就是返回值。
 - 用户没有输入信息，直接点击“确定”，则输入框的默认值就是返回值。
-- 用户点击了“取消”（或者按了 Esc 按钮），则返回值是`null`。
+- 用户点击了“取消”（或者按了 Esc 按钮），则返回值是 `null`。
 
 ---
 
-`prompt`方法的第二个参数是可选的，但是如果不提供的话，IE 浏览器会在输入框中显示`undefined`。因此，最好总是提供第二个参数，作为输入框的默认值。
+`prompt` 方法的第二个参数是可选的，但是如果不提供的话，IE 浏览器会在输入框中显示 `undefined`。因此，最好总是提供第二个参数，作为输入框的默认值。
 
 3).`confirm`
 
-`confirm`方法弹出的对话框，除了提示信息之外，只有“确定”和“取消”两个按钮，往往用来征询用户的意见。
+`confirm` 方法弹出的对话框，除了提示信息之外，只有“确定”和“取消”两个按钮，往往用来征询用户的意见。
 
 ```javascript
 // 格式
@@ -650,7 +650,7 @@ var result = confirm("你最近好吗？");
 
 上面代码弹出一个对话框，上面只有一行文字“你最近好吗？”，用户选择点击“确定”或“取消”。
 
-`confirm`方法返回一个布尔值，如果用户点击“确定”，则返回 true；如果用户点击“取消”，则返回 false。
+`confirm` 方法返回一个布尔值，如果用户点击“确定”，则返回 true；如果用户点击“取消”，则返回 `false`。
 
 ```javascript
 var okay = confirm("Please confirm this message.");
@@ -661,7 +661,7 @@ if (okay) {
 }
 ```
 
-`confirm`的一个用途是，当用户离开当前页面时，弹出一个对话框，问用户是否真的要离开。
+`confirm` 的一个用途是，当用户离开当前页面时，弹出一个对话框，问用户是否真的要离开。
 
 ```javascript
 window.onunload = function() {
