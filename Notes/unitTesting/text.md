@@ -1,20 +1,14 @@
 # 前端测试
 
-JavaScript 作为 web 端使用最广泛的编程语言，它是动态语言，缺乏静态类型检查，所以在代码编译期间，很难发现像变量名写错，调用不存在的方法, 赋值或传值的类型错误等错误。当开发完一个功能模块的时候，如何确定你的模块有没有 bug 呢？通常的做法是根据具体的业务，执行 debug 模式，一点一点深入到代码中去查看。如果你一直都是这样，那么你早就已经 OUT 了。现在更先进的做法是自动化测试, 写好测试用例, 执行一个指令，就可快速知道代码有没有缺陷，以及出错的地方。<sub>[[3]](#data3)</sub>
+JavaScript 作为 web 端使用最广泛的编程语言，它是动态语言，缺乏静态类型检查，所以在代码编译期间，很难发现像变量名写错，调用不存在的方法，赋值或传值的类型错误等错误。当开发完一个功能模块的时候，如何确定你的模块有没有 bug 呢？通常的做法是根据具体的业务，执行 debug 模式，一点一点深入到代码中去查看。如果你一直都是这样，那么你早就已经 OUT 了。现在更先进的做法是自动化测试，写好测试用例，执行一个指令，就可快速知道代码有没有缺陷，以及出错的地方。<sub>[[3]](#data3)</sub>
 
-前端测试一直是前端项目开发过程中机器重要的一个环节，高效的测试方法可以减少我们进行代码自测的时间，提高我们的开发效率，如果你的代码涉及的测试用例较多，而且项目需要长期维护，这时就可以考虑使用一下自动化测试了。<sub>[[1]](#data1)</sub>
+前端测试一直是前端项目开发过程中重要的一个环节，高效的测试方法可以减少我们进行代码自测的时间，提高我们的开发效率，如果你的代码涉及的测试用例较多，而且项目需要长期维护，这时就可以考虑使用一下**自动化测试**了。<sub>[[1]](#data1)</sub>
 
-前端自动化测试一般是指是在预设条件下运行前端页面或逻辑模块，评估运行结果。预设条件应包括正常条件和异常条件，以达到自动运行测试过程、减少或避免人工干预测试的目的。在前端自动化测试中，我们通常是通过不同的工具来解决不同场景下不同的问题的。就测试类型来看，主要分为 BDD(Bebavior Driven Developement，行为驱动测试)和 TDD(Testing Driven Developement，测试驱动开发)。BDD 可以让项目成员（甚至是不懂编程的）使用自然描述语言来描述系统功能和业务逻辑，从而根据这些描述步骤进行系统自动化的测试；TDD 则要求在编写某个功能的代码之前先编写测试代码，然后只编写使测试通过的功能代码，通过测试来推动整个开发的进行。这有助于编写简洁可用和高质量的代码，并加速实际开发过程。<sub>[[1]](#data1)</sub>
+> 注释：这里的自动化测试是指，在通过测试框架，写好测试用例，调用命令行，来实现测试，这样不必对每一个测试用例进行测试。
+
+前端自动化测试一般是指是在预设条件下运行前端页面或逻辑模块，评估运行结果。预设条件应包括正常条件和异常条件，以达到自动运行测试过程、减少或避免人工干预测试的目的。在前端自动化测试中，我们通常是通过不同的工具来解决不同场景下不同的问题的。就测试类型（测试语法类型）来看，主要分为 **BDD**(Bebavior Driven Developement，**行为驱动开发**)和 **TDD**(Testing Driven Developement，**测试驱动开发**)。BDD 可以让项目成员（甚至是不懂编程的）使用自然描述语言来描述系统功能和业务逻辑，从而根据这些描述步骤进行系统自动化的测试；TDD 则要求在编写某个功能的代码之前先编写测试代码，然后只编写使测试通过的功能代码，通过测试来推动整个开发的进行。这有助于编写简洁可用和高质量的代码，并加速实际开发过程。<sub>[[1]](#data1)</sub>
 
 BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和业务逻辑的自动化测试设计，而 TDD 在快速开发并测试功能模块的过程中则更加高效，以快速完成开发为目的。下面我们看下 BDD 和 TDD 具体的特点：<sub>[[1]](#data1)</sub>
-
-当然，凡事都有两面性，好处虽然明显，却并不是所有的项目都值得引入测试框架，毕竟维护测试用例也是需要成本的。对于一些需求频繁变更、复用性较低的内容，比如活动页面，让开发专门抽出人力来写测试用例确实得不偿失。<sub>[[3]](#data3)</sub>
-
-而适合引入测试场景大概有这么几个：<sub>[[3]](#data3)</sub>
-
-- 需要长期维护的项目。它们需要测试来保障代码可维护性、功能的稳定性
-- 较为稳定的项目、或项目中较为稳定的部分。给它们写测试用例，维护成本低
-- 被多次复用的部分，比如一些通用组件和库函数。因为多处复用，更要保障质量
 
 ---
 
@@ -39,6 +33,14 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 > 站在程序员的角度，写测试代码。测试驱动型的开发方式，先写测试代码，之后编写能通过测试的业务代码，可以不断的在能通过测试的情况下重构 。<sub>[[3]](#data3)</sub>
 
 ---
+
+当然，凡事都有两面性，好处虽然明显，却并不是所有的项目都值得引入测试框架，毕竟维护测试用例也是需要成本的。对于一些需求频繁变更、复用性较低的内容，比如活动页面，让开发专门抽出人力来写测试用例确实得不偿失。<sub>[[3]](#data3)</sub>
+
+而适合引入测试场景大概有这么几个：<sub>[[3]](#data3)</sub>
+
+- 需要长期维护的项目：它们需要测试来保障代码可维护性、功能的稳定性；
+- 较为稳定的项目、或项目中较为稳定的部分：给它们写测试用例，维护成本低；
+- 被多次复用的部分（比如一些通用组件和库函数）：因为多处复用，更要保障质量；
 
 ## 一.测试方法 <sub>[[2]](#data2)</sub>
 
@@ -79,7 +81,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ### 2.白盒测试
 
-白盒测试是基于代码本身的测试，一般指对代码逻辑结构的测试。白盒测试是在了解代码结构的前提下进行的测试，目的是遍历尽可能多的可执行路径，得出测试数据。白盒测试方法比较多，主要是**逻辑覆盖**，即检查代码的每一行、每一次判断结果。
+白盒测试是基于代码本身的测试，一般指对代码**逻辑结构的测试**。白盒测试是在了解代码结构的前提下进行的测试，目的是遍历尽可能多的可执行路径，得出测试数据。白盒测试方法比较多，主要是逻辑覆盖，即检查代码的每一行、每一次判断结果。
 
 逻辑覆盖方式从发现错误能力上排序主要有以下几种：
 
@@ -100,13 +102,54 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ### 1.单元测试（Unit Testing）
 
-单元测试是指对程序中最小可测试单元进行的测试，一般而言是指对函数进行的测试。如果某个测试依赖于一些外部资源，比如网络或者数据库，那它就不是单元测试。单元测试是从程序员的角度编写的，保证一些方法执行特定的任务，给出特定输入，得到预期的结果。
+在维基百科英文版中可以找到 Kolawa Adam 在 Automated Defect Prevention: Best Practices in Software Management 一书中对单元测试的定义：<sub>[[6]](#data6)</sub>
+
+> In computer programming, unit testing is a method by which individual units of source code, sets of one or more computer program modules together with associated control data, usage procedures, and operating procedures are tested to determine if they are fit for use.
+
+重点在于最后，单元测试的目的显而易见，用来确定是否适合使用。而测试的方法则包括控制数据，使用和操作过程。那么以我的理解，每个单元测试就是一段用于测试一个模块或接口是否能达到预期结果的代码。开发人员需要使用代码来定义一个可用的衡量标准，并且可以快速检验。<sub>[[6]](#data6)</sub>
+
+很快我发现有一个误区，许多人认为单元测试必须是一个 runner 集中运行所有单元的测试，并一目了然。不，这仅仅是一种自动化单元测试的最佳实践，在一些小型项目中单元测试可能仅仅是一组去除其他特性的接口调用。<sub>[[6]](#data6)</sub>
+
+单元测试是指对程序中最小可测试单元进行的测试，一般而言是指对函数进行的测试。如果某个测试依赖于一些外部资源，比如网络或者数据库，那它就不是单元测试。
+
+> 单元测试是从程序员的角度编写的，保证一些方法执行特定的任务，给出特定输入，得到预期的结果。
 
 单元测试混合了编程和测试，由于是对代码内部逻辑进行测试，因此更多的使用白盒的测试方式。单元测试能强迫开发者写出更可测试的代码，一般而言这样的代码可读性也会高很多，同时良好的单元测试可以作为被测代码的文档使用。
 
 > 函数可测性：可测试性高的函数一般而言是纯函数，即输入输出可预测的函数。即在函数内部不修改传入参数，不执行 API 请求或者 IO 请求，不调用其他非纯函数如 `Math.random()` 等。
 
 单元测试最大的特点是测试对象的细颗粒度性，即被测对象独立性高、复杂度低。
+
+无论如何，单元测试永远是少不了的。其实在单元测试中测试代码和生产代码应该是等量的，正如 Robert C. Martin 在其 _Clean Code: A Handbook of Agile Software Craftsmanship_ 一书中所写：<sub>[[6]](#data6)</sub>
+
+> 测试必须随生产代码的演进而修改，测试越脏就越难修改
+
+于是新的测试很难被加入其中，测试代码的维护变得异常困难，最终在各种压力之中只有扔掉测试代码组。但是没有了测试代码，就失去了确保对代码的改动能如愿以偿的能力，各种问题随之而来。因此，单元测试也需要一种行之有效的实践来确保其质量和可维护性。<sub>[[6]](#data6)</sub>
+
+## **单元测试到底是什么？**<sub>[[8]](#data8)</sub>
+
+> 需要访问数据库的测试不是单元测试
+
+> 需要访问网络的测试不是单元测试
+
+> 需要访问文件系统的测试不是单元测试
+
+> --- 修改代码的艺术
+
+---
+
+## **我们在单元测试中应该避免什么？**<sub>[[8]](#data8)</sub>
+
+---
+
+- 太多的条件逻辑
+- 构造函数中做了太多事情
+- 太多全局变量
+- 太多静态方法
+- 无关逻辑
+- 过多外部依赖
+
+---
 
 #### 1.1.前端单元测试
 
@@ -146,16 +189,21 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 ---
 
 - **测试框架**
-  - `mocha` – Tj 大神开发的很优秀的测试框架，有完善的生态系统，简单的测试组织方式，不对断言库和工具做任何限制，非常灵活。
-  - `jasmine` – 和 `Mocha` 语法非常相似，最大的差别是提供了自建的断言和 `Spy` 和 `Stub`
-  - `jest` – facebook 出品的大而全的测试框架，React 官方推荐的单元测试框架，配置简单运行速度快。（备注：无法和 `Karma` 进行集成）
-  - `AVA` – 和上面的测试框架最大的区别在于多线程，运行速度更快。
-  - 其他 – 还有一些其他的前端测试框架，但是相似度比较高，无非是对断言和测试桩等工具的集成度不同，如果考虑稳定以及成熟度建议选择 `Mocha`，对测试运行速度有非常高的要求可以考虑 `jest` 和 `AVA`
+  - `mocha` -- Tj 大神开发的很优秀的测试框架，有完善的生态系统，简单的测试组织方式，不对断言库和工具做任何限制，非常灵活。
+  ***
+  - `jasmine` -- 和 `Mocha` 语法非常相似，最大的差别是提供了自建的断言和 `Spy` 和 `Stub`。
+  ***
+  - `jest` -- facebook 出品的大而全的测试框架，React 官方推荐的单元测试框架，配置简单运行速度快。（备注：无法和 `Karma` 进行集成）
+  ***
+  - `AVA` -- 和上面的测试框架最大的区别在于多线程，运行速度更快。
+  ***
+  - 其他 -- 还有一些其他的前端测试框架，但是相似度比较高，无非是对断言和测试桩等工具的集成度不同，如果考虑稳定以及成熟度建议选择 `Mocha`，对测试运行速度有非常高的要求可以考虑 `jest` 和 `AVA`
 
 ---
 
 - **测试辅助工具**
   - 断言库 – `Chai` 如果单元测试不跑在真实的浏览器环境中，可以简单使用 node 的 `assert`，但是建议使用 `Chai` 作为断言库（提供了 TDD 和 BDD 风格多种断言方式，并且生态系统繁荣）。
+  ***
   - 测试桩（又称为测试替身） – `Sinon`、`testDouble` 等工具提供了如测试桩、拦截模拟请求、”时间旅行“等功能，主要用于解决”函数不纯”（比如测试回调是否被正确调用，XHR 是否正确发起请求，时间延迟后函数行为是否正确）的测试问题。
 
 ---
@@ -174,8 +222,6 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 > - [istanbul 官网](https://istanbul.js.org/) 介绍了 `istanbul` 如何与多中测试框架集成以及对于 Typescript 等语言的支持
 > - [阮一峰-代码覆盖率工具 Istanbul 入门教程](http://www.ruanyifeng.com/blog/2015/06/istanbul.html) 介绍了代码覆盖率相关的概念以及 `Istanbul` 搭配 `Mocha` 的简单使用
 
----
-
 ### 2.集成测试（Integration Testing）
 
 集成测试就是测试应用中不同模块如何集成。在单元测试的基础上，将已测试过的单元测试函数进行组合集成暴露出的高层函数或类的封装，对这些函数或类进行的测试。
@@ -192,7 +238,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 端到端测试有时候也被称作功能测试，或者浏览器测试，它们指的是同一件事。功能测试是从用户的角度编写的，测试确保用户执行它所期望的工作。
 
-端到端测试是最顶层的测试，即测试应用的某个完整的功能，它从一个用户的角度出发，认为整个系统都是一个黑箱，只有 UI 会暴露给用户。对于网页应用，功能测试意味着使用工具模拟浏览器，然后通过点击页面来测试应用。
+端到端测试是最顶层的测试，即测试应用的某个完整的功能。从用户的角度出发，认为整个系统都是一个黑箱，只有 UI 会暴露给用户。对于网页应用，功能测试意味着使用工具模拟浏览器，然后通过点击页面来测试应用。
 
 单元测试可以测试单个函数，集成测试可以测试两个模块一起工作。功能测试则完全是另外一个层次。你可以有上百个单元测试，但是通常你只有少量的功能测试。这是因为功能测试太复杂了，难于编写和维护。功能测试很慢，因为它需要模拟真实用户进行网页交互。
 
@@ -204,7 +250,155 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 测试 JavaScript 代码时，应该着重于单元测试，它非常容易编写和维护，除了可以减少 BUG 还有很多益处。而集成测试与功能测试应该作为补充。
 
-端到端测试需要解决的一些问题：
+**前端集成化测试自动化工具**:
+
+---
+
+- casperJS
+
+`casperJS` 基于 `PhantomJS` 或 `SlimerJS`(`PhantomJS` 或 `SlimerJS` 都是用于 web 测试的自动化无界面浏览器)，可以模拟完成页面内系统级的自动化操作行为测试。
+
+```javascript
+var casper = require('casper').create();
+casper.start('http://casperjs.org/');
+
+casper.then(function() {
+    this.echo('First Page: ' + this.getTitle());
+});
+
+casper.thenOpen('http://phantomjs.org', function() {
+    this.echo('Second Page: ' + this.getTitle());
+});
+
+casper.run();
+
+// 输出内容为：
+
+$ casperjs sample.js
+First Page: CasperJS - a navigation scripting & testing utility for PhantomJS and SlimerJS written in Javascript
+Second Page: PhantomJS | PhantomJS
+```
+
+页面内的操作结合 `casper` 的操作就可以这样来实现。
+
+```javascript
+var casper = require("casper").create();
+var links;
+
+function getLinks() {
+  // Scrape the links from top-right nav of the website
+  var links = document.querySelectorAll("ul.navigation li a");
+  return Array.prototype.map.call(links, function(e) {
+    return e.getAttribute("href");
+  });
+}
+
+// Opens casperjs homepage
+casper.start("http://casperjs.org/");
+
+casper.then(function() {
+  links = this.evaluate(getLinks);
+});
+
+casper.run(function() {
+  for (var i in links) {
+    console.log(links[i]);
+  }
+  casper.done();
+});
+```
+
+---
+
+- Nightmare
+
+类似的，`nightmare` 也是一个模拟还原浏览器上业务操作的强大工具，而且更易于使用。同时可以使用 chrome 的插件 `daydreem` 自动录制生成用户行为操作的事件序列，更加方便我们进行实际的测试。
+
+```javascript
+yield Nightmare()
+.goto('http://yahoo.com')
+.type('input[title="Search"]', 'github nightmare')
+.click('.searchsubmit');
+```
+
+`Nightmare` 也支持异步操作，并支持多种断言库，这里结合 `chai.js` 就可以这样来使用。
+
+```javascript
+var Nightmare = require("nightmare");
+var expect = require("chai").expect; // jshint ignore:line
+
+describe("test yahoo search results", function() {
+  it("should find the nightmare github link first", function(done) {
+    var nightmare = Nightmare();
+    nightmare
+      .goto("http://yahoo.com")
+      .type('form[action*="/search"][name=p]', "github nightmare")
+      .click('form[action*="/search"][type=submit]')
+      .wait("#main")
+      .evaluate(function() {
+        return document.querySelector("#main .searchCenterMiddle li a").href;
+      })
+      .end()
+      .then(function(link) {
+        expect(link).to.equal("https://github.com/segmentio/nightmare");
+        done();
+      });
+  });
+});
+```
+
+---
+
+- Nightwatch
+
+`Nightwatch` 则可以使用 node 书写端对端的测试用例，并在 Selenium server 服务端运行测试，同样支持同步和异步。
+
+```javascript
+this.demoTestGoogle = function(browser) {
+  browser
+    .url("http://www.google.com")
+    .waitForElementVisible("body", 1000)
+    .setValue("input[type=text]", "nightwatch")
+    .waitForElementVisible("button[name=btnG]", 1000)
+    .click("button[name=btnG]")
+    .pause(1000)
+    .assert.containsText("#main", "The Night Watch")
+    .end();
+};
+```
+
+---
+
+- Dalekjs
+
+`DalekJS` 是一个跨浏览器平台的前端集成测试框架，可以自动配置启动本地的浏览器，也可以模拟填写提交表单、点击、截屏、运行单元测试等丰富的操作。
+
+```javascript
+module.exports = {
+  "Amazon does its thing": function(test) {
+    test
+      .open("http://www.amazon.com/")
+      .type("#twotabsearchtextbox", "Blues Brothers VHS")
+      .click(".nav-submit-input")
+      .waitForElement("#result_0")
+      .assert.text("#result_0 .newaps a span")
+      .is("The Blues Brothers")
+      .done();
+  }
+};
+
+test
+  .open("http://adomain.com")
+  .click("#aquestion")
+  .answer("Rose")
+  .assert.text("#aquestion")
+  .is("Rose", "Awesome she was!")
+  .done();
+```
+
+---
+
+**端到端测试需要解决的一些问题**：
 
 ---
 
@@ -240,39 +434,39 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-**测试框架**： 如何组织测试，主要由 Mocha、Jasmine，Jest ，AVA, Tape 等，测试主要提供了清晰简明的语法来描述测试用例，以及对测试用例分组，测试框架会抓取到代码抛出的 AssertionError，并增加一大堆附加信息，比如那个用例挂了，为什么挂等等。测试框架通常提供 TDD（测试驱动开发）或 BDD（行为驱动开发）的测试语法来编写测试用例。不同的测试框架支持不同的测试语法，比如 Mocha 既支持 TDD 也支持 BDD，而 Jasmine 只支持 BDD。当前流行 BDD 的测试结构。
+**测试框架**： 如何组织测试，主要由 `Mocha`、`Jasmine`，`Jest` ，`AVA`， `Tape` 等，测试框架主要提供了清晰简明的语法来描述测试用例，以及对测试用例分组，测试框架会抓取到代码抛出的 `AssertionError`，并增加一大堆附加信息，比如哪个用例挂了，为什么挂等等。测试框架通常提供 TDD（测试驱动开发）或 BDD（行为驱动开发）的测试语法来编写测试用例。不同的测试框架支持不同的测试语法，比如 `Mocha` 既支持 TDD 也支持 BDD，而 `Jasmine` 只支持 BDD。当前流行 BDD 的测试结构。
 
 ---
 
-**断言库**：Should.js、chai、expect.js 等等，断言库提供了很多语义化的方法来对值做各种各样的判断。当然也可以不用断言库，Node.js 中也可以直接使用原生 assert 库。
+**断言库**：`Should.js`、`chai`、`expect.js` 等等，断言库提供了很多语义化的方法来对值做各种各样的判断。当然也可以不用断言库，Node.js 中也可以直接使用原生 `assert` 库。
 
 ---
 
-**代码覆盖率**：istanbul 等为代码在语法级分支上打点，运行了打点后的代码，根据运行结束后收集到的信息和打点时的信息来统计出当前测试用例对源码的覆盖情况。
+**代码覆盖率**：`istanbul` 等为代码在语法级分支上打点，运行了打点后的代码，根据运行结束后收集到的信息和打点时的信息来统计出当前测试用例对源码的覆盖情况。
 
 ---
 
-**仿真工具**(mocks, spies and stubs) 模拟方法，模块，甚至服务器，获取方法的调用信息。先来说说为什么需要仿真吧：需要测试的单元依赖于外部的模块，而这些依赖的模块具有一些特点，例如不能控制、实现成本较高、操作危险等原因，不能直接使用依赖的模块，这样情况下就需要对其进行 mock，要完整运行前端代码，通常并不需要完整的后端环境。能伪造出前端页面渲染所需要的数据就行，这类工具有 sinon，easy-mock，RAP，甚至手工伪造一些假数据都可以。
+**仿真工具**(`mocks`, `spies` and `stubs`) 模拟方法，模块，甚至服务器，获取方法的调用信息。先来说说为什么需要仿真吧：需要测试的单元依赖于外部的模块，而这些依赖的模块具有一些特点，例如不能控制、实现成本较高、操作危险等原因，不能直接使用依赖的模块，这样情况下就需要对其进行 `mock`，要完整运行前端代码，通常并不需要完整的后端环境。能伪造出前端页面渲染所需要的数据就行，这类工具有 `sinon`，`easy-mock`，`RAP`，甚至手工伪造一些假数据都可以。
 
 ---
 
-**测试驱动**（测试任务管理工具）
+**测试驱动（测试平台）**（测试任务管理工具）
 
-- karma: 是一个基于 Node.js 的 JavaScript 测试执行过程管理工具（Test Runner）。设置测试需要的框架、环境、源文件、测试文件等，配置完后，就可以轻松地执行测试，该工具可用于测试所有主流 Web 浏览器，
+- `karma`: 是一个基于 Node.js 的 JavaScript 测试执行过程管理工具（Test Runner）。设置测试需要的框架、环境、源文件、测试文件等，配置完后，就可以轻松地执行测试，该工具可用于测试所有主流 Web 浏览器，
 
 这个测试工具的一个强大特性就是，它可以监控 (Watch) 文件的变化，然后自行执行，通过 `console.log` 显示测试结果。
 
-- buster.js: 另外一个工具，不过目前处于 deta 版本，不仅可以在浏览器端，还可以在 node 端
+- `buster.js`: 另外一个工具，不过目前处于 deta 版本，不仅可以在浏览器端，还可以在 node 端
 
 ---
 
-**类浏览器测试环境** 这类工具有 Protractor, Nightwatch, Phantom, Casper
+**类浏览器测试环境** 这类工具有 `Protractor`, `Nightwatch`, `Phantom`, `Casper`
 
 ---
 
 ### 1.测试覆盖率
 
-- 行覆盖率（line coverage）：是否每一行都执行了
+- 行覆盖率（**line coverage**）：是否每一行都执行了
 
 可执行语句的每一行是否都被执行了，不包括注释，空白行 行覆盖常常被人指责为“最弱的覆盖”，为什么这么说呢，举一个例子
 
@@ -285,22 +479,19 @@ TestCase: (a = 10), (b = 5);
 
 测试人员的测试结果会告诉你，他的代码覆盖率达到了 100％，并且所有测试案例都通过了。我们的语句覆盖率达到了所谓的 100%，但是却没有发现最简单的 Bug，比如，当我让 `b = 0` 时，会抛出一个除零异常。
 
-- 函数覆盖率（function coverage）：是否每个函数都调用了
-- 分支覆盖率（branch coverage）：是否每个 if 代码块都执行了
-- 语句覆盖率（statement coverage）：是否每个语句都执行了
+- 函数覆盖率（**function coverage**）：是否每个函数都调用了
+- 分支覆盖率（**branch coverage**）：是否每个 if 代码块都执行了
+- 语句覆盖率（**statement coverage**）：是否每个语句都执行了
 
 4 个指标当中，行覆盖率和语句覆盖率很相近；在代码规范的情况下，规范要求一行写一个语句 它们应该是一样的
 
 4 个指标当中，分支覆盖率是最重要的，它包括： `!`, `&&`, `||`, `? : ;` ,`if` 和 `else-if`, `else` ,`switch - case` 等等各种包含分支的情况
 
-> 覆盖率数据只能代表你测试过哪些代码，不能代表你是否测试好这些代码。（比如上面第一个除零 Bug）
-> 不要过于相信覆盖率数据。
-> 分支覆盖率 > 函数覆盖 > 语句覆盖
-> 测试人员不能盲目追求代码覆盖率，而应该想办法设计更多更好的案例，哪怕多设计出来的案例对覆盖率一点影响也没有。
+> 1.覆盖率数据只能代表你测试过哪些代码，不能代表你是否测试好这些代码。（比如上面第一个除零 Bug） 2.不要过于相信覆盖率数据。 3.分支覆盖率 > 函数覆盖 > 语句覆盖 4.测试人员不能盲目追求代码覆盖率，而应该想办法设计更多更好的案例，哪怕多设计出来的案例对覆盖率一点影响也没有。
 
 ## 四.选择单元测试框架 <sub>[[3]](#data3)</sub>
 
-测试框架做的事情：
+**测试框架做的事情**：
 
 - 描述你要测试的东西
 - 对其进行测试
@@ -308,7 +499,7 @@ TestCase: (a = 10), (b = 5);
 
 单元测试应该：简单，快速执行，有清晰的错误报告。
 
-选择框架要考虑下面这些方面：
+**选择框架要考虑下面这些方面**：
 
 - 断言：有些框架内置了断言库,有的框架可以自己选择断言库。
 - 测试风格：支持的测试风格 测试驱动型 / 行为驱动型 是否喜欢。
@@ -327,7 +518,7 @@ TestCase: (a = 10), (b = 5);
 - next 服务端渲染环境
 - angular 环境
 
-理解测试前需要补充下单元测试（unit）和端到端测试（e2e）的概念，这里不赘述。
+理解测试前需要补充下单元测试和端到端测试的概念，这里不赘述。
 
 ### 1.node 环境
 
@@ -389,13 +580,13 @@ test("props value", () => {
 
 十分简单的例子，亮点在测试文件的 `wrapper` 上，通过 `mount` 方法创建了一个组件实例，创建过程中允许加入一些配置信息，甚至是 mock 组件中的 `method` 方法。
 
-vue 单元测试的范围仅限于数据流动是否正确，逻辑渲染是否正确（`v-if` `v-show` `v-for`），`style` 和 `class` 是否正确，我们并不需要关系这个组件在浏览器渲染中的位置，也不需要关系对其它组件会造成什么影响，只要保证组件本身正确即可，前面说的断言，`vue-test-utils` 都能提供对应的方案，总体上节约很多测试成本。
+> vue 单元测试的范围仅限于数据流动是否正确，逻辑渲染是否正确（`v-if` `v-show` `v-for`），`style` 和 `class` 是否正确，我们并不需要关系这个组件在浏览器渲染中的位置，也不需要关心对其它组件会造成什么影响，只要保证组件本身正确即可，前面说的断言，`vue-test-utils` 都能提供对应的方案，总体上节约很多测试成本。
 
 #### 2.2.e2e 测试
 
 也是推荐尤大基于最新脚手架的 [@vue/cli-plugin-e2e-nightwatch](https://www.npmjs.com/package/@vue/cli-plugin-e2e-nightwatch)
 
-`e2e` 测试的重点在于判断真实 DOM 是否满足预期要求，甚至很少出现 mock 场景，不可或缺的是一个浏览器运行环境，具体细节不赘述，可以看官方文档。
+`e2e` 测试的重点在于判断真实 DOM 是否满足预期要求，甚至很少出现 `mock` 场景，不可或缺的是一个浏览器运行环境，具体细节不赘述，可以看官方文档。
 
 ### 3.nuxt 服务端渲染环境
 
@@ -449,7 +640,7 @@ hooks(["vue", "js"])
 
 这里有个歧义点，`nuxt` 官网只给出了 `e2e` 的测试案例 [end-to-end-testing](https://nuxtjs.org/guide/development-tools#end-to-end-testing)，当使用默认脚手架构建的项目，也就是没有 `server` 端入口文件的项目，这个方案确实可行。
 
-但是涉及到其它框架（express|koa）的时候就显得不够用了，很有可能在自定义 `server` 入口是加入了大量中间件，这对于官网给出的例子是个巨大考验，不可能在每个测试文件里实现一遍 `new Nuxt`，所以需要更高层的封装，也就是忽略 `server` 启动流程的差异性，直接在浏览器中抓取页面。
+但是涉及到其它框架（express | koa）的时候就显得不够用了，很有可能在自定义 `server` 入口是加入了大量中间件，这对于官网给出的例子是个巨大考验，不可能在每个测试文件里实现一遍 `new Nuxt`，所以需要更高层的封装，也就是忽略 `server` 启动流程的差异性，直接在浏览器中抓取页面。
 
 推荐：[nuxt-jest-puppeteer](https://github.com/alidcastano/nuxt-jest-puppeteer)
 
@@ -611,9 +802,13 @@ test("Math add function", function(t) {
 });
 ```
 
-## 七.断言库的风格 <sub>[[3]](#data3)</sub>
+## 七.断言库的风格
 
-### 1.Assert
+做单元测试是需要写测试脚本的，那么测试脚本就需要用到断言库。所谓"断言"，就是判断源码的实际执行结果与预期结果是否一致，如果不一致就抛出一个错误。<sub>[[7]](#data7)</sub>
+
+### 1.chai <sub>[[3]](#data3)</sub>
+
+#### 1.1.Assert
 
 ```javascript
 var assert = require("chai").assert,
@@ -626,7 +821,7 @@ assert.lengthOf(foo, 3, "foo`s value has a length of 3");
 assert.lengthOf(beverages.tea, 3, "beverages has 3 types of tea");
 ```
 
-### 2.BDD 风格的断言库
+#### 1.2.BDD 风格的断言库
 
 - `expect`
 
@@ -658,26 +853,26 @@ beverages.should.have.property("tea").with.lengthOf(3);
 
 > 建议使用 `expect`，`should` 不兼容 IE
 
-### 3.expect 断言语法
+#### 1.3.expect 断言语法
 
 ```javascript
 // equal 相等或不相等
 expect(4 + 5).to.be.equal(9);
 expect(4 + 5).to.be.not.equal(10);
-expect('hello').to.equal('hello');
+expect("hello").to.equal("hello");
 expect(42).to.equal(42);
 expect(1).to.not.equal(true);
-expect({ foo: 'bar' }).to.not.equal({ foo: 'bar' });
-expect({ foo: 'bar' }).to.deep.equal({ foo: 'bar' });
+expect({ foo: "bar" }).to.not.equal({ foo: "bar" });
+expect({ foo: "bar" }).to.deep.equal({ foo: "bar" });
 
 // above 断言目标的值大于某个 value,如果前面有 length 的链式标记，则可以用来判断数组长度或者字符串长度
 expect(10).to.be.above(5);
-expect('foo').to.have.length.above(2);
-expect([ 1, 2, 3 ]).to.have.length.above(2);
-类似的还有least(value)表示大于等于；below(value)表示小于；most(value)表示小于等于
+expect("foo").to.have.length.above(2);
+expect([1, 2, 3]).to.have.length.above(2);
+// 类似的还有 least(value) 表示大于等于；below(value) 表示小于；most(value) 表示小于等于
 
 // 判断目标是否为布尔值 true（隐式转换）
-expect('everthing').to.be.ok;
+expect("everthing").to.be.ok;
 expect(1).to.be.ok;
 expect(false).to.not.be.ok;
 expect(undefined).to.not.be.ok;
@@ -695,80 +890,88 @@ expect(undefined).not.to.be.null;
 expect(undefined).to.be.undefined;
 expect(null).to.not.be.undefined;
 
-
 // NaN  断言目标值不是数值
-expect('foo').to.be.NaN;
+expect("foo").to.be.NaN;
 expect(4).not.to.be.NaN;
 
-// 判断类型大法(可以实现上面的一些例子):a/an
-expect('test').to.be.a('string');
-expect({ foo: 'bar' }).to.be.an('object');
+// 判断类型大法(可以实现上面的一些例子): a/an
+expect("test").to.be.a("string");
+expect({ foo: "bar" }).to.be.an("object");
 expect(foo).to.be.an.instanceof(Foo);
-expect(null).to.be.a('null');
-expect(undefined).to.be.an('undefined');
-expect(new Error).to.be.an('error');
-expect(new Promise).to.be.a('promise');
+expect(null).to.be.a("null");
+expect(undefined).to.be.an("undefined");
+expect(new Error()).to.be.an("error");
+expect(new Promise()).to.be.a("promise");
 
 // 包含关系:用来断言字符串包含和数组包含。如果用在链式调用中，可以用来测试对象是否包含某key 可以混着用。
-expect([1,2,3]).to.include(2);
-expect('foobar').to.contain('foo');
-expect({ foo: 'bar', hello: 'universe' }).to.include.keys('foo');
+expect([1, 2, 3]).to.include(2);
+expect("foobar").to.contain("foo");
+expect({ foo: "bar", hello: "universe" }).to.include.keys("foo");
 
 // 判断空值
 expect([]).to.be.empty;
-expect('').to.be.empty;
+expect("").to.be.empty;
 expect({}).to.be.empty;
 
 // match
-expect('foobar').to.match(/^foo/);
+expect("foobar").to.match(/^foo/);
 
 // exist 断言目标既不是 null 也不是 undefined
-var foo = 'hi' , bar = null, baz;
+var foo = "hi",
+  bar = null,
+  baz;
 expect(foo).to.exist;
 expect(bar).to.not.exist;
 expect(baz).to.not.exist;
 
 // within 断言目标值在某个区间范围内，可以与 length 连用
-expect(7).to.be.within(5,10);
-expect('foo').to.have.length.within(2,4);
-expect([ 1, 2, 3 ]).to.have.length.within(2,4);
+expect(7).to.be.within(5, 10);
+expect("foo").to.have.length.within(2, 4);
+expect([1, 2, 3]).to.have.length.within(2, 4);
 
 // instanceOf 断言目标是某个构造器产生的事例
-var Tea = function (name) { this.name = name; } , Chai = new Tea('chai');
+var Tea = function(name) {
+    this.name = name;
+  },
+  Chai = new Tea("chai");
 expect(Chai).to.be.an.instanceof(Tea);
-expect([ 1, 2, 3 ]).to.be.instanceof(Array);
+expect([1, 2, 3]).to.be.instanceof(Array);
 
 // property(name, [value])  断言目标有以 name 为 key 的属性,并且可以指定 value 断言属性值是严格相等的,此 [value] 参数为可选,如果使用 deep 链式调用,可以在 name 中指定对象或数组的引用表示方法
 // simple referencing
-var obj = { foo: 'bar' };
-expect(obj).to.have.property('foo');
-expect(obj).to.have.property('foo', 'bar');// 类似于expect(obj).to.contains.keys('foo')
+var obj = { foo: "bar" };
+expect(obj).to.have.property("foo");
+expect(obj).to.have.property("foo", "bar"); // 类似于expect(obj).to.contains.keys('foo')
 
 // deep referencing
 var deepObj = {
-  green: { tea: 'matcha' },
-  teas: [ 'chai', 'matcha', { tea: 'konacha' } ]
+  green: { tea: "matcha" },
+  teas: ["chai", "matcha", { tea: "konacha" }]
 };
-expect(deepObj).to.have.deep.property('green.tea', 'matcha');
-expect(deepObj).to.have.deep.property('teas[1]', 'matcha');
-expect(deepObj).to.have.deep.property('teas[2].tea', 'konacha');
+expect(deepObj).to.have.deep.property("green.tea", "matcha");
+expect(deepObj).to.have.deep.property("teas[1]", "matcha");
+expect(deepObj).to.have.deep.property("teas[2].tea", "konacha");
 
 // ownproperty 断言目标拥有自己的属性，非原型链继承
-expect('test').to.have.ownProperty('length');
+expect("test").to.have.ownProperty("length");
 
 // throw 断言目标抛出特定的异常
-var err = new ReferenceError('This is a bad function.');
-var fn = function () { throw err; }
+var err = new ReferenceError("This is a bad function.");
+var fn = function() {
+  throw err;
+};
 expect(fn).to.throw(ReferenceError);
 expect(fn).to.throw(Error);
 expect(fn).to.throw(/bad function/);
-expect(fn).to.not.throw('good function');
+expect(fn).to.not.throw("good function");
 expect(fn).to.throw(ReferenceError, /bad function/);
 expect(fn).to.throw(err);
-expect(fn).to.not.throw(new RangeError('Out of range.'));
+expect(fn).to.not.throw(new RangeError("Out of range."));
 
 // satisfy(method) 断言目标通过一个真值测试
-expect(1).to.satisfy(function(num) { return num > 0; })
+expect(1).to.satisfy(function(num) {
+  return num > 0;
+});
 ```
 
 ## 参考：
@@ -783,80 +986,42 @@ expect(1).to.satisfy(function(num) { return num > 0; })
 
 <p id="data5"><a href="https://www.cnblogs.com/lihuanqing/p/8533552.html">5.前端测试框架对比(js单元测试框架对比)</a></p>
 
+<p id="data6"><a href="http://www.tychio.net/tech/2013/07/10/unit-test.html">6.单元测试Unit Test</a></p>
+
+<p id="data7"><a href="https://juejin.im/post/5b2da89cf265da597f1c7cab?spm=a2c4e.11153940.blogcont610101.27.eb7e64f5LGXAmC">7.浅谈前端单元测试</a></p>
+
+<p id="data8"><a href="https://github.com/ecmadao/Coding-Guide/blob/master/Notes/UnitTest/%E5%89%8D%E7%AB%AF%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%8E%A2%E7%B4%A2.md">8.前端单元测试探索</a></p>
+
 更多阅读：
 
 [聊聊前端开发的测试](https://blog.coding.net/blog/frontend-testing)
 
 [你需要了解的前端测试“金字塔”](http://web.jobbole.com/93120/)
 
-[关于前端开发谈谈单元测试](https://segmentfault.com/a/1190000000317146)
-
-[浅谈前端单元测试](https://juejin.im/post/5b2da89cf265da597f1c7cab?spm=a2c4e.11153940.blogcont610101.27.eb7e64f5LGXAmC)
-
-[浏览器端测试：mocha，chai，phantomjs](https://github.com/alsotang/node-lessons/tree/master/lesson7)
-
-[前端单元测试探索](https://github.com/ecmadao/Coding-Guide/blob/master/Notes/UnitTest/%E5%89%8D%E7%AB%AF%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%8E%A2%E7%B4%A2.md)
-
-[Web 前端测试与集成](http://www.tup.tsinghua.edu.cn/upload/books/yz/073070-01.pdf)
-
-[使用 TestCafe 进行 Web 自动化测试](https://zhaozhiming.github.io/blog/2019/01/28/hello-testcafe/)
-
-[今天我们还需要关注 DDD 吗？](https://www.infoq.cn/article/should-we-focus-on-ddd)
-
-[领域驱动设计在互联网业务开发中的实践](https://zhuanlan.zhihu.com/p/32459776)
-
 [单元测试要做多细？](https://coolshell.cn/articles/8209.html)
 
 [JavaScript 测试︰ 单元 vs 功能 vs 集成测试](https://www.kancloud.cn/chandler/web_technology/387265)
 
-[What are Unit Testing, Integration Testing and Functional Testing?](https://codeutopia.net/blog/2015/04/11/what-are-unit-testing-integration-testing-and-functional-testing/)
+[测试你的前端代码 – part1（介绍篇）](http://web.jobbole.com/91123/)
 
-[JavaScript Testing: Unit vs Functional vs Integration Tests](https://www.sitepoint.com/javascript-testing-unit-functional-integration/)
+[测试你的前端代码 – part2（单元测试）](http://web.jobbole.com/91126/?utm_source=blog.jobbole.com&utm_medium=relatedPosts)
 
-[The Difference Between TDD and BDD](https://joshldavis.com/2013/05/27/difference-between-tdd-and-bdd/)
+[测试你的前端代码 – part3（端到端测试）](http://web.jobbole.com/91419/?utm_source=blog.jobbole.com&utm_medium=relatedPosts)
 
-[An Overview of JavaScript Testing in 2018](https://medium.com/welldone-software/an-overview-of-javascript-testing-in-2018-f68950900bc3)
+[测试你的前端代码 – part4（集成测试）](http://web.jobbole.com/91423/?utm_source=blog.jobbole.com&utm_medium=relatedPosts)
 
-[React Testing – Jest or Mocha?](https://spin.atomicobject.com/2017/05/02/react-testing-jest-vs-mocha/)
-
-[Let’s Compare Javascript Testing Frameworks](https://medium.com/cardinal-solutions/lets-compare-javascript-testing-frameworks-bb500f0b1006)
-
-[TestPyramid](https://martinfowler.com/bliki/TestPyramid.html)
-
-[用户界面（UI）测试初学者指南](https://blog.csdn.net/renshuaicsdn/article/details/80661702)
-
-[GUI 功能测试自动化模式](https://www.infoq.cn/article/gui-automation-patterns)
-
-[实战 GUI 产品的自动化测试](https://www.ibm.com/developerworks/cn/rational/r-cn-guiautotesting1/index.html)
-
-[前端测试框架Jest系列教程](https://www.cnblogs.com/Wolfmanlq/p/8012847.html)
-
-[前端测试框架 Jest](https://juejin.im/post/597aa518f265da3e345f3262#heading-13)
-
-[前端单元测试框架-Mocha](https://www.cnblogs.com/sampapa/p/6963936.html)
+[测试你的前端代码：可视化测试](http://web.jobbole.com/92819/?utm_source=blog.jobbole.com&utm_medium=relatedPosts)
 
 深究阅读：
+
+[如何进行前端自动化测试？](https://www.zhihu.com/question/29922082)
 
 [聊一聊前端自动化测试](https://github.com/tmallfe/tmallfe.github.io/issues/37)
 
 [前端自动化测试探索](http://fex.baidu.com/blog/2015/07/front-end-test/)
 
-[如何进行前端自动化测试？](https://www.zhihu.com/question/29922082)
-
 [前端测试回顾及我们为什么选择 Karma](http://www.alloyteam.com/2015/06/qian-duan-ce-shi-hui-gu-ji-wo-men-wei-shi-me-xuan-ze-karma/)
 
-[前端工程——基础篇](https://www.w3cschool.cn/fouber/jyse1ozt.html)
+book:
 
-[实例入门 Vue.js 单元测试](https://juejin.im/post/5bd0979f5188251fab50a551)
-
-[使用karma+mocha进行前端测试驱动开发（一）](https://iyaozhen.com/use-karma-and-mocha-for-fe-tdd.html)
-
-[Vue 组件的单元测试](https://cn.vuejs.org/v2/cookbook/unit-testing-vue-components.html)
-
-[vue 项目中添加单元测试](https://my.oschina.net/yxmBetter/blog/2877978)
-
-[Vue 单元测试实战教程(Mocha/Karma + Vue-Test-Utils + Chai)](https://segmentfault.com/a/1190000012654035)
-
-[如何為 vue 補上單元測試來確保品質(vue 單元測試系列-1)](https://dotblogs.com.tw/kinanson/2017/07/20/075338)
-
-[Vue.js 学习系列六——Vue 单元测试 Karma+Mocha 学习笔记](https://blog.csdn.net/violetjack0808/article/details/73740395)
+[Web 前端测试与集成](http://www.tup.tsinghua.edu.cn/upload/books/yz/073070-01.pdf)
