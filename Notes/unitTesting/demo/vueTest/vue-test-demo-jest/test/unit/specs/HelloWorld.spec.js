@@ -1,14 +1,15 @@
 import Vue from "vue";
 import HelloWorld from "@/components/HelloWorld";
 
-describe("HelloWorld.vue", () => {
-  /* it("should render correct contents", () => {
+xdescribe("HelloWorld.vue", () => {
+  it("should render correct contents", () => {
     const Constructor = Vue.extend(HelloWorld);
     const vm = new Constructor().$mount();
     expect(vm.$el.querySelector(".hello h1").textContent).toEqual(
       "Welcome to Your Vue.js App"
     );
-  }); */
+  });
+
   // test jasmine
   // toBe：基本类型判断 ===
   it("toBe and .not.toBe", () => {
@@ -236,16 +237,30 @@ describe("HelloWorld.vue", () => {
     // expect("b").toBeGreaterThan("a");
   });
 
-  // toBeCloseTo：判断数字是否相似（第二个参数为小数精度，默认为2位）
-  it("toBeCloseTo and not.toBeCloseTo", () => {
-    let a = 1.1;
-    let b = 1.5;
-    let c = 1.455;
-    let d = 1.459;
+  // toBeCloseTo：判断数字是否相似
+  it("toBeCloseTo and not.toBeCloseTo", function() {
+    var a = 1.1;
+    var b = 1.5;
+    var c = 1.455;
+    var d = 1.459;
+
+    // pass :Math.abs(expected-actual) < (Math.pow(10,-precision)/2)
+    // 0.4 < 0.5
     expect(a).toBeCloseTo(b, 0);
+    // 0.4 < 0.05
+    expect(a).not.toBeCloseTo(b, 1);
+
+    // 0.045 < 0.05
+    expect(b).toBeCloseTo(c, 1);
+
+    // 0.355 < 0.05
     expect(a).not.toBeCloseTo(c, 1);
-    expect(a).toBeCloseTo(c, 0);
+
+    // 0.004 < 0.005
     expect(c).toBeCloseTo(d);
+
+    // 0.004 < 0.0005
+    expect(c).not.toBeCloseTo(d, 3);
   });
 
   // toThrow： 判断是否抛出异常
@@ -277,7 +292,7 @@ describe("HelloWorld.vue", () => {
 
 // Setup 和 Teardown
 var globalCount;
-describe("Setup and Teardown suite 1", function() {
+xdescribe("Setup and Teardown suite 1", function() {
   var suiteGlobalCount;
   var eachTestCount;
 
@@ -315,7 +330,7 @@ describe("Setup and Teardown suite 1", function() {
   });
 });
 
-describe("Setup and Teardown suite 2", function() {
+xdescribe("Setup and Teardown suite 2", function() {
   beforeEach(function() {
     globalCount += 2;
   });
@@ -325,23 +340,41 @@ describe("Setup and Teardown suite 2", function() {
   });
 });
 
-describe("Test 'this'", function() {
-  let testCount = 0;
+xdescribe("Test 'this'", function() {
   beforeEach(function() {
-    testCount++;
+    this.testCount = 0;
+    this.testCount++;
   });
 
   afterEach(function() {
-    //this.testCount = 0;
+    this.testCount = 0;
     //无论是否有这行，结果是一样的，因为 this 指定的变量只能在每个 spec 的 beforeEach/it/afterEach 过程中传递
   });
 
   it("Spec 1", function() {
-    expect(testCount).toBe(1);
+    expect(this.testCount).toBe(1);
   });
 
   it("Spec 2", function() {
-    expect(testCount).toBe(2);
+    expect(this.testCount).toBe(2);
+  });
+});
+
+xdescribe("this 用法示例", function() {
+  beforeEach(function() {
+    this.foo = 0;
+  });
+
+  it("使用 this 共享状态", function() {
+    expect(this.foo).not.toEqual(0);
+    this.bar = "test pollution?";
+  });
+
+  it("下个 Spec 执行前 this 会被重置为空 Object", function() {
+    expect(this.foo).not.toEqual(0);
+    expect(this.foo).toBe(undefined);
+    expect(this.foo).toBeUndefined();
+    expect(this.bar).toBe(undefined);
   });
 });
 
@@ -356,7 +389,7 @@ xdescribe("Test xdescribe", function() {
   });
 });
 
-describe("Test xit", function() {
+xdescribe("Test xit", function() {
   it("Spec 1", function() {
     expect(1).toBe(1);
   });
@@ -371,7 +404,7 @@ describe("Test xit", function() {
 });
 
 // spy
-describe("A spy", function() {
+xdescribe("A spy", function() {
   let foo;
   let bar = null;
 
@@ -404,7 +437,7 @@ describe("A spy", function() {
   });
 });
 
-describe("A spy, when configured to call through", function() {
+xdescribe("A spy, when configured to call through", function() {
   var foo, bar, fetchedBar;
 
   beforeEach(function() {
@@ -448,7 +481,7 @@ describe("A spy, when configured to call through", function() {
 });
 
 // and.returnValue
-describe("A spy, when configured to fake a return value", function() {
+xdescribe("A spy, when configured to fake a return value", function() {
   var foo, bar, fetchedBar;
 
   beforeEach(function() {
@@ -482,7 +515,7 @@ describe("A spy, when configured to fake a return value", function() {
 });
 
 // and.callFake
-describe("A spy, when configured with an alternate implementation", function() {
+xdescribe("A spy, when configured with an alternate implementation", function() {
   var foo, bar, fetchedBar;
 
   beforeEach(function() {
@@ -517,7 +550,7 @@ describe("A spy, when configured with an alternate implementation", function() {
 });
 
 // and.throwError
-describe("A spy, when configured to throw an error", function() {
+xdescribe("A spy, when configured to throw an error", function() {
   var foo, bar;
 
   beforeEach(function() {
@@ -538,9 +571,647 @@ describe("A spy, when configured to throw an error", function() {
 });
 
 // and.stub
-describe("A spy stub", function () {
+xdescribe("A spy stub", function() {
+  let foo;
+  let bar = null;
+
+  beforeEach(function() {
+    foo = {
+      setBar: function(value) {
+        bar = value;
+      },
+      getBar: function() {
+        return bar;
+      }
+    };
+
+    spyOn(foo, "setBar").and.callThrough(); // 标记1
+    spyOn(foo, "getBar").and.returnValue(999); // 标记2
+  });
+
+  it("can call through and then stub in the same spec", function() {
+    foo.setBar(123);
+    console.log('111', bar, getValue);
+
+    expect(bar).toEqual(123);
+
+    var getValue = foo.getBar();
+    expect(getValue).toEqual(999);
+
+    console.log('222', bar, getValue);
+
+    foo.setBar.and.stub();
+    console.log('333-1', bar, getValue);
+    // 相当于'标记1'中的代码变为了 spyOn(foo, 'setBar')
+    // ??? 什么叫相当于
+    // ??? 等价于去除 add.callThrough add.returnValue 的影响
+    foo.getBar.and.stub();
+    console.log('333-2', bar, getValue);
+    // 相当于'标记2'中的代码变为了 spyOn(foo, 'getBar')
+    bar = null;
+    console.log('444', bar, getValue);
+
+    foo.setBar(123);//模拟执行
+    console.log('555', bar, getValue);
+    expect(bar).toBe(null);
+    expect(foo.setBar).toHaveBeenCalled();
+    // 函数调用追踪并没有被重置 ???
+
+    getValue = foo.getBar();//模拟执行
+    console.log('666', bar, getValue);
+    expect(getValue).toEqual(undefined);
+    expect(foo.getBar).toHaveBeenCalled();
+    // 函数调用追踪并没有被重置 ???
+  });
+});
+
+// calls
+xdescribe("A spy calls", function() {
   var foo,
     bar = null;
+
+  beforeEach(function() {
+    foo = {
+      setBar: function(value) {
+        bar = value;
+      }
+    };
+
+    spyOn(foo, "setBar");
+  });
+
+  it("tracks if it was called at all", function() {
+    expect(foo.setBar.calls.any()).toEqual(false);
+    foo.setBar();
+
+    // 被 Spy 的函数一旦被调用过，则返回 true，否则为 false；
+    expect(foo.setBar.calls.any()).toEqual(true);
+  });
+
+  it("tracks the number of times it was called", function() {
+    expect(foo.setBar.calls.count()).toEqual(0);
+    foo.setBar();
+    foo.setBar();
+
+    // 返回被 Spy 的函数的被调用次数
+    expect(foo.setBar.calls.count()).toEqual(2);
+  });
+
+  it("tracks the arguments of each call", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回被 Spy 的函数的调用参数，以 index 来指定参数
+    expect(foo.setBar.calls.argsFor(0)).toEqual([123]);
+    expect(foo.setBar.calls.argsFor(1)).toEqual([456, "baz"]);
+  });
+
+  it("tracks the arguments of all calls", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回被 Spy 的函数的所有调用参数;
+    expect(foo.setBar.calls.allArgs()).toEqual([[123], [456, "baz"]]);
+  });
+
+  it("can provide the context and arguments to all calls", function() {
+    foo.setBar(123);
+
+    // 返回 calls 的上下文，这将返回当前 calls 的整个实例数据
+    // ???
+    expect(foo.setBar.calls.all()).toEqual([
+      { object: foo, args: [123], returnValue: undefined }
+    ]);
+  });
+
+  it("has a shortcut to the most recent call", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回 calls 中追踪的最近一次的请求数据
+    expect(foo.setBar.calls.mostRecent()).toEqual({
+      object: foo,
+      args: [456, "baz"],
+      returnValue: undefined
+    });
+  });
+
+  it("has a shortcut to the first call", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回 calls 中追踪的第一次请求的数据
+    expect(foo.setBar.calls.first()).toEqual({
+      object: foo,
+      args: [123],
+      returnValue: undefined
+    });
+  });
+
+  it("tracks the context", function() {
+    var spy = jasmine.createSpy("spy");
+    var baz = {
+      fn: spy
+    };
+    var quux = {
+      fn: spy
+    };
+    baz.fn(123);
+    quux.fn(456);
+
+    // 当调用 all() ，mostRecent() ，first()方法时
+    // 返回对象的 object 属性返回的是当前上下文对象
+    // ???
+    expect(spy.calls.first().object).toBe(baz);
+    expect(spy.calls.mostRecent().object).toBe(quux);
+  });
+
+  it("can be reset", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+    expect(foo.setBar.calls.any()).toBe(true);
+
+    // 重置 Spy 的所有追踪数据
+    // 追踪失效
+    foo.setBar.calls.reset();
+    expect(foo.setBar.calls.any()).toBe(false);
+  });
+});
+
+// createSpy
+xdescribe("A spy, when created manually", function() {
+  var whatAmI;
+
+  beforeEach(function() {
+    whatAmI = jasmine.createSpy("whatAmI");
+
+    whatAmI("I", "am", "a", "spy");
+  });
+
+  it("is named, which helps in error reporting", function() {
+    expect(whatAmI.and.identity()).toEqual("whatAmI");
+  });
+
+  it("tracks that the spy was called", function() {
+    expect(whatAmI).toHaveBeenCalled();
+  });
+
+  it("tracks its number of calls", function() {
+    expect(whatAmI.calls.count()).toEqual(1);
+  });
+
+  it("tracks all the arguments of its calls", function() {
+    expect(whatAmI).toHaveBeenCalledWith("I", "am", "a", "spy");
+  });
+
+  it("allows access to the most recent call", function() {
+    expect(whatAmI.calls.mostRecent().args[0]).toEqual("I");
+    expect(whatAmI.calls.argsFor(0)).toEqual(["I", "am", "a", "spy"]);
+    // expect(whatAmI.calls.argsFor(0).args[0]).toEqual('I')
+  });
+});
+
+// createSpyObj
+xdescribe("Multiple spies, when created manually", function() {
+  var tape;
+
+  beforeEach(function() {
+    console.log(jasmine);
+
+    // TypeError: jasmine.createSpyObj is not a function
+    tape = jasmine.createSpyObj("tape", ["play", "pause", "stop", "rewind"]);
+    console.log(tape);
+
+
+    tape.play();
+    tape.pause();
+    tape.rewind(0);
+  });
+
+  it("creates spies for each requested function", function() {
+    expect(tape.play).toBeDefined();
+    expect(tape.pause).toBeDefined();
+    expect(tape.stop).toBeDefined();
+    expect(tape.rewind).toBeDefined();
+  });
+
+  it("tracks that the spies were called", function() {
+    expect(tape.play).toHaveBeenCalled();
+    expect(tape.pause).toHaveBeenCalled();
+    expect(tape.rewind).toHaveBeenCalled();
+    expect(tape.stop).not.toHaveBeenCalled();
+  });
+
+  it("tracks all the arguments of its calls", function() {
+    expect(tape.rewind).toHaveBeenCalledWith(0);
+  });
+});
+
+// jasmine.any
+xdescribe("jasmine.any", function() {
+  it("matches any value", function() {
+    expect({}).toEqual(jasmine.any(Object));
+    expect(12).toEqual(jasmine.any(Number));
+    expect("12").toEqual(jasmine.any(String));
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var foo = jasmine.createSpy("foo");
+      foo(12, function() {
+        return true;
+      });
+
+      expect(foo).toHaveBeenCalledWith(
+        jasmine.any(Number),
+        jasmine.any(Function)
+      );
+    });
+  });
+});
+
+// jasmine.anything
+xdescribe("jasmine.anything", function() {
+  it("matches anything", function() {
+    expect(1).toEqual(jasmine.anything());
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful when the argument can be ignored", function() {
+      var foo = jasmine.createSpy("foo");
+      foo(12, function() {
+        return false;
+      });
+
+      expect(foo).toHaveBeenCalledWith(12, jasmine.anything());
+    });
+  });
+});
+
+// jasmine.objectContaining
+xdescribe("jasmine.objectContaining", function() {
+  var foo;
+
+  beforeEach(function() {
+    foo = {
+      a: 1,
+      b: 2,
+      bar: "baz"
+    };
+  });
+
+  it("matches objects with the expect key/value pairs", function() {
+    expect(foo).toEqual(
+      jasmine.objectContaining({
+        bar: "baz"
+      })
+    );
+    expect(foo).not.toEqual(
+      jasmine.objectContaining({
+        c: 37
+      })
+    );
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback({
+        bar: "baz"
+      });
+
+      expect(callback).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          bar: "baz"
+        })
+      );
+      expect(callback).not.toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          c: 37
+        })
+      );
+    });
+  });
+});
+
+// jasmine.arrayContaining
+xdescribe("jasmine.arrayContaining", function() {
+  var foo;
+
+  beforeEach(function() {
+    foo = [1, 2, 3, 4];
+  });
+
+  it("matches arrays with some of the values", function() {
+    expect(foo).toEqual(jasmine.arrayContaining([3, 1]));
+    // 直接在期望值中使用 jasmine.arrayContaining 达到目的
+    expect(foo).not.toEqual(jasmine.arrayContaining([6]));
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful when comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback([1, 2, 3, 4]); // 将数组内容作为参数传入 Spy 中
+
+      expect(callback).toHaveBeenCalledWith(jasmine.arrayContaining([4, 2, 3]));
+      expect(callback).not.toHaveBeenCalledWith(
+        jasmine.arrayContaining([5, 2])
+      );
+    });
+  });
+});
+
+// jasmine.stringMatching
+xdescribe("jasmine.stringMatching", function() {
+  it("matches as a regexp", function() {
+    expect({ foo: "bar" }).toEqual({ foo: jasmine.stringMatching(/^bar$/) });
+    expect({ foo: "foobarbaz" }).toEqual({
+      foo: jasmine.stringMatching("bar")
+    });
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback("foobarbaz");
+
+      expect(callback).toHaveBeenCalledWith(jasmine.stringMatching("bar"));
+      expect(callback).not.toHaveBeenCalledWith(
+        jasmine.stringMatching(/^bar$/)
+      );
+    });
+  });
+});
+
+// asymmetricMatch
+xdescribe("custom asymmetry", function() {
+  var tester = {
+    asymmetricMatch: function(actual) {
+      var secondValue = actual.split(",")[1];
+      return secondValue === "bar";
+    }
+  };
+
+  it("dives in deep", function() {
+    expect("foo,bar,baz,quux").toEqual(tester);
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback("foo,bar,baz");
+
+      expect(callback).toHaveBeenCalledWith(tester);
+    });
+  });
+});
+
+// Jasmine Clock
+xdescribe("Manually ticking the Jasmine Clock", function() {
+  var timerCallback;
+
+  beforeEach(function() {
+    console.log(jasmine);
+
+    timerCallback = jasmine.createSpy("timerCallback");
+    // 开时间操作
+    // jasmine.clock is not a function
+    jasmine.clock().install();
+  });
+
+  afterEach(function() {
+    // 关闭时间操作
+    jasmine.clock().uninstall();
+  });
+
+  it("causes a timeout to be called synchronously", function() {
+    setTimeout(function() {
+      timerCallback();
+    }, 100);
+
+    expect(timerCallback).not.toHaveBeenCalled();
+
+    // 时间
+    jasmine.clock().tick(101);
+
+    expect(timerCallback).toHaveBeenCalled();
+  });
+
+  it("causes an interval to be called synchronously", function() {
+    setInterval(function() {
+      timerCallback();
+    }, 100);
+
+    expect(timerCallback).not.toHaveBeenCalled();
+
+    jasmine.clock().tick(101);
+    expect(timerCallback.calls.count()).toEqual(1);
+
+    jasmine.clock().tick(50);
+    expect(timerCallback.calls.count()).toEqual(1);
+
+    jasmine.clock().tick(50);
+    expect(timerCallback.calls.count()).toEqual(2);
+  });
+
+  describe("Mocking the Date object", function() {
+    it("mocks the Date object and sets it to a given time", function() {
+      var baseTime = new Date(2013, 9, 23);
+
+      jasmine.clock().mockDate(baseTime);
+
+      jasmine.clock().tick(50);
+      expect(new Date().getTime()).toEqual(baseTime.getTime() + 50);
+    });
+  });
+});
+
+xdescribe("Jasmine Clock 测试", function () {
+  var timerCallback;
+
+  beforeEach(function () {
+    timerCallback = jasmine.createSpy("timerCallback");
+    jasmine.clock().install();
+  });
+
+  afterEach(function () {
+    jasmine.clock().uninstall();
+  });
+
+  it("同步触发setTimeout", function () {
+    setTimeout(function () {
+      timerCallback();
+    }, 100);
+
+    expect(timerCallback).not.toHaveBeenCalled();
+
+    jasmine.clock().tick(101);
+
+    expect(timerCallback).toHaveBeenCalled();
+  });
+
+  it("同步触发setInterval", function () {
+    setInterval(function () {
+      timerCallback();
+    }, 100);
+
+    expect(timerCallback).not.toHaveBeenCalled();
+
+    jasmine.clock().tick(101);
+    expect(timerCallback.calls.count()).toEqual(1);
+
+    jasmine.clock().tick(50);
+    expect(timerCallback.calls.count()).toEqual(1);
+
+    jasmine.clock().tick(50);
+    expect(timerCallback.calls.count()).toEqual(2);
+  });
+});
+
+// 异步支持
+describe("Asynchronous specs", function() {
+  var value;
+
+  beforeEach(function(done) {
+    setTimeout(function() {
+      value = 0;
+      done();
+    }, 10);
+  });
+
+  // 在上面 beforeEach 的 done() 被执行之前，这个测试用例不会被执行
+  it("should support async execution of test preparation and expectations", function(done) {
+    value++;
+    expect(value).toBeGreaterThan(0);
+    console.log('111');
+
+    done(); // 执行完 done() 之后，该测试用例真正执行完成
+    console.log('222');
+  });
+
+  // Jasmine 异步执行超时时间默认为 5 秒，超过后将报错 ？？？
+  describe("long asynchronous specs", function() {
+    // 如果要调整指定用例的默认的超时时间，可以在 beforeEach，it 和 afterEach 中传入一个时间参数
+    beforeEach(function(done) {
+      console.log('333');
+      setTimeout(function() {}, 2000);
+      // 可以试试如果该方法执行超过 1 秒时 js 会报错
+      // 没有报错
+      console.log('444');
+      done();
+      console.log('555');
+    }, 2000);
+
+    it("takes a long time", function(done) {
+      setTimeout(function() {
+        console.log('666');
+        done();
+        console.log('777');
+      }, 9000);
+    }, 10000);
+
+    afterEach(function(done) {
+      console.log('888');
+      done();
+      console.log('999');
+    }, 2000);
+  });
+});
+
+xdescribe("A suite", function() {
+  it("contains spec with an expectation", function() {
+    expect(true).toBe(true);
+  });
+});
+
+xdescribe("测试嵌套describe：level1", function () {
+  var foo;
+
+  beforeEach(function () {
+    window.console.log("level1：Setup");
+  });
+
+  afterEach(function () {
+    window.console.log("level1：Teardown");
+  });
+
+  it("level1：测试", function () {
+    window.console.log("level1：测试");
+  });
+
+  describe("测试嵌套describe:level2", function () {
+    beforeEach(function () {
+      window.console.log("level2：Setup");
+    });
+
+    afterEach(function () {
+      window.console.log("level2：Teardown");
+    });
+
+    it("level2：测试", function () {
+      window.console.log("level2：测试");
+    });
+  });
+});
+
+xdescribe("Pending specs", function () {
+  xit("can be declared 'xit'", function () {
+    expect(true).toBe(false);
+  });
+
+  it("can be declared with 'it' but without a function");
+
+  it("can be declared by calling 'pending' in the spec body", function () {
+    expect(true).not.toBe(false);
+    // 挂起
+    // pending();
+  });
+});
+
+// 自定义 Matcher
+var customMatchers = {
+  toBeGoofy: function (util, customEqualityTesters) {
+    return {
+      compare: function (actual, expected) {
+        if (expected === undefined) {
+          expected = "";
+        }
+        var result = {};
+        // TypeError: Cannot read property 'equals' of null
+        result.pass = util.equals(
+          actual.hyuk,
+          "gawrsh" + expected,
+          customEqualityTesters
+        );
+        if (result.pass) {
+          result.message = "通过了，通过了，通过了...";
+        } else {
+          result.message = "没通过，没通过，没通过...";
+        }
+        return result;
+      }
+    };
+  }
+};
+
+xdescribe("测试自定义错误信息", function () {
+  beforeEach(function () {
+    jasmine.addMatchers(customMatchers);
+  });
+
+  it("这是个失败的测试", function () {
+    expect({
+      hyuk: "gawrsh"
+    }).toBeGoofy(123);
+  });
+});
+
+xdescribe("A spy, when configured to call through", function () {
+  var foo, bar, fetchedBar;
 
   beforeEach(function () {
     foo = {
@@ -552,27 +1223,21 @@ describe("A spy stub", function () {
       }
     };
 
-    spyOn(foo, "setBar").and.callThrough(); // 标记1
-    spyOn(foo, "getBar").and.returnValue(999); // 标记2
+    spyOn(foo, 'getBar');
+
+    foo.setBar(123);
+    fetchedBar = foo.getBar();
   });
 
-  it("can call through and then stub in the same spec", function () {
-    foo.setBar(123);
+  it("tracks that the spy was called", function () {
+    expect(foo.getBar).toHaveBeenCalled();
+  });
+
+  it("should not effect other functions", function () {
     expect(bar).toEqual(123);
+  });
 
-    var getValue = foo.getBar();
-    expect(getValue).toEqual(999);
-
-    foo.setBar.and.stub(); // 相当于'标记1'中的代码变为了spyOn(foo, 'setBar')
-    foo.getBar.and.stub(); // 相当于'标记2'中的代码变为了spyOn(foo, 'getBar')
-    bar = null;
-
-    foo.setBar(123);
-    expect(bar).toBe(null);
-    expect(foo.setBar).toHaveBeenCalled(); // 函数调用追踪并没有被重置
-
-    getValue = foo.getBar();
-    expect(getValue).toEqual(undefined);
-    expect(foo.getBar).toHaveBeenCalled(); // 函数调用追踪并没有被重置
+  it("when called returns the requested value", function () {
+    expect(fetchedBar).not.toEqual(123);
   });
 });

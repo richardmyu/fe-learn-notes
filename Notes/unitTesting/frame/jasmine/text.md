@@ -2,35 +2,105 @@
 
 ## 1.基本语法介绍
 
----
+### 1.1.Suites
 
-**describe(string, function)**：可以理解为是一个测试集或者测试包（为了便于称呼，我们本文中统一叫测试集，官方称之为 suite），主要功能是用来划分单元测试的，`describe` 是可以嵌套使用的
+`Suites` 可以理解为一组测试，使用全局的 `Jasmin` 函数 `describe` 创建。`describe` 函数接受两个参数，一个字符串和一个函数。字符串是这个 `Suites` 的名字或标题（通常描述下测试内容），函数是实现 `Suites` 的代码块。
+
+**describe(string, function)**：测试集
 
 - 参数 `string`：描述测试包的信息
 - 参数 `function`：测试集的具体实现
 
----
+### 1.2.Specs
 
-**it(string, function)**：测试用例（官方称之为 `spec`）
+`Specs` 可以理解为一个测试，使用全局的 `Jasmine` 函数 `it` 创建。和`describe` 一样接受两个参数，一个字符串和一个函数，函数就是要执行的测试，字符串就是测试的名字。一个 `Spec` 可以包含多个 `expectations` 来测试代码。在 `Jasmine` 中，一个 `expectations` 就是一个断言，只能是 `true` 或 `false`。只有全部 `expectations` 是 `true` 的时候 `spec` 才会通过。
+
+**it(string, function)**：测试用例
 
 - 参数 `string`：描述测试用例的信息
 - 参数 `function`：测试用例的具体实现
 
----
+由于 `describe` 和 `it` 块实质上都函数，所有他可以包含任何的可执行代码。javascript 的作用域规则也是适用的，所以 `describe` 内定义的变量，其内部所有的 `it` 都能访问到。
+
+### 1.3.Expectations
+
+`expectations` 由 `expect` 函数创建。接受一个参数。和 `Matcher` 一起联用，设置测试的预期值。
 
 **expect**：断言表达式
 
----
+```javascript
+describe("A suite", function() {
+  it("contains spec with an expectation", function() {
+    expect(true).toBe(true);
+  });
+});
+```
 
-## 2.expect 的使用
+### 1.4.嵌套 describe
 
-> 首先说一下，所有的 `expect` 都可以使用 `not` 表示否定的断言。
+可以嵌套使用 `describe`，形成一个 `Suite` 树，在一个 `spec` 执行之前，`Jasmine` 会顺序执行这颗树上的所有 `beforeEach`。同样的，执行完 `spec` 后，也会顺序执行树上的所有 `afterEach`。
+
+```javascript
+describe("测试嵌套describe：level1", function() {
+  var foo;
+
+  beforeEach(function() {
+    window.console.log("level1：Setup");
+  });
+
+  afterEach(function() {
+    window.console.log("level1：Teardown");
+  });
+
+  it("level1：测试", function() {
+    window.console.log("level1：测试");
+  });
+
+  describe("测试嵌套describe:level2", function() {
+    beforeEach(function() {
+      window.console.log("level2：Setup");
+    });
+
+    afterEach(function() {
+      window.console.log("level2：Teardown");
+    });
+
+    it("level2：测试", function() {
+      window.console.log("level2：测试");
+    });
+  });
+});
+```
+
+另外可以使用 `pending` 函数将 `specs` 挂起，挂起 `specs` 和使用 `xit` 函数定义的 `spec` 一样，`spec` 不会被执行，但是名字会出现在报表中(经过实践，没有出现，并且一旦有 `pending` 之前禁用的 `spec` 不会出现在报表中)。另外只有名字，没有实际代码的 `spec` 也会在结果中显示为挂起的状态（经过实践，效果更类似与 `xit`）。`pending` 可以在 `spec` 函数体的任何地方调用，不管函数体内有没有 `expectations`，还是看个例子：
+
+```javascript
+describe("Pending specs", function() {
+  xit("can be declared 'xit'", function() {
+    expect(true).toBe(false);
+  });
+
+  it("can be declared with 'it' but without a function");
+
+  it("can be declared by calling 'pending' in the spec body", function() {
+    expect(true).toBe(false);
+    // 挂起
+    pending();
+  });
+});
+```
+
+### 1.4.Matcher
+
+在 `Jasmine` 中，每个 `Matcher` 实现一个“期望值”和“实际值”的布尔判断，`Jasmine` 会根据 `Mather` 判断 `expectation` 是 `true` 还是 `false`，然后决定 `spec` 是测试通过还是失败。所有 `Matcher` 可以通过 `not` 执行否定判断。
+
+## 2.内置 Matcher 方法的使用
 
 测试实例见 [HelloWorld.spec.js](https://github.com/richardmyu/learnRep/blob/master/Notes/unitTesting/demo/vueTest/vue-test-demo-jest/test/unit/specs/HelloWorld.spec.js)
 
 ### 2.1.toBe
 
-基本类型判断
+基本类型判断（执行 `===` 对比）
 
 ```javascript
 it("toBe and not.toBe", function() {
@@ -225,7 +295,7 @@ it("toBeNull and not.toBeNull", function() {
 
 ### 2.7.toBeTruthy
 
-判断是否能转换成 `bool` 型(类似 `Boolean()`)，判断的是否是 `True`
+判断是否能转换成 `boolean` 型(类似 `Boolean()`)，判断的是否是 `true`
 
 ```javascript
 it("toBeTruthy and not.toBeTruthy", function() {
@@ -250,7 +320,7 @@ it("toBeTruthy and not.toBeTruthy", function() {
 
 ### 2.8.toBeFalsy
 
-判断是否能转换成 `bool` 型，判断的是否是 `False`
+判断是否能转换成 `boolean` 型，判断的是否是 `false`
 
 ```javascript
 it("toBeFalsy and not.toBeFalsy", function() {
@@ -275,7 +345,7 @@ it("toBeFalsy and not.toBeFalsy", function() {
 
 ### 2.9.toContain
 
-判断集合是否包含（可以是普通类型，和可以是对象）
+判断集合是否包含某个值（可以是普通类型，和可以是对象）
 
 ```javascript
 it("toContain and not.toContain", function() {
@@ -322,9 +392,7 @@ it("toBeGreaterThan and not.toBeGreaterThan", function() {
 
 ### 2.12.toBeCloseTo
 
-判断数字是否相似（第二个参数为小数精度，默认为 2 位）
-
-> 根据指定小数位数来判断两个数是否相同
+比较两个值是否足够接近（不一定要相等），而这个“足够接近”就是 `toBeCloseTo` 的第二个参数指定的，它由 `Math.pow(10, -precision) / 2` 表示。
 
 ```javascript
 it("toBeCloseTo and not.toBeCloseTo", function() {
@@ -333,15 +401,48 @@ it("toBeCloseTo and not.toBeCloseTo", function() {
   var c = 1.455;
   var d = 1.459;
 
-  // 1   1
+  // pass :Math.abs(expected-actual) < (Math.pow(10,-precision)/2)
+  // 0.4 < 0.5
   expect(a).toBeCloseTo(b, 0);
-  // 1.1  1.5
+  // 0.4 < 0.05
+  expect(a).not.toBeCloseTo(b, 1);
+
+  // 0.045 < 0.05
+  expect(b).toBeCloseTo(c, 1);
+
+  // 0.355 < 0.05
   expect(a).not.toBeCloseTo(c, 1);
-  // 1  1
-  expect(a).toBeCloseTo(c, 0);
-  // 1.45  1.45
+
+  // 0.004 < 0.005
   expect(c).toBeCloseTo(d);
+
+  // 0.004 < 0.0005
+  expect(c).not.toBeCloseTo(d, 3);
 });
+```
+
+> 小结：第二个参数为 0，两数之差在 0.5 以内则为近似；参数为 1，两数之差在 0.05 以内则判定近似，以此类推。
+
+再看看它的源码：
+
+```javascript
+getJasmineRequireObj().toBeCloseTo = function() {
+  function toBeCloseTo() {
+    return {
+      compare: function(actual, expected, precision) {
+        if (precision !== 0) {
+          precision = precision || 2;
+        }
+
+        return {
+          pass: Math.abs(expected - actual) < Math.pow(10, -precision) / 2
+        };
+      }
+    };
+  }
+
+  return toBeCloseTo;
+};
 ```
 
 ### 2.13.toThrow
@@ -448,7 +549,7 @@ describe("Setup and Teardown suite 2", function() {
 
 第二个 `describe`，在 `beforeEach` 中对全局变量 `globalCount` 自增 2，上述代码中，第一个 `describe` 中 `afterAll` 中没有对 `globalCount` 进行重置，因此执行完第一个 `describe` 后，`globalCount` 的值为 2，因此第二个 `describe` 的 `globalCount` 的初始值即为 2。
 
-在 `beforeEach/it/afterEach` 中，还可以使用 `this` 关键字定义变量，需要注意的是，使用 `this` 关键字声明的变量，仅在 `beforeEach/it/afterEach` 这个过程中传递(??? 不能使用 `this`)：
+在 `beforeEach/it/afterEach` 中，还可以使用 `this` 关键字定义变量，需要注意的是，使用 `this` 关键字声明的变量，仅在 `beforeEach/it/afterEach` 这个过程中传递(根据一下代码的实践反应，无法共享 `this`)：
 
 ```javascript
 describe("Test 'this'", function() {
@@ -507,7 +608,7 @@ describe("Test xit", function() {
 
 ## 5.spy
 
-`Spy` 用来追踪函数的调用历史信息（是否被调用、调用参数列表、被请求次数等）。`Spy` 仅存在于定义它的 `describe` 和 `it` 方法块中，并且每次在 `spec` 执行完之后被销毁。
+`Spy` 用来追踪函数的调用历史信息（是否被调用、调用参数列表、被请求次数等）。可以用来模拟函数的执行，以达到隔离复杂依赖的效果。例如，你要测试列表的处理是否正确，但是数据是异步请求接口取得的，这时你就可以使用 Spies，模拟返回各种不同的数据进行测试。`spy` 可以保存任何函数的调用记录和输入的参数，`Spy` 仅存在于定义它的 `describe` 和 `it` 方法块中，并且每次在 `spec` 执行完之后被销毁。
 
 ```javascript
 describe("A spy", function() {
@@ -553,7 +654,7 @@ describe("A spy", function() {
 
 ### 5.1.and.callThrough
 
-那如果说我们想在使用 `Spy` 的同时也希望执行实际的代码呢？
+那如果说我们想在使用 `Spy` 的同时也希望执行实际的代码呢？`spy` 链式调用 `and.callThrough` 后，在获取 `spy` 的同时，调用实际的函数
 
 ```javascript
 // situation 1
@@ -627,6 +728,41 @@ describe("A spy, when configured to call through", function() {
 });
 
 // situation 3
+describe("A spy, when configured to call through", function() {
+  var foo, bar, fetchedBar;
+
+  beforeEach(function() {
+    foo = {
+      setBar: function(value) {
+        bar = value;
+      },
+      getBar: function() {
+        return bar;
+      }
+    };
+
+    spyOn(foo, "setBar").and.callThrough();
+    spyOn(foo, "getBar").and.callThrough();
+
+    foo.setBar(123);
+    fetchedBar = foo.getBar();
+  });
+
+  it("tracks that the spy was called", function() {
+    expect(foo.setBar).toHaveBeenCalled();
+    expect(foo.getBar).toHaveBeenCalled();
+  });
+
+  it("should not effect other functions", function() {
+    expect(bar).toEqual(123);
+    // 由于是真实调用，因此 bar 有了真实的值
+  });
+
+  it("when called returns the requested value", function() {
+    expect(fetchedBar).toEqual(123);
+    // 由于是真实调用，fetchedBar 也有了真实的值
+  });
+});
 
 // situation 4
 describe("A spy, when configured to call through", function() {
@@ -660,7 +796,7 @@ describe("A spy, when configured to call through", function() {
 
   it("when called returns the requested value", function() {
     expect(fetchedBar).toBeUndefined();
-    // 由于是模拟调用，fetchedBar 没有改变
+    // 真实调用，但是 setBar 是模拟调用，即 bar 还是 undefined， 所以 fetchedBar 没有改变
   });
 });
 
@@ -690,7 +826,7 @@ describe("A spy, when configured to call through", function() {
 
   it("should not effect other functions", function() {
     expect(bar).toEqual(123);
-    // 由于是模拟调用？？？
+    // 真实调用
   });
 
   it("when called returns the requested value", function() {
@@ -713,13 +849,8 @@ describe("A spy, when configured to call through", function() {
       }
     };
 
-    // spyOn(foo, "setBar").and.callThrough();
-    // spyOn(foo, "getBar").and.callThrough();
-    // 与上例不同之处在于使用了 callThrough，这将时所有的函数调用为真实的执行
-
     spyOn(foo, "setBar");
     spyOn(foo, "getBar");
-    // 可以使用上例中的模拟方式，看看测试集执行的结果
 
     foo.setBar(123);
     fetchedBar = foo.getBar();
@@ -731,20 +862,16 @@ describe("A spy, when configured to call through", function() {
   });
 
   it("should not effect other functions", function() {
-    // expect(bar).toEqual(123);
     expect(bar).toBeUndefined();
-    // 由于是真实调用，因此 bar 有了真实的值
+    // 模拟调用
   });
 
   it("when called returns the requested value", function() {
-    // expect(fetchedBar).toEqual(123);
     expect(fetchedBar).toBeUndefined();
-    // 由于是真实调用，fetchedBar 也有了真实的值
+    // 模拟调用
   });
 });
 ```
-
-> 模拟数据的情况下，只监听 `set` 函数，被设置的变量不会改变，监听 `get` 函数的时候会改变。？？？被监听的函数只会模拟执行，没被监听的函数正常执行？？？
 
 | set-and.callThrough | get-and.callThrough | set | get |    bar    | fetchedBar |
 | :-----------------: | :-----------------: | :-: | :-: | :-------: | :--------: |
@@ -754,6 +881,8 @@ describe("A spy, when configured to call through", function() {
 |          ×          |          ×          |  ✔  |  ×  | undefined | undefined  |
 |          ×          |          ×          |  ×  |  ✔  |    123    | undefined  |
 |          ×          |          ×          |  ✔  |  ✔  | undefined | undefined  |
+
+> 没有被监听的函数，是正常执行的，而被监听的函数是隔离的，即实际没有执行，除非调用 `and.callThrough`。
 
 ### 5.2.and.returnValue
 
@@ -864,10 +993,12 @@ describe("A spy, when configured to throw an error", function() {
 
 ### 5.5.and.stub
 
+`spy` 恢复到原始状态，不执行任何操作。
+
 ```javascript
-describe("A spy", function() {
-  var foo,
-    bar = null;
+describe("A spy stub", function() {
+  let foo;
+  let bar = null;
 
   beforeEach(function() {
     foo = {
@@ -883,28 +1014,976 @@ describe("A spy", function() {
     spyOn(foo, "getBar").and.returnValue(999); // 标记2
   });
 
-  it("can call through and then stub in the same spec", function() {
-    foo.setBar(123);
+  foo.setBar(123);
+    console.log('111', bar, getValue);
+
     expect(bar).toEqual(123);
 
     var getValue = foo.getBar();
     expect(getValue).toEqual(999);
 
-    foo.setBar.and.stub(); 
-    // 相当于'标记1'中的代码变为了 spyOn(foo, 'setBar')
-    foo.getBar.and.stub(); 
-    // 相当于'标记2'中的代码变为了 spyOn(foo, 'getBar')
+    console.log('222', bar, getValue);
 
+    foo.setBar.and.stub();
+    console.log('333-1', bar, getValue);
+    // 相当于'标记1'中的代码变为了 spyOn(foo, 'setBar')
+    // ??? 什么叫相当于
+    // ??? 等价于去除 add.callThrough add.returnValue 的影响
+    foo.getBar.and.stub();
+    console.log('333-2', bar, getValue);
+    // 相当于'标记2'中的代码变为了 spyOn(foo, 'getBar')
+    bar = null;
+    console.log('444', bar, getValue);
+
+    foo.setBar(123);//模拟执行
+    console.log('555', bar, getValue);
+    expect(bar).toBe(null);
+    expect(foo.setBar).toHaveBeenCalled();
+    // 函数调用追踪并没有被重置 ???
+
+    getValue = foo.getBar();//模拟执行
+    console.log('666', bar, getValue);
+    expect(getValue).toEqual(undefined);
+    expect(foo.getBar).toHaveBeenCalled();
+    // 函数调用追踪并没有被重置 ???
+});
+```
+
+[源码](https://github.com/pivotal/jasmine/blob/master/src/core/SpyStrategy.js)
+
+```javascript
+getJasmineRequireObj().SpyStrategy = function(j$) {
+  /**
+   * @interface SpyStrategy
+   */
+  function SpyStrategy(options) {
+    options = options || {};
+
+    /**
+     * Get the identifying information for the spy.
+     * @name SpyStrategy#identity
+     * @member
+     * @type {String}
+     */
+    this.identity = options.name || "unknown";
+    this.originalFn = options.fn || function() {};
+    this.getSpy = options.getSpy || function() {};
+    this.plan = this._defaultPlan = function() {};
+
+    var k,
+      cs = options.customStrategies || {};
+    for (k in cs) {
+      if (j$.util.has(cs, k) && !this[k]) {
+        this[k] = createCustomPlan(cs[k]);
+      }
+    }
+  }
+
+  function createCustomPlan(factory) {
+    return function() {
+      var plan = factory.apply(null, arguments);
+
+      if (!j$.isFunction_(plan)) {
+        throw new Error("Spy strategy must return a function");
+      }
+
+      this.plan = plan;
+      return this.getSpy();
+    };
+  }
+
+  ...
+
+  /**
+   * Tell the spy to do nothing when invoked. This is the default.
+   * @name SpyStrategy#stub
+   * @function
+   */
+  SpyStrategy.prototype.stub = function(fn) {
+    this.plan = function() {};
+    return this.getSpy();
+  };
+
+  ...
+
+  return SpyStrategy;
+};
+```
+
+**其他追踪属性**：
+
+> `calls`：对于被 `Spy` 的函数的调用，都可以在 `calls` 属性中跟踪。
+
+---
+
+- `.calls.any()`: 被 `Spy` 的函数一旦被调用过，则返回 `true`，否则为 `false`；
+- `.calls.count()`: 返回被 `Spy` 的函数的被调用次数；
+- `.calls.argsFor(index)`: 返回被 `Spy` 的函数的调用参数，以 `index` 来指定参数；
+- `.calls.allArgs()`:返回被 `Spy` 的函数的所有调用参数；
+- `.calls.all()`: 返回 `calls` 的上下文，这将返回当前 `calls` 的整个实例数据；
+- `.calls.mostRecent()`: 返回 `calls` 中追踪的最近一次的请求数据；
+- `.calls.first()`: 返回 `calls` 中追踪的第一次请求的数据；
+- `.object`: 当调用 `all()`，`mostRecent()`，`first()`方法时，返回对象的 `object` 属性返回的是当前上下文对象；
+- `.calls.reset()`: 重置 `Spy` 的所有追踪数据；
+
+---
+
+```javascript
+describe("A spy calls", function() {
+  var foo,
     bar = null;
 
-    foo.setBar(123);
-    expect(bar).toBe(null);
-    expect(foo.setBar).toHaveBeenCalled(); // 函数调用追踪并没有被重置
+  beforeEach(function() {
+    foo = {
+      setBar: function(value) {
+        bar = value;
+      }
+    };
 
-    getValue = foo.getBar();
-    expect(getValue).toEqual(undefined);
-    expect(foo.getBar).toHaveBeenCalled(); // 函数调用追踪并没有被重置
+    spyOn(foo, "setBar");
   });
+
+  it("tracks if it was called at all", function() {
+    expect(foo.setBar.calls.any()).toEqual(false);
+    foo.setBar();
+
+    // 被 Spy 的函数一旦被调用过，则返回 true，否则为 false；
+    expect(foo.setBar.calls.any()).toEqual(true);
+  });
+
+  it("tracks the number of times it was called", function() {
+    expect(foo.setBar.calls.count()).toEqual(0);
+    foo.setBar();
+    foo.setBar();
+
+    // 返回被 Spy 的函数的被调用次数
+    expect(foo.setBar.calls.count()).toEqual(2);
+  });
+
+  it("tracks the arguments of each call", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回被 Spy 的函数的调用参数，以 index 来指定参数
+    expect(foo.setBar.calls.argsFor(0)).toEqual([123]);
+    expect(foo.setBar.calls.argsFor(1)).toEqual([456, "baz"]);
+  });
+
+  it("tracks the arguments of all calls", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回被 Spy 的函数的所有调用参数;
+    expect(foo.setBar.calls.allArgs()).toEqual([[123], [456, "baz"]]);
+  });
+
+  it("can provide the context and arguments to all calls", function() {
+    foo.setBar(123);
+
+    // 返回 calls 的上下文，这将返回当前 calls 的整个实例数据
+    // ???
+    expect(foo.setBar.calls.all()).toEqual([
+      { object: foo, args: [123], returnValue: undefined }
+    ]);
+  });
+
+  it("has a shortcut to the most recent call", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回 calls 中追踪的最近一次的请求数据
+    expect(foo.setBar.calls.mostRecent()).toEqual({
+      object: foo,
+      args: [456, "baz"],
+      returnValue: undefined
+    });
+  });
+
+  it("has a shortcut to the first call", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+
+    // 返回 calls 中追踪的第一次请求的数据
+    expect(foo.setBar.calls.first()).toEqual({
+      object: foo,
+      args: [123],
+      returnValue: undefined
+    });
+  });
+
+  it("tracks the context", function() {
+    // 创建一个空的 Spy
+    var spy = jasmine.createSpy("spy");
+    var baz = {
+      fn: spy
+    };
+    var quux = {
+      fn: spy
+    };
+    baz.fn(123);
+    quux.fn(456);
+
+    // 当调用 all() ，mostRecent() ，first()方法时
+    // 返回对象的 object 属性返回的是当前上下文对象
+    // ???
+    expect(spy.calls.first().object).toBe(baz);
+    expect(spy.calls.mostRecent().object).toBe(quux);
+  });
+
+  it("can be reset", function() {
+    foo.setBar(123);
+    foo.setBar(456, "baz");
+    expect(foo.setBar.calls.any()).toBe(true);
+
+    // 重置 Spy 的所有追踪数据
+    // 追踪失效
+    foo.setBar.calls.reset();
+    expect(foo.setBar.calls.any()).toBe(false);
+  });
+});
+```
+
+### 5.6.createSpy
+
+假如没有函数可以追踪，我们可以自己创建一个空的 `Spy`。创建后的 `Spy` 功能与其他的 `Spy` 一样：跟踪调用、参数等，但该 `Spy` 没有实际的代码实现，这种方式经常会用在对 JavaScript 中的对象的测试。
+
+```javascript
+describe("A spy, when created manually", function() {
+  var whatAmI;
+
+  beforeEach(function() {
+    whatAmI = jasmine.createSpy("whatAmI");
+
+    whatAmI("I", "am", "a", "spy");
+  });
+
+  it("is named, which helps in error reporting", function() {
+    // 初始值
+    expect(whatAmI.and.identity()).toEqual("whatAmI");
+  });
+
+  it("tracks that the spy was called", function() {
+    // 是否调用
+    expect(whatAmI).toHaveBeenCalled();
+  });
+
+  it("tracks its number of calls", function() {
+    // 调用次数
+    expect(whatAmI.calls.count()).toEqual(1);
+  });
+
+  it("tracks all the arguments of its calls", function() {
+    // 传入参数
+    expect(whatAmI).toHaveBeenCalledWith("I", "am", "a", "spy");
+  });
+
+  it("allows access to the most recent call", function() {
+    // 最近一次请求的第一个参数
+    expect(whatAmI.calls.mostRecent().args[0]).toEqual("I");
+    expect(whatAmI.calls.argsFor(0)).toEqual(["I", "am", "a", "spy"]);
+    //  TypeError: Cannot read property '0' of undefined
+    expect(whatAmI.calls.argsFor(0).args[0]).toEqual("I");
+  });
+});
+```
+
+[源码](https://github.com/jasmine/jasmine/blob/master/src/core/Spy.js)
+
+```javascript
+getJasmineRequireObj().Spy = function(j$) {
+  var nextOrder = (function() {
+    var order = 0;
+
+    return function() {
+      return order++;
+    };
+  })();
+
+  /**
+   * _Note:_ Do not construct this directly, use {@link spyOn}, {@link spyOnProperty}, {@link jasmine.createSpy}, or {@link jasmine.createSpyObj}
+   * @constructor
+   * @name Spy
+   */
+  function Spy(name, originalFn, customStrategies) {
+    var numArgs = typeof originalFn === "function" ? originalFn.length : 0,
+      wrapper = makeFunc(numArgs, function() {
+        return spy.apply(this, Array.prototype.slice.call(arguments));
+      }),
+      strategyDispatcher = new SpyStrategyDispatcher({
+        name: name,
+        fn: originalFn,
+        getSpy: function() {
+          return wrapper;
+        },
+        customStrategies: customStrategies
+      }),
+      callTracker = new j$.CallTracker(),
+      spy = function() {
+        /**
+         * @name Spy.callData
+         * @property {object} object - `this` context for the invocation.
+         * @property {number} invocationOrder - Order of the invocation.
+         * @property {Array} args - The arguments passed for this invocation.
+         */
+        var callData = {
+          object: this,
+          invocationOrder: nextOrder(),
+          args: Array.prototype.slice.apply(arguments)
+        };
+
+        callTracker.track(callData);
+        var returnValue = strategyDispatcher.exec(this, arguments);
+        callData.returnValue = returnValue;
+
+        return returnValue;
+      };
+
+    function makeFunc(length, fn) {
+      switch (length) {
+        case 1:
+          return function(a) {
+            return fn.apply(this, arguments);
+          };
+        case 2:
+          return function(a, b) {
+            return fn.apply(this, arguments);
+          };
+        case 3:
+          return function(a, b, c) {
+            return fn.apply(this, arguments);
+          };
+        case 4:
+          return function(a, b, c, d) {
+            return fn.apply(this, arguments);
+          };
+        case 5:
+          return function(a, b, c, d, e) {
+            return fn.apply(this, arguments);
+          };
+        case 6:
+          return function(a, b, c, d, e, f) {
+            return fn.apply(this, arguments);
+          };
+        case 7:
+          return function(a, b, c, d, e, f, g) {
+            return fn.apply(this, arguments);
+          };
+        case 8:
+          return function(a, b, c, d, e, f, g, h) {
+            return fn.apply(this, arguments);
+          };
+        case 9:
+          return function(a, b, c, d, e, f, g, h, i) {
+            return fn.apply(this, arguments);
+          };
+        default:
+          return function() {
+            return fn.apply(this, arguments);
+          };
+      }
+    }
+
+    for (var prop in originalFn) {
+      if (prop === "and" || prop === "calls") {
+        throw new Error(
+          "Jasmine spies would overwrite the 'and' and 'calls' properties on the object being spied upon"
+        );
+      }
+
+      wrapper[prop] = originalFn[prop];
+    }
+
+    /**
+     * @member {SpyStrategy} - Accesses the default strategy for the spy. This strategy will be used
+     * whenever the spy is called with arguments that don't match any strategy
+     * created with {@link Spy#withArgs}.
+     * @name Spy#and
+     * @example
+     * spyOn(someObj, 'func').and.returnValue(42);
+     */
+    wrapper.and = strategyDispatcher.and;
+    /**
+     * Specifies a strategy to be used for calls to the spy that have the
+     * specified arguments.
+     * @name Spy#withArgs
+     * @function
+     * @param {...*} args - The arguments to match
+     * @type {SpyStrategy}
+     * @example
+     * spyOn(someObj, 'func').withArgs(1, 2, 3).and.returnValue(42);
+     * someObj.func(1, 2, 3); // returns 42
+     */
+    wrapper.withArgs = function() {
+      return strategyDispatcher.withArgs.apply(strategyDispatcher, arguments);
+    };
+    wrapper.calls = callTracker;
+
+    return wrapper;
+  }
+
+  function SpyStrategyDispatcher(strategyArgs) {
+    var baseStrategy = new j$.SpyStrategy(strategyArgs);
+    var argsStrategies = new StrategyDict(function() {
+      return new j$.SpyStrategy(strategyArgs);
+    });
+
+    this.and = baseStrategy;
+
+    this.exec = function(spy, args) {
+      var strategy = argsStrategies.get(args);
+
+      if (!strategy) {
+        if (argsStrategies.any() && !baseStrategy.isConfigured()) {
+          throw new Error(
+            "Spy '" +
+              strategyArgs.name +
+              "' receieved a call with arguments " +
+              j$.pp(Array.prototype.slice.call(args)) +
+              " but all configured strategies specify other arguments."
+          );
+        } else {
+          strategy = baseStrategy;
+        }
+      }
+
+      return strategy.exec(spy, args);
+    };
+
+    this.withArgs = function() {
+      return { and: argsStrategies.getOrCreate(arguments) };
+    };
+  }
+
+  function StrategyDict(strategyFactory) {
+    this.strategies = [];
+    this.strategyFactory = strategyFactory;
+  }
+
+  StrategyDict.prototype.any = function() {
+    return this.strategies.length > 0;
+  };
+
+  StrategyDict.prototype.getOrCreate = function(args) {
+    var strategy = this.get(args);
+
+    if (!strategy) {
+      strategy = this.strategyFactory();
+      this.strategies.push({
+        args: args,
+        strategy: strategy
+      });
+    }
+
+    return strategy;
+  };
+
+  StrategyDict.prototype.get = function(args) {
+    var i;
+
+    for (i = 0; i < this.strategies.length; i++) {
+      if (j$.matchersUtil.equals(args, this.strategies[i].args)) {
+        return this.strategies[i].strategy;
+      }
+    }
+  };
+
+  return Spy;
+};
+```
+
+### 5.7.createSpyObj (经过实践，没有该方法)
+
+如果需要 `spy` 模拟多个函数调用，可以向 `jasmine.createSpyObj` 中传入一个字符串数组，它将返回一个对象，你所传入的所有字符串都将对应一个属性，每个属性即为一个 `Spy`。
+
+```javascript
+describe("Multiple spies, when created manually", function() {
+  var tape;
+
+  beforeEach(function() {
+    // TypeError: jasmine.createSpyObj is not a function
+    // ???
+    tape = jasmine.createSpyObj("tape", ["play", "pause", "stop", "rewind"]);
+
+    tape.play();
+    tape.pause();
+    tape.rewind(0);
+  });
+
+  it("creates spies for each requested function", function() {
+    expect(tape.play).toBeDefined();
+    expect(tape.pause).toBeDefined();
+    expect(tape.stop).toBeDefined();
+    expect(tape.rewind).toBeDefined();
+  });
+
+  it("tracks that the spies were called", function() {
+    expect(tape.play).toHaveBeenCalled();
+    expect(tape.pause).toHaveBeenCalled();
+    expect(tape.rewind).toHaveBeenCalled();
+    expect(tape.stop).not.toHaveBeenCalled();
+  });
+
+  it("tracks all the arguments of its calls", function() {
+    expect(tape.rewind).toHaveBeenCalledWith(0);
+  });
+});
+```
+
+## 6.其他匹配方式
+
+### 6.1.jasmine.any
+
+`jasmine.any` 方法以构造器或者类名作为参数，`Jasmine` 将判断期望值和真实值的构造器是否相同，若相同则返回 `true`。
+
+```javascript
+```
+
+```javascript
+describe("jasmine.any", function() {
+  it("matches any value", function() {
+    expect({}).toEqual(jasmine.any(Object));
+    expect(12).toEqual(jasmine.any(Number));
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var foo = jasmine.createSpy("foo");
+      foo(12, function() {
+        return true;
+      });
+
+      expect(foo).toHaveBeenCalledWith(
+        jasmine.any(Number),
+        jasmine.any(Function)
+      );
+    });
+  });
+});
+```
+
+### 6.2.jasmine.anything
+
+`jasmine.anything` 判断只要不是 `null` 或 `undefined` 类型的值，若不是则返回 `true`。
+
+```javascript
+describe("jasmine.anything", function() {
+  it("matches anything", function() {
+    expect(1).toEqual(jasmine.anything());
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful when the argument can be ignored", function() {
+      var foo = jasmine.createSpy("foo");
+      foo(12, function() {
+        return false;
+      });
+
+      expect(foo).toHaveBeenCalledWith(12, jasmine.anything());
+    });
+  });
+});
+```
+
+### 6.3.jasmine.objectContaining
+
+`jasmine.objectContaining` 用来判断对象中是否存在指定的键值对。
+
+```javascript
+describe("jasmine.objectContaining", function() {
+  var foo;
+
+  beforeEach(function() {
+    foo = {
+      a: 1,
+      b: 2,
+      bar: "baz"
+    };
+  });
+
+  it("matches objects with the expect key/value pairs", function() {
+    expect(foo).toEqual(
+      jasmine.objectContaining({
+        bar: "baz"
+      })
+    );
+    expect(foo).not.toEqual(
+      jasmine.objectContaining({
+        c: 37
+      })
+    );
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback({
+        bar: "baz"
+      });
+
+      expect(callback).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          bar: "baz"
+        })
+      );
+      expect(callback).not.toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          c: 37
+        })
+      );
+    });
+  });
+});
+```
+
+### 6.4.jasmine.arrayContaining
+
+`jasmine.arrayContaining` 可以用来判断数组中是否有期望的值。
+
+```javascript
+describe("jasmine.arrayContaining", function() {
+  var foo;
+
+  beforeEach(function() {
+    foo = [1, 2, 3, 4];
+  });
+
+  it("matches arrays with some of the values", function() {
+    expect(foo).toEqual(jasmine.arrayContaining([3, 1]));
+    // 直接在期望值中使用 jasmine.arrayContaining 达到目的
+    expect(foo).not.toEqual(jasmine.arrayContaining([6]));
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful when comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback([1, 2, 3, 4]); // 将数组内容作为参数传入 Spy 中
+
+      expect(callback).toHaveBeenCalledWith(jasmine.arrayContaining([4, 2, 3]));
+      expect(callback).not.toHaveBeenCalledWith(
+        jasmine.arrayContaining([5, 2])
+      );
+    });
+  });
+});
+```
+
+### 6.4.jasmine.stringMatching
+
+`jasmine.stringMatching` 用来模糊匹配字符串，在 `jasmine.stringMatching` 中也可以使用正则表达式进行匹配，使用起来非常灵活。
+
+```javascript
+describe("jasmine.stringMatching", function() {
+  it("matches as a regexp", function() {
+    expect({ foo: "bar" }).toEqual({ foo: jasmine.stringMatching(/^bar$/) });
+    expect({ foo: "foobarbaz" }).toEqual({
+      foo: jasmine.stringMatching("bar")
+    });
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback("foobarbaz");
+
+      expect(callback).toHaveBeenCalledWith(jasmine.stringMatching("bar"));
+      expect(callback).not.toHaveBeenCalledWith(
+        jasmine.stringMatching(/^bar$/)
+      );
+    });
+  });
+});
+```
+
+### 6.5.不规则匹配（自定义匹配）：asymmetricMatch
+
+某些场景下，我们希望能按照自己设计的规则进行匹配，此时我们可以自定义一个对象，该对象只要包含一个名为 `asymmetricMatch` 的方法即可。
+
+```javascript
+describe("custom asymmetry", function() {
+  var tester = {
+    asymmetricMatch: function(actual) {
+      var secondValue = actual.split(",")[1];
+      return secondValue === "bar";
+    }
+  };
+
+  it("dives in deep", function() {
+    expect("foo,bar,baz,quux").toEqual(tester);
+  });
+
+  describe("when used with a spy", function() {
+    it("is useful for comparing arguments", function() {
+      var callback = jasmine.createSpy("callback");
+
+      callback("foo,bar,baz");
+
+      expect(callback).toHaveBeenCalledWith(tester);
+    });
+  });
+});
+```
+
+## 7.Jasmine Clock
+
+`Jasmine Clock` 可以用来测试 `setTimeout` 和 `setInterval` 的回调操作。它使回调函数同步执行，当 `Clock` 的时间超过 `timer` 的时间，回调函数会被触发一次。这使依赖于时间的代码更加易于测试。
+
+要想使用 `jasmine.clock()`，先调用 `jasmine.clock().install` 在 `spec` 或者 `suite` 中初始化，在执行完测试的时候，一定要卸载，务必调用 `jasmine.clock().uninstall` 来恢复时间状态。
+
+```javascript
+describe("Manually ticking the Jasmine Clock", function() {
+  var timerCallback;
+
+  beforeEach(function() {
+    timerCallback = jasmine.createSpy("timerCallback");
+    // 开时间操作
+    // jasmine.clock is not a function ？？？
+    jasmine.clock().install();
+  });
+
+  afterEach(function() {
+    // 关闭时间操作
+    jasmine.clock().uninstall();
+  });
+
+  it("causes a timeout to be called synchronously", function() {
+    setTimeout(function() {
+      timerCallback();
+    }, 100);
+
+    expect(timerCallback).not.toHaveBeenCalled();
+
+    // 时间
+    jasmine.clock().tick(101);
+
+    expect(timerCallback).toHaveBeenCalled();
+  });
+
+  it("causes an interval to be called synchronously", function() {
+    setInterval(function() {
+      timerCallback();
+    }, 100);
+
+    expect(timerCallback).not.toHaveBeenCalled();
+
+    jasmine.clock().tick(101);
+    expect(timerCallback.calls.count()).toEqual(1);
+
+    jasmine.clock().tick(50);
+    expect(timerCallback.calls.count()).toEqual(1);
+
+    jasmine.clock().tick(50);
+    expect(timerCallback.calls.count()).toEqual(2);
+  });
+
+  describe("Mocking the Date object", function() {
+    it("mocks the Date object and sets it to a given time", function() {
+      var baseTime = new Date(2013, 9, 23);
+
+      jasmine.clock().mockDate(baseTime);
+
+      jasmine.clock().tick(50);
+      expect(new Date().getTime()).toEqual(baseTime.getTime() + 50);
+    });
+  });
+});
+```
+
+## 8.异步支持
+
+`Jasmine` 可以支持 `spec` 中执行异步操作，当调用 `beforeEach`, `it` 和 `afterEach` 时，函数可以包含一个可选参数 `done`，当 `spec` 执行完毕之后，调用 `done` 通知 `Jasmine` 异步操作已执行完毕。
+
+```javascript
+describe("Asynchronous specs", function() {
+  var value;
+
+  beforeEach(function(done) {
+    setTimeout(function() {
+      value = 0;
+      done();
+    }, 10);
+  });
+
+  // 在上面 beforeEach 的 done() 被执行之前，这个测试用例不会被执行
+  it("should support async execution of test preparation and expectations", function(done) {
+    value++;
+    expect(value).toBeGreaterThan(0);
+    done(); // 执行完 done() 之后，该测试用例真正执行完成
+  });
+
+  // Jasmine 异步执行超时时间默认为 5 秒，超过后将报错 ？？？
+  describe("long asynchronous specs", function() {
+    // 如果要调整指定用例的默认的超时时间，可以在 beforeEach，it 和 afterEach 中传入一个时间参数
+    beforeEach(function(done) {
+      // setTimeout(function() {}, 2000);
+      // 可以试试如果该方法执行超过 1 秒时 js 会报错
+      // 没有报错
+      done();
+    }, 2000);
+
+    it("takes a long time", function(done) {
+      setTimeout(function() {
+        done();
+      }, 9000);
+    }, 10000);
+
+    afterEach(function(done) {
+      done();
+    }, 2000);
+  });
+});
+```
+
+## 9.自定义 Matcher
+
+自定义的 `Matcher` 从本质上讲是一个对比函数，它的函数名就是暴露给 `expect` 调用的名称，它接受 `actual` 值和 `expected` 值。这个函数会传入 `Jasmine` 作用域中，可以在 `beforeEach` 中调用到。每次 `spec` 执行完后，都会把自定义 `Matchers` 卸载，下面看个简单例子：
+
+```javascript
+var customMatchers = {
+  toBeGoofy: function(util, customEqualityTesters) {
+    return {
+      compare: function(actual, expected) {
+        if (expected === undefined) {
+          expected = "";
+        }
+
+        var result = {};
+        result.pass = util.equals(
+          actual.hyuk,
+          "gawrsh" + expected,
+          customEqualityTesters
+        );
+
+        if (result.pass) {
+          result.message = "Expected " + actual + " not to be quite so goofy";
+        } else {
+          result.message =
+            "Expected " + actual + " to be goofy, but it was not very goofy";
+        }
+
+        return result;
+      }
+    };
+  }
+};
+```
+
+### 9.1.Matcher 构造函数
+
+自定义 `Matcher` 的构造函数接受两个参数
+
+- `util` ：给 `Matcher` 使用的一组工具函数
+- `customEqualityTesters` ：调用 `util.equals` 的时候需要传入。
+
+构造函数需要返回一个对象，这个对象要包含名为 `compare` 的函数，执行 `Matcher` 时会调用 `compare` 函数。
+
+### 9.2.compare 函数
+
+`compare` 函数接收传入 `expect` 的值作为它的第一个参数 `actual`，如果存在的话，传入 `Matcher` 自己的参数会作为 `compare` 函数的第二个参数。上例中的 `toBeGoofy` 就会接收一个可选的 `expected` 参数，默认不需要传入。
+
+### 9.3.Result
+
+`compare` 函数必须返回一个结果对象。结果对象必须包含一个布尔值类型的 `pass` 属性，告诉 `expectation Matcher` 是否通过。如果 `expectation` 调用了 `.not` 的话，会做相反的判断。上例中的 `toBeGoofy` 测试实际值得 `hyuk` 属性是否和期望值相等。
+
+### 9.4.错误信息
+
+如果不指定错误信息，`expectation` 会尝试用 `Matcher` 生成一个错误信息。但是，如果返回的 `result` 对象包含了 `message` 属性的话，会使用 `message` 的值作错误提示。
+
+先看看指定 `message` 的效果
+
+```javascript
+var customMatchers = {
+  toBeGoofy: function(util, customEqualityTesters) {
+    return {
+      compare: function(actual, expected) {
+        if (expected === undefined) {
+          expected = "";
+        }
+        var result = {};
+        // TypeError: Cannot read property 'equals' of null ???
+        result.pass = util.equals(
+          actual.hyuk,
+          "gawrsh" + expected,
+          customEqualityTesters
+        );
+        if (result.pass) {
+          result.message = "通过了，通过了，通过了...";
+        } else {
+          result.message = "没通过，没通过，没通过...";
+        }
+        return result;
+      }
+    };
+  }
+};
+
+describe("测试自定义错误信息", function() {
+  beforeEach(function() {
+    jasmine.addMatchers(customMatchers);
+  });
+
+  it("这是个失败的测试", function() {
+    expect({
+      hyuk: "gawrsh"
+    }).toBeGoofy(123);
+  });
+});
+```
+
+再看看没有指定 `message` 的效果：
+
+```javascript
+var customMatchers = {
+  toBeGoofy: function(util, customEqualityTesters) {
+    return {
+      compare: function(actual, expected) {
+        if (expected === undefined) {
+          expected = "";
+        }
+        var result = {};
+        result.pass = util.equals(
+          actual.hyuk,
+          "gawrsh" + expected,
+          customEqualityTesters
+        );
+        return result;
+      }
+    };
+  }
+};
+
+describe("测试自动生成的错误信息", function() {
+  beforeEach(function() {
+    jasmine.addMatchers(customMatchers);
+  });
+
+  it("这是个失败的测试", function() {
+    expect({
+      hyuk: "gawrsh"
+    }).toBeGoofy(123);
+  });
+});
+```
+
+可以看出，`Jasmine` 把 `Matcher` 的名字，按照驼峰命名法分隔开，生成错误信息。
+
+### 9.5.自定义“否定”比较规则
+
+如果你的自定义 `Matcher` 需要控制 `.not` 的行为的话（不是简单的布尔值取反），那么你的 `Matcher` 构造函数里除了 `compare`，还可以包含另一个函数 `negativeCompare`。当使用了 `.not` 的时候会执行 `negativeCompare`。
+
+### 9.6.Matcher 的注册和使用
+
+向 `Jasmine` 注册自定义的 `Matcher` 后，所有的 `expectation` 都可以使用该 `Matcher`。
+
+```javascript
+describe("注册'toBeGoofy'", function() {
+  beforeEach(function() {
+    jasmine.addMatchers(customMatchers);
+  });
+
+  //...
 });
 ```
 
@@ -914,11 +1993,25 @@ describe("A spy", function() {
 
 [Jasmine 入门（下）](https://www.cnblogs.com/wushangjue/p/4575826.html)
 
-阅读：
+[Javascript 测试框架 Jasmine（一）：简介](http://keenwon.com/1191.html)
+
+[Javascript 测试框架 Jasmine（二）：Matchers](http://keenwon.com/1197.html)
+
+[Javascript 测试框架 Jasmine（三）：Setup、Teardown、嵌套 describe 等](http://keenwon.com/1206.html)
+
+[Javascript 测试框架 Jasmine（四）：自定义 Matcher](http://keenwon.com/1212.html)
 
 [Javascript 测试框架 Jasmine（五）：Spies](http://keenwon.com/1218.html)
 
-[jasmine行为驱动,测试先行](http://blog.fens.me/nodejs-jasmine-bdd/)
+[Javascript 测试框架 Jasmine（六）：异步代码测试](http://keenwon.com/1223.html)
+
+
+
+阅读：
+
+[Javascript 测试框架 Jasmine（七）：jqPaginator 测试实例](http://keenwon.com/1225.html)
+
+[jasmine 行为驱动,测试先行](http://blog.fens.me/nodejs-jasmine-bdd/)
 
 [手把手教你如何安装和使用 Karma-Jasmine](https://www.cnblogs.com/wushangjue/p/4539189.html)
 
