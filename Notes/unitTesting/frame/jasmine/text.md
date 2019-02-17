@@ -6,7 +6,7 @@
 
 `Suites` 可以理解为一组测试，使用全局的 `Jasmin` 函数 `describe` 创建。`describe` 函数接受两个参数，一个字符串和一个函数。字符串是这个 `Suites` 的名字或标题（通常描述下测试内容），函数是实现 `Suites` 的代码块。
 
-**describe(string, function)**：测试集
+**`describe(string, function)`**：测试集
 
 - 参数 `string`：描述测试包的信息
 - 参数 `function`：测试集的具体实现
@@ -15,18 +15,18 @@
 
 `Specs` 可以理解为一个测试，使用全局的 `Jasmine` 函数 `it` 创建。和`describe` 一样接受两个参数，一个字符串和一个函数，函数就是要执行的测试，字符串就是测试的名字。一个 `Spec` 可以包含多个 `expectations` 来测试代码。在 `Jasmine` 中，一个 `expectations` 就是一个断言，只能是 `true` 或 `false`。只有全部 `expectations` 是 `true` 的时候 `spec` 才会通过。
 
-**it(string, function)**：测试用例
+**`it(string, function)`**：测试用例
 
 - 参数 `string`：描述测试用例的信息
 - 参数 `function`：测试用例的具体实现
 
-由于 `describe` 和 `it` 块实质上都函数，所有他可以包含任何的可执行代码。javascript 的作用域规则也是适用的，所以 `describe` 内定义的变量，其内部所有的 `it` 都能访问到。
+> 由于 `describe` 和 `it` 块实质上都函数，所有他可以包含任何的可执行代码。javascript 的作用域规则也是适用的，所以 `describe` 内定义的变量，其内部所有的 `it` 都能访问到。
 
 ### 1.3.Expectations
 
 `expectations` 由 `expect` 函数创建。接受一个参数。和 `Matcher` 一起联用，设置测试的预期值。
 
-**expect**：断言表达式
+**`expect()`**：断言表达式
 
 ```javascript
 describe("A suite", function() {
@@ -213,12 +213,12 @@ it("toBeDefined and not.toBeDefined", function() {
   expect(student.gender).not.toBeDefined();
 
   // 下面这种情况会报错（ ReferenceError: a is not defined）
-  // 本意是用来判断对象的属性是否存在，不能直接用来判断变量
-  // 但可以挂载在全局对象下 window 检测
+  // 但可以挂载在全局对象下 window 检测(但那就是另外一个变量了。。。)
   expect(a).not.toBeDefined();
   expect(window.a).not.toBeDefined();
 
   // 但是有定义的变量，不能通过全局对象访问
+  // 也即是说在该环境下 window.a 和 a 是两个不同的变量
   expect(b).toBeDefined();
   expect(window.b).not.toBeDefined();
 
@@ -345,7 +345,7 @@ it("toBeFalsy and not.toBeFalsy", function() {
 
 ### 2.9.toContain
 
-判断集合是否包含某个值（可以是普通类型，和可以是对象）
+判断数组集合是否包含某个基础类型的值
 
 ```javascript
 it("toContain and not.toContain", function() {
@@ -355,14 +355,13 @@ it("toContain and not.toContain", function() {
 
   expect(arrStr).toContain("jack");
   expect(arrStr).not.toContain("Jack");
-  // ??? 不能用于对象类型
-  expect(arrObj).toContain({ name: "jack", age: 21 });
+  // ??? 不能用于对象类型 yong objectContaining
+  // expect(arrObj).toContain({ name: "jack", age: 21 });
   expect(arrObj).not.toContain({ name: "jack", age: 21 });
-  expect(arrObj).not.toContain({ name: "Jack", age: 21 });
 
   // ??? Expected array  To contain value
-  expect(aryAry).toContain([1]);
-  expect(aryAry).not.toContain([4]);
+  // expect(aryAry).toContain([1]);
+  expect(aryAry).not.toContain([1]);
 });
 ```
 
@@ -1015,37 +1014,37 @@ describe("A spy stub", function() {
   });
 
   foo.setBar(123);
-    console.log('111', bar, getValue);
+  console.log("111", bar, getValue);
 
-    expect(bar).toEqual(123);
+  expect(bar).toEqual(123);
 
-    var getValue = foo.getBar();
-    expect(getValue).toEqual(999);
+  var getValue = foo.getBar();
+  expect(getValue).toEqual(999);
 
-    console.log('222', bar, getValue);
+  console.log("222", bar, getValue);
 
-    foo.setBar.and.stub();
-    console.log('333-1', bar, getValue);
-    // 相当于'标记1'中的代码变为了 spyOn(foo, 'setBar')
-    // ??? 什么叫相当于
-    // ??? 等价于去除 add.callThrough add.returnValue 的影响
-    foo.getBar.and.stub();
-    console.log('333-2', bar, getValue);
-    // 相当于'标记2'中的代码变为了 spyOn(foo, 'getBar')
-    bar = null;
-    console.log('444', bar, getValue);
+  foo.setBar.and.stub();
+  console.log("333-1", bar, getValue);
+  // 相当于'标记1'中的代码变为了 spyOn(foo, 'setBar')
+  // ??? 什么叫相当于
+  // ??? 等价于去除 add.callThrough add.returnValue 的影响
+  foo.getBar.and.stub();
+  console.log("333-2", bar, getValue);
+  // 相当于'标记2'中的代码变为了 spyOn(foo, 'getBar')
+  bar = null;
+  console.log("444", bar, getValue);
 
-    foo.setBar(123);//模拟执行
-    console.log('555', bar, getValue);
-    expect(bar).toBe(null);
-    expect(foo.setBar).toHaveBeenCalled();
-    // 函数调用追踪并没有被重置 ???
+  foo.setBar(123); //模拟执行
+  console.log("555", bar, getValue);
+  expect(bar).toBe(null);
+  expect(foo.setBar).toHaveBeenCalled();
+  // 函数调用追踪并没有被重置 ???
 
-    getValue = foo.getBar();//模拟执行
-    console.log('666', bar, getValue);
-    expect(getValue).toEqual(undefined);
-    expect(foo.getBar).toHaveBeenCalled();
-    // 函数调用追踪并没有被重置 ???
+  getValue = foo.getBar(); //模拟执行
+  console.log("666", bar, getValue);
+  expect(getValue).toEqual(undefined);
+  expect(foo.getBar).toHaveBeenCalled();
+  // 函数调用追踪并没有被重置 ???
 });
 ```
 
@@ -1638,7 +1637,7 @@ describe("jasmine.objectContaining", function() {
 
 ### 6.4.jasmine.arrayContaining
 
-`jasmine.arrayContaining` 可以用来判断数组中是否有期望的值。
+`jasmine.arrayContaining` 可以用来判断数组中是否有期望的值或者子集。
 
 ```javascript
 describe("jasmine.arrayContaining", function() {
@@ -2005,9 +2004,9 @@ describe("注册'toBeGoofy'", function() {
 
 [Javascript 测试框架 Jasmine（六）：异步代码测试](http://keenwon.com/1223.html)
 
-
-
 阅读：
+
+[Chapter 4. Matchers in Depth](https://www.oreilly.com/library/view/javascript-testing-with/9781449356729/ch04.html)
 
 [Javascript 测试框架 Jasmine（七）：jqPaginator 测试实例](http://keenwon.com/1225.html)
 
