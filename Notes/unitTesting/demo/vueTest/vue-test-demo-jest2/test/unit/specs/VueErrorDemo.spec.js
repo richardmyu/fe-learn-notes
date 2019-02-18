@@ -2,26 +2,36 @@ import { shallowMount } from "@vue/test-utils";
 import VueErrorDemo from "@/components/VueErrorDemo.vue";
 
 // test
-/* test("VueErrorDemo.vue", () => {
+test("VueErrorDemo.vue", () => {
   const wrapper = shallowMount(VueErrorDemo);
   wrapper.setData({ username: "".repeat(7) });
   expect(wrapper.find(".error").exists()).toBe(true);
 
   wrapper.setData({ username: "Lachlan" });
   expect(wrapper.find(".error").exists()).not.toBe(true);
-}); */
+});
 
 // describe it
-/* describe("VueErrorDemo.vue", () => {
+describe("VueErrorDemo.vue", () => {
   it("renders a message and responds correctly to user input", () => {
-    const wrapper = shallowMount(VueErrorDemo, () => {
+    let data = () => {
+      return {
+        message: "Hello World",
+        username: ""
+      };
+    };
+    const wrapper = shallowMount(VueErrorDemo, { data: data });
+
+    // ???
+    /* const wrapper = shallowMount(VueErrorDemo, () => {
       return {
         data: {
           message: "Hello World",
           username: ""
         }
       };
-    });
+    }); */
+    console.log(wrapper.find(".message").text());
 
     expect(wrapper.find(".message").text()).toBe("Hello World");
     expect(wrapper.find(".error").exists()).toBeTruthy();
@@ -29,7 +39,7 @@ import VueErrorDemo from "@/components/VueErrorDemo.vue";
     wrapper.setData({ username: "Lachlan" });
     expect(wrapper.find(".error").exists()).toBeFalsy();
   });
-}); */
+});
 
 const factory = (values = {}) => {
   return shallowMount(VueErrorDemo, () => {
@@ -45,10 +55,10 @@ describe("VueErrorDemo.vue", () => {
     );
   });
 
-  it('renders ok',()=>{
-    const wrapper=factory();
-    expect(wrapper.element).toMatchSnapshot()
-  })
+  it("renders ok", () => {
+    const wrapper = factory();
+    expect(wrapper.element).toMatchSnapshot();
+  });
 
   it("renders an error when username is less than 7 characters", () => {
     const wrapper = factory({ username: "" });
@@ -62,9 +72,9 @@ describe("VueErrorDemo.vue", () => {
 
   it("does not render an error when username is 7 characters", () => {
     const wrapper = factory({ username: "lachlan" });
-    console.log(wrapper.find('input').text());
+    // console.log(wrapper.find("input").text());
 
-    console.log(wrapper.find(".error").text())
+    // console.log(wrapper.find(".error").text());
     expect(wrapper.find(".error").exists()).toBeTruthy();
   });
 });
