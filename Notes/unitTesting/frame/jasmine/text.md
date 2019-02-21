@@ -620,6 +620,7 @@ describe("A spy", function() {
         bar = value;
       }
     };
+    
 
     spyOn(foo, "setBar"); // 在 foo 对象上添加 spy
 

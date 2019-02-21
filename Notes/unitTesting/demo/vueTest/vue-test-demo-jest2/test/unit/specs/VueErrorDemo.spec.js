@@ -31,7 +31,7 @@ describe("VueErrorDemo.vue", () => {
         }
       };
     }); */
-    console.log(wrapper.find(".message").text());
+    // console.log(wrapper.find(".message").text());
 
     expect(wrapper.find(".message").text()).toBe("Hello World");
     expect(wrapper.find(".error").exists()).toBeTruthy();

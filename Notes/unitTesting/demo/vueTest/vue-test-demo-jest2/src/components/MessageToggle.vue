@@ -1,7 +1,7 @@
 <template>
   <div>
     <message :msg="msg"></message>
-    <button id="toggle-message" @click="toggleMessage">Change message</button>
+    <span id="toggle-message" @click="toggleMessage">Change message</span>
   </div>
 </template>
 

@@ -39,3 +39,12 @@ module.exports = {
 ```
 
 > 注意：如果添加在 `package.json` 无效
+
+## 问题
+
+在引入组件的情况下 `component.data().xx` 和 `wrapper.vm.xx` 有什么区别
+
+```javascript
+
+
+```
