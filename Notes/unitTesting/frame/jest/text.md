@@ -28,7 +28,14 @@ Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
 
 [前端测试框架 Jest 入门教程](http://huxinmin.com/home/5aec25fe92c98e1f5ee3007a.html)
 
-
 [测试框架 Jest 实例教程](https://juejin.im/post/5ba8b6256fb9a05cd7774432)
 
 [前端测试框架 Jest 系列教程 -- Mock Functions](https://www.bbsmax.com/A/qVdem06rdP/)
+
+[使用 Jest 测试 JavaScript (入门篇)](https://www.jianshu.com/p/70a4f026a0f1)
+
+[全栈测试实战：用 Jest 测试 Vue + Koa 全栈应用](https://molunerfinn.com/Use-Jest-To-Test-Vue-Koa/#%E5%89%8D%E8%A8%80)
+
+[如何為 vue 補上單元測試來確保品質(vue 單元測試系列-1)](https://dotblogs.com.tw/kinanson/2017/07/20/075338)
+
+[]()
