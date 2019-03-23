@@ -1,125 +1,129 @@
 # HTML 和 CSS 基础
 
-### 前端三层
+## 一.前端
 
-##### 网页
+### 1.网页
 
-网页是网站的基本元素,通俗来说一个HTML文档就是一个网页.
+网页是网站的基本元素，通俗来说一个 HTML 文档就是一个网页
 
-##### 网站
+### 2.网站
 
-由多个网页组成,共同为一个目标服务的网页集合.
+由多个网页组成，共同为一个目标服务的网页集合
 
-##### 站群
+### 3.站群
 
-由多个网站组成,为同一个公司服务.
+由多个网站组成，为同一个公司服务
 
-##### 浏览器
+### 4.浏览器
 
-用来显示网页(或者一个HTML文档)
+用来显示网页(或者一个 HTML 文档)
 
-##### 网页的基本组成
+### 5.网页的基本组成
 
 - HTML: 结构
 - CSS: 样式
 - JavaScript: 动态效果以及数据交互;
 
-###  HTML(超文本标记语言)
+## 二.HTML(超文本标记语言)
 
-网页文件本身就是一个文本文件(除了文字无其他), 只有通过特定的标记描述,才能在浏览器中正常的显示,在页面中遇到图片,音视频时如何用文本描述,需要引入超文本才能正常显示.
+网页文件本身就是一个文本文件(除了文字无其他)， 只有通过特定的标记描述，才能在浏览器中正常的显示，在页面中遇到图片，音视频时如何用文本描述，需要引入超文本才能正常显示.
 
-##### HTML的兼容问题
+### 1.HTML的兼容问题
 
-浏览器不同，对HTML的解析也不一致，产生的实际效果也不同，称之为兼容性问题。
+浏览器不同，对 HTML 的解析也不一致，产生的实际效果也不同，称之为兼容性问题。
 
-##### 标签语法
+### 2.标签语法
 
-```
-<div title="yf" style="color:blue;font-size:24px;font-weight:bold;">标签语法语法标签O(∩_∩)O哈哈~</div>
-```
+`<div title="yf" style="color:blue;font-size:24px;font-weight:bold;">标签语法语法标签O(∩_∩)O哈哈~</div>`
 
-##### 标签属性
+### 3.标签属性
 
-提供HTML元素更多的信息；一个标签可以有很多属性，用空格隔开；
+提供 HTML 元素更多的信息；一个标签可以有很多属性，用空格隔开；
 语法：`属性名=属性值（key="value")`
 
 > 标签分开始标签、结束标签和空标签；
 > 空标签只能进行功能上的添加，无法添加内容；
 > 标签和元素是用来标记和描述内容的，所有用户只能看到元素中的内容
 
-##### HTML元素
+### 4.HTML 元素
 
 由标签对及其中的内容组成，其内容可以为空。
 
-```
-<div>写什么(⊙o⊙)?</div>
-```
+`<div>写什么(⊙o⊙)?</div>`
 
-##### `a` 超链接/锚点
+### 5.`a` 超链接/锚点
 
 `<a href="" alt="" target="_black"/></a>`
 
-- `href`: 里面的值是url地址
+---
+
+- `href`: 里面的值是 `url` 地址
 - `alt`: 图片丢失时替代的文本提示
-- `target="_blank"`: 打开方式：在新窗口打开
+- `target="_blank"`: 在新窗口打开
 - `target="_self"`: 默认的打开方式，一般可以省略
 
-##### 如何解决超链接的跳转问题(空链接)
+---
 
-  - `<a href="javascript:;"></a>` 空占位
-  - `<a href="javascript: void (0);></a>"` 空占位（类上）
+### 6.如何解决超链接的跳转问题(空链接)
 
-> 锚点是配合id属性来使用的(id在一个页面中只能使用一次，不能同名)；id在a链接中，用#代替;(用a的name属性，也可以用来代替ID实现相互跳转)；不论哪一种情况，跳转以后都会在url上添加跳转的路径
+- `<a href="javascript:;"></a>` 空占位
 
+- `<a href="javascript:void(0);></a>"` 空占位（类上）
 
-##### table 表格
+> 锚点是配合 `id` 属性来使用的(`id` 在一个页面中只能使用一次，不能同名)；`id` 在 `a` 链接中，用 `#` 代替;(用 `a` 的 `name` 属性，也可以用来代替 `id` 实现相互跳转)；不论哪一种情况，跳转以后都会在 `url` 上添加跳转的路径。
+
+### 7.table 表格
+
+---
 
 - table 表格
   - caption 标题
   - thead 表头  标题单元格
-      - tr 行
-      - th 列
+    - tr 行
+    - th 列
   - tbody 表身  普通单元格
-      - tr 行
-      - td 列
+    - tr 行
+    - td 列
   - tfoot 表尾  普通单元格
-      - tr
-      - td
+    - tr
+    - td
+---
 
-> 表格中表头thead和表尾tfoot只能出现一次，表身tbody可以出现多次。我们一般把表头thead放置在表尾tfoot的前面，因为有时候tbody内容过多，加载过慢的情况。但是把thead放在tfoot的前面，浏览器解析的时候，也会按照正常的表头、表身、表尾顺序来解析
+> 表格中表头 `thead` 和表尾  `tfoot` 只能出现一次，表身 `tbody` 可以出现多次。我们一般把表头 `thead` 放置在表尾 `tfoot` 的前面，因为有时候 `tbody` 内容过多，加载过慢的情况。但是把 `thead` 放在 `tfoot` 的前面，浏览器解析的时候，也会按照正常的表头、表身、表尾顺序来解析
 
-##### `form`表单
+### 8.form 表单
 
-- label  用来描述表单功能的
+- `label` 用来描述表单功能的
 
 `<label></label>`
 
-- input
+- `input`
 
 `<input type="" name="" value="">`
 
+```javascript
+// type 类型
+// name 表单元素名称
+// value 显示在页面的提示
+
+// type 类型
+// password 密码
+// radio 单选按钮(用统一的name属性，可以构成组合单选)
+// checkbox  多选按钮
+// botton  按钮
+// submit 提交按钮（偶用的）
+
+// textarea  文本域
+// - maxlength 设置最大的长度
+// - minlength  设置最小的长度
+
+// select 下拉框
+<select name="" id=""></select>
+
+// option  选项
 ```
-type 类型
-name
-value 显示在页面的提示
 
-//type 类型
-password 密码
-radio 单选按钮(用统一的name属性，可以构成组合单选)
-checkbox  多选按钮
-botton  按钮
-submit 提交按钮（偶用的）
-
-textarea  文本域
-    maxlength 设置最大的长度
-    minlength  设置最小的长度
-
-select 下拉框
-	<select name="" id=""></select>
-option  选项
-```
-
-##### 声明文档
+### 9.声明文档
 
 `<!DOCTYPE html>`
 
@@ -127,10 +131,10 @@ option  选项
 
 > **浏览器是从上到下解析的**
 > 所有高版本都会向下兼容，所以在以后的工作中，我们直接将文档声明写成HTML5就可以了
-> 声明文档不区分大小写,必须写在HTML页面的第一行
+> 声明文档不区分大小写，必须写在HTML页面的第一行
 > 如果html文件没有写文档声明，会触发浏览器的怪异模式;文档声明不是html标签
 
-```
+```javascript
 <!DOCTYPE html>  //HTML5的声明文档
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -192,7 +196,7 @@ html文档名称，一个页面只有一个title元素，这个元素里面放�
 
 - color
   - 十六进制值 - 如"＃FF0000"
-  - 一个RGB值 - "RGB（255,0,0）"
+  - 一个RGB值 - "RGB（255，0，0）"
   - 颜色的名称 - 如"红"
 
 > 对于W3C标准的CSS：如果你定义了颜色属性，你还必须定义背景色属性。
@@ -400,11 +404,11 @@ type //可以省略，但是建议写全
 |类选择器|类名{}|.div1{}|给文档内所有该类名的标签添加样式|10|
 |ID选择器|ID名{}|#div1{}|给有ID名的标签添加样式|100|
 |通配符选择器| |*{}|给文档内所有标签添加样式|0~1|
-|并集选择器|选择器，选择器{}|h2,p{}|给不同的选择器添加相同的样式|不叠加|
+|并集选择器|选择器，选择器{}|h2，p{}|给不同的选择器添加相同的样式|不叠加|
 |交集选择器|选择器选择器{}|li.list1{}|更有针对性选择标签（实质是增加权重）|权和|
 |子代选择器|父级标签>子级标签{}|div>ul>li{}|特定选择直系子代添加样式|权和|
 |后代选择器|父级标签 子级标签{}|div ul li{}|作用于所有子代标签来添加样式|权和|
-|类型选择器|标签属性名{},<br/>属性名=属性值{}|[title]{}<br/>[type="text"{}]|通过标签的属性值的不同来区分元素|10|
+|类型选择器|标签属性名{}，<br/>属性名=属性值{}|[title]{}<br/>[type="text"{}]|通过标签的属性值的不同来区分元素|10|
 |伪类选择器|:伪类元素名{}<br/>标签:伪类元素名{}|::after{}<br/>a:after{}|指这个标签的一种状态|
 
 > 一个HTML元素可以有多个class属性值，每一个类名用空格隔开；(类名可以重复使用； ID属性值只能用一次；)
@@ -478,7 +482,7 @@ CSS引入伪类和伪元素概念是为了格式化文档树以外的信息。�
 
 ##### 1.动态伪类
 
-因为这些伪类并不存在于HTML中,而只有当用户和网站交互的时候才能体现出来，动态伪类包含两种，第一种是我们在链接中常看到的锚点伪类；如"`:link`","`:visited`";另外一种被称作用户行为伪类，如“`:hover`”,"`:active`"和"`:focus`"。
+因为这些伪类并不存在于HTML中，而只有当用户和网站交互的时候才能体现出来，动态伪类包含两种，第一种是我们在链接中常看到的锚点伪类；如"`:link`"，"`:visited`";另外一种被称作用户行为伪类，如“`:hover`”，"`:active`"和"`:focus`"。
 
 ```
 .demo a:link {color:gray;}     /*链接没有被访问时前景色为灰色*/
@@ -487,7 +491,7 @@ CSS引入伪类和伪元素概念是为了格式化文档树以外的信息。�
 .demo a:active{color:blue;}    /*鼠标点中激活链接那一下前景色为蓝色*/
 ```
 
-对于这四个锚点伪类的设置，有一点需要特别注意，那就是他们的先后顺序，要让他们遵守一个爱恨原则**LoVe/HAte**,也就是`link--visited--hover--active`。其中`:hover`和`:active`又同时被列入到用户行为伪类中，他们所表达的意思是：
+对于这四个锚点伪类的设置，有一点需要特别注意，那就是他们的先后顺序，要让他们遵守一个爱恨原则**LoVe/HAte**，也就是`link--visited--hover--active`。其中`:hover`和`:active`又同时被列入到用户行为伪类中，他们所表达的意思是：
 
 - `:hover` 用于当用户把鼠标移动到元素上面时的效果；**只能用于块状元素**
 
@@ -507,7 +511,7 @@ CSS引入伪类和伪元素概念是为了格式化文档树以外的信息。�
 input[type="text"]:disabled {border:1px solid #999;background-color: #fefefe;}
 ```
 
-> 这样一来就把页面中禁用的文本框应用了一个不同的样式。那么对于其他几个用法是一样的，这里就不在讲述。IE6-8不支持":checked",":enabled",":disabled"这三种选择器。
+> 这样一来就把页面中禁用的文本框应用了一个不同的样式。那么对于其他几个用法是一样的，这里就不在讲述。IE6-8不支持":checked"，":enabled"，":disabled"这三种选择器。
 
 ##### 3.CSS3的`:nth`选择器
 
@@ -535,14 +539,14 @@ input[type="text"]:disabled {border:1px solid #999;background-color: #fefefe;}
 
 > 请注意了，这里的“n”只能是"n"，不能使用其他字母代替，不然会没有任何效果的。
 
-- `:nth-child(2n)`,这中方式是前一种的变身，我们可以选择n的2倍数，当然其中“2”可以换成你自己需要的数字。
+- `:nth-child(2n)`，这中方式是前一种的变身，我们可以选择n的2倍数，当然其中“2”可以换成你自己需要的数字。
 
 > `:nth-child(2n)`也等于`:nth-child(even)`效果。
 
-- `:nth-child(2n-1)`,这个选择器是在":nth-child(2n)"基础上演变过来的，上面说了人是选择偶数，那么我们在他的基础上减去“1”就变成奇数选择。
-- `:nth-child(n+5)`,这个选择器是选择从第五个元素开始选择，这里的数字你可以自己定义;
-- `:nth-child(-n+5)`,这种选择器刚好和上面的选择器相反，这个是选择第5个前面的;
-- `:nth-child(4n+1)`,这种方法是实现隔几选一的效果，比如我们这里是隔三选一;
+- `:nth-child(2n-1)`，这个选择器是在":nth-child(2n)"基础上演变过来的，上面说了人是选择偶数，那么我们在他的基础上减去“1”就变成奇数选择。
+- `:nth-child(n+5)`，这个选择器是选择从第五个元素开始选择，这里的数字你可以自己定义;
+- `:nth-child(-n+5)`，这种选择器刚好和上面的选择器相反，这个是选择第5个前面的;
+- `:nth-child(4n+1)`，这种方法是实现隔几选一的效果，比如我们这里是隔三选一;
 
 ##### 3.否定选择器`:not`
 
@@ -566,7 +570,7 @@ CSS中的伪元素大家以前看过：“`:first-line`，`:first-letter`，`:be
 
 > 其中最常用的是：标签选择器，类选择器，ID选择器，后代选择器，并集选择器。
 
-> 类型选择器中`E[attr="value"]`和`E[attr*="value"]`是最实用的，其中`E[attr="value"]`能帮我们定位不同类型的元素，特别是表单form元素的操作，而`E[attr*="value"]`能在网站中帮助我们匹配不同类型的文件，比如说你的网站上不同的文件类型的链接需要使用不同的icon图标，用来帮助你的网站提高用户体验，就像前面的实例，可以通过这个属性给".doc",".pdf",".png",".ppt"配置不同的icon图标。
+> 类型选择器中`E[attr="value"]`和`E[attr*="value"]`是最实用的，其中`E[attr="value"]`能帮我们定位不同类型的元素，特别是表单form元素的操作，而`E[attr*="value"]`能在网站中帮助我们匹配不同类型的文件，比如说你的网站上不同的文件类型的链接需要使用不同的icon图标，用来帮助你的网站提高用户体验，就像前面的实例，可以通过这个属性给".doc"，".pdf"，".png"，".ppt"配置不同的icon图标。
 
 	对于`:hover`在IE6下只有a元素支持，`:active`只有IE7-6不支持，`:focus`在IE6-7下不被支持。
 
@@ -627,7 +631,7 @@ CSS属性继承是指，子级元素从父级元素继承的CSS属性。（一�
 - 2.默认状态下，宽度继承父级元素内容的宽，高度是由本身内容决定的；
 - 3.可以设置盒模型的CSS属性(`width/height/border/margin/padding`)
 - 4.可以嵌套其他元素
-	- `p,dt,h1-h6`不能嵌套块级元素
+	- `p，dt，h1-h6`不能嵌套块级元素
 
 > 人为设置的样式要比元素自带的样式权重高;
 > 块级元素这些特点，我们将其称之为BFC(block formatting context)块状元素在上下文中的渲染模式(块级元素应该怎么排布) ;
@@ -655,7 +659,7 @@ CSS属性继承是指，子级元素从父级元素继承的CSS属性。（一�
 - 4.在编辑代码时，元素之间有回车或者换行的时候，元素和元素之间有间隙
 	- 解决：给body设置`font-size:0;`
 - 5.不可以嵌套块状元素
-	- span可以嵌套i,em元素
+	- span可以嵌套i，em元素
 
 ##### 常用的行内块级元素
 
@@ -681,7 +685,7 @@ CSS属性继承是指，子级元素从父级元素继承的CSS属性。（一�
 
 ##### Background
 
-- 1.`background`:设置所有背景属性，属性如下：`color,image,repeat,position,size,origin,clip,attachment`
+- 1.`background`:设置所有背景属性，属性如下：`color，image，repeat，position，size，origin，clip，attachment`
 
 > 语法：`background: #00FF00 url(bgimage.gif) no-repeat fixed top;`
 > 通常建议使用这个属性，而不是分别使用单个属性，因为这个属性在较老的浏览器中能够得到更好的支持，而且需要键入的字母也更少。
@@ -689,7 +693,7 @@ CSS属性继承是指，子级元素从父级元素继承的CSS属性。（一�
 - 2.`background-color`:定义元素的背景色
   - `color_name` 规定颜色值为颜色名称的背景颜色（比如 red）
   - `hex_number` 规定颜色值为十六进制值的背景颜色（比如 #ff0000）
-  - `rgb_number` 规定颜色值为 rgb 代码的背景颜色（比如 rgb(255,0,0)）
+  - `rgb_number` 规定颜色值为 rgb 代码的背景颜色（比如 rgb(255，0，0)）
   - `transparent` 默认。背景颜色为透明
   - `inherit` 规定应该从父元素继承 `background-color` 属性的设置。
 
@@ -930,7 +934,7 @@ CSS属性继承是指，子级元素从父级元素继承的CSS属性。（一�
   - `circle` 标记是空心圆
   - `square` 标记是实心方块
   - `decimal` 标记是数字
-  - `decimal-leading-zero` 0开头的数字标记。(01, 02, 03, 等。)
+  - `decimal-leading-zero` 0开头的数字标记。(01， 02， 03， 等。)
 
 ##### Margin
 
@@ -940,7 +944,7 @@ CSS属性继承是指，子级元素从父级元素继承的CSS属性。（一�
   - `%` 规定基于父元素的宽度的百分比的外边距
   - `inherit` 规定应该从父元素继承外边距
 
-- 2.`margin-top/right/botom/left`:设置元素的上/右/下/左外边距(这个属性对于不可替换的inline元素没有效果,比如 `<tt>` 或者 `<span>`)
+- 2.`margin-top/right/botom/left`:设置元素的上/右/下/左外边距(这个属性对于不可替换的inline元素没有效果，比如 `<tt>` 或者 `<span>`)
   - `auto` 浏览器设置的上/右/下/左外边距。
   - `length` 定义固定的上/右/下/左外边距。默认值是0。
   - `%` 定义基于父对象总宽度的百分比上/右/下/左外边距。
@@ -1001,7 +1005,7 @@ BTW，在现代web应用中，其实我们有更多的纵向横向布局分割�
 
 如果你的项目需要兼容IE7，则只有关注这两个值就可以了：初始值lr-tb和tb-rl，对应于CSS3规范中的`horizontal-tb`和`vertical-rl`！其他9个属性值就让它们去过家家好了。
 
-如果你的项目只需要兼容IE8+，恭喜你，你可以和CSS3规范属性完全对应上了，而且IE8下的`writing-mode`要比IE7强大的多。我们需要关注：初始值`lr-tb`, `tb-rl`以及`tb-lr`，分别对应于CSS3中的`horizontal-tb`, `vertical-rl`以及`vertical-lr`。
+如果你的项目只需要兼容IE8+，恭喜你，你可以和CSS3规范属性完全对应上了，而且IE8下的`writing-mode`要比IE7强大的多。我们需要关注：初始值`lr-tb`， `tb-rl`以及`tb-lr`，分别对应于CSS3中的`horizontal-tb`， `vertical-rl`以及`vertical-lr`。
 
 看上去复杂的属性是不是变得很简单了，重新整一个实战版：
 
@@ -1043,13 +1047,13 @@ writing-mode: horizontal-tb | vertical-rl | vertical-lr;
 
 ##### `writing-mode`和`direction`的关系
 
-`writing-mode`, `direction`, `unicode-bidi`(MDN文档)是CSS世界中3大可以改变文本布局流向的属性。其中`direction`, `unicode-bidi`属于近亲，经常在一起使用，也是唯一两个不受CSS3 `all`属性影响的CSS属性，基本上就是和内联元素一起使用使用。
+`writing-mode`， `direction`， `unicode-bidi`(MDN文档)是CSS世界中3大可以改变文本布局流向的属性。其中`direction`， `unicode-bidi`属于近亲，经常在一起使用，也是唯一两个不受CSS3 `all`属性影响的CSS属性，基本上就是和内联元素一起使用使用。
 
-乍一看，`writing-mode`似乎包含了`direction`, `unicode-bidi`某些功能和行为，例如`vertical-rl`的`rl`和`direction`的`rtl`值有相似之处，都是从右往左。然而，实际上，两者是没有交集的。因为`vertical-rl`此时的文档流为垂直方向，`rl`表示水平方向，此时再设置`direction:rtl`，实际上值`rtl`改变的是垂直方向的内联元素的文本方向，一横一纵，没有交集。而且`writing-mode`可以对块状元素产生影响，直接改变了CSS世界的纵横规则，要比`direction`强大和鬼畜的多。
+乍一看，`writing-mode`似乎包含了`direction`， `unicode-bidi`某些功能和行为，例如`vertical-rl`的`rl`和`direction`的`rtl`值有相似之处，都是从右往左。然而，实际上，两者是没有交集的。因为`vertical-rl`此时的文档流为垂直方向，`rl`表示水平方向，此时再设置`direction:rtl`，实际上值`rtl`改变的是垂直方向的内联元素的文本方向，一横一纵，没有交集。而且`writing-mode`可以对块状元素产生影响，直接改变了CSS世界的纵横规则，要比`direction`强大和鬼畜的多。
 
 ##### `writing-mode`和`-start`属性的流机制
 
-CSS3中出现了诸多`-start/-end`属性（亦称为**CSS逻辑属性**），例如：`margin-start/margin-end, border-start/border-end, padding-start/padding-end`, 以及`text-align:start/text-align:end`声明。
+CSS3中出现了诸多`-start/-end`属性（亦称为**CSS逻辑属性**），例如：`margin-start/margin-end， border-start/border-end， padding-start/padding-end`， 以及`text-align:start/text-align:end`声明。
 
 下面问题来了，为什么会蹦出这么多`-start/-end`鬼？
 
@@ -1057,7 +1061,7 @@ CSS3中出现了诸多`-start/-end`属性（亦称为**CSS逻辑属性**），�
 
 在很久以前，我们的认知里，网页布局就一种流向，就是从左往右，从上往下，因此，我们使用`margin-left/margin-right`没有任何问题。但是，如果我们流是可以变化的，例如，一张图片距离左边缘20像素，我们希望其文档流是从右往左，同时距离右侧是20像素，怎么办？
 
-此时，`margin-left:20px`在图片`direction`变化后，就无效了；但是，`margin-start`就不会有此问题，所谓`start`, 指的是文档流开始的方向，换句话说，如果页面是默认的文档流，则`margin-start`等同于`margin-left`，如果是水平从右往左文档流，则`margin-start`等同于`margin-right`。`margin-end`也是类似的。
+此时，`margin-left:20px`在图片`direction`变化后，就无效了；但是，`margin-start`就不会有此问题，所谓`start`， 指的是文档流开始的方向，换句话说，如果页面是默认的文档流，则`margin-start`等同于`margin-left`，如果是水平从右往左文档流，则`margin-start`等同于`margin-right`。`margin-end`也是类似的。
 
 webkit内核的浏览器还支持`-before和-end`，默认流下的`margin-before`近似于`margin-top`，`margin-after`近似于`margin-bottom`，然而，规范貌似没提及，FireFox也没支持，`-before和-after`出场的机会并不多，为什么呢？因为实际上，配合`writing-mode`，`-start/-end`已经可以满足我们对逻辑位置的需求了，水平和垂直都可以控制，对立方向适用老的`-top/-bottom`.
 
@@ -1089,7 +1093,7 @@ box-sizing: unset;
 - --
 - `content-box` 是默认值，标准盒子模型。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。
 - --
-- `border-box` 告诉浏览器去理解你设置的边框`border`和内边距`padding`的值是包含在`width`内的。也就是说，如果你将一个元素的`width`设为100px,那么这100px会包含其它的`border`和`padding`，内容区的实际宽度会是`width`减去`border` + `padding`的计算值。大多数情况下这使得我们更容易的去设定一个元素的宽高。内容框不能为负，并且被分配到0，使得不可能使用border-box使元素消失。
+- `border-box` 告诉浏览器去理解你设置的边框`border`和内边距`padding`的值是包含在`width`内的。也就是说，如果你将一个元素的`width`设为100px，那么这100px会包含其它的`border`和`padding`，内容区的实际宽度会是`width`减去`border` + `padding`的计算值。大多数情况下这使得我们更容易的去设定一个元素的宽高。内容框不能为负，并且被分配到0，使得不可能使用border-box使元素消失。
 
 > 常用在移动端(设置宽时) `box-sizing:border-box`
 
@@ -1139,7 +1143,7 @@ none(不显示)
 
 行内块（`inline-block`）将会产生一个块元素，并以行内元素的方式放置。该元素的样式是以块元素的方式来渲染的，例如可以设置宽和高，然后以行内元素的方式放置在其上下文中，就像在行内元素的位置上替换成这个块元素一样。
 
-行内块还会遇到一个问题，行内块中间没有设置内外边距,但是会自动形成一个小小的白色间隙。这是因为 html 中的换行或空格被浏览器显示了出来。
+行内块还会遇到一个问题，行内块中间没有设置内外边距，但是会自动形成一个小小的白色间隙。这是因为 html 中的换行或空格被浏览器显示了出来。
 
 这个间距这个问题可以通过三种方式解决。
 
@@ -1164,7 +1168,7 @@ none(不显示)
 
 ### `overflow`
 
-指定当内容溢出其块级容器时,是否剪辑内容，显示滚动条或显示溢出的内容。
+指定当内容溢出其块级容器时，是否剪辑内容，显示滚动条或显示溢出的内容。
 
 ```
 /* 默认值。内容不会被修剪，会呈现在元素框之外 */
@@ -1211,7 +1215,7 @@ overflow: inherit;
 
 先说结论：文字之所以会环绕含有`float`属性的图片，是因为浮动破坏了正常的`line boxes`。
 
-> **`line boxes`模型**: `inline boxes`不会让内容成块显示，而是排成一行，如果外部含`inline`属性的标签(`<span>, <a>, <cite>`等)，则属于`inline boxes`，如果是个光秃秃的文字，则属于匿名`inline boxes`。`line boxes`的高度是由其内部最高的`inline boxes`的高度决定的
+> **`line boxes`模型**: `inline boxes`不会让内容成块显示，而是排成一行，如果外部含`inline`属性的标签(`<span>， <a>， <cite>`等)，则属于`inline boxes`，如果是个光秃秃的文字，则属于匿名`inline boxes`。`line boxes`的高度是由其内部最高的`inline boxes`的高度决定的
 
 > `content area` 是一种围绕文字看不见的box。`content area`的大小与`font-size`大小相关。
 
@@ -1235,7 +1239,7 @@ overflow: inherit;
 
 浮动破坏了图片的`inline box`，产生了两个结果：一是图片无法与文字同行显示，脱离了其原来所在的`line box`链；二是没有了高度（无`inline box` -> 无`line box` -> 无高度）。而这些结果恰恰是文字环绕图片显示所必须的。
 
-我们可以拿浮动元素与绝对定位元素做对比或许可以帮助理解。与浮动元素一样，绝对定位元素也具有“包裹性”，此“包裹性”适用于任何元素。那么，浮动元素与绝对定位元素的差别在哪里呢？我觉得最主要的差别在于：绝对定位的元素脱离了文档流，而浮动元素依旧在文档流中；而这造成的显示上的差异就是：同处于文档流中的文字实体不会与浮动元素重叠，而会与绝对定位元素重叠。这就是文字环绕显示的重要原因之一：虽然图片实际占据的高度为0，但是由于其宽度实体存在（包裹性），同样是`content area` 实体的文字不会与之重叠（外部的容器盒子`containing box`(`<p>, <div>, <li>`)会重叠），这就好比篮球场上站了个植物人，虽然其几乎不可能得分，运球之类，但是他的实体在那里，它可以阻挡同一水平空间上的同一类型的个体（即人）直接穿过去，要通过，得绕道。但是其无法阻挡整个球队的向前推进。
+我们可以拿浮动元素与绝对定位元素做对比或许可以帮助理解。与浮动元素一样，绝对定位元素也具有“包裹性”，此“包裹性”适用于任何元素。那么，浮动元素与绝对定位元素的差别在哪里呢？我觉得最主要的差别在于：绝对定位的元素脱离了文档流，而浮动元素依旧在文档流中；而这造成的显示上的差异就是：同处于文档流中的文字实体不会与浮动元素重叠，而会与绝对定位元素重叠。这就是文字环绕显示的重要原因之一：虽然图片实际占据的高度为0，但是由于其宽度实体存在（包裹性），同样是`content area` 实体的文字不会与之重叠（外部的容器盒子`containing box`(`<p>， <div>， <li>`)会重叠），这就好比篮球场上站了个植物人，虽然其几乎不可能得分，运球之类，但是他的实体在那里，它可以阻挡同一水平空间上的同一类型的个体（即人）直接穿过去，要通过，得绕道。但是其无法阻挡整个球队的向前推进。
 
 `display:inline-block`将对象呈递为内联对象，但是对象的内容作为块对象呈递。所谓对象呈递为内联对象就是元素呈递为`inline box`，所以浮动“包裹性”所产生的结果就是使得元素转为了`line box`模型中的`inline box`元素。浮动的“包裹性”让元素变成类似于`inline box`的元素，而浮动的“破坏性”正是破坏`inline box`元素的。对于`block`水平的这类块状元素需要先让其变成类似效果的内联元素，然后再破坏之。
 
@@ -1280,7 +1284,7 @@ float: unset;
 - 3.父元素设置`overflow:auto;` (IE6需要触发hasLayout)
 
 > 但是多个嵌套后，firefox某些情况会造成内容全选；IE中 `mouseover` 造成宽度改变时会出现最外层模块有滚动条等，firefox早期版本会无故产生`focus`等；
-> 如果有隐藏box，会因为将隐藏box的高度加入，使得总体高度增加，影响布局（2017.08.09,）
+> 如果有隐藏box，会因为将隐藏box的高度加入，使得总体高度增加，影响布局（2017.08.09，）
 
 - 4.给最后一个浮动元素之后加(从语义化的角度来看是不合理的)
 
@@ -1340,13 +1344,13 @@ float: unset;
 
 - 脱离文档流，但不在同一个平面上，因此不会相互识别，反而会相互覆盖；
 - 所有元素默认都会去找参照物的起点位置（参照物的左上角）
-- 不设置参照物时，参照物是ICB（inital container block, 初始包含块）([`body`这种说法不严谨](https://developer.mozilla.org/zh-CN/docs/Web/CSS/position))
+- 不设置参照物时，参照物是ICB（inital container block， 初始包含块）([`body`这种说法不严谨](https://developer.mozilla.org/zh-CN/docs/Web/CSS/position))
 - 人为设置参照物
 	- 只能是这个绝对定位元素的父级（或以上）元素
 	- 参照物必须带有定位属性的元素(相对、绝对、固定)
 - 绝对定位元素有宽高的时候，`top`和`bottom`的值同时设置，`top`生效。`left`和`right`的值同时设置，`left`生效
 - 在不设置宽高时，宽度和高度是由本身内容决定的
-- 绝对定位元素，如果不设置四个方向的值，并且同级之前有其他内容(元素),它会默认排到这个内容(元素)之后（绝对定位的元素脱离文档流以后，只会影响后面的元素，而不会影响前面的元素，所以当没有设定绝对定位元素的定位值时，绝对定位元素会默认从前面元素之后的左上角开始排布；）
+- 绝对定位元素，如果不设置四个方向的值，并且同级之前有其他内容(元素)，它会默认排到这个内容(元素)之后（绝对定位的元素脱离文档流以后，只会影响后面的元素，而不会影响前面的元素，所以当没有设定绝对定位元素的定位值时，绝对定位元素会默认从前面元素之后的左上角开始排布；）
 - 绝对定位元素设置宽高为100%，继承参照物的宽高
 
 > 父级（或以上）元素都有定位属性，绝对定位的参照物是离它最近的那个父级元素
@@ -1590,8 +1594,8 @@ p {
 
 ```
 <div style="height: 100px;width: 100px;float: left;background: lightblue">我是一个左浮动的元素</div>
-<div style="width: 200px; height: 200px;background: #eee">我是一个没有设置浮动,
-也没有触发 BFC 元素, width: 200px; height:200px; background: #eee;</div>
+<div style="width: 200px; height: 200px;background: #eee">我是一个没有设置浮动，
+也没有触发 BFC 元素， width: 200px; height:200px; background: #eee;</div>
 ```
 
 ![Alt text](./bfc-1.jpg)
@@ -1628,20 +1632,20 @@ p {
     思路二 -> 父级给`padding-left`，预留出来左侧区域的宽度，左侧用绝对定位上去，右侧用百分百宽度
 
 3. 左侧自适应 + 右侧固定宽度
-    思路一 -> 左侧用百分百宽度,右侧用绝对定位上去
+    思路一 -> 左侧用百分百宽度，右侧用绝对定位上去
 
 4. 左右固定宽度 + 中间自适应
     思路一 -> 左侧左浮动 + 中间百分之百（中间部分再分为左侧百分之百+右侧右浮动）
     思路二 -> 左侧左浮动 + 中间百分之百 + 右侧右浮动 （负`margin`法减掉左右侧）
-    思路三 -> 左右绝对定位 + 中间百分之百（父元素`padding-left`,`padding-right`预留左右侧的位置）
+    思路三 -> 左右绝对定位 + 中间百分之百（父元素`padding-left`，`padding-right`预留左右侧的位置）
 
 5. 左中右全自适应 -> 全部用百分比
 
-6. `font-size、padding,margin,height`直接量像素
+6. `font-size、padding，margin，height`直接量像素
 
 7. 小的地方可以用`display:inline-block;`让几个容器放在一排
 
-8. 小图标之类的，可以考虑用`::before,::after`来实现
+8. 小图标之类的，可以考虑用`::before，::after`来实现
 
 ### 媒体查询
 
@@ -1735,11 +1739,11 @@ media screen and (min-width: 320px){
 
 ### Flex 布局
 
-If you are looking at a blog post (or whatever) about Flexbox and you see `display: box;` or a property that is box-{*}, you are looking at the old 2009 version of Flexbox.
+If you are looking at a blog post (or whatever) about Flexbox and you see `display: box;` or a property that is box-{*}， you are looking at the old 2009 version of Flexbox.
 
-If you are looking at a blog post (or whatever) about Flexbox and you see `display: flexbox;` or the flex() function, you are looking at an awkward tweener phase in 2011.
+If you are looking at a blog post (or whatever) about Flexbox and you see `display: flexbox;` or the flex() function， you are looking at an awkward tweener phase in 2011.
 
-If you are looking at a blog post (or whatever) about Flexbox and you see `display: flex;` and flex-{*} properties, you are looking at the current (as of this writing) specification.
+If you are looking at a blog post (or whatever) about Flexbox and you see `display: flex;` and flex-{*} properties， you are looking at the current (as of this writing) specification.
 
 网页布局是 CSS 的一个重点应用。布局的传统解决方案，基于盒状模型，依赖 `display` 属性 + `position`属性 + `float`属性。它对于那些特殊布局非常不方便，比如，垂直居中就不容易实现。
 
@@ -1836,7 +1840,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 - `flex-start`（默认值）：左对齐
 - `flex-end`：右对齐
-- `center`： 居中,项目距两端的间距相同
+- `center`： 居中，项目距两端的间距相同
 - `space-between`：两端对齐，项目之间的间隔都相等。
 - `space-around`：每个项目两侧的间隔相等（所以，项目之间的间隔比项目与边框的间隔大一倍）
 
@@ -1939,7 +1943,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 ##### 4.5 `flex`
 
-  `flex`属性是`flex-grow`, `flex-shrink` 和 `flex-basis`的简写，默认值为`0 1 auto`。后两个属性可选。
+  `flex`属性是`flex-grow`， `flex-shrink` 和 `flex-basis`的简写，默认值为`0 1 auto`。后两个属性可选。
 
 ```
 .item {
@@ -2008,7 +2012,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 `.child{display:table;margin:0 auto;}`
 
 > 优点:只需要对自身进行设置
-> 不足:IE6,7需要调整结构
+> 不足:IE6，7需要调整结构
 
 - 4.使用绝对定位实现
 
@@ -2018,7 +2022,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 .child{position:absolute;left:50%;transform:translate(-50%);}
 ```
 
-> 不足：兼容性差,IE9及以上可用(表现效果是居中，但两边外边距值差一个盒宽)
+> 不足：兼容性差，IE9及以上可用(表现效果是居中，但两边外边距值差一个盒宽)
 
 - 5.实用flex布局实现
 
@@ -2056,7 +2060,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 ```
 .parent{position:relative;}
-.child{position:absolute;top:50%;transform:translate(0,-50%);}
+.child{position:absolute;top:50%;transform:translate(0，-50%);}
 ```
 
 - 3.实用flex实现
@@ -2065,7 +2069,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 ##### 水平垂直全部居中
 
-- 1.利用`vertical-align,text-align,inline-block`实现
+- 1.利用`vertical-align，text-align，inline-block`实现
 
 ```
 .parent{display:table-cell;vertical-align:middle;text-align:center;}
@@ -2076,7 +2080,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 ```
 .parent{position:relative;}
-.child{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+.child{position:absolute;top:50%;left:50%;transform:translate(-50%，-50%);}
 ```
 
 - 3.利用flex实现
@@ -2127,7 +2131,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 .left{width:100px;float:left;}
 .right{overflow:hidden;}
 .parent{overflow:hidden;}
-.left,.right{padding-bottom:9999px;margin-bottom:-9999px;}
+.left，.right{padding-bottom:9999px;margin-bottom:-9999px;}
 ```
 
 - 4.使用table实现
@@ -2135,7 +2139,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 ```
 .parent{display:table;table-layout:fixed;width:100%;}
 .left{width:100px;}
-.right,.left{display:table-cell;}
+.right，.left{display:table-cell;}
 ```
 
 > 实现的效果是两列等高的
@@ -2189,7 +2193,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 - 1.利用`float+margin`实现
 
 ```
-.left,.center{float:left:width:200px;}
+.left，.center{float:left:width:200px;}
 .right{margin-left:400px;}
 ```
 
@@ -2198,7 +2202,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 - 2.利用`float+overflow`实现
 
 ```
-.left,.center{float:left:width:200px;}
+.left，.center{float:left:width:200px;}
 .right{overflow:hidden;}
 ```
 
@@ -2208,8 +2212,8 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 ```
 .parent{display:table;table-layout:fixed;width:100%;}
-.left,.center,.right{display:table-cell;}
-.left,.center{width:200px;}
+.left，.center，.right{display:table-cell;}
+.left，.center{width:200px;}
 ```
 
 > 等高队列。父级盒子宽度减小，从右至左逐渐消失
@@ -2218,7 +2222,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 ```
 .parent{display:flex;}
-.left,.center{width:100px;}
+.left，.center{width:100px;}
 .right{flex:1}
 ```
 
@@ -2240,7 +2244,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 ```
 .parent{width:100%;display:table;table-layout:fixed}
-.left,.center,.right{display:table-cell;}
+.left，.center，.right{display:table-cell;}
 .left{width:100px;}
 .right{width:100px;}
 ```
@@ -2272,7 +2276,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 ```
 .parent{display:table;table-layout:fixed;width:100%;}
 .left{width:0.1%;}???
-.left,.right{display:table-cell;}
+.left，.right{display:table-cell;}
 ```
 
 > .left设置宽度，违背不定宽；不设置，两列都是自适应；
@@ -2384,7 +2388,7 @@ webkit内核的浏览器，必须加上`-webkit-`前缀。
 
 > 快捷键（meta:vp+tab）必须置于head之内; 写移动端页面必须加上；
 
-`<meta name="viewport" content="width=device-width,user-scale=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0>"`
+`<meta name="viewport" content="width=device-width，user-scale=no， initial-scale=1.0， maximum-scale=1.0， minimum-scale=1.0>"`
 
 - `viewport` 视口  手机端页面屏幕宽度
 - `width=device-width`  html页面宽度等于设备(手机，平板)的宽度
@@ -2566,7 +2570,7 @@ c、css文件可以被缓存、重用，维护成本降低
 表格表格类名，用交集选择器（？）或者直接标签选择器；
 
 ```
-table.tab1,table.tab2{
+table.tab1，table.tab2{
     border-collapse:separate;
     border-spacing:0px;}
 ```
