@@ -556,3 +556,29 @@ function getKeyCode(e){
 //fireFox: e.which
 ```
 
+# 学习中遇到的问题
+
+### 1.图片路径
+
+- 在 img 的 src 中，我们是以当前 html 网页做相对文件，来设置引入图片的路径。
+  在外部样式 css 文件中，设置某个元素的`background-image`的 url()；应当是以你当前的 css 文件所在路径做为相对路径找起。
+
+> 在文件项目中，如果是以 CSS 文件夹为起止点，而所寻图片位于同级文件夹之下，引用路径的时候，以起止点往上两个父级为记才能找到图片；当两级以后为软盘，则会变成绝对路径，而在 chrome 中无法显现；解决办法（猜测），再增加一个父级文件夹；
+
+### 2.`text-align:-webkit-match-parent`
+
+出现在 li 中，意为继承父级的 text-align 的属性（默认左对齐）；
+
+### 3.去除表格自带边框
+
+表格表格类名，用交集选择器（？）或者直接标签选择器；
+
+```
+table.tab1，table.tab2{
+    border-collapse:separate;
+    border-spacing:0px;}
+```
+
+### 4.`padding`失效原因
+
+1.padding 值不能为 auto，必须明确具体的数值；
