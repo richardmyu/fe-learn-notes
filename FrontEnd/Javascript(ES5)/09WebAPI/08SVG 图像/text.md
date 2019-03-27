@@ -9,17 +9,17 @@ SVG 文件可以直接插入网页，成为 DOM 的一部分，然后用 JavaScr
 ```html
 <!DOCTYPE html>
 <html>
-<head></head>
-<body>
-<svg
-  id="mysvg"
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 800 600"
-  preserveAspectRatio="xMidYMid meet"
->
-  <circle id="mycircle" cx="400" cy="300" r="50" />
-<svg>
-</body>
+  <head></head>
+  <body>
+    <svg
+      id="mysvg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 800 600"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <circle id="mycircle" cx="400" cy="300" r="50" />
+    <svg>
+  </body>
 </html>
 ```
 
@@ -29,8 +29,11 @@ SVG 代码也可以写在一个独立文件中，然后用 `<img>`、`<object>`�
 
 ```html
 <img src="circle.svg" />
+
 <object id="object" data="circle.svg" type="image/svg+xml"></object>
+
 <embed id="embed" src="icon.svg" type="image/svg+xml" />
+
 <iframe id="iframe" src="icon.svg"></iframe>
 ```
 
@@ -205,15 +208,15 @@ SVG 的 `CSS` 属性与网页元素有所不同。
 <svg width="300" height="180">
   <path
     d="
-  M 18,3
-  L 46,3
-  L 46,40
-  L 61,40
-  L 32,68
-  L 3,40
-  L 18,40
-  Z
-"
+      M 18,3
+      L 46,3
+      L 46,40
+      L 61,40
+      L 32,68
+      L 3,40
+      L 18,40
+      Z
+    "
   ></path>
 </svg>
 ```
@@ -426,7 +429,7 @@ circle:hover {
 
 然后，可以用 JavaScript 代码操作 SVG。
 
-```javascript
+```js
 var mycircle = document.getElementById("mycircle");
 
 mycircle.addEventListener(
@@ -439,7 +442,7 @@ mycircle.addEventListener(
 );
 ```
 
-上面代码指定，如果点击图形，就改写 `circle` 元素的 r 属性。
+上面代码指定，如果点击图形，就改写 `circle` 元素的 `r` 属性。
 
 ### 3.2 获取 SVG DOM
 

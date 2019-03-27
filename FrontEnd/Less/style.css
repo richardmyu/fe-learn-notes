@@ -1,0 +1,15 @@
+.container {
+  background-color: #e7e7e7;
+  width: 100%;
+}
+.container .header {
+  color: #333;
+  height: 60px;
+}
+.container h1,
+.container h3 {
+  color: #333;
+}
+.container p {
+  color: #4d926f;
+}
