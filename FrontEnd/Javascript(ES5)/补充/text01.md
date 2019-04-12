@@ -1,16 +1,8 @@
 # 关于 JS 一些问题的详解
 
-### 1.src 与 href 的区别
+## 1.JavaScript 中函数传参问题
 
-### 2.`<script>`与`<img>`的 src 属性的跨域问题
-
-### 3.`String()`,`toString()`和`valueOf()`的原理及区别
-
-### 4.JavaScript 中函数传参问题
-
-##### 传参问题
-
-JS 中传参有两种方式：_by value and by sharing_，像 C，C++，Java，他们传参方式是*by value*和*by reference*。前者就是传值，后者是传址。而 JS 也是这样的，前者是传值，后者是传址。
+JS 中传参有两种方式："by value and by sharing"，像 C，C++，Java，他们传参方式是 *by value* 和 *by reference*。前者就是传值，后者是传址。而 JS 也是这样的，前者是传值，后者是传址。
 [Is JavaScript a pass-by-reference or pass-by-value language?](https://stackoverflow.com/questions/518000/is-javascript-a-pass-by-reference-or-pass-by-value-language?lq=1)
 
 ```javascript
@@ -29,7 +21,7 @@ console.log(obj1.item); //changed
 console.log(obj2.item); //unchanged
 ```
 
-### 5.函数与形参,局部变量同名问题
+## 2.函数与形参,局部变量同名问题
 
 - 同名（变量声明不涉及到 let 和 const 的情况）
 
@@ -58,18 +50,18 @@ testOrder("hi");
 //2.可以把函数看做特殊的变量，即在声明的同时赋予该变量一个函数对象作为值，并且声明的优先级高于其他普通的变量声明；也可以将这个函数对象看做特殊的“undefined”，即其初始值，若在函数之后拥有同名的变量，忽略变量的声明，但不忽略变量的赋值；同时注意该函数对象不会覆盖之前同名变量的值，即被赋值的变量遇到同名函数，会忽略函数的声明及其赋值（及函数对象），若变量只声明未赋值，则会忽略声明，但会将函数对象赋给变量（这样一来就会把这个普通变量变成函数）；
 ```
 
-### 6.`String`方法中的`indexOf()`与`lastIndexOf()`在匹配空字符和空数组的问题
+## 3.String 方法中的 indexOf 与 lastIndexOf 在匹配空字符和空数组的问题
 
-衍生问题：在字符方法中（indexOf(),lastIndexOf(),concat()...），为什么将一些非字符类型的参数转换为字符类型的参数或者说为什么应该输入字符型参数的参数允许输入非字符型的参数？？？这样的设计有什么目的？？？
+衍生问题：在字符方法中（`indexOf`,`lastIndexOf`,`concat`...），为什么将一些非字符类型的参数转换为字符类型的参数或者说为什么应该输入字符型参数的参数允许输入非字符型的参数？？？这样的设计有什么目的？？？
 
-#### forEach,for in, for,for of 的区别
+## 4.forEach,for in, for,for of 的区别
 
 for 编程式：
 forEach() 声明式：不关心如何实现；没有返回值；
 for - in key 是 string;数组的私有属性也会遍历出来;key 代表索引;
 for - of 不会遍历私有属性(对象);支持 return；key 代表遍历项;
 
-#### 12.`$$`和`RegExp.$n`的应用
+## 5.`$$` 和 `RegExp.$n` 的应用
 
 ```javascript
 //$的使用（替换文本中$有特殊意义，若需要使用$字符，则要写成$$形式；）
@@ -136,5 +128,3 @@ console.log(s); //mnnnqnan
 console.log(s1); //men{1}q{2}a{3}
 //mnnnqnan
 ```
-
-### js 中函数的参数声明是 var 声明类型还是 let 声明类型？？？
