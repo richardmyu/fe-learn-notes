@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>align-items</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      h3 {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      p{
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .stage {
+        margin: 0 auto 50px;
+        width: 80%;
+        border: 1px solid gray;
+        padding: 30px;
+        display: flex;
+        border-radius: 5px;
+      }
+      .stage1 {
+        align-items: flex-start;
+      }
+      .stage2 {
+        align-items: flex-end;
+      }
+      .stage3 {
+        align-items: center;
+      }
+      .stage4 {
+        align-items: baseline;
+      }
+      .stage5 {
+        align-items: stretch;
+      }
+
+      .stage .item {
+        width: 60px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        text-align: center;
+        padding: 60px 10px;
+      }
+      .item1,
+      .item6 {
+        /* height: 200px; */
+        background: red;
+        font-size: 12px;
+      }
+      .item2,
+      .item7 {
+        /* height: 280px; */
+        background: orange;
+        font-size: 16px;
+      }
+      .item3,
+      .item8 {
+        /* height: 300px; */
+        background: yellow;
+        font-size: 20px;
+      }
+      .item4,
+      .item9 {
+        /* height: 120px; */
+        background: green;
+        font-size: 24px;
+      }
+      .item5,
+      .item10 {
+        /* height: 180px; */
+        background: blue;
+        font-size: 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>align-items: flex-start</h3>
+    <div class="stage stage1">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+      <!-- <div class="item item5">5</div> -->
+      <!-- <div class="item item6">6</div> -->
+      <!-- <div class="item item7">7</div> -->
+      <!-- <div class="item item8">8</div> -->
+      <!-- <div class="item item9">9</div> -->
+      <!-- <div class="item item10">10</div> -->
+    </div>
+
+    <h3>align-items: flex-end;</h3>
+    <div class="stage stage2">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+      <!-- <div class="item item5">5</div> -->
+      <!-- <div class="item item6">6</div> -->
+      <!-- <div class="item item7">7</div> -->
+      <!-- <div class="item item8">8</div> -->
+      <!-- <div class="item item9">9</div> -->
+      <!-- <div class="item item10">10</div> -->
+    </div>
+
+    <h3>align-items: center;</h3>
+    <div class="stage stage3">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+      <!-- <div class="item item5">5</div> -->
+      <!-- <div class="item item6">6</div> -->
+      <!-- <div class="item item7">7</div> -->
+      <!-- <div class="item item8">8</div> -->
+      <!-- <div class="item item9">9</div> -->
+      <!-- <div class="item item10">10</div> -->
+    </div>
+
+    <h3>align-items: baseline;</h3>
+    <p>项目的第一行文字的基线对齐</p>
+    <div class="stage stage4">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+      <!-- <div class="item item5">5</div> -->
+      <!-- <div class="item item6">6</div> -->
+      <!-- <div class="item item7">7</div> -->
+      <!-- <div class="item item8">8</div> -->
+      <!-- <div class="item item9">9</div> -->
+      <!-- <div class="item item10">10</div> -->
+    </div>
+
+    <h3>align-items: stretch;（默认值）</h3>
+    <p>如果项目未设置高度或设为auto，将占满整个容器的高度</p>
+    <div class="stage stage5">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+      <!-- <div class="item item5">5</div> -->
+      <!-- <div class="item item6">6</div> -->
+      <!-- <div class="item item7">7</div> -->
+      <!-- <div class="item item8">8</div> -->
+      <!-- <div class="item item9">9</div> -->
+      <!-- <div class="item item10">10</div> -->
+    </div>
+  </body>
+</html>
