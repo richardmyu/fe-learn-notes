@@ -8,6 +8,14 @@
 
 flex: 弹性布局
 
+[Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+
+[CSS3 弹性盒子(Flex Box)](http://www.runoob.com/css3/css3-flexbox.html)
+
+[A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+[A Visual Guide to CSS3 Flexbox Properties](https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties)
+
 > 弹性容器外及弹性子元素内是正常渲染的。弹性盒子只定义了弹性子元素如何在弹性容器内布局。
 > 弹性子元素通常在弹性盒子内一行显示。默认情况每个容器只有一行。
 
@@ -21,28 +29,46 @@ flex: 弹性布局
   - `column` 纵向排列(从上往下)
   - `column-reverse` 反转纵向排列
 
+---
+
 - **flex-wrap** 属性定义是否换行以及如何换行
-  - `flex-wrap: nowrap | wrap | wrap-reverse;`
+  - `nowrap`  默认， 弹性容器为单行
+  - `wrap` 多行。溢出的部分会被放置到新行
+  - `wrap-reverse` 反转 wrap 排列
+
+---
 
 - **flex-flow** 属性是 `flex-direction` 属性和 `flex-wrap` 属性的简写形式
   - 默认值为 `row nowrap`
+
+---
 
 - **justify-content** 属性定义了项目在主轴上的对齐方式
   - `flex-start` 项目向行头紧挨着填充(默认值)
   - `flex-end` 项目向行尾紧挨着填充
   - `center` 项目居中紧挨着填充（如果剩余的自由空间是负的，~~则弹性项目将在两个方向上同时溢出~~按项目宽度比进行缩小）
   - `space-between` 弹性项目平均分布在该行上。如果剩余空间为负或者只有一个弹性项，则该值等同于 `flex-start`(空间为负时所用项目按照宽度比放缩)。否则，第 1 个弹性项的外边距和行的 main-start 边线对齐，而最后 1 个弹性项的外边距和行的 main-end 边线对齐，然后剩余的弹性项分布在该行上，相邻项目的间隔相等。
-  - `space-around` 弹性项目平均分布在该行上，两边留有一半的间隔空间。如果剩余空间为负或者只有一个弹性项，则该值等同于 `center`。否则，弹性项目沿该行分布，且彼此间隔相等，同时首尾两边和弹性容器之间留有一半的间隔
+  - `space-around` 弹性项目平均分布在该行上，两边留有一半的间隔空间。如果剩余空间为负或者只有一个弹性项，则该值等同于 `center`(空间为负时所用项目按照宽度比放缩)。否则，弹性项目沿该行分布，且彼此间隔相等，同时首尾两边和弹性容器之间留有一半的间隔
+  - `space-evenly` 所有间隔相等分布
+
+---
 
 - **align-items** 属性定义项目在交叉轴上如何对齐
   - `flex-start` 项目起始位置的边界紧靠住该行的侧轴起始边界
   - `flex-end` 项目起始位置的边界紧靠住该行的侧轴结束边界
   - `center` 项目该行的侧轴（纵轴）上居中放置（如果该行的尺寸小于弹性盒子元素的尺寸，~~则会向两个方向溢出相同的长度~~，按宽度比放缩）
-  - `baseline` 项目的行内轴与侧轴为同一条，则该值与 `flex-start` 等效。其它情况下，该值将参与基线对齐
+  - `baseline` 基线对齐
   - `stretch` 如果指定侧轴大小的属性值为 `auto`，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照 `min/max-width/height` 属性的限制(即项目没有指定高度或者设定为 `auto`，则项目的高度会按照父级盒子的高度计，但会受到 `min/max-width/height` 的限制，定高情况下等效 `flex-start`)
 
+---
+
 - **align-content** 属性定义了多根轴线的对齐方式（如果项目只有一根轴线，该属性不起作用）
-  - `align-content: flex-start | flex-end | center | space-between | space-around | stretch;`
+  - `flex-start` 各行向弹性盒容器的起始位置堆叠
+  - `flex-end` 各行向弹性盒容器的结束位置堆叠
+  - `center` 各行向弹性盒容器的中间位置堆叠
+  - `space-between` 各行在弹性盒容器中平均分布
+  - `space-around` 各行在弹性盒容器中平均分布，两端保留子元素与子元素之间间距大小的一半
+  - `stretch` 默认。各行将会伸展以占用剩余的空间
 
 ---
 
@@ -60,13 +86,25 @@ flex: 弹性布局
   - `flex-shrink: <number>; /* default 1 */`
 
 - **flex-basis** 属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为 `auto`，即项目的本来大小
-  - `flex-basis: <length> | auto; /* default auto */`
+  - `flex-basis: <length>; /* default auto */`
+
+---
 
 - **flex** 属性是 `flex-grow`, `flex-shrink` 和 `flex-basis` 的简写，默认值为 `0 1 auto`。后两个属性可选
-  - `flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]`
+  - `none` 等价 `0 0 auto`
+  - `auto` 等价 `1 1 auto`
+  - `initial` 等价 `0 1 auto`(默认值)
+  - `inherit` 从父元素继承
+
+---
 
 - **align-self** 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖 `align-items` 属性。默认值为 `auto`，表示继承父元素的 `align-items` 属性，如果没有父元素，则等同于 `stretch`
-  - `align-self: auto | flex-start | flex-end | center | baseline | stretch;`
+  - `auto` 如果 `align-self` 的值为 `auto`，则其计算值为元素的父元素的 `align-items` 值，如果其没有父元素，则计算值为 `stretch`
+  - `flex-start` 起始位置的边界紧靠住该行的侧轴起始边界
+  - `flex-end` 起始位置的边界紧靠住该行的侧轴结束边界
+  - `center` 居中放置
+  - `baseline` 基线对齐
+  - `stretch` 如果指定侧轴大小的属性值为 `auto`，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照 `min/max-width/height` 属性的限制
 
 ---
 

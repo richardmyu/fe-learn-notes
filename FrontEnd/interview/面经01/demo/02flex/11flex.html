@@ -37,6 +37,11 @@
       .stage3 .item3 {
         flex: none; /* 0 0 auto*/
       }
+      .stage4 .item1,
+      .stage4 .item2,
+      .stage4 .item3 {
+        flex: initial; /* 0 1 auto*/
+      }
       .stage .item {
         height: 30px;
         line-height: 30px;
@@ -75,8 +80,15 @@
       <div class="item item3">3</div>
     </div>
 
-    <h3>flex-basis: none;</h3>
+    <h3>flex: none;</h3>
     <div class="stage stage3">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+    </div>
+
+    <h3>flex: initial;</h3>
+    <div class="stage stage4">
       <div class="item item1">1</div>
       <div class="item item2">2</div>
       <div class="item item3">3</div>
