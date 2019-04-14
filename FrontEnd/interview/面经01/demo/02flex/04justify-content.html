@@ -18,40 +18,65 @@
         margin: 0 auto 50px;
         width: 80%;
         border: 1px solid gray;
-        padding: 30px;
+        /* padding: 30px; */
         display: flex;
         border-radius: 5px;
       }
+
       .stage1 {
         justify-content: flex-start;
       }
       .stage2 {
         justify-content: flex-end;
       }
-      .stage3 {
+      .stage3_1 {
+        justify-content: center;
+        width: 200px;
+      }
+      .stage3_2 {
         justify-content: center;
       }
-      .stage4 {
+      .stage3_2 .item{
+        width: 600px;
+      }
+
+      .stage4_1 {
+        justify-content: space-between;
+        width: 200px;
+      }
+      .stage4_2 {
         justify-content: space-between;
       }
-      .stage5 {
+      .stage4_3 {
+        justify-content: space-between;
+      }
+
+      .stage5_1 {
+        justify-content: space-around;
+        width: 200px;
+      }
+      .stage5_2 {
         justify-content: space-around;
       }
+      .stage5_3 {
+        justify-content: space-around;
+      }
+
       .stage .item {
         height: 30px;
         line-height: 30px;
+        margin-top: 10px;
         margin-bottom: 10px;
-        margin-left: 10px;
         text-align: center;
       }
       .item1,
       .item6 {
-        width: 200px;
+        width: 100px;
         background: red;
       }
       .item2,
       .item7 {
-        width: 280px;
+        width: 200px;
         background: orange;
       }
       .item3,
@@ -61,12 +86,12 @@
       }
       .item4,
       .item9 {
-        width: 120px;
+        width: 150px;
         background: green;
       }
       .item5,
       .item10 {
-        width: 180px;
+        width: 250px;
         background: blue;
       }
     </style>
@@ -78,12 +103,6 @@
       <div class="item item2">2</div>
       <div class="item item3">3</div>
       <div class="item item4">4</div>
-      <!-- <div class="item item5">5</div> -->
-      <!-- <div class="item item6">6</div> -->
-      <!-- <div class="item item7">7</div> -->
-      <!-- <div class="item item8">8</div> -->
-      <!-- <div class="item item9">9</div> -->
-      <!-- <div class="item item10">10</div> -->
     </div>
 
     <h3>justify-content: flex-end;</h3>
@@ -92,54 +111,61 @@
       <div class="item item2">2</div>
       <div class="item item3">3</div>
       <div class="item item4">4</div>
-      <!-- <div class="item item5">5</div> -->
-      <!-- <div class="item item6">6</div> -->
-      <!-- <div class="item item7">7</div> -->
-      <!-- <div class="item item8">8</div> -->
-      <!-- <div class="item item9">9</div> -->
-      <!-- <div class="item item10">10</div> -->
     </div>
 
-    <h3>justify-content: center;</h3>
-    <div class="stage stage3">
+    <h3>justify-content: center;（未溢出）</h3>
+    <div class="stage stage3_1">
       <div class="item item1">1</div>
       <div class="item item2">2</div>
       <div class="item item3">3</div>
       <div class="item item4">4</div>
-      <!-- <div class="item item5">5</div> -->
-      <!-- <div class="item item6">6</div> -->
-      <!-- <div class="item item7">7</div> -->
-      <!-- <div class="item item8">8</div> -->
-      <!-- <div class="item item9">9</div> -->
-      <!-- <div class="item item10">10</div> -->
+    </div>
+    <h3>justify-content: center;（溢出）</h3>
+    <div class="stage stage3_2">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+    </div>
+
+    <h3>justify-content: space-between;(剩余空间为负)</h3>
+    <div class="stage stage4_1">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+    </div>
+
+    <h3>justify-content: space-between;(只有一个弹性项)</h3>
+    <div class="stage stage4_2">
+      <div class="item item1">1</div>
     </div>
 
     <h3>justify-content: space-between;</h3>
-    <div class="stage stage4">
+    <div class="stage stage4_3">
       <div class="item item1">1</div>
       <div class="item item2">2</div>
       <div class="item item3">3</div>
       <div class="item item4">4</div>
-      <!-- <div class="item item5">5</div> -->
-      <!-- <div class="item item6">6</div> -->
-      <!-- <div class="item item7">7</div> -->
-      <!-- <div class="item item8">8</div> -->
-      <!-- <div class="item item9">9</div> -->
-      <!-- <div class="item item10">10</div> -->
     </div>
 
-    <h3>justify-content: space-around;</h3>
-    <div class="stage stage5">
+    <h3>justify-content: space-around;(剩余空间为负)</h3>
+    <div class="stage stage5_1">
       <div class="item item1">1</div>
       <div class="item item2">2</div>
       <div class="item item3">3</div>
       <div class="item item4">4</div>
-      <!-- <div class="item item5">5</div> -->
-      <!-- <div class="item item6">6</div> -->
-      <!-- <div class="item item7">7</div> -->
-      <!-- <div class="item item8">8</div> -->
-      <!-- <div class="item item9">9</div> -->
-      <!-- <div class="item item10">10</div> -->
+    </div>
+    <h3>justify-content: space-around;(只有一个弹性项)</h3>
+    <div class="stage stage5_2">
+      <div class="item item1">1</div>
+    </div>
+    <h3>justify-content: space-around;</h3>
+    <div class="stage stage5_3">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
     </div>
   </body>
 </html>
