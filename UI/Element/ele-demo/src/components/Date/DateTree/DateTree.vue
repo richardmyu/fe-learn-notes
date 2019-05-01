@@ -240,6 +240,8 @@ export default {
       let isExist = false;
       if (!value) return true;
       // 查询当前节点
+      console.log("===============");
+      console.log("当前查询节点：", data.id);
       isExist = data.label.indexOf(value) !== -1;
 
       if (!isExist) {
@@ -251,35 +253,42 @@ export default {
         this.nodeChildren(value, data, node);
       } else {
         // 当前节点满足条件--保存
-        console.log("节点" + data.id + "满足条件");
+        console.log("节点" + data.id + "满足条件,结束查询");
         return true;
       }
     },
 
     nodeChildren(value, data, node) {
       let childExist = false;
+      let length = 0;
       // 没有子节点，移除
       if (!data.children) {
         console.log("节点" + data.id + "没有子节点,移除");
-        this.remove(node, data);
+        this.remove(node,data);
         return false;
       }
+      console.log("节点" + data.id + "的子节点：");
       // 有子节点
       childExist = data.children.some(item => {
+        console.log(item.id);
         return item.label.indexOf(value) !== -1;
       });
+      console.log("子节点状态：", childExist);
       if (childExist) {
         // 子节点存在并且至少有一个满足条件
-        console.log("节点" + data.id + "的子节点满足条件");
+        console.log("节点" + data.id + "至少有一个子节点满足条件");
         return true;
       } else {
         // 子节点存在，但都不满足条件
         console.log(
-          "节点" + data.id + "的子节点不满足条件，进一步测试子节点的子节点"
+          "节点" + data.id + "的子节点都不满足条件，进一步测试子节点的子节点"
         );
+        // ??? 只能检测到奇数位的子节点，会因为删除操作，无法检测偶数位的子节点
         data.children.forEach(item => {
+          console.log("子节点的子节点：", item.id);
           this.nodeChildren(value, item, this.$refs.tree2.getNode(item));
         });
+        // 最大的问题，多层嵌套，无法回溯移除祖父级及以上的节点。。。
       }
     }
   },
