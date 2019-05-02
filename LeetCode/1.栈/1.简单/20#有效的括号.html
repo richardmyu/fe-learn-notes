@@ -48,7 +48,7 @@
        * @param {string} s
        * @return {boolean}
        */
-      var isValid = function(s) {
+      /* var isValid = function(s) {
         debugger;
         if (s === "") {
           return true;
@@ -144,25 +144,40 @@
             return false;
           }
         }
+      }; */
+
+      /**
+       * @param {string} s
+       * @return {boolean}
+       */
+      var isValid = function(s) {
+        for (let i = 0; i < s.length; i + 2) {
+          if (s.indexOf("()") !== -1) {
+            s = s.replace("()", "");
+          } else if (s.indexOf("[]") !== -1) {
+            s = s.replace("[]", "");
+          } else if (s.indexOf("{}") !== -1) {
+            s = s.replace("{}", "");
+          } else {
+            return false;
+          }
+        }
+        if (s === "") {
+          return true;
+        } else {
+          return false;
+        }
       };
 
-      // console.log(isValid("("));
-      // console.log("===============");
-      // console.log(isValid("()"));
-      // console.log("===============");
-      // console.log(isValid("(()"));
-      // console.log("===============");
-      // console.log(isValid("([)]"));
-      // console.log("===============");
-      // console.log(isValid("()[]{}"));
-      // console.log("===============");
-      // console.log(isValid("(]"));
-      // console.log("===============");
-      // console.log(isValid("{[]}"));
-      // console.log("===============");
-      // console.log(isValid(""));
-      // console.log("===============");
-      // console.log(isValid("(([]){})"));
+      console.log(isValid("("));
+      console.log(isValid("()"));
+      console.log(isValid("(()"));
+      console.log(isValid("([)]"));
+      console.log(isValid("()[]{}"));
+      console.log(isValid("(]"));
+      console.log(isValid("{[]}"));
+      console.log(isValid(""));
+      console.log(isValid("(([]){})"));
       console.log(isValid("{}{}()[]"));
     </script>
   </body>
