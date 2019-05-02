@@ -168,7 +168,7 @@
           return false;
         }
       };
-
+      console.time("timeStart");
       console.log(isValid("("));
       console.log(isValid("()"));
       console.log(isValid("(()"));
@@ -179,6 +179,20 @@
       console.log(isValid(""));
       console.log(isValid("(([]){})"));
       console.log(isValid("{}{}()[]"));
+      console.timeEnd("timeStart");
+      console.log("********************");
     </script>
+    <!-- <script src="./ex001.js"></script>
+    <script src="./ex002.js"></script>
+    <script src="./ex003.js"></script>
+    <script src="./ex004.js"></script>
+    <script src="./ex005.js"></script>
+    <script src="./ex006.js"></script>
+    <script src="./ex007.js"></script>
+    <script src="./ex008.js"></script>
+    <script src="./ex009.js"></script>
+    <script src="./ex0010.js"></script>
+    <script src="./ex0011.js"></script>
+    <script src="./ex0012.js"></script> -->
   </body>
 </html>
