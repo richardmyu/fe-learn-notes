@@ -7,14 +7,13 @@
 字符串对象是一个类似数组的对象（很像数组，但不是数组）。
 
 ```javascript
-new String("abc")(
-  // String {0: "a", 1: "b", 2: "c", length: 3}
+new String("abc");
+// String {0: "a", 1: "b", 2: "c", length: 3}
 
-  new String("abc")
-)[1]; // "b"
+new String("abc")[1]; // "b"
 ```
 
-除了用作构造函数，`String`对象还可以当作工具方法使用，将任意类型的值转为字符串。
+除了用作构造函数，`String` 对象还可以当作工具方法使用，将任意类型的值转为字符串。
 
 #### 5.2.静态方法
 
@@ -29,9 +28,9 @@ String.fromCharCode(104, 101, 108, 108, 111);
 // "hello"
 ```
 
-> 注意，该方法不支持 `Unicode` 码点大于`0xFFFF`的字符，即传入的参数不能大于`0xFFFF`（即十进制的 65535）。这是因为`String.fromCharCode`发现参数值大于`0xFFFF`，就会忽略多出的位。
+> 注意，该方法不支持 `Unicode` 码点大于 `0xFFFF` 的字符，即传入的参数不能大于 `0xFFFF`（即十进制的 65535）。这是因为 `String.fromCharCode` 发现参数值大于 `0xFFFF`，就会忽略多出的位。
 
-这种现象的根本原因在于，码点大于`0xFFFF`的字符占用四个字节，而 JavaScript 默认支持两个字节的字符。这种情况下，必须把`0x20BB7`拆成两个字符表示。
+这种现象的根本原因在于，码点大于 `0xFFFF` 的字符占用四个字节，而 JavaScript 默认支持两个字节的字符。这种情况下，必须把 `0x20BB7` 拆成两个字符表示。
 
 ```javascript
 String.fromCharCode(0xd842, 0xdfb7);
@@ -41,7 +40,9 @@ String.fromCharCode(0xd842, 0xdfb7).repeat(3);
 // "𠮷𠮷𠮷"
 ```
 
-上面代码中，`0x20BB7`拆成两个字符`0xD842`和`0xDFB7`（即两个两字节字符，合成一个四字节字符），就能得到正确的结果。码点大于`0xFFFF`的字符的四字节表示法，由 UTF-16 编码方法决定。
+上面代码中，`0x20BB7` 拆成两个字符 `0xD842` 和 `0xDFB7`（即两个两字节字符，合成一个四字节字符），就能得到正确的结果。码点大于 `0xFFFF` 的字符的四字节表示法，由 UTF-16 编码方法决定。
+
+> Unicode 和 UTF-8 一级 UTF-16 的区别见 <a href="./补充.md">补充.md</a>
 
 #### 5.3.实例属性
 
