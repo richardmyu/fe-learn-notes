@@ -19,7 +19,7 @@ new String("abc")[1]; // "b"
 
 ##### 5.2.1 String.fromCharCode
 
-该方法的参数是一个或多个数值，代表 `Unicode` 码点，返回值是这些码点组成的字符串。
+该方法的参数是一个或多个数值，代表 Unicode 码点，返回值是这些码点组成的字符串。
 
 ```javascript
 String.fromCharCode(); // ""
@@ -28,7 +28,7 @@ String.fromCharCode(104, 101, 108, 108, 111);
 // "hello"
 ```
 
-> 注意，该方法不支持 `Unicode` 码点大于 `0xFFFF` 的字符，即传入的参数不能大于 `0xFFFF`（即十进制的 65535）。这是因为 `String.fromCharCode` 发现参数值大于 `0xFFFF`，就会忽略多出的位。
+> 注意，该方法不支持 Unicode 码点大于 `0xFFFF` 的字符，即传入的参数不能大于 `0xFFFF`（即十进制的 65535）。这是因为 `String.fromCharCode` 发现参数值大于 `0xFFFF`，就会忽略多出的位。
 
 这种现象的根本原因在于，码点大于 `0xFFFF` 的字符占用四个字节，而 JavaScript 默认支持两个字节的字符。这种情况下，必须把 `0x20BB7` 拆成两个字符表示。
 
@@ -48,7 +48,7 @@ String.fromCharCode(0xd842, 0xdfb7).repeat(3);
 
 ##### 5.3.1 string.length
 
-字符串实例的`length`属性返回字符串的长度。
+字符串实例的 `length` 属性返回字符串的长度。
 
 #### 5.4.实例方法
 
