@@ -36,6 +36,7 @@
       //  数据范围溢出
       var plusOne = function(digits) {
         let str = "";
+        let num = 0;
         let allAry = [];
         let newAry = [];
         let nums = Math.ceil(digits.length / 16);
@@ -43,13 +44,18 @@
           allAry[i] = digits.slice(i * 16, (i + 1) * 16);
         }
         console.log(allAry);
-        // for (let i of digits) {
-        //   str = str + i;
-        // }
-        // str = Number(str) + 1 + "";
-        // for (let j = 0; j < str.length; j++) {
-        //   newAry.push(Number(str[j]));
-        // }
+
+        for (let i of allAry[allAry.length - 1]) {
+          str = str + i;
+        }
+        num = Number(str) + 1;
+        if (num.length > str.length) {
+
+        } else {
+          for (let j = 0; j < str.length; j++) {
+            newAry.push(Number(str[j]));
+          }
+        }
 
         return newAry;
       };
