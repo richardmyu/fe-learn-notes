@@ -111,7 +111,7 @@
           ...board[7].slice(6, 9),
           ...board[8].slice(6, 9)
         ];
-        // 横
+        // 横 纵
         for (let i = 0; i < 9; i++) {
           for (let j = 0; j < 9; j++) {
             for (let k = j + 1; k < 9; k++) {
@@ -122,13 +122,6 @@
               ) {
                 return false;
               }
-            }
-          }
-        }
-        // 纵
-        for (let i = 0; i < 9; i++) {
-          for (let j = 0; j < 9; j++) {
-            for (let k = j + 1; k < 9; k++) {
               if (
                 board[j][i] === board[k][i] &&
                 board[j][i] !== "." &&
