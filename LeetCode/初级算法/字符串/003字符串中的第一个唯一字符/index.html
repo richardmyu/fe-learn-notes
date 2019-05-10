@@ -38,9 +38,7 @@
           testStr = s[i];
           testIndex = i;
           s = s.slice(0, i) + s.slice(i + 1);
-          // console.log("s[i] ", s[i], s);
           isRepeat = s.indexOf(testStr);
-          // console.log("isRepeat", isRepeat);
           if (isRepeat === -1) {
             return testIndex;
           }
