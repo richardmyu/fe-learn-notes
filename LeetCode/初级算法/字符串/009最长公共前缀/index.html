@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>最长公共前缀</title>
+  </head>
+  <body>
+    <script>
+      /*
+      编写一个函数来查找字符串数组中的最长公共前缀。
+
+      如果不存在公共前缀，返回空字符串 ""。
+
+      示例 1:
+
+      输入: ["flower","flow","flight"]
+      输出: "fl"
+      示例 2:
+
+      输入: ["dog","racecar","car"]
+      输出: ""
+      解释: 输入不存在公共前缀。
+      说明:
+
+      所有输入只包含小写字母 a-z 。
+      */
+
+      /**
+       * @param {string[]} strs
+       * @return {string}
+       */
+      var longestCommonPrefix = function(strs) {
+        // debugger;
+        let ary = [];
+        if (strs === []) {
+          return "";
+        }
+        let strL = strs[0] ? strs[0].length : 0;
+        let all = false;
+        let newStr = "";
+        for (let i = 1; i < strL + 1; i++) {
+          all = strs.every(item => {
+            return item.slice(0, i) === strs[0].slice(0, i);
+          });
+          if (all) {
+            newStr = strs[0].slice(0, i);
+          }
+        }
+
+        return newStr;
+      };
+
+      console.log(longestCommonPrefix(["flower", "flow", "flight"]));
+      console.log(longestCommonPrefix(["dog", "racecar", "car"]));
+      console.log(longestCommonPrefix(["aca", "cba"]));
+      console.log(longestCommonPrefix(["a"]));
+      console.log(longestCommonPrefix(["c", "c"]));
+    </script>
+  </body>
+</html>
