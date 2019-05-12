@@ -1,10 +1,10 @@
 ## 4 数据类型
 
-ECMAScript 的数据类型具有动态性
+ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字符串，布尔值，函数和对象，以及 undefined 和 null。尽管 JavaScript 有多种变量类型，然而不同于 C/C++，C# 或 Java，它并不是一种强类型语言。在强类型语言中，声明变量是需要指定变量的类型。在 JavaScript 中只需要使用关键字 var，而不必指定变量类型。因此， JavaScript 不是强类型语言。
 
 ### 4.1 typeof 操作符
 
-`typeof` 用来检测给定变量的数据类型。对一个值使用 `typeof` 操作符可能返回以下某个字符串：
+`typeof` 用来检测给定变量或表达式的数据类型。对一个值使用 `typeof` 操作符可能返回以下某个字符串：
 
 ---
 
