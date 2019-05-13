@@ -17,6 +17,8 @@ ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字�
 
 ---
 
+> 如果检测表达式，要注意 typeof 的优先级仅次于括号运算符，并且不能检测 递增/递减表达式
+
 ```javascript
 s; // ReferenceError: v is not defined
 
