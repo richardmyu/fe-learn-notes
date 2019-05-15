@@ -43,76 +43,11 @@
        * @param {ListNode} node
        * @return {void} Do not return anything, modify node in-place instead.
        */
-      var deleteNode = function(node) {
-        let list = new ListNode();
-        list.append(4);
-        list.append(5);
-        list.append(1);
-        list.append(9);
-        list.removeAt(node);
-        console.log(list.toString());
-      };
-      function ListNode() {
-        let Node = function(val) {
-          this.val = val;
-          this.next = null;
-        };
-        let length = 0;
-        let head = null;
-        this.append = function(val) {
-          let node = new Node(val);
-          let current;
-          if (head === null) {
-            head = node;
-          } else {
-            current = head;
-            while (current.next) {
-              current = current.next;
-            }
-            current.next = node;
-          }
-          length++;
-        };
-        this.removeAt = function(val) {
-          // debugger;
-          let current = head;
-          let previous;
-          let index = 0;
-          if (head.val === val) {
-            head = current.next;
-          } else {
-            while (index++ < length) {
-              if (current.val === val) {
-                previous.next = current.next;
-                index = length - 1;
-              }
-              previous = current;
-              current = current.next;
-            }
-          }
-          length--;
-        };
-        this.toString = function() {
-          let current = head;
-          let string = "";
-          while (current) {
-            string += current.val + (current.next ? "->" : "");
-            current = current.next;
-          }
-          return string;
-        };
-      }
-      // let list = new ListNode();
-      // list.append(4);
-      // list.append(5);
-      // list.append(1);
-      // list.append(9);
-      // console.log(list.toString());
-      // list.removeAt(1);
-      // console.log(list.toString());
 
-      console.log(deleteNode(5));
-      console.log(deleteNode(1));
+      var deleteNode = function(node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+      };
     </script>
   </body>
 </html>
