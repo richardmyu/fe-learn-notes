@@ -66,6 +66,28 @@ print();
 
 > 函数表达式特别适合用来定义那些只会用到一次的函数。
 
+其他形式的函数表达式（这些也叫立即执行函数表达式）：
+
+```js
+(function foo() {
+  //...
+})();
+
+(function() {
+  //...
+})();
+```
+
+函数声明和函数表达式之间最重要的区别是它们的名称标识符将会绑定在何处。函数声明的标识符绑定在当前作用域，而函数表达式的标识符绑定在函数表达式自身的函数作用域中。
+
+> 函数表达式可以有标识符，也可以没有标识符（称为匿名函数表达式），但函数声明必须有标识符。
+
+匿名函数表达式的缺点：
+
+- 1.匿名函数表达式不会显示有意义的函数名，难以调试；
+- 2.引用自身时，只能使用过期的 `arguments.callee`；
+- 3.降低代码的可读性/可理解性。
+
 #### 7.1.3 Function 构造函数
 
 第三种声明函数的方式是 `Function` 构造函数。
@@ -551,6 +573,8 @@ true &&
   })();
 ```
 
+> 函数名对 IIFE 不是必要的。
+
 通常情况下，只对匿名函数使用这种“立即执行的函数表达式”。它的目的有两个：
 
 - 一是不必为函数命名，避免了污染全局变量；
@@ -571,6 +595,44 @@ storeData(tmp);
 ```
 
 上面代码中，写法二比写法一更好，因为完全避免了污染全局变量。
+
+IIFE 的一个普遍的进阶用法，是把它们当做函数调用并传递参数进去。
+
+```js
+var a = 2;
+(function IIFE(global) {
+  var a = 3;
+  console.log(a); //3
+  console.log(global.a); //2
+})(window);
+
+console.log(s); //2
+```
+
+这个模式的一个应用场景是解决 `undefined` 标识符的默认值被错误覆盖导致异常。
+
+```js
+undefined = true; //不建议
+(function IIFE(undefined) {
+  var a;
+  if (a === undefined) {
+    console.log("Undefined is safe here");
+  }
+})();
+```
+
+IIFE 还有一种变化的用途是倒置代码的运行顺序，将需要运行的函数放在第二位，在 IIFE 执行之后当做参数传递进去。
+
+```js
+var a = 2;
+(function IIFE(def) {
+  def(window);
+})(function def(global) {
+  var a = 3;
+  console.log(a); //3
+  console.log(global.a); //2
+});
+```
 
 ### 7.15 eval
 
@@ -642,3 +704,16 @@ f(function(json) {
 上面代码中，`jsonp` 是一个字符串，`Function` 构造函数将这个字符串，变成了函数体。调用该函数的时候，`jsonp` 就会执行。这种写法的实质是将代码放到函数作用域执行，避免对全局作用域造成影响。
 
 不过，`new Function()` 的写法也可以读写全局作用域，所以也是应该避免使用它。
+
+### 7.16 try/catch
+
+catch 分句也会创建一个块作用域，其中声明的变量仅在 catch 内部有效：
+
+```js
+try {
+  undefined();
+} catch (err) {
+  console.log(err); //undefined is not a function
+}
+console.log(err); //err is not defined
+```

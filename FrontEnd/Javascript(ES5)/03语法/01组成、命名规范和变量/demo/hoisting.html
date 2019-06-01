@@ -19,9 +19,9 @@
         return "456";
       }
 
-      var ab=function(){
-        return "ab"
-      }
+      var ab = function() {
+        return "ab";
+      };
 
       // 函数作用域
       // console.log(b); //Uncaught ReferenceError: b is not defined
@@ -56,18 +56,19 @@
       // 自执行函数
       console.log("**********************");
       // console.log(F); //Uncaught ReferenceError: F is not defined
-      console.log(iee);//undefined
-      (function(str) {
+      // console.log(Iee); // Iee is not defined
+      (function Iee(str) {
         console.log(str); //123
         console.log(F); //f F(){}
         function F() {}
         return str;
       }("123"));
+
       var iee = (function(str) {
         console.log(str); //456
         return str;
       })("456");
-      console.log(iee);//456
+      console.log(iee); //456
     </script>
   </body>
 </html>

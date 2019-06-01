@@ -74,5 +74,23 @@
         return "2";
       }
     </script>
+    <script>
+      // 参数函数
+      // console.log(def); //def is not defined
+      (function(def) {
+        def("123");
+      })(function def(str) {
+        console.log(str); //123
+      });
+      console.log(FF); // f FF(){}
+      console.log(de); // de is not defined
+      function FF() {
+        console.log(de); // de is not defined
+        (function de() {
+          console.log("444");
+        })();
+      }
+      FF();
+    </script>
   </body>
 </html>
