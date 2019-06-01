@@ -92,7 +92,7 @@ console.log(f);
 //Uncaught ReferenceError: f is not defined
 ```
 
-> 严格模式下，不能定义 `eval` 或 `arguments` 的变量，否则导致语法错误。见 <a href="./var.html">var.html</a>
+> 严格模式下，不能定义 `eval` 或 `arguments` 的变量，否则导致语法错误。见 <a href="./demo/var.html">var.html</a>
 
 虽然省略 `var` 操作符可以定义全局变量，但我们不推荐这种做法。因为在局部作用域中定义的全局变量很难维护，而且如果有意的忽略 `var` 操作符，也会由于相应的变量不会马上就有定义而导致不必要的混乱。给未经声明的变量赋值在严格模式下会导致抛出 `ReferenceRrror` 错误。
 
