@@ -213,11 +213,12 @@ console.log(a); //ƒ a() {}
 function a() {}
 var a = 6;
 
-// //同名变量/函数会进行值覆盖
+// 同名变量/函数会进行值覆盖
 console.log(a); //undefined
 var a = 6;
 var a = 7;
 console.log(a); //7
+
 console.log(fn); //ƒ a() { return "2"}
 function fn() {
   return "1";
@@ -236,12 +237,12 @@ function fn() {
 console.log(fn); //f fn(){...}
 console.log(f); //undefined
 function fn() {
-  return 'tiantian'
+  return '小黄人'
 }
 var f = function () {
   console.log(fn); //f fn(){...}
   console.log(f); //f(){...}
-  return 'tiantiantian'
+  return '大黄蜂'
 }
 f();
 ```

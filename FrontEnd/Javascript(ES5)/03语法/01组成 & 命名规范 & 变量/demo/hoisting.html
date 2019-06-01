@@ -1,111 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-
-<body>
-  <script>
-    // 全局作用域
-    console.log(a); //undefined
-    console.log(fn); //f fn(){}
-    var a = 123;
-
-    function fn() {
-      return '456';
-    }
-    // 函数作用域
-    function Fn() {
+  <body>
+    <script>
+      // 全局作用域
       console.log(a); //undefined
       console.log(fn); //f fn(){}
-      var a = 321;
+      var a = 123;
 
       function fn() {
-        return '654';
+        return "456";
       }
-    }
-    Fn();
-  </script>
-  <script>
-    console.log(cc); //f cc(){}
-    console.log(dd); //undefined
+      // 函数作用域
+      console.log(a); //undefined
+      console.log(fn); //f fn(){}
+      function Fn() {
+        console.log(a); //undefined
+        console.log(fn); //f fn(){}
+        var a = 321;
 
-    function cc() {
-      return "cc"
-    }
-
-    {
-      function dd() {
-        return "dd";
+        function fn() {
+          return "654";
+        }
       }
-    }
-  </script>
-  <script>
-    console.log(a); //Fn a(){}
-    console.log(b); //b is not defined
+      Fn();
+    </script>
+    <script>
+      console.log(cc); //f cc(){}
+      console.log(dd); //undefined
 
-    function a() {
-      return "a";
-    }
-    (console.log(b),
+      function cc() {
+        return "cc";
+      }
+
+      {
+        function dd() {
+          return "dd";
+        }
+      }
+    </script>
+    <script>
+      console.log(a); //Fn a(){}
+      console.log(b); //b is not defined
+
+      function a() {
+        return "a";
+      }
+      (console.log(b),
       //b is not defined
       function b(str) {
         console.log(b); //f b(str){...}
         return str;
       })("123");
-  </script>
-  <script>
-    function a() {
-      console.log(b); //b is not defined
-      console.log(c); //ƒ c() {}
-      return function b() {};
+    </script>
+    <script>
+      function a() {
+        console.log(b); //b is not defined
+        console.log(c); //ƒ c() {}
+        return function b() {};
 
-      function c() {}
-    }
-    a();
-  </script>
-  <script>
-    //同名函数会覆盖变量
-    console.log(a);
-    var a = 6; //undefined
-    function a() {} //ƒ a() {}
+        function c() {}
+      }
+      a();
+    </script>
+    <script>
+      //同名函数会覆盖变量
+      console.log(a);
+      var a = 6; //undefined
+      function a() {} //ƒ a() {}
 
-    //同名变量不会覆盖函数
-    console.log(a); //ƒ a() {}
-    function a() {}
-    var a = 6;
+      //同名变量不会覆盖函数
+      console.log(a); //ƒ a() {}
+      function a() {}
+      var a = 6;
 
-    // //同名变量/函数会进行值覆盖
-    console.log(a); //undefined
-    var a = 6;
-    var a = 7;
-    console.log(a); //7
-    console.log(fn); //ƒ a() { return "2"}
-    function fn() {
-      return "1";
-    }
+      // //同名变量/函数会进行值覆盖
+      console.log(a); //undefined
+      var a = 6;
+      var a = 7;
+      console.log(a); //7
+      console.log(fn); //ƒ a() { return "2"}
+      function fn() {
+        return "1";
+      }
 
-    function fn() {
-      return "2";
-    }
-  </script>
-  <script>
-    console.log(fn); //f fn(){...}
-    console.log(f); //undefined
-    function fn() {
-      return 'tiantian'
-    }
-    var f = function () {
+      function fn() {
+        return "2";
+      }
+    </script>
+    <script>
       console.log(fn); //f fn(){...}
-      console.log(f); //f(){...}
-      return 'tiantiantian'
-    }
-    f();
-  </script>
-</body>
-
+      console.log(f); //undefined
+      function fn() {
+        return "tiantian";
+      }
+      var f = function() {
+        console.log(fn); //f fn(){...}
+        console.log(f); //f(){...}
+        return "tiantiantian";
+      };
+      f();
+    </script>
+  </body>
 </html>
