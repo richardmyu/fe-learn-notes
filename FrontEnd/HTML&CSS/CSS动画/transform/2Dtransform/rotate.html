@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .stage {
+        width: 100%;
+        padding: 30px;
+        border: 1px solid black;
+      }
+      .item {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(62, 132, 212, 0.5);
+        margin-bottom: 60px;
+      }
+      .item1,
+      .item2,
+      .item3,
+      .item4 {
+        transform: rotate(0);
+      }
+      .item1::after {
+        display: block;
+        content: "";
+        width: 60px;
+        height: 60px;
+        background-color: rgb(62, 132, 212);
+        transform: rotate(0);
+      }
+      .item2::after {
+        display: block;
+        content: "";
+        width: 60px;
+        height: 60px;
+        background-color: rgb(62, 132, 212);
+        transform: rotate(30deg);
+      }
+      .item3::after {
+        display: block;
+        content: "";
+        width: 60px;
+        height: 60px;
+        background-color: rgb(62, 132, 212);
+        transform: rotate(45deg);
+      }
+      .item4::after {
+        display: block;
+        content: "";
+        width: 60px;
+        height: 60px;
+        background-color: rgb(62, 132, 212);
+        transform: rotate(-30deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <p>transform: rotate(0);</p>
+      <div class="item item1"></div>
+      <p>transform: rotate(30deg);</p>
+      <div class="item item2"></div>
+      <p>transform: rotate(45deg);</p>
+      <div class="item item3"></div>
+      <p>transform: rotate(-30deg);</p>
+      <div class="item item4"></div>
+    </div>
+  </body>
+</html>

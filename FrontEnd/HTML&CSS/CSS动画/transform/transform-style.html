@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .stage {
+        width: 100%;
+        padding: 30px;
+        border: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+      .content {
+        width: 300px;
+        height: 120px;
+        text-align: center;
+        background-color: rgb(231, 134, 8);
+        transform: perspective(200px) rotateY(30deg);
+        margin-bottom: 60px;
+      }
+      .c1 {
+        transform-style: flat;
+      }
+      .c2 {
+        transform-style: preserve-3d;
+      }
+      .sub {
+        transform: rotate3d(1, 1, 1, 45deg);
+        background-color: rgb(199, 40, 40);
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="content c1">
+        <p>parent 2D</p>
+        <div class="sub">
+          <code>rotate3d(1,1,1,45deg)</code>
+        </div>
+      </div>
+      <div class="content c2">
+        <p>parent 3D</p>
+        <div class="sub">
+          <code>rotate3d(1,1,1,45deg)</code>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
