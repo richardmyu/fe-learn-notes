@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>hoisting2</title>
+  </head>
+  <body>
+    <script>
+      // 条件不成立
+      console.log(b); //undefined
+      console.log(bb); //undefined
+      while (false) {
+        var b = 6;
+        function bb() {
+          return "bb";
+        }
+      }
+
+      //条件成立
+      console.log(a); //undefined
+      console.log(aa); //undefined
+      if (true) {
+        console.log(a); //undefined
+        console.log(aa); //Fn aa(){}
+        var a = 6;
+        function aa() {
+          return "aa";
+        }
+      }
+    </script>
+    <script>
+      console.log("**************");
+      console.log(a1); //undefined
+      console.log(b1); //b1 is not defined
+
+      var a1 = b1 + 1;
+    </script>
+    <script>
+      console.log("**********************");
+      function a() {
+        // console.log(b); //b is not defined
+        console.log(c); //ƒ c() {}
+        return function b() {};
+
+        function c() {}
+      }
+      a();
+    </script>
+    <script>
+      console.log("**********************");
+      //同名函数会覆盖变量
+      console.log(name1);
+      var name1 = 6; //undefined
+      function name1() {} //ƒ name1() {}
+
+      //同名变量不会覆盖函数
+      console.log(name2); //ƒ name2() {}
+      function name2() {}
+      var name2 = 6;
+
+      // //同名变量/函数会进行值覆盖
+      console.log(name3); //undefined
+      var name3 = 6;
+      var name3 = 7;
+      console.log(name3); //7
+      console.log(namefn); //ƒ namefn() { return "2"}
+      function namefn() {
+        return "1";
+      }
+
+      function namefn() {
+        return "2";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>var</title>
+  </head>
+
+  <body>
+    <script>
+      var a;
+      console.log(a); //undefined
+      var b = 6;
+      c = 7;
+      console.log(window.b); //6
+      console.log(window.c); //7
+      function fn() {
+        var d = 12;
+      }
+      // console.log(d);
+      //Uncaught ReferenceError: d is not defined
+      var str = "tiantian",
+        ary = ["tian", "tian"],
+        obj = {
+          name: "tiantian"
+        };
+      console.log(str, ary, obj);
+      // tiantian ["tian", "tian"] {name: "tiantian"}
+      var e = 123;
+      console.log(delete e); //false
+      console.log(e); //123
+      f = 123;
+      console.log(delete f); //true
+      console.log(f);
+      //Uncaught ReferenceError: f is not defined
+    </script>
+    <script>
+      var eval = 123;
+      console.log(eval); //123
+    </script>
+    <script>
+      "use strict"
+      var eval = 123;
+      console.log(eval);
+      //Uncaught SyntaxError: Unexpected eval or arguments in strict mode
+    </script>
+    <script>
+      var arguments = 456;
+      console.log(arguments); //456
+    </script>
+    <script>
+      "use strict"
+      var arguments = 456;
+      console.log(arguments);
+      //Uncaught SyntaxError: Unexpected eval or arguments in strict mode
+    </script>
+    <script>
+      var aaa = 12;
+      console.log(delete aaa);
+
+      bbb = 12;
+      console.log(delete bbb);
+
+      window.ccc = 12;
+      console.log(delete ccc);
+    </script>
+  </body>
+</html>
