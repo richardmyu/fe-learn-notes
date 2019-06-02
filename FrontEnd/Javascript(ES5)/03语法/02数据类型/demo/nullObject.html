@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.dir(null);//null
+      console.dir(undefined);//undefined
+      console.dir({});
+      //Object
+      // __proto__:
+      //   constructor
+      //   hasOwnProperty
+      //   isPrototypeof
+      //   propertyIsEnnumberable
+      //   toLocaseString
+      //   toString
+      //   valueOf
+      //   ...
+
+      // Number
+      console.log(Number(null)); //0
+      console.log(Number(undefined)); //NaN
+      console.log(Number({})); //NaN
+
+      // Boolean
+      console.log(Boolean(null)); //false
+      console.log(Boolean(undefined)); //false
+      console.log(Boolean({})); //true
+    </script>
+  </body>
+</html>

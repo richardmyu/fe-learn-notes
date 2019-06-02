@@ -1,6 +1,6 @@
 ## 4 数据类型
 
-ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字符串，布尔值，函数和对象，以及 `undefined` 和 `null`。尽管 JavaScript 有多种变量类型，然而不同于 C/C++，C# 或 Java，它并不是一种强类型语言。在强类型语言中，声明变量是需要指定变量的类型。在 JavaScript 中只需要使用关键字 var，而不必指定变量类型。因此， JavaScript 不是强类型语言。
+ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字符串，布尔值，函数和对象，以及 `undefined` 和 `null`。尽管 JavaScript 有多种变量类型，然而不同于 C/C++，C# 或 Java，它并不是一种强类型语言。在强类型语言中，声明变量是需要指定变量的类型。在 JavaScript 中只需要使用关键字 `var`，而不必指定变量类型。因此， JavaScript 不是强类型语言。
 
 ### 4.1 typeof 操作符
 
@@ -17,14 +17,14 @@ ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字�
 
 ---
 
-> 如果检测表达式，要注意 typeof 的优先级仅次于括号运算符，并且不能检测 递增/递减表达式
+> 如果检测表达式，要注意 `typeof` 的优先级仅次于括号运算符，并且不能检测 递增/递减表达式
 
 ```javascript
 s; // ReferenceError: v is not defined
 
 console.log(typeof s); //undefined
 
-s = "tian";
+s = "lalala";
 console.log(typeof s); //string
 ```
 
@@ -85,9 +85,9 @@ if (typeof s === "undefined") {
 
 ### 4.4 基本数据类型和引用数据类型的区别
 
-原始值：存储在**栈（stack）**中的简单数据，也就是说，它们的值直接存储在变量访问的位置。这是因为这些原始类型占据的空间是固定的，所以可将他们存储在较小的内存区域 – 栈中。这样存储便于迅速查寻变量的值。
+基本数据类型：值是存储在**栈（stack）**中的简单数据，也就是说，它们的值直接存储在变量访问的位置。这是因为这些原始类型占据的空间是固定的，所以可将他们存储在较小的内存区域 – 栈中。这样存储便于迅速查寻变量的值。
 
-引用值：存储在**堆（heap）**中的对象，也就是说，存储在变量处的值是一个**指针（point）**，指向存储对象的内存地址。这是因为：引用值的大小会改变，所以不能把它放在栈中，否则会降低变量查寻的速度。相反，放在变量的栈空间中的值是该对象存储在堆中的地址。地址的大小是固定的，所以把它存储在栈中对变量性能无任何负面影响。
+引用数据类型：值是存储在**堆（heap）**中的对象，也就是说，存储在变量处的值是一个**指针（point）**，指向存储对象的内存地址。这是因为：引用值的大小会改变，所以不能把它放在栈中，否则会降低变量查寻的速度。相反，放在变量的栈空间中的值是该对象存储在堆中的地址。地址的大小是固定的，所以把它存储在栈中对变量性能无任何负面影响。
 
 基本数据类型是把值直接的给变量，在接下来的操作过程中，直接拿这个值进行操作但是两者直接不会相互影响，各自独立；
 
@@ -158,6 +158,34 @@ f(); // undefined
 
 `null` 表示空值，即该处的值现在为空。调用函数时，某个参数未设置任何值，这时就可以传入 `null`，表示该参数为空。比如，某个函数接受引擎抛出的错误作为参数，如果运行过程中未出错，那么这个参数就会传入 `null`，表示未发生错误。
 
+`null`、`undefined` 和空对象的区别：
+
+```js
+console.dir(null); //null
+console.dir(undefined); //undefined
+console.dir({});
+//Object
+// __proto__:
+//   constructor
+//   hasOwnProperty
+//   isPrototypeof
+//   propertyIsEnnumberable
+//   toLocaseString
+//   toString
+//   valueOf
+//   ...
+
+// Number
+console.log(Number(null)); //0
+console.log(Number(undefined)); //NaN
+console.log(Number({})); //NaN
+
+// Boolean
+console.log(Boolean(null)); //false
+console.log(Boolean(undefined)); //false
+console.log(Boolean({})); //true
+```
+
 ### 4.7 `null` 和 `undefined`
 
 `null` 和 `undefined`，既然含义与用法都差不多，为什么要同时设置两个这样的值，这不是无端增加复杂度？这与历史原因有关。
@@ -186,7 +214,7 @@ Number(undefined); // NaN
 
 ---
 
-- 2).`null` 表示空引用，它是 `object` 类型；`undefined` 表示未定义，是 `undefined` 类型；
+- 2).`null` 表示空引用，它是 `object` 类型(typeof 检测)；`undefined` 表示未定义，是 `undefined` 类型；
 
 ---
 

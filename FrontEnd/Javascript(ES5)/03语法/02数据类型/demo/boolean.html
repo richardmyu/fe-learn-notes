@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // boolean
+      console.log(Boolean(0)); //false
+      console.log(Boolean(NaN)); //false
+      console.log(Boolean(null)); //false
+      console.log(Boolean(undefined)); //false
+      console.log(Boolean("")); //false
+      console.log(Boolean(false)); //false
+      console.log(Boolean(true)); //true
+      console.log(Boolean(1)); //true
+      console.log(Boolean({})); //true
+      console.log(Boolean([])); //true
+
+      var a = 0;
+      if (a) {
+        console.log(a);
+      } else {
+        console.log(a + 1);
+      }
+    </script>
+  </body>
+</html>
