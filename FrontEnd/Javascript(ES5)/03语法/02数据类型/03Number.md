@@ -1,125 +1,81 @@
-### 4.8 Boolean 类型
+### 4.5 Number 类型
 
-该类型只有两个字面值：true 和 false (区分大小写)，这两个值与数字值不是一回事，因此 true 不一定等于 1，而 false 不一定等于 0； 但 ECMAScript 中所有数据类型都有与这两个值等价的值。
+#### 4.5.1 isNaN
 
-下列运算符会返回布尔值：
+检测一个值不是有效数字；若是有效数字返回 false，不是有效数字返回 true。
 
----
+- **必要性**
 
-- 两元逻辑运算符： `&& (And)，|| (Or)`
-- 前置逻辑运算符： `! (Not)`
-- 相等运算符：`===，!==，==，!=`
-- 比较运算符：`>，>=，<，<=`
+与 JavaScript 中其他的值不同，`NaN` 不能通过相等操作符（`==` 和 `===`）来判断 ，因为 `NaN == NaN` 和 `NaN === NaN` 都会返回 false。 因此，`isNaN` 就很有必要了。
 
----
+> 事实上，在 `==/!=` 和 `===/!==` 运算中，`NaN` 和任何“数”都不等，包括自身。
 
-#### 4.8.1 Boolean
+- **产生**
 
-强制将其他类型数据转换为布尔型，对 `0、NaN、null、undefined、""、false` (空字符串不是空格字符串)这 6 个为 false，其余为 true；
+当算术运算返回一个未定义的或无法表示的值时，`NaN` 就产生了。但是，`NaN` 并不一定用于表示某些值超出表示范围的情况。将某些不能强制转换为数值的非数值转换为数值的时候，也会得到 `NaN`。
 
-> 在流控制语句中，自动执行相应的 `Boolean` 转换。
+- **怪异行为**
 
-#### 4.8.2 `！`
+如果 `isNaN` 函数的参数不是 Number 类型， `isNaN` 函数会首先尝试将这个参数转换为数值，然后才会对转换后的结果是否是 `NaN` 进行判断。因此，对于能被强制转换为有效的非 `NaN` 数值来说（空字符串和布尔值分别会被强制转换为数值 0 和 1），返回 false 值也许会让人感觉莫名其妙。
 
-取反，先将值转为布尔类型，然后取反；
+比如说，空字符串就明显“不是数值（not a number）”。这种怪异行为起源于："不是数值（not a number）"在基于 IEEE-754 数值的浮点计算体制中代表了一种特定的含义。`isNaN` 函数其实等同于回答了这样一个问题：被测试的值在被强制转换成数值时会不会返回 IEEE-754​ 中所谓的“不是数值（not a number）”。
 
-```javascript
-let a = 6;
-console.log(typeof a); //number
-console.log(typeof !a); //boolean
-console.log(!a); //false
-```
+下一个版本的 ECMAScript (ES2015) 包含 `Number.isNaN()` 函数。通过 `Number.isNaN(x)` 来检测变量 `x` 是否是一个 `NaN` 将会是一种可靠的做法。然而，在缺少 `Number.isNaN` 函数的情况下, 通过表达式 `(x != x)` 来检测变量 `x` 是否是 `NaN` 会更加可靠。
 
-#### 4.8.3 `！！`
-
-再次取反；将其他数据类型转换为布尔数据类型，相当于 `Boolean(str)`；
-
-### 4.9 Number 类型
-
-#### 4.9.1 isNaN
-
-检测一个值不是有效数字；若是有效数字返回 false，不是有效数字返回 true；若传入非数值会自动转换为数值。对于空数组和只有一个数组成员(能转化为数值的)的数组，会返回 false。因此在使用 `isNaN` 之前，最好先判断数据类型：
+> 可以利用这个特殊行为来检测函数的参数是可运算的。
+> 注意 `isNaN` 是挂载在 window 下的，注意区分 `isNaN` 和 `Number.isNaN`
 
 ```javascript
-console.group("boolean");
+// boolean
 console.log(isNaN(true)); //false
-console.log(isNaN(false)); //false
-console.groupEnd();
 
-console.group("number");
+// number
 console.log(isNaN(0123)); //false
-console.log(isNaN(00123)); //false
 console.log(isNaN(0x123)); //false
-console.log(isNaN(0b111)); //false
 console.log(isNaN(-123)); //false
 console.log(isNaN(0.123)); //false
-console.log(isNaN(0.992)); //false
-console.log(isNaN(0.00000123)); //false
-console.log(isNaN(0.000000123)); //false
-console.log(isNaN(0.0123)); //false
-console.log(isNaN(3e20)); //false
-console.log(isNaN(3e-21)); //false
-console.groupEnd();
 
-console.group("null && undefined");
+//null && undefined
 console.log(isNaN(null)); //false
 console.log(isNaN(undefined)); //true
 console.log(isNaN(NaN)); //true
-console.groupEnd();
 
-console.group("object");
+//object
 console.log(isNaN({})); //true
 console.log(isNaN({ name: "hhh" })); //true
 console.log(isNaN({ 1: "2" })); //true
-console.groupEnd();
 
-console.group("array");
+//array
 console.log(isNaN([])); //false
 console.log(isNaN([1])); //false
 console.log(isNaN(["1x"])); //true
 console.log(isNaN([1, 2])); //true
-console.log(isNaN(["1", "2"])); //true
-console.groupEnd();
 
-console.group("string");
+//string
 console.log(isNaN("123")); //false
-console.log(isNaN(" 123")); //false
-console.log(isNaN("1 23")); //true
-console.log(isNaN("123 ")); //false
 console.log(isNaN("+123")); //false
-console.log(isNaN("-123")); //false
-console.log(isNaN("0123")); //false
-console.log(isNaN("00123")); //false
-console.log(isNaN("0x123")); //false
-console.log(isNaN("0b111")); //false
-console.log(isNaN("0.123")); //false
-console.log(isNaN("0.1.23")); //true
-console.log(isNaN("0.00000000000123")); //false
-console.log(isNaN("0.012300000000000")); //false
-console.log(isNaN("0.0123000 0000000")); //true
-console.log(isNaN("3e33")); //false
-console.log(isNaN("3e-33")); //false
-console.log(isNaN("3ez")); //true
 console.log(isNaN("")); //false
-console.log(isNaN(" ")); //false
-console.log(isNaN(" ")); //false
-console.groupEnd();
 
-//[].valueOf() = [] ===> [].toString() = "" ===> 0
-//[1].valueOf() = [1] ===> [].toString() = "1" ===> 1
-
+// 一个 isNaN 的 polyfill 可以理解为（这个 polyfill 利用了 NaN 自身永不相等于自身这一特征）
 function myIsNaN(value) {
   return typeof value === "number" && isNaN(value);
   //推荐用法
+  var n = Number(value);
   return value !== value;
 }
 ```
 
 `isNaN` 也适用于对象。在基于对象调用 `isNaN` 函数时，会首先调用对象的 `valueOf` 方法，然后确定该方法返回的值是否可以装换为数值。如果不能，则基于这个返回值再调用 `toString` 方法，再测试(`parseFloat`)返回值，而这个过程也是 ECMAScript 中内置函数和操作符的一般执行流程。
 
-> 执行 `Number` 返回 NaN 的值在 `isNaN` 中均会返回 flase，是否在 `isNaN` 类型转换中默认调用 `Number` 方法？？？
+> 根据测试结果来看，在 `isNaN` 类型转换中默认调用 `Number()` 方法
 
-#### 4.9.2 isFinite
+- **`Number.isNaN()`**
+
+确定传递的值是否为 `NaN` 和其类型是 Number。它是原始的全局 `isNaN()` 的更强大的版本。
+
+和全局函数 `isNaN()` 相比，该方法不会强制将参数转换成数字，只有在参数是真正的数字类型，且值为 `NaN` 的时候才会返回 true。
+
+#### 4.5.2 isFinite
 
 `isFinite` 方法返回一个布尔值，表示某个值是否为正常的数值。
 
@@ -134,7 +90,7 @@ console.log(isFinite(null)); //true
 console.log(isFinite("1.23")); //true
 ```
 
-#### 4.9.3 Number
+#### 4.5.3 Number
 
 强制将其他数据类型转换为 `number` 类型；如果是字符串，只有全部是数字才能转换。
 
@@ -161,7 +117,7 @@ Number(0.123); //0.123
 //小数点后 0 超过 5 个会自动转科学计数法
 Number(0.00000123); //0.00000123
 Number(0.000000123); //1.23e-7
-Number(0.012300000000000000); //0.0123
+Number(0.0123); //0.0123
 //科学计数法指数不超过20就不会是科学计数法形式
 Number(3e20); //300000000000000000000
 Number(3e-21); //3e-21
@@ -226,7 +182,7 @@ Number(0.992); //0.992
 Number(0.00000123); //0.00000123
 Number(0.000000123); //1.23e-7
 //最后一位非 0 数后面的 0 会被忽略
-Number(0.012300000000000000); //0.0123
+Number(0.0123); //0.0123
 //小数点前面的 0 超过 20 位也会自动转化为科学计数法
 Number(3e20); //300000000000000000000
 Number(3e-21); //3e-21
@@ -278,7 +234,7 @@ Number(""); //0
 Number(" "); //0
 ```
 
-#### 4.9.4 parseInt
+#### 4.5.4 parseInt
 
 非强制数据类型转换
 
@@ -308,7 +264,7 @@ parseInt(0.992); //0
 //会自动转化为科学计数法，然后再转换字符串
 parseInt(0.00000123); //0
 parseInt(0.000000123); //1 ：1.23E-7 ---> 1
-parseInt(0.012300000000000000); //0
+parseInt(0.0123); //0
 parseInt(3e20); //300000000000000000000
 parseInt(3e-21); //3
 
@@ -434,7 +390,7 @@ parseFloat(0.0000008); //8e-7
 parseFloat("8e-7"); //8e-7
 ```
 
-#### 4.9.5 parseFloat
+#### 4.5.5 parseFloat
 
 1).`parseFloat` 方法用于将一个字符串转为浮点数(同 `parseInt`，但多识别一个小数点)。
 
@@ -460,7 +416,7 @@ parseFloat(0.992); //0.992
 //会先转换字符串，然后再自动转化为科学计数法
 parseFloat(0.00000123); //0.00000123
 parseFloat(0.000000123); //1.23e-7
-parseFloat(0.012300000000000000); //0.0123
+parseFloat(0.0123); //0.0123
 parseFloat(3e20); //300000000000000000000
 parseFloat(3e-21); //3e-21
 
@@ -509,7 +465,7 @@ parseFloat(""); //NaN
 parseFloat(" "); //NaN
 ```
 
-#### 4.9.6 浮点运算
+#### 4.5.6 浮点运算
 
 JavaScript 内部，所有数字都是以 64 位浮点数形式储存，即使整数也是如此。所以，1 与 1.0 是相同的，是同一个数。
 
@@ -551,7 +507,7 @@ JavaScript 内部，所有数字都是以 64 位浮点数形式储存，即使�
 >
 > 数值运算中，任何涉及 `NaN` 和 `undefined` 的运算，结果均为 `NaN`；`null` 会转换为 0 参与运算。
 
-#### 4.9.7 数值范围
+#### 4.5.7 数值范围
 
 根据标准，64 位浮点数的指数部分的长度是 11 个二进制位，意味着指数部分的最大值是 2047（2 的 11 次方减 1）。也就是说，64 位浮点数的指数部分的值最大为 2047，分出一半表示负数，则 JavaScript 能够表示的数值范围为 2^1024 到 2^1023（开区间），超出这个范围的数无法表示。
 
@@ -582,7 +538,7 @@ Number.MIN_VALUE; // 5e-324
 >
 > 要想确定一个值是不是有穷的，可以使用 `isFinite` 函数，如果该值位于最小值和最大值之间，返回 true。
 
-#### 4.9.8 数值的表示法
+#### 4.5.8 数值的表示法
 
 JavaScript 的数值有多种表示方法，可以用字面形式直接表示，比如 35（十进制）和 `0xFF`（十六进制）。
 
@@ -593,13 +549,13 @@ JavaScript 的数值有多种表示方法，可以用字面形式直接表示，
 （1）小数点前的数字多于 21 位
 
 ```javascript
-1234567890123456789012
+1234567890123456789012;
 // 1.2345678901234568e+21
 
-123456789012345678901
+123456789012345678901;
 // 123456789012345680000
 
-123456789123456789
+123456789123456789;
 //123456789123456780 ???
 ```
 
@@ -614,7 +570,7 @@ JavaScript 的数值有多种表示方法，可以用字面形式直接表示，
 0.000003; // 0.000003
 ```
 
-#### 4.9.9 数值的进制
+#### 4.5.9 数值的进制
 
 使用**字面量（literal）**直接表示一个数值时，JavaScript 对整数提供四种进制的表示方法：
 
@@ -637,7 +593,7 @@ JavaScript 的数值有多种表示方法，可以用字面形式直接表示，
 
 > 八进制字面量在严格模式下是无效的，会导致支持该模式的 JavaScript 引擎抛出错误。
 
-#### 4.9.10 特殊数值
+#### 4.5.10 特殊数值
 
 JavaScript 提供了几个特殊的数值。
 

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.log("%c isNaN ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** isNaN ***");
+
+      console.groupCollapsed("== ===");
+      console.log(window.isNaN); //f
+
+      // 等号判断
+      console.log(NaN == true); //false
+      console.log(NaN == 0); //false
+      console.log(NaN != {}); //true
+      console.log(NaN != null); //true
+      console.log(NaN === true); //false
+      console.log(NaN === 0); //false
+      console.log(NaN !== {}); //true
+      console.log(NaN !== null); //true
+      console.log(NaN >= null); //false
+      console.log(NaN <= null); //false
+
+      // 产生 NaN
+      console.log(Number("xxx")); //NaN
+      console.groupEnd();
+
+      // isNaN
+      console.groupCollapsed("boolean");
+      console.log(isNaN(true)); //false
+      console.log(isNaN(Number(true))); //false
+      console.log(isNaN(parseFloat(true))); //true
+      console.log(Number(true)); //1
+      console.log(Number(false)); //0
+      console.groupEnd();
+
+      console.groupCollapsed("number");
+      // 八进制数
+      console.log(isNaN(0123)); //false
+      console.log(isNaN(Number(0123))); //false
+      console.log(isNaN(parseFloat(0123))); //false
+      // 多前导0
+      console.log(isNaN(00123)); //false
+      console.log(isNaN(Number(00123))); //false
+      console.log(isNaN(parseFloat(00123))); //false
+      // 十六进制
+      console.log(isNaN(0x123)); //false
+      console.log(isNaN(Number(0x123))); //false
+      console.log(isNaN(parseFloat(0x123))); //false
+      // 二进制
+      console.log(isNaN(0b111)); //false
+      console.log(isNaN(Number(0b111))); //false
+      console.log(isNaN(parseFloat(0b111))); //false
+      // 负数
+      console.log(isNaN(-123)); //false
+      console.log(isNaN(Number(-123))); //false
+      console.log(isNaN(parseFloat(-123))); //false
+      // 小数
+      console.log(isNaN(0.123)); //false
+      console.log(isNaN(Number(0.123))); //false
+      console.log(isNaN(parseFloat(0.123))); //false
+      // infinity
+      console.log(isNaN(Infinity)); //false
+      console.log(isNaN(Number(Infinity))); //false
+      console.log(isNaN(parseFloat(Infinity))); //false
+      console.groupEnd();
+
+      console.groupCollapsed("null && undefined");
+      // null
+      console.log(isNaN(null)); //false
+      console.log(isNaN(Number(null))); //false
+      console.log(isNaN(parseFloat(null))); //true
+      // nudefined
+      console.log(isNaN(undefined)); //true
+      console.log(isNaN(Number(undefined))); //true
+      console.log(isNaN(parseFloat(undefined))); //true
+      // NaN
+      console.log(isNaN(NaN)); //true
+      console.log(isNaN(Number(NaN))); //true
+      console.log(isNaN(parseFloat(NaN))); //true
+      console.groupEnd();
+
+      console.groupCollapsed("object");
+      // {}
+      console.log(isNaN({})); //true
+      console.log(isNaN(Number({}))); //true
+      console.log(isNaN(parseFloat({}))); //true
+      // 简单字符对象
+      console.log(isNaN({ name: "hhh" })); //true
+      console.log(isNaN(Number({ name: "hhh" }))); //true
+      console.log(isNaN(parseFloat({ name: "hhh" }))); //true
+      // 简单数字对象
+      console.log(isNaN({ 1: "2" })); //true
+      console.log(isNaN(Number({ 1: "2" }))); //true
+      console.log(isNaN(parseFloat({ 1: "2" }))); //true
+      console.groupEnd();
+
+      console.groupCollapsed("array");
+      // []
+      console.log(isNaN([])); //false
+      console.log(isNaN(Number([]))); //false
+      console.log(isNaN(parseFloat([]))); //true
+      // 单数值数组
+      console.log(isNaN([1])); //false
+      console.log(isNaN(Number([1]))); //false
+      console.log(isNaN(parseFloat([1]))); //false
+      // 单字符数组
+      console.log(isNaN(["1x"])); //true
+      console.log(isNaN(Number(["1x"]))); //true
+      console.log(isNaN(parseFloat(["1x"]))); //false
+      // 多数值数组
+      console.log(isNaN([1, 2])); //true
+      console.log(isNaN(Number([1, 2]))); //true
+      console.log(isNaN(parseFloat([1, 2]))); //false
+      // 多字符数组
+      console.log(isNaN(["1", "2"])); //true
+      console.log(isNaN(Number(["1", "2"]))); //true
+      console.log(isNaN(parseFloat(["1", "2"]))); //false
+      console.groupEnd();
+
+      console.groupCollapsed("string");
+      console.log(isNaN("123")); //false
+      console.log(isNaN(Number("123"))); //false
+      console.log(isNaN(parseFloat("123"))); //false
+      console.log(isNaN(" 123")); //false
+      console.log(isNaN(Number(" 123"))); //false
+      console.log(isNaN(parseFloat(" 123"))); //false
+      console.log(isNaN("1 23")); //true
+      console.log(isNaN(Number("1 23"))); //true
+      console.log(isNaN(parseFloat("1 23"))); //false
+      // 带符号数
+      console.log(isNaN("+123")); //false
+      console.log(isNaN(Number("+123"))); //false
+      console.log(isNaN(parseFloat("+123"))); //false
+      // 八进制
+      console.log(isNaN("0123")); //false
+      console.log(isNaN(Number("0123"))); //false
+      console.log(isNaN(parseFloat("0123"))); //false
+      // 十六进制
+      console.log(isNaN("0x123")); //false
+      console.log(isNaN(Number("0x123"))); //false
+      console.log(isNaN(parseFloat("0x123"))); //false
+      // 小数
+      console.log(isNaN("0.123")); //false
+      console.log(isNaN(Number("0.123"))); //false
+      console.log(isNaN(parseFloat("0.123"))); //false
+      // 多点
+      console.log(isNaN("0.1.23")); //true
+      console.log(isNaN(Number("0.1.23"))); //true
+      console.log(isNaN(parseFloat("0.1.23"))); //false
+      // 空字符串和空格字符串
+      console.log(isNaN("")); //false
+      console.log(isNaN(Number(""))); //false
+      console.log(isNaN(parseFloat(""))); //true
+      console.log(isNaN(" ")); //false
+      console.log(isNaN(Number(" "))); //false
+      console.log(isNaN(parseFloat(" "))); //true
+      console.groupEnd();
+
+      // 一个 isNaN 的 polyfill
+      function myIsNaN(value) {
+        return typeof value === "number" && isNaN(value);
+        //推荐用法
+        var n = Number(value);
+        return value !== value;
+      }
+      console.groupEnd();
+    </script>
+    <script>
+      console.log("%c Number.isNaN ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** Number.isNaN ***");
+      // boolean
+      console.log(isNaN(true)); //false
+      console.log(Number.isNaN(true)); //false
+      // str
+      console.log(isNaN("")); //false
+      console.log(Number.isNaN("")); //false
+      console.log(isNaN("12xc")); //true
+      console.log(Number.isNaN("12xc")); //false
+      // null undefined
+      console.log(isNaN(null)); //false
+      console.log(Number.isNaN(null)); //false
+      console.log(isNaN(undefined)); //true
+      console.log(Number.isNaN(undefined)); //false
+      // NaN Number.NaN 0/0
+      console.log(isNaN(NaN)); //true
+      console.log(Number.isNaN(NaN)); //true
+      console.log(isNaN(Number.NaN)); //true
+      console.log(Number.isNaN(Number.NaN)); //true
+      console.log(isNaN(0 / 0)); //true
+      console.log(Number.isNaN(0 / 0)); //true
+      console.groupEnd();
+    </script>
+  </body>
+</html>

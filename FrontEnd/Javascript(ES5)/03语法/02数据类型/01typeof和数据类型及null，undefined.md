@@ -51,7 +51,9 @@ if (typeof s === "undefined") {
 
 > 从技术角度讲，函数在 ECMAScript 中是对象，不是一种数据类型。然而，函数也确实有一些特殊的属性，因此通过 `typeof` 操作符来区分函数和其他对象是很有必要的。
 
-### 4.2 基本数据类型（值类型）
+### 4.2 数据类型
+
+#### 4.2.1 基本数据类型（值类型）
 
 由简单的结构组成
 
@@ -69,7 +71,7 @@ if (typeof s === "undefined") {
 
 > 为了避免属性名的冲突，ES6 新增了 `Symbol` 类型，`Symbol` 是一种原始数据类型，表示独一无二的值；
 
-### 4.3 引用数据类型（地址类型）
+#### 4.2.2 引用数据类型（地址类型）
 
 结构相对复杂
 
@@ -83,7 +85,7 @@ if (typeof s === "undefined") {
 
 > 函数其实是处理数据的方法，JavaScript 把它当成一种数据类型，可以赋值给变量，这为编程带来了很大的灵活性，也为 JavaScript 的“函数式编程”奠定了基础。
 
-### 4.4 基本数据类型和引用数据类型的区别
+#### 4.2.3 基本数据类型和引用数据类型的区别
 
 基本数据类型：值是存储在**栈（stack）**中的简单数据，也就是说，它们的值直接存储在变量访问的位置。这是因为这些原始类型占据的空间是固定的，所以可将他们存储在较小的内存区域 – 栈中。这样存储便于迅速查寻变量的值。
 
@@ -102,7 +104,9 @@ if (typeof s === "undefined") {
 
 ---
 
-### 4.5 `undefined` 类型
+### 4.3 null and undefined
+
+#### 4.3.1 `undefined` 类型
 
 `undefined` 是 JavaScript 独有的数据和数据类型，这种类型数据只有一个值，即 `undefined`，它的类型也是 `undefined`。
 
@@ -146,7 +150,7 @@ function f() {}
 f(); // undefined
 ```
 
-### 4.6 `null` 类型
+#### 4.3.2 `null` 类型
 
 `null` 是 JavaScript 第二个独有的数据和数据类型，这种类型数据只有一个值，即 `null`，它的类型也是 `null`。从逻辑角度看，`null` 值表示一个空对象指针，而这也是使用 `typeof` 操作符检测 `null` 值返回 `"object"` 的原因。
 
@@ -186,7 +190,7 @@ console.log(Boolean(undefined)); //false
 console.log(Boolean({})); //true
 ```
 
-### 4.7 `null` 和 `undefined`
+#### 4.3.3 `null` 和 `undefined`
 
 `null` 和 `undefined`，既然含义与用法都差不多，为什么要同时设置两个这样的值，这不是无端增加复杂度？这与历史原因有关。
 
@@ -233,3 +237,5 @@ Number(undefined); // NaN
 - 6).在函数（方法）里，如果必须返回值，但是值又计算不出来，那就返回一个 `null`（这是规范，不是语法规定，js 遵循）；但是没有返回值的函数，它的返回值都是 `undefined`。
 
 ---
+
+更多 demo 见 <a href="./demo/typeof.html">typeof.html</a>

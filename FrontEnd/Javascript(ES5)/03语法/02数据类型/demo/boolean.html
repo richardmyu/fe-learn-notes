@@ -8,6 +8,30 @@
   </head>
   <body>
     <script>
+      // 返回布尔值的运算符
+      // || 前者 Boolean --> true 返回前者；否则返回后者
+      // && 前者 Boolean --> true 返回后者；否则返回前者
+      console.log(true || false); //true
+      console.log(false || true); //true
+      console.log(true || true); //true
+      console.log(false || false); //false
+      console.log(true && false); //false
+      console.log(false && true); //false
+      console.log(true && true); //true
+      console.log(false && false); //false
+
+      console.log(!1); //false
+      console.log(1 === 2); //false
+      console.log(1 !== 2); //true
+      console.log(1 == 2); //false
+      console.log(1 != 2); //true
+      console.log(1 > 2); //false
+      console.log(1 >= 2); //false
+      console.log(1 < 2); //true
+      console.log(1 <= 2); //true
+    </script>
+    <script>
+      console.log("*************");
       // boolean
       console.log(Boolean(0)); //false
       console.log(Boolean(NaN)); //false
@@ -24,8 +48,22 @@
       if (a) {
         console.log(a);
       } else {
-        console.log(a + 1);
+        console.log(a + 1); //1
       }
+    </script>
+    <script>
+      console.log("*************");
+      // !
+      console.log(!1); //false
+      console.log(!""); //true
+      console.log(![]); //false
+      console.log(!{}); //false
+
+      // !!
+      console.log(!!1 === Boolean(1)); //true
+      console.log(!!null === Boolean(null)); //true
+      console.log(!!"" === Boolean("")); //true
+      console.log(!![] === Boolean([])); //true
     </script>
   </body>
 </html>
