@@ -1,10 +1,28 @@
 ### 4.10 String 类型
 
-#### 4.10.1  length 属性
+字符串就是零个或多个排在一起的字符，放在单引号或双引号之中。
+
+#### 4.10.1 length 属性
 
 1).string.length
 
 `string.length` 属性是一个只读的整数，指明指定字符串中的字符个数。字符串的 `length` 属性不会在 `for-in` 循环中枚举，也不可用通过 `delete` 操作符删除。
+
+```js
+var str = "明月几时有";
+str.length; //5
+// 操作 length 不起作用，但是也不报错
+str.length = 2;
+str.length; //5
+
+("use strict");
+var str = "明月几时有";
+str.length; //5
+str.length = 2;
+// 但是严格模式下，会报错的
+str.length;
+//TypeError: Cannot assign to read only property 'length' of string '明月几时有'
+```
 
 字符串可以被视为字符数组，因此可以使用数组的方括号运算符，用来返回某个位置的字符（位置编号从 0 开始）。如果方括号中的数字超过字符串的长度，或者方括号中根本不是数字，则返回 `undefined`。
 
@@ -22,14 +40,14 @@
 var str='a
 b
 c';
-console.log(str);
-//SyntaxError: unterminated string literal
+str;
+//SyntaxError: Invalid or unexpected token
 
 var str='a \
 b \
 c';
 
-console.log(str); //a b c
+str; //a b c
 ```
 
 连接运算符（`+`）可以连接多个单行字符串，将长字符串拆成多行书写，输出的时候也是单行。
@@ -39,34 +57,38 @@ console.log(str); //a b c
 ```javascript
 (function() {
   /*
-line 1
-line 2
-line 3
-*/
+  line 1
+  line 2
+  line 3
+  */
 }
   .toString()
   .split("\n")
   .slice(1, -1)
   .join("\n"));
-// "line 1
-// line 2
-// line 3"
+//   /*
+//   line 1
+//   line 2
+//   line 3
+//   */
 ```
+
+反斜杠（`\`）在字符串内有特殊含义，用来表示一些特殊字符，所以又称为转义符。
 
 `String` 类型包含一些特殊的字符字面量，也叫**转义序列**，用于表示非打印字符或者有其他用途的字符：
 
-|  字面量  |                        含义                         |
-| :------: | :-------------------------------------------------: |
-|   `\n`   |                        换行                         |
-|   `\t`   |                        制表                         |
-|   `\b`   |                        退格                         |
-|   `\r`   |                        回车                         |
-|   `\f`   |                        进纸                         |
-|   `\\`   |                        斜杠                         |
-|   `\'`   |          单引号，在单引号表示的字符中使用           |
-|   `\"`   |          双引号，在单引号表示的字符中使用           |
-|  `\xnn`  |  以十六进制代码 nn 表示一个字符（其中 n 为 0 ~ F）  |
-| `\unnnn` | 以十六进制代码 nnnn 表示一个字符（其中 n 为 0 ~ F） |
+| 字面量 |          含义          |
+| :----: | :--------------------: |
+|  `\0`  |     null(`\u0000`)     |
+|  `\b`  |   后退键（`\u0008`）   |
+|  `\f`  |   换页符（`\u000C`）   |
+|  `\n`  |   换行符（`\u000A`）   |
+|  `\r`  |   回车键（`\u000D`）   |
+|  `\t`  |   制表符（`\u0009`）   |
+|  `\v`  | 垂直制表符（`\u000B`） |
+|  `\'`  |   单引号（`\u0027`）   |
+|  `\"`  |   双引号（`\u0022`）   |
+|  `\\`  |   反斜杠（`\u005C`）   |
 
 这些字面量可以出现在字符串中的任何位置，而且也将被作为一个字符来解析。
 
@@ -84,13 +106,31 @@ line 3
 
 `\u` 后面紧跟四个十六进制数（`0000` 到 `FFFF`），代表一个字符。`XXXX` 对应该字符的 `Unicode` 码点，比如 `\u00A9` 表示版权符号。
 
-> 如果在非特殊字符前面使用斜杠，则斜杠会被省略。
+```js
+"1'2"; //1'2
+
+"\251"; //©
+"\250"; //¨
+"\xA9"; //©
+"\u00A9"; //©
+"\u1022"; //ဢ
+
+// 如果在非特殊字符前面使用斜杠，则斜杠会被省略
+"o"; //o
+"a"; //a
+```
 
 #### 4.10.3 字符串的特点
 
 ECMAScript 中的字符串是不可变的，也就是说，字符一旦创建，他们的值就不可能改变。
 
 要改变某个变量保存的字符串，首先销毁原来的字符串，然后再引用包含新值的字符串填充该变量。这个过程是在后台发生的，而这也是在某些旧版本浏览器（低于 1.0 的 Firefox、IE6 等）中拼接字符串时速度很慢的原因。
+
+```js
+var str = "asdf";
+str[0] = "b";
+str; //'asdf'
+```
 
 #### 4.10.4 转换为字符串
 
@@ -102,6 +142,37 @@ ECMAScript 中的字符串是不可变的，也就是说，字符一旦创建，
 
 在不知道转换的值是不是 `null` 和 `undefined` 的情况下，可以用转型函数 `String`，这个函数能够将任何类型的值转换为字符串。
 
+> 要把某个值转换为字符串，可以使用加号操作符把它与一个字符串加在一起。
+
+- **`toString`**
+
+```js
+var num = 123;
+
+num.toString(); //123
+
+num.toString(8); //173
+num.toString(16); //7b
+num.toString("16"); //7b
+// 参数只能在 2 - 36 ，否则报错
+// num.toString("16zx");
+//RangeError: toString() radix argument must be between 2 and 36
+
+// obj
+{ name: "hh" }.toString(); //[object Object]
+{ 1: 222 }.toString(); //[object Object]
+
+// ary
+[num].toString(); //123
+["name"].toString(); //'name'
+// 特殊
+[null].toString(); //''
+[undefined].toString(); //''
+
+// boo
+true.toString(); //'true'
+```
+
 `String` 函数遵循以下转换规则：
 
 ---
@@ -112,7 +183,26 @@ ECMAScript 中的字符串是不可变的，也就是说，字符一旦创建，
 
 ---
 
-> 要把某个值转换为字符串，可以使用加号操作符把它与一个字符串加在一起。
+```js
+String({ name: "hh" }); //[object Object]
+String(123); //123
+String(["name"]); //'name'
+// 特殊
+String([null]); //''
+String([undefined]); //''
+
+String(true); //'true'
+```
+
+> 注意：
+
+> 1.`String` 和 `toString` 大体行为一致；
+
+> 2.`toString` 对数值类型参数，可以选择传入一个 2 - 36 之间的数作为基数，输出其对应进制数；
+
+> 3.`null` 和 `undefined` 不具有 `toString` 方法，会调用 `String` 方法；
+
+更多 demo 见 <a href="./demo/string.html">string.html</a>
 
 #### 4.10.5 字符集
 
