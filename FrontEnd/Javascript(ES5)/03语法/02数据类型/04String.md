@@ -212,19 +212,26 @@ JavaScript 不仅以 Unicode 储存字符，还允许直接在程序中使用 Un
 
 解析代码的时候，JavaScript 会自动识别一个字符是字面形式表示，还是 `Unicode` 形式表示。输出给用户的时候，所有字符都会转成字面形式。
 
-我们还需要知道，每个字符在 JavaScript 内部都是以 16 位（即 2 个字节）的 UTF-16 格式储存。也就是说，JavaScript 的单位字符长度固定为 16 位长度，即 2 个字节。
+每个字符在 JavaScript 内部都是以 16 位（即 2 个字节）的 UTF-16 格式储存。也就是说，JavaScript 的单位字符长度固定为 16 位长度，即 2 个字节。
 
-但是，UTF-16 有两种长度：对于码点在 `U+0000` 到 `U+FFFF` 之间的字符，长度为 16 位（即 2 个字节）；对于码点在 `U+10000` 到 `U+10FFFF` 之间的字符，长度为 32 位（即 4 个字节），而且前两个字节在 `0xD800` 到 `0xDBFF` 之间，后两个字节在 `0xDC00` 到 `0xDFFF` 之间。
+但是，UTF-16 有两种长度：对于码点在 `U+0000` 到 `U+FFFF` 之间的字符，也称为基本平面（缩写 BMP），长度为 16 位（即 2 个字节）；对于码点在 `U+10000` 到 `U+10FFFF` 之间的字符，辅助平面（缩写 SMP），长度为 32 位（即 4 个字节），而且前两个字节在 `0xD800` 到 `0xDBFF` 之间，后两个字节在 `0xDC00` 到 `0xDFFF` 之间。
 
 JavaScript 对 `UTF-16` 的支持是不完整的，由于历史原因，只支持两字节的字符，不支持四字节的字符。这是因为 JavaScript 第一版发布的时候，Unicode 的码点只编到 `U+FFFF`，因此两字节足够表示了。后来，Unicode 纳入的字符越来越多，出现了四字节的编码。但是，JavaScript 的标准此时已经定型了，统一将字符长度限制在两字节，导致无法识别四字节的字符。
 
 总结一下，对于码点在 `U+10000` 到 `U+10FFFF` 之间的字符，JavaScript 总是认为它们是两个字符（`length` 属性为 2）。所以处理的时候，必须把这一点考虑在内，也就是说，JavaScript 返回的字符串长度可能是不正确的。
 
+```js
+var str1 = "\u1234\u1235";
+var str2 = "\u22234\u22235";
+str1, str1.length; //ሴስ 2
+str2, str2.length; //∣4∣5 4
+```
+
 #### 4.10.6 Base64 转码
 
 有时，文本里面包含一些不可打印的符号，比如 ASCII 码 0 到 31 的符号都无法打印出来，这时可以使用 Base64 编码，将它们转成可以打印的字符。另一个场景是，有时需要以文本格式传递二进制数据，那么也可以使用 Base64 编码。
 
-所谓 Base64 就是一种编码方法，可以将任意值转成 `0～9、A～Z、a-z、+` 和 `/` 这 64 个字符组成的可打印字符。使用它的主要目的，不是为了加密，而是为了不出现特殊字符，简化程序的处理。
+所谓 Base64 就是一种**编码方法**，可以将任意值转成 `0～9、A～Z、a-z、+` 和 `/` 这 64 个字符组成的可打印字符。使用它的主要目的，不是为了加密，而是 **为了不出现特殊字符**，简化程序的处理。
 
 JavaScript 原生提供两个 Base64 相关的方法。
 
@@ -232,9 +239,8 @@ JavaScript 原生提供两个 Base64 相关的方法。
 - `atob()`：Base64 编码转为原来的值
 
 ```javascript
-var string = "Hello World!";
-btoa(string); // "SGVsbG8gV29ybGQh"
-atob("SGVsbG8gV29ybGQh"); // "Hello World!"
+btoa("i mess you"); //aSBtZXNzIHlvdQ==
+atob("aSBtZXNzIHlvdQ=="); //i mess you
 ```
 
 > 注意，这两个方法不适合非 ASCII 码的字符，会报错。
@@ -242,14 +248,9 @@ atob("SGVsbG8gV29ybGQh"); // "Hello World!"
 要将非 ASCII 码字符转为 Base64 编码，必须中间插入一个转码环节，再使用这两个方法。
 
 ```javascript
-function b64Encode(str) {
-  return btoa(encodeURIComponent(str));
-}
+btoa(encodeURIComponent("分分合合"));
+// "JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"
 
-function b64Decode(str) {
-  return decodeURIComponent(atob(str));
-}
-
-b64Encode("你好"); // "JUU0JUJEJUEwJUU1JUE1JUJE"
-b64Decode("JUU0JUJEJUEwJUU1JUE1JUJE"); // "你好
+decodeURIComponent(atob("JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"));
+// 分分合合
 ```

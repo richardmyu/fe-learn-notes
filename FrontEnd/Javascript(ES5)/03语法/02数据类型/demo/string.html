@@ -129,11 +129,47 @@
       console.log(String(0.0000007)); //7e-7
       console.log(String(7e-7)); //7e-7
       console.log(String(3000000000000000000000)); //3e+21
-      console.log(String(3e+22)); //3e+22
+      console.log(String(3e22)); //3e+22
       console.log(String(["name"])); //'name'
       console.log(String([null])); //''
       console.log(String([undefined])); //''
       console.log(String(true)); //'true'
+      console.groupEnd();
+
+      console.groupCollapsed("字符集");
+      //
+      var str1 = "\u1234\u1235";
+      var str2 = "\u22234\u22235";
+      console.log(str1, str1.length); //ሴስ 2
+      console.log(str2, str2.length); //∣4∣5 4
+      console.groupEnd();
+
+      console.groupCollapsed("base64");
+      var str = "Hello World";
+      console.log(btoa(str)); //SGVsbG8gV29ybGQ=
+      console.log(atob("SGVsbG8gV29ybGQ=")); //Hello World
+
+      console.log(btoa("i mess you")); //aSBtZXNzIHlvdQ==
+      console.log(atob("aSBtZXNzIHlvdQ==")); //i mess you
+
+      // function b64Encode(str) {
+      //   return btoa(encodeURIComponent(str));
+      // }
+
+      // function b64Decode(str) {
+      //   return decodeURIComponent(atob(str));
+      // }
+
+      console.log(btoa(encodeURIComponent("你好"))); // "JUU0JUJEJUEwJUU1JUE1JUJE"
+      console.log(decodeURIComponent(atob("JUU0JUJEJUEwJUU1JUE1JUJE"))); // 你好
+
+      console.log(btoa(encodeURIComponent("分分合合")));
+      // "JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"
+      console.log(
+        decodeURIComponent(
+          atob("JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4")
+        )
+      ); // 分分合合
       console.groupEnd();
     </script>
   </body>
