@@ -49,6 +49,8 @@
       console.groupCollapsed("null");
       console.log(Number(undefined)); //NaN
       console.log(Number(null)); //0
+      console.log(Number('null')); //NaN
+      console.log(Number('undefined')); //NaN
       console.groupEnd();
       // str
       console.groupCollapsed("str");
@@ -82,6 +84,11 @@
       console.groupCollapsed("ary");
       console.log(Number([])); //0
       console.log(Number([1])); //1
+      console.log(Number([null])); //0
+      console.log(Number([undefined])); //0
+      console.log(Number(['null'])); //NaN
+      console.log(Number(['undefined'])); //NaN
+      console.log(Number([NaN])); //NaN
       console.log(Number([1, 2])); //NaN
       console.log(Number(["123"])); //123
       console.log(Number(["123zxc"])); //NaN

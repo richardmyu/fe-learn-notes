@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var a = 0.1;
+      var b = 0.2;
+      let result;
+      console.log("a ", a.toString(2));
+      // 0.0001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 101
+      // 0.0001100110011001100110011001100110011001100110011001101
+      console.log("b ", b.toString(2));
+      // 0.0011 0011 0011 0011 0011 0011 0011 0011 0011 0011 0011 0011 0011 01
+      // 0.001100110011001100110011001100110011001100110011001101
+
+      // 0.0100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 111
+
+      // 0.0100110011001100110011001100110011001100110011001100111
+      console.log((0.1).toPrecision(21));
+      // 0.09999999999999998
+      // 0.19999999999999996
+      // 1 -》1
+      // 0.9 -》  0.1110 0110 0110 0110 0110 0110 0110 0110 0110 0110 0110 0110 0110 1
+      // 1-0.9 -》0.0001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1
+      // 0.00011001100110011001100110011001100110011001100110011
+
+      // 1.0000 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1101
+      // 1.0000 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1
+
+      console.log(Math.pow(2, 1023)); //8.98846567431158e+307
+      console.log(Math.pow(2, 1024)); //Infinity
+      console.log(Math.pow(2, -1074)); //5e-324
+      console.log(Math.pow(2, -1075)); //0
+      console.log(Math.pow(2, -1076)); //0
+
+      console.groupCollapsed("整数范围");
+      console.log(Math.pow(2, 53)); //9007199254740992
+      console.log(Math.pow(2, 53) + 1); //9007199254740992
+      console.log(Math.pow(2, 53) + 2); //9007199254740994
+      console.log(Math.pow(2, 53) + 3); //9007199254740996
+      console.log(-Math.pow(2, 53)); //-9007199254740992
+      console.log(-Math.pow(2, 53) - 1); //-9007199254740992
+      console.log(-Math.pow(2, 53) - 2); //-9007199254740994
+      console.log(-Math.pow(2, 53) - 3); //-9007199254740996
+      console.groupEnd();
+
+      console.groupCollapsed("特殊数值");
+      console.log(Number.MAX_VALUE); //1.7976931348623157e+308
+      console.log(Number.MIN_VALUE); //5e-324
+      console.log(Number.MAX_SAFE_INTEGER); //9007199254740991
+      console.log(Number.MIN_SAFE_INTEGER); //-9007199254740991
+      console.log(Number.POSITIVE_INFINITY); //Infinity
+      console.log(Number.NEGATIVE_INFINITY); //-Infinity
+      console.log(Number.EPSILON); //2.220446049250313e-16
+      console.groupEnd();
+
+      console.log(011); //9
+      console.log(08); //8
+      console.log(00011); //9
+      console.log(0o11); //9
+      // console.log(0o19); //SyntaxError: Invalid or unexpected token
+    </script>
+    <script>
+      'use strict';
+      console.log(011);
+      //SyntaxError: Octal literals are not allowed in strict mode.
+    </script>
+  </body>
+</html>
