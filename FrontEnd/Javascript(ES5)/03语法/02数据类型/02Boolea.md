@@ -25,9 +25,9 @@
 
 ```javascript
 let a = 6;
-console.log(typeof a); //number
-console.log(typeof !a); //boolean
-console.log(!a); //false
+typeof a; //number
+typeof !a; //boolean
+!a; //false
 ```
 
 #### 4.4.3 `！！`

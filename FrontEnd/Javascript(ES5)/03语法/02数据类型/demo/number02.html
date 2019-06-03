@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // isFinite
+      console.log("%c isFinite ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** isFinite ***");
+      console.log(isFinite(Infinity)); //false
+      console.log(isFinite(-Infinity)); //false
+      console.log(isFinite(NaN)); //false
+      console.log(isFinite(undefined)); //false
+      console.log(isFinite(null)); //true
+      console.log(isFinite(123)); //true
+      console.log(isFinite(0.000123)); //true
+      console.log(isFinite("1.23")); //true
+      console.log(isFinite({})); //false
+      console.log(isFinite([])); //true
+      console.groupEnd();
+
+      // Number.isFinite
+      console.log("%c Number.isFinite ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** Number.isFinite ***");
+      console.log(Number.isFinite(Infinity)); //false
+      console.log(Number.isFinite(-Infinity)); //false
+      console.log(Number.isFinite(NaN)); //false
+      console.log(Number.isFinite(undefined)); //false
+      console.log(Number.isFinite(null)); //false
+      console.log(Number.isFinite(123)); //true
+      console.log(Number.isFinite(0.000123)); //true
+      console.log(Number.isFinite("1.23")); //false
+      console.log(Number.isFinite({})); //false
+      console.log(Number.isFinite([])); //false
+      console.groupEnd();
+    </script>
+  </body>
+</html>

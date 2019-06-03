@@ -27,34 +27,34 @@
 
 ```javascript
 // boolean
-console.log(isNaN(true)); //false
+isNaN(true); //false
 
 // number
-console.log(isNaN(0123)); //false
-console.log(isNaN(0x123)); //false
-console.log(isNaN(-123)); //false
-console.log(isNaN(0.123)); //false
+isNaN(0123); //false
+isNaN(0x123); //false
+isNaN(-123); //false
+isNaN(0.123); //false
 
 //null && undefined
-console.log(isNaN(null)); //false
-console.log(isNaN(undefined)); //true
-console.log(isNaN(NaN)); //true
+isNaN(null); //false
+isNaN(undefined); //true
+isNaN(NaN); //true
 
 //object
-console.log(isNaN({})); //true
-console.log(isNaN({ name: "hhh" })); //true
-console.log(isNaN({ 1: "2" })); //true
+isNaN({}); //true
+isNaN({ name: "hhh" }); //true
+isNaN({ 1: "2" }); //true
 
 //array
-console.log(isNaN([])); //false
-console.log(isNaN([1])); //false
-console.log(isNaN(["1x"])); //true
-console.log(isNaN([1, 2])); //true
+isNaN([]); //false
+isNaN([1]); //false
+isNaN(["1x"]); //true
+isNaN([1, 2]); //true
 
 //string
-console.log(isNaN("123")); //false
-console.log(isNaN("+123")); //false
-console.log(isNaN("")); //false
+isNaN("123"); //false
+isNaN("+123"); //false
+isNaN(""); //false
 
 // 一个 isNaN 的 polyfill 可以理解为（这个 polyfill 利用了 NaN 自身永不相等于自身这一特征）
 function myIsNaN(value) {
@@ -64,6 +64,8 @@ function myIsNaN(value) {
   return value !== value;
 }
 ```
+
+更多 demo 见 <a href="./demo/number01.html">number01.html</a>
 
 `isNaN` 也适用于对象。在基于对象调用 `isNaN` 函数时，会首先调用对象的 `valueOf` 方法，然后确定该方法返回的值是否可以装换为数值。如果不能，则基于这个返回值再调用 `toString` 方法，再测试(`parseFloat`)返回值，而这个过程也是 ECMAScript 中内置函数和操作符的一般执行流程。
 
@@ -79,16 +81,32 @@ function myIsNaN(value) {
 
 `isFinite` 方法返回一个布尔值，表示某个值是否为正常的数值。
 
-除了 `Infinity`、`-Infinity`、`NaN` 和 `undefined` 这几个值会返回 false，`isFinite` 对于其他的数值都会返回 true。
+除了 `Infinity`、`-Infinity`、`NaN` 和 `undefined` 这几个值会返回 false，`isFinite` 对于其他的**数值**都会返回 true。
 
 ```javascript
-console.log(isFinite(Infinity)); //false
-console.log(isFinite(-Infinity)); //false
-console.log(isFinite(NaN)); //false
-console.log(isFinite(undefined)); //false
-console.log(isFinite(null)); //true
-console.log(isFinite("1.23")); //true
+isFinite(Infinity); //false
+isFinite(-Infinity); //false
+isFinite(NaN); //false
+isFinite(undefined); //false
+isFinite(null); //true
+isFinite(123); //true
+isFinite("1.23"); //true
+isFinite({}); //false
 ```
+
+自然类似 `isNaN`,`isFinite` 的非数值参数也会调用 `Number()` 方法进行转换，同样也是全局方法。更强大的方法是 `Number.isFinite`。
+
+- **`Number.isFinite`**
+
+和全局的 `isFinite()` 函数相比，这个方法不会强制将一个非数值的参数转换成数值，这就意味着，只有数值类型的值，且是有穷的（finite），才返回 true。
+
+```js
+Number.isFinite(null); //false
+Number.isFinite(123); //true
+Number.isFinite("1.23"); //false
+```
+
+更多 demo 见 <a href="./demo/number02.html">number02.html</a>
 
 #### 4.5.3 Number
 
@@ -106,42 +124,45 @@ Number(false); //0
 2).数字值，简单传入传出（第一个数为 `0`，则会被认为是八进制数，忽略剩余前导 `0`，再转化为十进制输出；若前两位为 `0x`，则会被认为是十六进制，转化为十进制）；
 
 ```javascript
-//带前导0被当做 8 进制
-Number(0123); //83
-Number(00123); //83
-//带前导0x被当做 16 进制
-Number(0x123); //291
+Number(-Infinity); //-Infinity
+Number(NaN); //NaN
+Number(132); //132
 
-Number(-123); //-123
-Number(0.123); //0.123
-//小数点后 0 超过 5 个会自动转科学计数法
-Number(0.00000123); //0.00000123
-Number(0.000000123); //1.23e-7
-Number(0.0123); //0.0123
-//科学计数法指数不超过20就不会是科学计数法形式
-Number(3e20); //300000000000000000000
-Number(3e-21); //3e-21
+// 小数点后的 0 超过 5 位，自动转化为科学计数法
+Number(0.000000132); //1.32e-7
+
+// 小数点前的 0 超过 20 位，自动转化为科学计数法
+Number(3000000000000000000000); //3e+21
+
+// 多个前导 0 会被当做八进制数解析
+Number(0011); //9
+
+// 二进制
+Number(0b11); //3
+// 八进制
+Number(011); //9
+// 十六进制
+Number(0x456); //1110
 ```
+
+> 注意： 1.小数点后的 0 超过 5 位，自动转化为科学计数法； 2.小数点前的 0 超过 20 位，自动转化为科学计数法； 3.多个前导 0 会被当做八进制数解析； 4.`0.012` 等价 `.012`； 5.`Infinity` 和 `-Infinity` 返回自身；
 
 3).空数组也会转换为 0；可以转化数值的单数值数组转换对应的数值；其他数组为 `NaN`；
 
 ```javascript
-//空数组
 Number([]); //0
-//可以转化数值的单数值数组
 Number([1]); //1
-//其他
-Number(["1x"]); //NaN
 Number([1, 2]); //NaN
+Number(["123"]); //123
 ```
+
+> 单数组如果是字符串，则参考字符串类型转换规则
 
 4).`null`，输出 0; `undefined`，输出 `NaN`;
 
 ```javascript
 Number(null); //0
 Number(undefined); //NaN
-//NaN是数字类型，但不是一个数...
-Number(NaN); //NaN
 ```
 
 5).如果是对象。则调用对象的 `valueOf` 方法，然后依照前面规则转换返回值。如果转换的结果是 `NaN`，则调用对象的 `toString` 方法。
@@ -155,164 +176,123 @@ Number({ name: "hhh" }); //NaN
 
 ---
 
-- a.只包含数字（包括正负两种情况），转换十进制（忽略前导 0）;
-- b.带浮点格式，转换对应浮点数值（忽略前导 0）;
-- c.若有上述之外其他字符，输出 `NaN`;
-- d.注意：空字符串或者内有任意空格，转换为 0;
-- e.空格只在首/尾位忽略，中间位置作为非法字符;
+从第一个非 0 数字或者 `+/-` 开始解析，直到结束（末尾空格忽略），如果中途出现任何非数字字符或者一个以上的小数点则解析失败，返回 `NaN`。（特殊情况：如果第一个字符为 0，后一位字符为 b 或 x，则当做二进制或十六进制解析，并将结果转换为十进制输出；同样， 2e+21 之类的会当做科学计数法进行解析）
 
 ---
 
 ```javascript
-//boolean
-Number(true); //1
-Number(false); //0
-
-//number
-//能识别八进制，十六进制和二进制
-Number(0123); //83
-Number(00123); //83
-Number(0x123); //291
-Number(0b111); //7
-//负数，浮点数
-Number(-123); //-123
-Number(0.123); //0.123
-Number(0.992); //0.992
-//小数点后面的 0 超过 5 位自动转化为科学计数法
-Number(0.00000123); //0.00000123
-Number(0.000000123); //1.23e-7
-//最后一位非 0 数后面的 0 会被忽略
-Number(0.0123); //0.0123
-//小数点前面的 0 超过 20 位也会自动转化为科学计数法
-Number(3e20); //300000000000000000000
-Number(3e-21); //3e-21
-
-//特殊值
-Number(null); //0
-Number(undefined); //NaN
-Number(NaN); //NaN
-
-//对象一律 NaN
-Number({}); //NaN
-Number({ name: "hhh" }); //NaN
-Number({ 1: "2" }); //NaN
-
-//空数组或可转化的单元素数组之外为 NaN
-Number([]); //0
-Number([1]); //1
-Number(["1x"]); //NaN
-Number(["12"]); //12
-Number([1, 2]); //NaN
-Number(["1", "2"]); //NaN
-
-//string
-//中间空格不识别，前后空格会忽略
-Number("123"); //123
-Number(" 123"); //123
-Number("1 23"); //NaN
-Number("123 "); //123
-//识别正负
-Number("+123"); //123
-Number("-123"); //-123
-//不识别八进制，识别十六进制和二进制
-Number("0123"); //123
-Number("00123"); //123
-Number("0x123"); //291
-Number("0b111"); //7
-//只能识别第一个小数点
-Number("0.123"); //0.123
-Number("0.1.23"); //NaN
-//会自动进行科学计数法的转换
-Number("0.00000000000123"); //1.23e-12
-Number("0.012300000000000"); //0.0123
-Number("3e33"); //3e+33
-Number("3e-33"); //3e-33
-//非数字 NaN
-Number("3ez"); //NaN
-//空字符串（或带空格）为 0
 Number(""); //0
 Number(" "); //0
+Number(" 123"); //123
+Number("1 23"); //NaN
+Number("1.23"); //1.23
+Number("1.2.3"); //NaN
+
+// 二进制
+Number("0b11"); //3
+// 八进制 不识别
+Number("011"); //11
+// 十六进制
+Number("0x11"); //17
+// 科学计数法类似数值
+Number("0.00000013"); //1.3e-7
+Number("2000000000000000000000"); //2e+21
+console.groupEnd();
 ```
+
+> 字符串中的前导 0 会被忽略
+
+更多 demo 见 <a href="./demo/number03.html">number03.html</a>
 
 #### 4.5.4 parseInt
 
 非强制数据类型转换
 
-1).主要用于将字符串转为整数；
+1).主要用于将**字符串**转为整数；
 
-2).忽略字符串前面的空格，直至找到第一个非空格字符；
+2).忽略字符串前面的空格，直至找到第一个非空格字符（前导 0 一般会被忽略，除非构成进制标记）；
 
 3).如果第一个字符不是数字字符或正负号(符号后面必须有数字)，则返回 `NaN`；
 
-4).直至解析完所有数字字符或遇到非数字字符(不识别小数点)，返回转好的部分；
+4).直至解析完所有数字字符或遇到非数字字符(不识别小数点，但能识别进制标记，也会自动转化科学计数法)，返回已转为数字的部分；
+
+对于非字符类型参数，优先调用 `toString()`，没有 `toString()` 方法则调用 `String()` 方法转化为字符串。
 
 ```javascript
-//boolean
+// boolean
 parseInt(true); //NaN
 parseInt(false); //NaN
 
-//number
-//能识别八进制，十六进制和二进制
-parseInt(0123); //83
-parseInt(00123); //83
-parseInt(0x123); //291
-parseInt(0b111); //7
-//负数，忽略小数点
-parseInt(-123); //-123
-parseInt(0.123); //0
-parseInt(0.992); //0
-//会自动转化为科学计数法，然后再转换字符串
-parseInt(0.00000123); //0
-parseInt(0.000000123); //1 ：1.23E-7 ---> 1
-parseInt(0.0123); //0
-parseInt(3e20); //300000000000000000000
-parseInt(3e-21); //3
-
-//特殊值均不识别
-parseInt(null); //NaN
-parseInt(undefined); //NaN
+// number
+parseInt(-Infinity); //NaN
 parseInt(NaN); //NaN
 
-//对象一律 NaN
-parseInt({}); //NaN
-parseInt({ name: "hhh" }); //NaN
-parseInt({ 1: "2" }); //NaN
+// 小数
+parseInt(0.132); //0
+parseInt(0.00000132); //0
+parseInt(300000000000000000000); //300000000000000000000
+// 这里会先转为 3e+21, 再解析 --》 3
+parseInt(3000000000000000000000); //3
+// 多个前导 0
+parseInt(0011); //9
+// 二进制
+parseInt(0b11); //3
+// 八进制
+parseInt(011); //9
+// 十六进制
+parseInt(0x456); //1110
 
-//不识别空数组，但会将数组的第一项解析而忽略其他项
-parseInt([]); //NaN
-parseInt([1]); //1
-parseInt(["1x"]); //1
-parseInt([1, 2]); //1
-parseInt(["1", "2"]); //1
+// null undefined
+parseInt(undefined); //NaN
+parseInt(null); //NaN
 
-//string
-//中间空格不识别（返回可以转化的），前后空格会忽略
-parseInt("123"); //123
-parseInt(" 123"); //123
-parseInt("1 23"); //1
-parseInt("123 "); //123
-parseInt("+123"); //123
-parseInt("-123"); //-123
-//不识别八进制和二进制，识别十六进制
-parseInt("0123"); //123
-parseInt("00123"); //123
-parseInt("0x123"); //291
-parseInt("0b111"); //0
-//不能识别小数点
-parseInt("0.123"); //0
-parseInt("0.1.23"); //0
-//不会自动进行科学计数法的转换
-parseInt("0.00000000000123"); //0
-parseInt("0.012300000000000"); //0
-parseInt("3e33"); //3
-parseInt("3e-33"); //3
-parseInt("3ez"); //3
-//不识别空字符串（或带空格）
+// str
 parseInt(""); //NaN
 parseInt(" "); //NaN
+parseInt(" 123"); //123
+parseInt("1 23"); //1
+// 二进制
+parseInt("0b11"); //0
+// 八进制
+parseInt("011"); //11
+// 十六进制
+parseInt("0x11"); //17
+//
+parseInt("0.0000013"); //0
+parseInt("200000000000000000000"); //200000000000000000000
+parseInt("2000000000000000000000"); //2e+21
+parseInt("2e+21"); //2
+
+// obj
+parseInt({}); //NaN
+parseInt({ 1: 2 }); //NaN
+
+// ary
+parseInt([]); //NaN
+parseInt([1]); //1
+parseInt([1, 2]); //1
 ```
 
-> 第一个参数若不是字符串，会自动转换为字符串再读取(`String`)；但这回导致一些意外：
+5).存在第二个参数，用来指定转换时的所使用的基数（进制）；如果第二个参数不是数值，会被自动转为（调用 `parseInt()`）一个整数。这个整数只有在 2 到 36 之间，才能得到有意义的结果，(转化为数字后)超出这个范围，则返回 `NaN`；
+
+> 特殊值：如果第二个参数是或者转化为 0、`NaN`、`undefined` 和 `null`，则直接忽略。
+> `parseInt` 的第二个参数默认为 10，即不指定第二个参数的情况下，默认都转十进制输出；
+
+```javascript
+parseInt("10", 1); //NaN
+parseInt("10", 2); //2
+parseInt("10", 36); //36
+parseInt("10", 37); //NaN
+
+parseInt("10", 0); //10
+parseInt("10", ""); //10
+parseInt("10", NaN); //10
+parseInt("10", null); //10
+parseInt("10", undefined); //10
+parseInt("10", true); //NaN
+```
+
+第一个参数若不是字符串，会自动转换为字符串再读取(`String`)；但这回导致一些意外：
 
 ```javascript
 parseInt(0x11, 36); // 43
@@ -336,29 +316,7 @@ parseInt(011, 2); // NaN
 parseInt(String(011), 2);
 
 // 等同于
-parseInt(String(9), 2);
-```
-
-> JavaScript 不再允许将带有前缀 0 的数字视为八进制数，而是要求忽略这个 0。但是，为了保证兼容性，大部分浏览器并没有部署这一条规定。
-
-5).存在第二个参数，用来指定转换时的所使用的基数（进制）；如果第二个参数不是数值，会被自动转为（`parseInt`???）一个整数。这个整数只有在 2 到 36 之间，才能得到有意义的结果，(转化为数字后)超出这个范围，则返回 `NaN`；如果第二个参数是或者转化为 0、`NaN`、`undefined` 和 `null`，则直接忽略（或者可以说调用默认值？？？）。
-
-```javascript
-parseInt("10", 37); // NaN
-parseInt("10", 1); // NaN
-parseInt("10", 0); // 10
-parseInt("10", null); // 10
-parseInt("10", undefined); // 10
-parseInt("10", 2); //2
-parseInt("10", "1.9"); //NaN
-//2-36 范围内非整数会忽略小数部分
-parseInt("10", "2.1"); //2
-parseInt("10", "3.000000007"); //3
-parseInt("10", "3.007"); //3
-//忽略进制标识符???
-parseInt("10", "03"); //3
-parseInt("10", "0x2"); //2
-parseInt("10", "0x3"); //3
+parseInt("9", 2);
 ```
 
 如果第一个参数字符串包含对于指定进制无意义的字符，则从最高位开始，只返回可以转换的数值。如果最高位无法转换，则直接返回 `NaN`。
@@ -368,27 +326,23 @@ parseInt("1546", 2); // 1
 parseInt("546", 2); // NaN
 ```
 
-> `parseInt` 的第二个参数默认为 10；
-
-6).对于会自动转化为科学计数法的数字，`parseInt` 会产生一些奇怪的结果；`parseFloat` 不会(原因在于 `parseInt` 会先转化为科学计数法再转化为字符串，而 `parseFloat` 先转化为字符串，再自动转化科学计数法输出)。
+6).对于会自动转化为科学计数法的数值类型参数，`parseInt` 会产生一些奇怪的结果，而`parseFloat` 不会(原因在于 `parseInt` 会先转化为科学计数法再转化为字符串，最后解析输出；而 `parseFloat` 先转化为字符串，再解析，最后自动转化科学计数法输出)。
 
 ```javascript
-parseInt(1000000000000000000000.5); // 1
-// 等同于
-parseInt("1e+21"); // 1
-
-parseInt(0.0000008); // 8
-// 等同于
-parseInt("8e-7"); // 8
-
-parseFloat(1000000000000000000000.5); //1e+21
-// 等同于
-parseFloat("1e+21"); //1e+21
+parseInt(0.0000008); //8
+// ↓
+parseInt(8e-7); //8
+// ↓
+parseInt("8e-7"); //8
 
 parseFloat(0.0000008); //8e-7
-// 等同于
-parseFloat("8e-7"); //8e-7
+// ↓
+parseFloat("0.0000008"); //8e-7
+// ↓
+parseFloat(8e-7); //8e-7
 ```
+
+更多 demo 见 <a href="./demo/number04.html">number04.html</a>
 
 #### 4.5.5 parseFloat
 
@@ -399,71 +353,64 @@ parseFloat("8e-7"); //8e-7
 3).自动过滤前导空格；若参数不是字符串或者字符串的第一个字符不能转换为浮点数，则返回 `NaN`。
 
 ```javascript
-//boolean
+// boolean
 parseFloat(true); //NaN
-parseFloat(false); //NaN
 
-//number
-//能识别八进制，十六进制和二进制
-parseFloat(0123); //83
-parseFloat(00123); //83
-parseFloat(0x123); //291
-parseFloat(0b111); //7
-//负数，小数点
-parseFloat(-123); //-123
-parseFloat(0.123); //0.123
-parseFloat(0.992); //0.992
-//会先转换字符串，然后再自动转化为科学计数法
-parseFloat(0.00000123); //0.00000123
-parseFloat(0.000000123); //1.23e-7
-parseFloat(0.0123); //0.0123
-parseFloat(3e20); //300000000000000000000
-parseFloat(3e-21); //3e-21
-
-//特殊值均不识别
-parseFloat(null); //NaN
-parseFloat(undefined); //NaN
+// number
+parseFloat(-Infinity); //-Infinity
 parseFloat(NaN); //NaN
+parseFloat(132); //132
+// 小数
+parseFloat(0.00000132); //0.00000132
+parseFloat(0.000000132); //1.32e-7
+parseFloat(300000000000000000000); //300000000000000000000
+parseFloat(3000000000000000000000); //3e+21
+// 多个前导 0
+parseFloat(0011); //9
+// 二进制
+parseFloat(0b11); //3
+// 八进制
+parseFloat(011); //9
+// 十六进制
+parseFloat(0x456); //1110
 
-//对象一律 NaN
-parseFloat({}); //NaN
-parseFloat({ name: "hhh" }); //NaN
-parseFloat({ 1: "2" }); //NaN
-console.groupEnd();
+// null undefined
+parseFloat(undefined); //NaN
+parseFloat(null); //NaN
 
-//不识别空数组，但会将数组的第一项解析而忽略其他项
-parseFloat([]); //NaN
-parseFloat([1]); //1
-parseFloat(["1x"]); //1
-parseFloat([1, 2]); //1
-parseFloat(["1", "2"]); //1
-
-//string
-//中间空格不识别（返回可以转化的），前后空格会忽略
-parseFloat("123"); //123
-parseFloat(" 123"); //123
-parseFloat("1 23"); //1
-parseFloat("123 "); //123
-parseFloat("+123"); //123
-parseFloat("-123"); //-123
-//不识别八进制和二进制，十六进制
-parseFloat("0123"); //123
-parseFloat("00123"); //123
-parseFloat("0x123"); //0
-parseFloat("0b111"); //0
-//能识别小数点
-parseFloat("0.123"); //0.123
-parseFloat("0.1.23"); //0.1
-//会自动进行科学计数法的转换
-parseFloat("0.00000000000123"); //1.23e-12
-parseFloat("0.012300000000000"); //0.0123
-parseFloat("3e33"); //3e+33
-parseFloat("3e-33"); //3e-33
-parseFloat("3ez"); //3
-//不识别空字符串（或带空格）
+// str
 parseFloat(""); //NaN
 parseFloat(" "); //NaN
+parseFloat(" 123"); //123
+parseFloat("1 23"); //1
+parseFloat("1.23"); //1.23
+parseFloat("1.2.3"); //1.2
+// 二进制
+parseFloat("0b11"); //0
+// 八进制
+parseFloat("011"); //11
+// 十六进制
+parseFloat("0x11"); //0
+//
+parseFloat("0.0000013"); //0.0000013
+parseFloat("0.00000013"); //1.3e-7
+parseFloat("200000000000000000000"); //200000000000000000000
+parseFloat("2000000000000000000000"); //2e+21
+parseFloat("2e+21"); //2e+21
+// obj
+parseFloat({}); //NaN
+// ary
+parseFloat([]); //NaN
+parseFloat([1]); //1
+parseFloat(["1", "2"]); //1
 ```
+
+> 注意：
+> 1.`parseFloat` 能有效识别 `Infinity/-Infinity`，而 `parseInt` 则不能；
+> 2.参数为字符串类型时，`parseFloat` 不会识别进制，而 `parseInt` 则会区分二进制和十六进制；
+> 3.两者在数值类型参数时，能区分各种进制（关于八进制后面有详述）
+
+更多 demo 见 <a href="./demo/number05.html">number05.html</a>
 
 #### 4.5.6 浮点运算
 
@@ -592,6 +539,7 @@ JavaScript 的数值有多种表示方法，可以用字面形式直接表示，
 前导 0 表示八进制，处理时很容易造成混乱。ES5 的严格模式和 ES6，已经废除了这种表示法，但是浏览器为了兼容以前的代码，目前还继续支持这种表示法。
 
 > 八进制字面量在严格模式下是无效的，会导致支持该模式的 JavaScript 引擎抛出错误。
+> JavaScript 不再允许将带有前缀 0 的数字视为八进制数，而是要求忽略这个 0。但是，为了保证兼容性，大部分浏览器并没有部署这一条规定。ES6 新增八进制数字的字面量：`0o77`，以 `0o` 标记八进制。
 
 #### 4.5.10 特殊数值
 

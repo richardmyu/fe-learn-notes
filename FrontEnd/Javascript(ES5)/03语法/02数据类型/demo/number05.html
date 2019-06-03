@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // parseInt
+      console.log("%c parseFloat ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** parseFloat ***");
+      // boolean
+      console.groupCollapsed("boo");
+      console.log(parseFloat(true)); //NaN
+      console.log(true.toString()); //'true'
+      console.log(parseFloat(true.toString())); //NaN
+      console.log(parseFloat(false)); //NaN
+      console.groupEnd();
+      // number
+      console.groupCollapsed("num");
+      console.log(parseFloat(-Infinity)); //-Infinity
+      console.log(parseFloat(NaN)); //NaN
+      console.log(parseFloat(132)); //132
+      console.log(parseFloat(-132)); //-132
+      // 小数
+      console.log(parseFloat(0.132)); //0.132
+      console.log(parseFloat(0.00000132)); //0.00000132
+      console.log(parseFloat(0.000000132)); //1.32e-7
+      console.log(parseFloat(300000000000000000000)); //300000000000000000000
+      console.log(parseFloat(3000000000000000000000)); //3e+21
+      // 多个前导 0
+      console.log(parseFloat(0011)); //9
+      console.log(parseFloat(000011)); //9
+      // 二进制
+      console.log(parseFloat(0b11)); //3
+      console.log(parseFloat(0b1111)); //15
+      // 八进制
+      console.log(parseFloat(011)); //9
+      console.log(parseFloat(046)); //38
+      console.log(parseFloat(00046)); //38
+      // 十六进制
+      console.log(parseFloat(0x456)); //1110
+      console.log(parseFloat(0xadc)); //2780
+      console.groupEnd();
+      // null undefined
+      console.groupCollapsed("null");
+      console.log(parseFloat(undefined)); //NaN
+      console.log(parseFloat(null)); //NaN
+      console.groupEnd();
+      // str
+      console.groupCollapsed("str");
+      console.log(parseFloat("")); //NaN
+      console.log(parseFloat(" ")); //NaN
+      console.log(parseFloat(" 123")); //123
+      console.log(parseFloat("1 23")); //1
+      console.log(parseFloat("1.23")); //1.23
+      console.log(parseFloat("1.2.3")); //1.2
+      // 二进制
+      console.log(parseFloat("0b11")); //0
+      // 八进制
+      console.log(parseFloat("011")); //11
+      // 十六进制
+      console.log(parseFloat("0x11")); //0
+      //
+      console.log(parseFloat("0.0000013")); //0.0000013
+      console.log(parseFloat("0.00000013")); //1.3e-7
+      console.log(parseFloat("200000000000000000000")); //200000000000000000000
+      console.log(parseFloat("2000000000000000000000")); //2e+21
+      console.log(parseFloat("2e+21")); //2e+21
+      console.log(parseFloat("0e+21")); //0
+      console.groupEnd();
+      // obj
+      console.groupCollapsed("obj");
+      console.log(parseFloat({})); //NaN
+      console.log(parseFloat({ 1: 2 })); //NaN
+      console.groupEnd();
+      // ary
+      console.groupCollapsed("ary");
+      console.log(parseFloat([])); //NaN
+      console.log(parseFloat([1])); //1
+      console.log(parseFloat([1, 2])); //1
+      console.log(parseFloat(["123"])); //123
+      console.log(parseFloat(["123zxc"])); //123
+      console.log(parseFloat(["1", "2"])); //1
+      console.groupEnd();
+
+      console.groupEnd();
+    </script>
+  </body>
+</html>

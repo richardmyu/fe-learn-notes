@@ -22,10 +22,10 @@ ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字�
 ```javascript
 s; // ReferenceError: v is not defined
 
-console.log(typeof s); //undefined
+typeof s; //undefined
 
 s = "lalala";
-console.log(typeof s); //string
+typeof s; //string
 ```
 
 上面代码中，变量 `s` 没有用 `var` 命令声明，直接使用就会报错。但是，放在 `typeof` 后面，就不报错了，而是返回 `undefined`。
@@ -120,8 +120,8 @@ console.log(mess); //undefined
 console.log(me);
 //Uncaught ReferenceError: me is not defined
 
-console.log(typeof mess); //undefined
-console.log(typeof me); //undefined
+typeof mess; //undefined
+typeof me; //undefined
 ```
 
 对于尚未定义的变量，只能进行一项操作，即使用 `typeof` 检测其数据类型（使用 `delete` 也不会报错，但没什么实际意义，严格模式下则会报错）。
@@ -180,14 +180,14 @@ console.dir({});
 //   ...
 
 // Number
-console.log(Number(null)); //0
-console.log(Number(undefined)); //NaN
-console.log(Number({})); //NaN
+Number(null); //0
+Number(undefined); //NaN
+Number({}); //NaN
 
 // Boolean
-console.log(Boolean(null)); //false
-console.log(Boolean(undefined)); //false
-console.log(Boolean({})); //true
+Boolean(null); //false
+Boolean(undefined); //false
+Boolean({}); //true
 ```
 
 #### 4.3.3 `null` 和 `undefined`

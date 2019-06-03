@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // parseInt
+      console.log("%c parseInt 一个参数 ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** parseInt ***");
+      // boolean
+      console.groupCollapsed("boo");
+      console.log(parseInt(true)); //NaN
+      console.log(true.toString()); //'true'
+      console.log(parseInt(true.toString())); //NaN
+      console.log(parseInt(false)); //NaN
+      console.groupEnd();
+      // number
+      console.groupCollapsed("num");
+      console.log(parseInt(Infinity)); //NaN
+      console.log(Infinity.toString()); //'Infinity'
+      console.log(parseInt(Infinity.toString())); //NaN
+      console.log(parseInt(NaN)); //NaN
+      console.log(parseInt(132)); //132
+      console.log(parseInt(-132)); //-132
+      // 小数
+      console.log(parseInt(0.132)); //0
+      console.log(parseInt(0.00000132)); //0
+      console.log(parseInt(300000000000000000000)); //300000000000000000000
+      console.log(parseInt(3000000000000000000000)); //3
+      // 多个前导 0
+      console.log(parseInt(0011)); //9
+      console.log(parseInt(000011)); //9
+      // 二进制
+      console.log(parseInt(0b11)); //3
+      console.log(parseInt(0b1111)); //15
+      // 八进制
+      console.log(parseInt(011)); //9
+      console.log(parseInt(046)); //38
+      console.log(parseInt(00046)); //38
+      // 十六进制
+      console.log(parseInt(0x456)); //1110
+      console.log(parseInt(0xadc)); //2780
+      console.groupEnd();
+      // null undefined
+      console.groupCollapsed("null");
+      console.log(parseInt(undefined)); //NaN
+      console.log(parseInt(null)); //NaN
+      console.groupEnd();
+      // str
+      console.groupCollapsed("str");
+      console.log(parseInt("")); //NaN
+      console.log(parseInt(" ")); //NaN
+      console.log(parseInt(" 123")); //123
+      console.log(parseInt("1 23")); //1
+      console.log(parseInt("1.23")); //1
+      // 二进制
+      console.log(parseInt("0b11")); //0
+      // 八进制
+      console.log(parseInt("011")); //11
+      // 十六进制
+      console.log(parseInt("0x11")); //17
+      //
+      console.log(parseInt("0.0000013")); //00
+      console.log(parseInt("0.00000013")); //0
+      console.log(parseInt("200000000000000000000")); //200000000000000000000
+      console.log(parseInt("2000000000000000000000")); //2e+21
+      console.log(parseInt("2e+21")); //2
+      console.log(parseInt("0e+21")); //0
+      console.groupEnd();
+      // obj
+      console.groupCollapsed("obj");
+      console.log(parseInt({})); //NaN
+      console.log(parseInt({ 1: 2 })); //NaN
+      console.groupEnd();
+      // ary
+      console.groupCollapsed("ary");
+      console.log(parseInt([])); //NaN
+      console.log(parseInt([1])); //1
+      console.log(parseInt([1, 2])); //1
+      console.log(parseInt(["123"])); //123
+      console.log(parseInt(["123zxc"])); //123
+      console.log(parseInt(["1", "2"])); //1
+      console.groupEnd();
+
+      console.groupEnd();
+    </script>
+    <script>
+      console.log("%c parseInt 两个参数 ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** parseInt ***");
+      // 2-36
+      console.groupCollapsed("基数范围");
+
+      console.log(parseInt("10", 1)); //NaN
+      console.log(parseInt("10", 2)); //2
+      console.log(parseInt("10", 36)); //36
+      console.log(parseInt("10", 37)); //NaN
+      console.groupEnd();
+      // 第二参数为非数值的情况
+      console.groupCollapsed("基数为非数值的情况");
+      console.log(parseInt("10", 0)); //10
+      console.log(parseInt("10", NaN)); //10
+      console.log(parseInt("10", null)); //10
+      console.log(parseInt("10", undefined)); //10
+      console.log(parseInt("10", true)); //NaN
+      console.log(parseInt("10", "2.9")); //2
+      console.log(parseInt("10", 2.9)); //2
+      console.log(parseInt("10", "")); //10
+      console.log(parseInt("10", [2])); //2
+      //
+      console.log(parseInt("10", 0b10)); //2
+      console.log(parseInt("10", 010)); //8
+      console.log(parseInt("10", 0x10)); //16
+      //
+      console.log(parseInt("10", "0b10")); //2
+      console.log(parseInt("10", "010")); //10
+      console.log(parseInt("10", "0x10")); //16
+      console.groupEnd();
+
+      console.groupCollapsed("第一个参数转化字符串");
+      console.log(parseInt(0x11, 36)); //43
+      console.log(parseInt(0x11, 2)); //1
+      console.log(parseInt("17", 36)); //43
+      console.log(parseInt("17", 2)); //1
+      console.log(parseInt(01, 2)); //1
+      console.log(parseInt(String(01), 2)); //1
+      console.log(String(0x11)); //17
+      console.log(String(011)); //9
+      console.log(String(0b11)); //3
+      console.groupEnd();
+
+      console.groupCollapsed("科学计数法");
+      console.log(parseInt(1000000000000000000000.5)); //1
+      console.log(parseInt(1e21)); //1
+      console.log(parseInt("1e+21")); //1
+      console.log(parseFloat(1000000000000000000000.5)); //1e+21
+      console.log(parseFloat("1000000000000000000000.5")); //1e+21
+      console.log(parseFloat("1e+21")); //1e+21
+
+      console.log(parseInt(0.0000008)); //8
+      console.log(parseInt(8e-7)); //8
+      console.log(parseInt("8e-7")); //8
+      console.log(parseFloat(0.0000008)); //8e-7
+      console.log(parseFloat("0.0000008")); //8e-7
+      console.log(parseFloat("8e-7")); //8e-7
+      console.groupEnd();
+
+      console.groupEnd();
+    </script>
+  </body>
+</html>
