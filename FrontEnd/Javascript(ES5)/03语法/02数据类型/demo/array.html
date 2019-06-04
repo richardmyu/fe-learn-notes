@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.groupCollapsed("array");
+      var arr = ["a", "b", "c"];
+      console.log(Object.keys(arr));
+      // ["0", "1", "2"]
+      for (var i of arr) {
+        console.log(i);
+      }
+      // a
+      // b
+      // c
+      console.log(arr[0]); //a
+      console.log(arr[0.0]); //a
+      console.log(arr["0"]); //a
+      arr[3] = 123;
+      arr["4"] = 234;
+      console.log(arr); //["a", "b", "c", 123, 234]
+      // console.log(arr.0); //SyntaxError: missing ) after argument list
+
+      var arr = [];
+      arr["a"] = "ab";
+      console.log(arr.length); //0
+      arr[1] = "zx";
+      console.log(arr.length); //2
+      console.log(arr); //[ empty, "zx",a:"ab" ]
+      console.log(Object.keys(arr));
+      console.log(arr[0]); //undefined
+      console.groupEnd();
+    </script>
+  </body>
+</html>
