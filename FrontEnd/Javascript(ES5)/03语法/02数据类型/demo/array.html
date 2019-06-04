@@ -10,6 +10,7 @@
     <script>
       console.groupCollapsed("array");
       var arr = ["a", "b", "c"];
+      debugger;
       console.log(Object.keys(arr));
       // ["0", "1", "2"]
       for (var i of arr) {
@@ -25,7 +26,6 @@
       arr["4"] = 234;
       console.log(arr); //["a", "b", "c", 123, 234]
       // console.log(arr.0); //SyntaxError: missing ) after argument list
-
       var arr = [];
       arr["a"] = "ab";
       console.log(arr.length); //0
