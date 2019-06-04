@@ -85,40 +85,69 @@ arr; // []
 ```javascript
 var arr = [];
 arr["a"] = "ab";
-console.log(arr.length); //0
+arr.length; //0
+
 arr[1] = "zx";
-console.log(arr.length); //2
-console.log(arr); //[ <1 empty slot>, "zx" ]
-console.log(arr[0]); //undefined
+arr.length; //2
+arr; //[ empty, "zx", a:"ab" ]
+arr[0]; //undefined
+
+// keys 遍历
+Object.keys(arr);
+// ["1", "a"]
+
+// for in 循环
+for (var i in arr) {
+  console.log(i);
+}
+// 1
+// a
+
+// for of 循环
+for (var j of arr) {
+  console.log(j);
+}
+// undefined
+// zx
+
+// for 循环
+for (var i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+// undefined
+// zx
 ```
 
-如果数组的键名是添加超出范围的数值，该键名会自动转为字符串。
+> 对数组而言，`Object.keys()` 和 `for in` 循环是遍历属性；而 `for of` 循环和 `for` 循环则是遍历数组成员。并且 `for of` 循环和 `for` 循环不会过滤数值的空值(empty)，`for in` 循环会忽略，甚至其他数组遍历方法都会忽略。
+
+如果数组的键名是添加超出范围的数值，该键名会自动转为字符串，即作为字符属性添加进去。
 
 ```javascript
 var arr = [];
-arr[-1] = "a";
-arr[Math.pow(2, 32)] = "b";
+arr[-1] = "-11";
+arr[-2] = "-22";
 
+// 属性不会作为数组成员
 arr.length; // 0
-arr[-1]; // "a"
-arr[4294967296]; // "b"
+arr[-1]; // "-11"
+delete arr[-2];
+arr[-2]; //undefined
 ```
-
-上面代码中，我们为数组添加了两个不合法的数字键，结果 `length` 属性没有发生变化。这些数字键都变成了字符串键名。最后两行之所以会取到值，是因为取键值时，数字键名会默认转为字符串。
 
 #### 4.8.4 in 运算符
 
-检查某个键名是否存在的运算符 `in`，适用于对象，也适用于数组。
+`in` 运算符 ，适用于对象，也适用于数组。如果数组的某个位置是空位，`in` 运算符返回 false。
 
 ```javascript
-var arr = [, "a", "b", "c"];
-2 in arr; // true
-"2" in arr; // true
-4 in arr; // false
-0 in arr; //false
-```
+var arr = ["a", "b", "c"];
+2 in arr; //true
+"2" in arr; //true
+4 in arr; //false
 
-> 注意，如果数组的某个位置是空位，`in` 运算符返回 false。
+arr.length = 4;
+arr; //["a", "b", "c", empty]
+3 in arr; //false
+```
 
 #### 4.8.5 for…in 循环和数组的遍历
 
@@ -139,41 +168,6 @@ for (var key in a) {
 
 数组的遍历可以考虑使用 `for` 循环或 `while` 循环。
 
-```javascript
-var a = [1, 2, 3];
-
-// for循环
-for (var i = 0; i < a.length; i++) {
-  console.log(a[i]);
-}
-
-// while循环
-var i = 0;
-while (i < a.length) {
-  console.log(a[i]);
-  i++;
-}
-
-var l = a.length;
-while (l--) {
-  console.log(a[l]);
-}
-```
-
-上面代码是三种遍历数组的写法。最后一种写法是逆向遍历，即从最后一个元素向第一个元素遍历。
-
-数组的 `forEach` 方法，也可以用来遍历数组。
-
-```javascript
-var colors = ["red", "green", "blue"];
-colors.forEach(function(color) {
-  console.log(color);
-});
-// red
-// green
-// blue
-```
-
 #### 4.8.6 数组的空位
 
 当数组的某个位置是空元素，即两个逗号之间没有任何值，我们称该数组存在**空位（hole）**。数组的空位不影响 `length` 属性。
@@ -192,55 +186,59 @@ a[1]; // undefined
 a.length; // 3
 ```
 
-上面代码用 `delete` 命令删除了数组的第二个元素，这个位置就形成了空位，但是对 `length` 属性没有影响。也就是说，`length` 属性不过滤空位。所以，使用 `length` 属性进行数组遍历，一定要非常小心。
-
-数组的某个位置是空位，与某个位置是 `undefined`，是不一样的。如果是空位，使用数组的 `forEach` 等迭代方法、`for...in` 结构、以及 `Object.keys` 方法进行遍历，空位都会被跳过。(`for` 可以遍历，返回 `undefined`)
+数组的某个位置是空位，与某个位置是 `undefined`，是不一样的。如果是空位，使用数组的 `forEach` 等迭代方法、`for...in` 结构、以及 `Object.keys` 方法进行遍历，空位都会被跳过。(`for`循环和 `for of` 循环 可以遍历，返回 `undefined`)
 
 ```javascript
-var a = [, , ,];
+var emp = [, 23, undefined];
 
-a.forEach(function(x, i) {
-  console.log(i + ". " + x);
-});
-// 不产生任何输出
+Object.keys(emp);
+//["1", "2"]
 
-for (var i in a) {
-  console.log(i);
+for (var i in emp) {
+  console.log(emp[i]);
 }
-// 不产生任何输出
+// 23
+// undefined
 
-Object.keys(a);
-// []
-
-for (let i = 0; i < a.length; i++) {
-  console.log(a[i]); //undefined
+for (var j of emp) {
+  console.log(j);
 }
+// undefined
+// 23
+// undefined
+
+for (var z = 0; z < emp.length; z++) {
+  console.log(emp[z]);
+}
+//undefined
+//23
+// undefined
 ```
-
-如果某个位置是 `undefined`，遍历的时候就不会被跳过。
 
 > 这就是说，空位就是数组没有这个元素，所以不会被遍历到，而 `undefined` 则表示数组有这个元素，值是 `undefined`，所以遍历不会跳过。
 
 #### 4.8.7 Array.of
 
-作用类似 `Array`，只是解决了 `Array` 传入一个参数变成 `length` 的问题，而会将单个传入的数值当做数组的项传入
+作用类似 `Array`，只是解决了 `Array` 传入一个参数变成 `length` 的问题，而会将单个传入的数值当做数组的项传入。
 
 ```javascript
 var ary = Array(4);
 var ary1 = Array.of(4);
-console.log(ary); // [empty × 4]
-console.log(ary1); //[4]
+ary; // [empty × 4]
+ary1; //[4]
 ```
 
 #### 4.8.8 Array.fill
 
-填充，一般用来初始化或者清空一个数组
+填充，一般用来初始化或者清空一个数组。
 
 ```javascript
-var ary = Array(4);
-console.log(ary); //[empty × 4]
-console.log(ary.fill(1)); //[1, 1, 1, 1]
-console.log(ary.fill(0)); //[0, 0, 0, 0]
+// 初始化
+Array(4).fill(0)); //[0, 0, 0, 0]
+
+// 清空
+var ary3 = ["name", { name: 12 }, 32];
+ary3.fill(0); //[0, 0, 0]
 ```
 
 #### 4.8.9 类似数组的对象
@@ -248,20 +246,18 @@ console.log(ary.fill(0)); //[0, 0, 0, 0]
 如果一个对象的所有键名都是正整数或零，并且有 `length` 属性，那么这个对象就很像数组，语法上称为**类似数组的对象（array-like object）**。
 
 ```javascript
-var obj = {
-  0: "a",
-  1: "b",
-  2: "c",
+var likeAry = {
+  0: "q",
+  1: "w",
+  2: "e",
   length: 3
 };
-
-obj[0]; // 'a'
-obj[1]; // 'b'
-obj.length; // 3
-obj.push("d"); // TypeError: obj.push is not a function
+likeAry.length; //3
+likeAry[0]; //q
+likeAry[3]; //undefined
+typeof likeAry; //object
+likeAry.splice; //undefined
 ```
-
-但是，“类似数组的对象”并不是数组，因为它们不具备数组特有的方法。对象 obj 没有数组的 `push` 方法，使用该方法就会报错。
 
 “类似数组的对象”的根本特征，就是具有 `length` 属性。只要有 `length` 属性，就可以认为这个对象类似于数组。但是有一个问题，这种 `length` 属性不是动态值，不会随着成员的变化而变化。
 
@@ -269,27 +265,42 @@ obj.push("d"); // TypeError: obj.push is not a function
 var obj = {
   length: 0
 };
-obj[3] = "d";
+obj[1] = "好好好";
 obj.length; // 0
 ```
 
-典型的“类似数组的对象”是函数的 `arguments` 对象，以及大多数 DOM 元素集，还有字符串。
+典型的“类似数组的对象”有：函数的 `arguments` 对象，以及大多数 DOM 元素集，还有字符串。
 
-数组的 `Array.prototype.slice.call` 方法可以将“类似数组的对象”变成真正的数组。
+数组的 `Array.prototype.slice.call(arrayLike)` 方法可以将“类似数组的对象”变成真正的数组。
 
-`var arr = Array.prototype.slice.call(arrayLike);`
+```js
+// 将类数组转换为数组--1
+var newAry = Array.prototype.slice.call(likeAry);
+newAry; //["q", "w", "e"]
+
+newAry.push("rrrr");
+newAry; //["q", "w", "e", "rrrr"]
+
+// 将类数组转换为数组--2
+Array.from(likeAry);
+// ["q", "w", "e"]
+
+// 将类数组转换为数组--3
+[...likeAry]; //["q", "w", "e"]
+// 使用该方法注意，类数组必须得有默认的迭代器，且伪可遍历的
+```
 
 除了转为真正的数组，“类似数组的对象”还有一个办法可以使用数组的方法，就是通过 `call` 把数组的方法放到对象上面。
 
 ```javascript
+// demo 2
 function print(value, index) {
   console.log(index + " : " + value);
 }
 
 Array.prototype.forEach.call(arrayLike, print);
-
-Array.from(arrayLike);
-[...arrayLike];
 ```
 
 > 注意，这种方法比直接使用数组原生的 `forEach` 要慢，所以最好还是先将“类似数组的对象”转为真正的数组，然后再直接调用数组的 `forEach` 方法。
+
+更多 demo 见 <a href="./demo/array.html">array.html</a>
