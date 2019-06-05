@@ -6,9 +6,9 @@
 
 JavaScript 有三种声明函数的方法。
 
-#### 7.1.1 function 声明
+#### 7.1.1 function 命令
 
-ECMAScript 中的函数用 `function` 关键字来定义，可以用在函数定义表达式或者函数声明语句中，后面跟随以下组成部分：
+ECMAScript 中的函数用 `function` 关键字来定义，可以用在函数定义表达式或者**函数声明**（Function Declaration）语句中，后面跟随以下组成部分：
 
 1).函数名标识符
 
@@ -26,11 +26,9 @@ ECMAScript 中的函数用 `function` 关键字来定义，可以用在函数定
 
 ```javascript
 function print(s) {
-  console.log(s);
+  //...
 }
 ```
-
-上面的代码命名了一个 `print` 函数，以后使用 `print()` 这种形式，就可以调用相应的代码。这叫做**函数的声明（Function Declaration）**。
 
 #### 7.1.2 函数表达式
 
@@ -38,27 +36,34 @@ function print(s) {
 
 ```javascript
 var print = function(s) {
-  console.log(s);
+  //...
 };
 ```
 
-这种写法将一个匿名函数赋值给变量。这时，这个匿名函数又称**函数表达式（Function Expression）**，因为赋值语句的等号右侧只能放表达式。
+这种写法将一个匿名函数赋值给变量。这时，这个匿名函数又称**函数表达式**（Function Expression），因为赋值语句的等号右侧只能放表达式。
 
 采用函数表达式声明函数时，`function` 命令后面不带有函数名。如果加上函数名，该函数名只在函数体内部有效，指代函数表达式本身，在函数体外部无效。
 
 ```javascript
-var print = function x() {
-  console.log(typeof x);
+var print = function fnP() {
+  console.log(fnP);
+  console.log(typeof fnP);
 };
 
-x;
-// ReferenceError: x is not defined
+print();
+// f fnP(){...}
+// function
+
+fnP();
+// ReferenceError: fnP is not defined
 
 print();
 // function
 ```
 
-这种写法的用处有两个，一是可以在函数体内部调用自身，二是方便除错（除错工具显示函数调用栈时，将显示函数名，而不再显示这里是一个匿名函数）。因此，下面的形式声明函数也非常常见。
+这种写法的用处有两个，一是可以在函数体内部调用自身，二是方便除错（除错工具显示函数调用栈时，将显示函数名，而不再显示这里是一个匿名函数）。
+
+因此，下面的形式声明函数（也叫匿名函数表达式）也非常常见。
 
 `var f = function f() {};`
 
@@ -68,10 +73,10 @@ print();
 
 其他形式的函数表达式（这些也叫立即执行函数表达式）：
 
-```js
+```
 (function foo() {
   //...
-})();
+}());
 
 (function() {
   //...
@@ -79,8 +84,6 @@ print();
 ```
 
 函数声明和函数表达式之间最重要的区别是它们的名称标识符将会绑定在何处。函数声明的标识符绑定在当前作用域，而函数表达式的标识符绑定在函数表达式自身的函数作用域中。
-
-> 函数表达式可以有标识符，也可以没有标识符（称为匿名函数表达式），但函数声明必须有标识符。
 
 匿名函数表达式的缺点：
 
@@ -147,17 +150,65 @@ function fib(num) {
 fib(6); // 8
 ```
 
-### 7.4 数据函数
+### 7.4 函数的特殊性
 
-JavaScript 语言将函数看作一种值，与其它值（数值、字符串、布尔值等等）地位相同。**凡是可以使用值的地方，就能使用函数**。比如，可以把函数赋值给变量和对象的属性，也可以当作参数传入其他函数，或者作为函数的结果返回。函数只是一个可以执行的值，此外并无特殊之处。
-
-由于函数与其他数据类型地位平等，所以在 JavaScript 语言中又称函数为第一等公民。
+JavaScript 语言将函数看作一种值，与其它值（数值、字符串、布尔值等等）地位相同。**凡是可以使用值的地方，就能使用函数**。比如，可以把函数赋值给变量和对象的属性，也可以当作参数传入其他函数，或者作为函数的结果返回。
 
 ### 7.5 函数名的提升
 
 JavaScript 引擎将函数名视同变量名，所以采用 `function` 命令声明函数时，整个函数会像变量声明一样，被提升到代码头部。但是，如果采用赋值语句定义函数，不会提升。
 
 如果同时采用 `function` 命令和赋值语句声明(`var`)同一个函数，最后总是采用赋值语句的定义。
+
+```js
+// case 1
+f1; //f f1(){return 2;}
+var f1 = function() {
+  return 1;
+};
+function f1() {
+  return 2;
+}
+f1(); //1
+
+// case 2
+f2); //f f2(){return 22;}
+function f2() {
+  return 11;
+}
+var f2 = function() {
+  return 22;
+};
+f2(); //22
+
+// case 3
+f3; //f f3(){return 222;}
+function f3() {
+  return 111;
+}
+function f3() {
+  return 222;
+}
+f3(); //222
+
+// case 4
+f4; //undefined
+var f4 = function() {
+  return 1111;
+};
+var f4 = function() {
+  return 2222;
+};
+f4(); //2222
+
+// case 5
+f5; //f f5(){return 5;}
+function f5() {
+  return 5;
+}
+var f5 = 123;
+f5(); //TypeError: f5 is not a function
+```
 
 ### 7.6 不能在条件语句中声明函数
 
@@ -233,12 +284,12 @@ function test(f) {
 }
 test(myFunc); // myFunc
 
-//1.函数f.bind 函数的函数名是:  bound 函数f
+//1.函数 f.bind 函数的函数名是:  bound 函数 f
 function f1() {}
 var f2 = f1.bind(1);
 console.log(f2.name); //bound f1
 
-//2.通过构造函数创建方式创建的函数,name :anonymous
+//2.通过构造函数创建方式创建的函数： name :anonymous
 var ff = new Function();
 console.log(ff.name); //anonymous
 console.log(function() {}.name); //""
@@ -253,7 +304,10 @@ function f(a, b) {}
 f.length; // 2
 ```
 
-`length` 属性提供了一种机制，判断定义时和调用时参数的差异，以便实现面向对象编程的方法**重载（overload）**。
+`length` 属性提供了一种机制，判断定义时和调用时参数的差异，以便实现面向对象编程的方法**重载**（overload）。
+
+```js
+```
 
 ### 7.8 toString
 

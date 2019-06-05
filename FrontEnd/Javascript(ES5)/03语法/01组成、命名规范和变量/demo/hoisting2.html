@@ -50,29 +50,11 @@
     </script>
     <script>
       console.log("**********************");
-      //同名函数会覆盖变量
-      console.log(name1);
-      var name1 = 6; //undefined
-      function name1() {} //ƒ name1() {}
-
-      //同名变量不会覆盖函数
-      console.log(name2); //ƒ name2() {}
-      function name2() {}
-      var name2 = 6;
-
       // //同名变量/函数会进行值覆盖
-      console.log(name3); //undefined
-      var name3 = 6;
-      var name3 = 7;
-      console.log(name3); //7
-      console.log(namefn); //ƒ namefn() { return "2"}
-      function namefn() {
-        return "1";
-      }
-
-      function namefn() {
-        return "2";
-      }
+      console.log(v1); //undefined
+      var v1 = 6;
+      var v1 = 7;
+      console.log(v1); //7
     </script>
     <script>
       // 参数函数
