@@ -235,7 +235,10 @@ if (false) {
   function f() {}
 }
 
-f(); // 不报错
+f();
+// 不报错
+// ES6 引入块级作用域后
+// fFalse is not a function
 ```
 
 上面代码的原始意图是不声明函数 `f`，但是由于 `f` 的提升，导致 `if` 语句无效，所以上面的代码不会报错。要达到在条件语句中定义函数的目的，只有使用函数表达式。
@@ -245,7 +248,10 @@ if (false) {
   var f = function() {};
 }
 
-f(); // undefined
+f();
+// undefined
+// ES6 引入块级作用域后
+// fF is not a function
 ```
 
 ### 7.7 函数的属性
@@ -307,11 +313,43 @@ f.length; // 2
 `length` 属性提供了一种机制，判断定义时和调用时参数的差异，以便实现面向对象编程的方法**重载**（overload）。
 
 ```js
+function overF(a, b, c) {
+  var arg = [...arguments];
+  if (arg.length < overF.length) {
+    console.log("less param");
+  } else if (arg.length === overF.length) {
+    console.log("ok");
+  } else {
+    console.log("more param");
+  }
+}
+overF("a"); //less param
+overF("a", "b", "c"); //ok
+overF("a", "b", "c", "d"); //more param
+
+// reset function
+function overFn(...arg) {
+  if (arg.length === 1) {
+    console.log("1");
+  } else if (arg.length === 2) {
+    console.log(2);
+  } else if (arg.length === 3) {
+    console.log(3);
+  } else {
+    console.log("more");
+  }
+}
+overFn("a"); //1
+overFn("a", "b"); //2;
+overFn("a", "b", "c"); //3
+overFn("a", "b", "c", "d"); //4
 ```
 
 ### 7.8 toString
 
 函数的 `toString` 方法返回一个字符串，内容是函数的源码。函数内部的注释也可以返回。
+
+对于那些原生的函数，`toString()` 方法返回 `function (){[native code]}`。
 
 ### 7.9 函数作用域
 
@@ -321,7 +359,17 @@ f.length; // 2
 
 **作用域（scope）**指的是变量存在的范围。在 ES5 的规范中，Javascript 只有两种作用域：一种是全局作用域，变量在整个程序中一直存在，所有地方都可以读取；另一种是函数作用域，变量只在函数内部存在。
 
-函数外部声明的变量就是**全局变量（global variable）**，它可以在函数内部读取。在函数内部定义的变量，外部无法读取，称为**局部变量（local variable）**。函数内部定义的变量，会在该作用域内覆盖同名全局变量。
+对于顶层函数来说，函数外部声明的变量就是**全局变量（global variable）**，它可以在函数内部读取。在函数内部定义的变量，外部无法读取，称为**局部变量（local variable）**。函数内部定义的变量，会在该作用域内覆盖同名全局变量。
+
+```js
+var globalV = "this is global var";
+function highFn() {
+  var globalV = "this is local var";
+  globalV; //this is local var
+  window.globalV; //this is global var
+}
+highFn();
+```
 
 JavaScript 中的函数运行在它们被定义的作用域里,而不是它们被执行的作用域里。
 
@@ -457,17 +505,7 @@ ECMAScript 函数的重要特点：
 
 与数组类似（但并不是 `Array` 的实例），因此可以使用方括号语法访问它的任意元素，使用 `length` 属性来确定传递进来多少个参数。
 
-如果要让 `arguments` 对象使用数组方法，真正的解决方法是将 `arguments` 转为真正的数组。下面是两种常用的转换方法：`slice` 方法和逐一填入新数组。
-
-```javascript
-var args = Array.prototype.slice.call(arguments);
-
-// 或者
-var args = [];
-for (var i = 0; i < arguments.length; i++) {
-  args.push(arguments[i]);
-}
-```
+如果要让 `arguments` 对象使用数组方法，真正的解决方法是将 `arguments` 转为真正的数组。
 
 #### 7.11.3 callee
 
@@ -485,7 +523,7 @@ f(); // true
 
 #### 7.11.4 caller
 
-指向调用当前函数的函数(即只有在函数被调用时才能取到值)
+指向调用当前函数的函数(即只有在函数被调用时才能取到值，同样的还有 `arguments`)
 
 ```javascript
 function f1() {
@@ -535,9 +573,7 @@ var result = f1();
 result(); // 999
 ```
 
-闭包就是函数 `f2`，即**能够读取其他函数内部变量的函数**。由于在 JavaScript 语言中，只有函数内部的子函数才能读取内部变量，因此可以把闭包简单理解成“定义在一个函数内部的函数”。
-
-闭包最大的特点，就是它可以“记住”诞生的环境，比如 `f2` 记住了它诞生的环境 `f1`，所以从 `f2` 可以得到 `f1` 的内部变量。**在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁**。
+闭包就是函数 `f2`，即**闭包就是能够读取其他函数内部变量的函数**。由于在 JavaScript 语言中，只有函数内部的子函数才能读取内部变量，因此可以把闭包简单理解成“定义在一个函数内部的函数”。**在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁**。
 
 闭包的最大用处有两个，一个是可以读取函数内部的变量，另一个就是让这些变量始终保持在内存中，即闭包可以使得它诞生环境一直存在。请看下面的例子，闭包使得内部变量记住上一次调用时的运算结果。
 
@@ -555,7 +591,7 @@ inc(); // 6
 inc(); // 7
 ```
 
-上面代码中，`start` 是函数 `createIncrementor` 的内部变量。通过闭包，`start` 的状态被保留了，每一次调用都是在上一次调用的基础上进行计算。从中可以看到，闭包 `inc` 使得函数 `createIncrementor` 的内部环境，一直存在。所以，**闭包可以看作是函数内部作用域的一个接口**。
+从中可以看到，闭包 `inc` 使得函数 `createIncrementor` 的内部环境，一直存在。所以，**闭包可以看作是函数内部作用域的一个接口**。
 
 为什么会这样呢？原因就在于 `inc` 始终在内存中，而 `inc` 的存在依赖于 `createIncrementor`，因此也始终在内存中，不会在调用结束后，被垃圾回收机制回收。
 
@@ -600,7 +636,7 @@ p1.getAge(); // 25
 ```javascript
 (function() {
   /* code */
-})();
+}());
 // 或者
 (function() {
   /* code */
@@ -617,10 +653,13 @@ p1.getAge(); // 25
 var i = (function() {
   return 10;
 })();
+
 true &&
   (function() {
     /* code */
   })();
+
+
 0,
   (function() {
     /* code */
@@ -736,8 +775,6 @@ function f() {
 
 f(); // 1
 ```
-
-上面代码中，`eval` 是间接调用，所以即使它是在函数中，它的作用域还是全局作用域，因此输出的 `a` 为全局变量。
 
 与 `eval` 作用类似的还有 `Function` 构造函数。利用它生成一个函数，然后调用该函数，也能将字符串当作命令执行。
 
