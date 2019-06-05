@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* Promise.resolve(1)
+        .then(res => {
+          console.log(res); // 1
+          // throw new Error("something went wrong");
+          return Promise.resolve(2);
+        })
+        .then(res => {
+          console.log(res); // 2
+        })
+        .catch(err => {
+          // not catch err
+          console.error(err);
+          return Promise.resolve(3);
+        })
+        .then(res => {
+          // not exe Promise.resolve()
+          // params is undefined
+          console.log(res); // undefined
+        })
+        .catch(err => {
+          // not catch err
+          console.error(err);
+        }); */
+
+      /* function someFuncThatThrowsAnError() {
+        localStorage.setItem("aa", "aaa");
+        return localStorage.getItem("aa");
+      }
+
+      (async function() {
+        try {
+          await someFuncThatThrowsAnError();
+        } catch (err) {
+          console.error(err);
+        }
+
+        console.log("Easy!");
+      })();
+
+      // Easy! */
+
+      /* function someFuncThatThrowsAnError() {
+        throw new Error("123");
+      }
+
+      (async function() {
+        try {
+          await someFuncThatThrowsAnError();
+        } catch (err) {
+          console.error(err);
+        }
+
+        console.log("Easy!");
+      })();
+
+      // Error: 123 at someFuncThatThrowsAnError
+      // Easy! */
+
+      /* function c() {
+        try {
+          var bar = baz;
+          throw new Error();
+        } catch (e) {
+          console.log(e.stack);
+        }
+      }
+
+      function b() {
+        c();
+      }
+
+      function a() {
+        b();
+      }
+      a();
+      // ReferenceError: baz is not defined
+      //   at c(file:///...)
+      //   at b(file:///...)
+      //   at a(file:///...)
+      //   at file:///C:/ */
+
+      /* function thirdFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject("我可以被捕获");
+            // throw Error('永远无法被捕获')
+          });
+        });
+      }
+
+      Promise.resolve(true)
+        .then((resolve, reject) => {
+          return thirdFunction();
+        })
+        .catch(error => {
+          console.error("捕获异常", error); // 捕获异常 我可以被捕获
+        }); */
+
+      /* function thirdFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            // reject("我可以被捕获");
+            throw Error("永远无法被捕获");
+            //Uncaught Error: 永远无法被捕获
+          });
+        });
+      }
+
+      Promise.resolve(true)
+        .then((resolve, reject) => {
+          return thirdFunction();
+        })
+        .catch(error => {
+          console.error("捕获异常", error); //
+        }); */
+
+      /* function thirdFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error("我可以被捕获"));
+            // throw Error("永远无法被捕获");
+          });
+        });
+      }
+
+      Promise.resolve(true)
+        .then((resolve, reject) => {
+          return thirdFunction();
+        })
+        .catch(error => {
+          console.error("捕获异常", error); //捕获异常 Error: 我可以被捕获
+        }); */
+
+      /* function fetch(callback) {
+        setTimeout(() => {
+          console.log("请求失败");//请求失败
+        });
+      }
+
+      fetch(() => {
+        console.log("请求处理"); // 永远不会执行
+      }); */
+
+      /* function fetch(callback) {
+        callback();
+        setTimeout(() => {
+          console.log("请求失败"); // 请求失败
+        });
+      }
+
+      fetch(() => {
+        console.log("请求处理"); // 请求处理
+      }); */
+
+      /* function fetch(callback) {
+        setTimeout(() => {
+          throw Error("请求失败");
+          // Uncaught Error: 请求失败 at setTimeout
+        });
+      }
+
+      try {
+        fetch(() => {
+          console.log("请求处理"); // 永远不会执行
+        });
+      } catch (error) {
+        console.log("触发异常", error); // 永远不会执行
+      } */
+
+      /* function fetch(handleError, callback) {
+        setTimeout(() => {
+          handleError("请求失败");
+        });
+      }
+
+      fetch(
+        () => {
+          console.log("失败处理"); // 失败处理
+        },
+        error => {
+          console.log("请求处理"); // 永远不会执行
+        }
+      ); */
+
+      /* new Promise((resolve, reject) => {
+        resolve("ok");
+      }).then(result => {
+        console.log(result); // ok
+      }); */
+
+      /* new Promise((resolve, reject) => {
+        reject("no");
+      }).then(
+        result => {
+          console.log(result); // 永远不会执行
+        },
+        error => {
+          console.log(error); // no
+        }
+      ); */
+
+      /* new Promise((resolve, reject) => {
+        console.log("nothing"); // nothing
+        // nothing
+      }).then(
+        result => {
+          console.log(result); // 永远不会执行
+        },
+        error => {
+          console.log(error); // 永远不会执行
+        }
+      ); */
+
+      /* new Promise((resolve, reject) => {
+        reject("no");
+      })
+        .then(
+          result => {
+            console.log(result); // 永远不会执行
+          },
+          error => {
+            console.log(error);
+          }
+        )
+        .catch(error => {
+          console.log(error); // no
+        }); */
+
+      /* console.log(
+        new Promise((resolve, reject) => {
+          resolve("ok");
+          // reject("no");
+        })
+      ); */
+
+      /* new Promise((resolve, reject) => {
+        return resolve(
+          new Promise((resolve, reject) => {
+            resolve("ok");
+          })
+        );
+      }).then(
+        result => {
+          console.log(result);
+        },
+        error => {
+          console.log(error);
+        }
+      ); */
+
+      /* console.log(new Promise((resolve, reject) => {
+          return new Promise((resolve, reject) => {
+            resolve("ok");
+          });
+        }))*/
+
+      /* new Promise((resolve, reject) => {
+        resolve("ok");
+      })
+        .then(result => {
+          return Promise.reject("error1");
+        })
+        .then(result => {
+          console.log(result); // 永远不会执行
+          return Promise.resolve("ok1"); // 永远不会执行
+        })
+        .then(result => {
+          console.log(result); // 永远不会执行
+        })
+        .catch(error => {
+          console.log(error); // error1
+        }); */
+
+      /* function fetch(callback) {
+        return new Promise((resolve, reject) => {
+          throw Error("用户不存在");
+        });
+      }
+
+      fetch()
+        .then(result => {
+          console.log("请求处理", result); // 永远不会执行
+        })
+        .catch(error => {
+          console.log("请求处理异常", error); // 请求处理异常 用户不存在
+        });
+
+      // 请求处理异常 Error: 用户不存在
+      //   at Promise
+      //   at new Promise
+      //   at fetch
+      //   at file */
+
+      /* function fetch(callback) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            throw Error("用户不存在");
+          });
+        });
+      }
+
+      fetch()
+        .then(result => {
+          console.log("请求处理", result); // 永远不会执行
+        })
+        .catch(error => {
+          console.log("请求处理异常", error); // 永远不会执行
+        });
+
+      // 程序崩溃
+      // Uncaught Error: 用户不存在 */
+
+      /* Promise.resolve(true)
+        .then((resolve) => {
+          throw Error("microTask 中的异常");
+        })
+        .catch(error => {
+          console.log("捕获异常", error);
+          // 捕获异常 Error: microTask 中的异常
+          //   at Promise.resolve.then
+        });
+      Promise.reject(true)
+        .then((resolve) => {
+          throw Error("microTask 中的异常");
+        })
+        .catch(error => {
+          console.log("捕获异常", error);
+          // 捕获异常 true
+        }); */
+
+      /* Promise.resolve(true)
+        .then(
+          resolve => {
+            throw Error("resolve 中的异常");
+          },
+          reject => {
+            throw Error("reject 中的异常");
+          }
+        )
+        .catch(error => {
+          console.log("捕获异常", error);
+          // 捕获异常 Error: resolve 中的异常
+          //   at Promise.resolve.then.resolve
+        });
+
+      Promise.reject(true)
+        .then(
+          resolve => {
+            throw Error("resolve 中的异常");
+          },
+          reject => {
+            throw Error("reject 中的异常");
+          }
+        )
+        .catch(error => {
+          console.log("捕获异常", error);
+          // 捕获异常 Error: reject 中的异常
+          //   at Promise.reject.then.reject
+        }); */
+
+      /* function thirdFunction() {
+        setTimeout(() => {
+          throw Error("就是任性");
+        });
+      }
+
+      Promise.resolve(true)
+        .then(
+          resolve => {
+            console.log("resolve--1");
+            thirdFunction();
+          },
+          reject => {
+            console.log("reject--1");
+            thirdFunction();
+          }
+        )
+        .catch(error => {
+          console.log("捕获异常", error);
+        });
+
+      Promise.reject(true)
+        .then(
+          resolve => {
+            console.log("resolve--2");
+            thirdFunction();
+          },
+          reject => {
+            console.log("reject--2");
+            thirdFunction();
+          }
+        )
+        .catch(error => {
+          console.log("捕获异常", error);
+        }); */
+
+      /* function thirdFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject("收敛一些");
+          });
+        });
+      }
+
+      Promise.resolve(true)
+        .then(resolve => {
+          thirdFunction();
+        })
+        .catch(error => {
+          console.log("捕获异常", error); // 捕获异常 收敛一些
+        });
+
+      Promise.reject(true)
+        .then(
+          resolve => {
+            thirdFunction();
+          },
+          reject => {
+            return thirdFunction();
+          }
+        )
+        .catch(error => {
+          console.log("捕获异常", error); // 捕获异常 收敛一些
+        }); */
+
+      function thirdFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject("收敛一些");
+          });
+        });
+      }
+
+      /* Promise.resolve(true)
+        .then(resolve => {
+          console.log("1"); // 1
+          return thirdFunction()
+            .then(() => {
+              console.log("2");
+              return thirdFunction();
+            })
+            .then(() => {
+              console.log("3");
+              return thirdFunction();
+            })
+            .then(() => {
+              console.log("4");
+            });
+        })
+        .catch(error => {
+          console.log("捕获异常", error);
+          // 捕获异常 收敛一些
+        }); */
+
+      /* function thirdFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject("收敛一些");
+          });
+        });
+      }
+      Promise.resolve(true)
+        .then(resolve => {
+          console.log("1"); // 1
+          return thirdFunction()
+            .then(
+              () => {
+                console.log("2");
+                return thirdFunction();
+              },
+              () => {
+                console.log("2-");
+                return thirdFunction();
+              }
+            )
+            .then(
+              () => {
+                console.log("3");
+                return thirdFunction();
+              },
+              () => {
+                console.log("3-");
+                return thirdFunction();
+              }
+            )
+            .then(
+              () => {
+                console.log("4");
+                return thirdFunction();
+              },
+              () => {
+                console.log("4-");
+                return thirdFunction();
+              }
+            );
+        })
+        .catch(error => {
+          console.log("捕获异常", error);
+        });
+        // 1
+        // 2-
+        // 3-
+        // 4- */
+
+      /* function thirdFunction() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject("收敛一些");
+          });
+        });
+      }
+      Promise.reject(true)
+        .then(
+          resolve => {},
+          reject => {
+            console.log("1"); // 1
+            return thirdFunction()
+              .then(
+                () => {
+                  console.log("2");
+                  return thirdFunction();
+                },
+                () => {
+                  console.log("2-");
+                  return thirdFunction();
+                }
+              )
+              .then(
+                () => {
+                  console.log("3");
+                  return thirdFunction();
+                },
+                () => {
+                  console.log("3-");
+                  return thirdFunction();
+                }
+              )
+              .then(
+                () => {
+                  console.log("4");
+                  return thirdFunction();
+                },
+                () => {
+                  console.log("4-");
+                  return thirdFunction();
+                }
+              );
+          }
+        )
+        .catch(error => {
+          console.log("捕获异常", error);
+        });
+      // 1
+      // 2-
+      // 3-
+      // 4-
+      // 捕获异常 收敛一些 */
+
+      /* function* generatorA() {
+        console.log("a");
+        yield;
+        console.log("b");
+      }
+      const genA = generatorA();
+      genA.next(); // a
+      genA.next(); // b */
+
+      /* function* generatorB(count) {
+        console.log(count);
+        const result = yield 5;
+        console.log(result * count);
+      }
+      const genB = generatorB(2);
+      genB.next(); // 2
+      const genBValue = genB.next(7).value; // 14
+      console.log(genBValue); // genBValue undefined */
+
+      /* const timeOut = (time = 0) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(time + 200);
+          }, time);
+        });
+
+      async function main() {
+        const result1 = await timeOut(200);
+        console.log(result1); // 400
+        const result2 = await timeOut(result1);
+        console.log(result2); // 600
+        const result3 = await timeOut(result2);
+        console.log(result3); // 800
+      }
+
+      main(); */
+
+      /* const timeOut = (time = 0) =>
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(time + 200);
+          }, time);
+        });
+
+      function* main() {
+        const result1 = yield timeOut(200);
+        console.log(result1);
+        const result2 = yield timeOut(result1);
+        console.log(result2);
+        const result3 = yield timeOut(result2);
+        console.log(result3);
+      }
+
+      function step(generator) {
+        const gen = generator();
+        // 由于其传值，返回步骤交错的特性，记录上一次 yield 传过来的值，在下一个 next 返回过去
+        let lastValue;
+        // 包裹为 Promise，并执行表达式
+        return () =>
+          Promise.resolve(gen.next(lastValue).value).then(value => {
+            lastValue = value;
+            return lastValue;
+          });
+      }
+
+      const run = step(main);
+
+      function recursive(promise) {
+        promise().then(result => {
+          if (result) {
+            recursive(promise);
+          }
+        });
+      }
+
+      recursive(run);
+      // 400
+      // 600
+      // 800 */
+
+      /* function fetch(callback) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject();
+          });
+        });
+      }
+
+      async function main() {
+        const result = await fetch();
+        console.log("请求处理", result); // 永远不会执行
+      }
+
+      main(); */
+
+      /* function c() {
+        console.log("c");
+        console.trace();
+      }
+
+      function b() {
+        console.log("b");
+        c();
+      }
+
+      function a() {
+        console.log("a");
+        b();
+      }
+
+      a();
+      // a
+      // b
+      // c */
+
+      /* function c() {
+        console.log("c");
+      }
+
+      function b() {
+        console.log("b");
+        c();
+        console.trace();
+      }
+
+      function a() {
+        console.log("a");
+        b();
+      }
+
+      a();
+      // a
+      // b
+      // c */
+
+      /* try {
+        try {
+          throw new Error("Nested error.");
+        } catch (nestedErr) {
+          console.log("Nested catch"); // This runs
+        }
+      } catch (err) {
+        console.log("This will not run."); // no exe
+      } */
+
+      /* try {
+        throw new Error("First error");
+      } catch (err) {
+        console.log("First catch running"); // This runs
+        try {
+          throw new Error("Second error");
+        } catch (nestedErr) {
+          console.log("Second catch running."); // This runs
+        }
+      } */
+
+      /* try {
+        console.log("The try block is running..."); // This runs
+      } finally {
+        try {
+          throw new Error("Error inside finally.");
+        } catch (err) {
+          console.log("Caught an error inside the finally block.");
+          // This runs
+        }
+      } */
+
+      /* function runWithoutThrowing(func) {
+        try {
+          func();
+        } catch (e) {
+          console.log("There was an error, but I will not throw it.");
+          console.log("The error's message was: " + e.message);
+        }
+      }
+
+      function funcThatThrowsError() {
+        throw new TypeError("I am a TypeError.");
+      }
+
+      runWithoutThrowing(funcThatThrowsError);
+      // There was an error, but I will not throw it.
+      // The error's message was: I am a TypeError. */
+
+      /* function runWithoutThrowing(func) {
+        try {
+          func();
+        } catch (e) {
+          console.log("There was an error, but I will not throw it.");
+          console.log("The error's message was: " + e.message);
+        }
+      }
+
+      function funcThatThrowsError() {
+        throw "I am a String.";
+      }
+
+      runWithoutThrowing(funcThatThrowsError);
+      // There was an error, but I will not throw it.
+      // The error's message was: undefined. */
+
+      /* const fs = require("fs");
+
+        fs.readdir("./text.md", function callback(err, dirs) {
+          if (err instanceof Error) {
+            // `readdir` will throw an error because that directory does not exist
+            // We will now be able to use the error object passed by it in our callback function
+            console.log("Error Message: " + err.message);
+            console.log("See? We can use Errors without using try statements.");
+          } else {
+            console.log(dirs);
+          }
+        }); */
+    </script>
+  </body>
+</html>
