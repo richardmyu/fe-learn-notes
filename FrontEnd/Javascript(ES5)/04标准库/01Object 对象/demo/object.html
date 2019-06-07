@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var obj = Object();
+      var obj = Object(null);
+      var obj = Object(undefined);
+      // ???
+      var obj = Object(123);
+      // Number {123}
+      // var obj = Object(NaN);
+      // var obj = Object("456");
+      // String {"456"}
+      // var obj = Object(true);
+      // Boolean {true}
+      // var obj = Object([1, 7]);
+      // [1,7]
+      // var obj = Object([]);
+      // []
+      console.log(obj);
+      console.log(Object.keys(obj));
+      console.log(obj instanceof Object);
+      console.log(obj instanceof Number);
+      console.log(obj instanceof String);
+      console.log(obj instanceof Boolean);
+    </script>
+  </body>
+</html>
