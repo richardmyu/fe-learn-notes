@@ -108,13 +108,13 @@ parseInt(0xa); // 10
 (1234.46).toPrecision(4); //1234
 ```
 
-`toPrecision`方法的参数为有效数字的位数，范围是 1 到 21(现在是 1 - 100)，超出这个范围会抛出 `RangeError` 错误。
+`toPrecision` 方法的参数为有效数字的位数，范围是 1 到 21(现在是 1 - 100)，超出这个范围会抛出 `RangeError` 错误。
 
-> `toPrecision`方法用于四舍五入时不太可靠，跟浮点数不是精确储存有关。
+> `toPrecision` 方法用于四舍五入时不太可靠，跟浮点数不是精确储存有关。
 
 #### 4.4.自定义方法
 
-与其他对象一样，`Number.prototype`对象上面可以自定义方法，被`Number`的实例继承。
+与其他对象一样，`Number.prototype` 美女对象上面可以自定义方法，被 `Number` 的实例继承。
 
 ```javascript
 Number.prototype.add = function(x) {
