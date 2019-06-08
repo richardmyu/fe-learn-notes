@@ -103,7 +103,8 @@ console.log(Date.toString()); //function Date() { [native code] }
 console.log(Date.valueOf()); //f Date() { [native code] }
 ```
 
-> 可以看到，将对象输出的时候是调用对象的 `valueOf()` 方法。对于其他非 string 类型的数据，也是调用 `valueOf()` 方法。详情见 <a href="./console-log.html">console-log.html</a>
+> 可以看到，将对象输出的时候是调用对象的 `valueOf()` 方法。对于其他非 string 类型的数据，也是调用 `valueOf()` 方法。
+> 详情见 <a href="./console-log.html">console-log.html</a>
 
 `console.info` 是 `console.log` 方法的别名，用法完全一样。只不过`console.info` 方法会在输出信息的前面，加上一个蓝色图标(chrome 貌似没有...)。
 
