@@ -28,7 +28,7 @@ Object.prototype.print = function() {
 };
 
 var obj = new Object();
-obj.print(); // Object
+obj.print(); // obj
 ```
 
 #### 1.2.Object()
@@ -159,6 +159,8 @@ Object.getOwnPropertyNames(obj).length; // 2
 `[[Get]]`、`[[Set]]`、`[[Enumerable]]`、`[[Configuration]]`。
 
 JS 开放了三个接口用于设置和获取属性的特性，分别是：
+
+1).对象属性模型方法
 
 ---
 

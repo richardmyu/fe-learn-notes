@@ -8,27 +8,37 @@
   </head>
   <body>
     <script>
-      var obj = Object();
-      var obj = Object(null);
-      var obj = Object(undefined);
-      // ???
-      var obj = Object(123);
-      // Number {123}
-      // var obj = Object(NaN);
-      // var obj = Object("456");
-      // String {"456"}
-      // var obj = Object(true);
-      // Boolean {true}
-      // var obj = Object([1, 7]);
-      // [1,7]
-      // var obj = Object([]);
-      // []
-      console.log(obj);
-      console.log(Object.keys(obj));
-      console.log(obj instanceof Object);
-      console.log(obj instanceof Number);
-      console.log(obj instanceof String);
-      console.log(obj instanceof Boolean);
+      Object.prototype.print = function() {
+        console.log(this);
+        return this;
+      };
+      var obj = new Object();
+      console.log(obj.print() === obj); //true
+
+      {
+        var obj = Object();
+        console.log(obj); //{}
+        console.log(obj instanceof Object); //true
+        var obj = Object(null);
+        console.log(obj); //true
+        var obj = Object(undefined);
+        console.log(obj); //true
+        // ???
+        var obj = Object(123);
+        console.log(obj); // Number {123}
+        console.log(obj instanceof Object); //true
+        console.log(obj instanceof Number); //true
+        var obj = Object(NaN);
+        console.log(obj); //Number {NaN}
+        // var obj = Object("456");
+        // String {"456"}
+        // var obj = Object(true);
+        // Boolean {true}
+        // var obj = Object([1, 7]);
+        // [1,7]
+        // var obj = Object([]);
+        // []
+      }
     </script>
   </body>
 </html>

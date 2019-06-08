@@ -89,6 +89,8 @@ Array.isArray(arr); // true
 
 ##### 2.3.1 转换方法
 
+> 注意：如果数组某一项的值是 `null` 或 `undefined`，那么该值在 `toString()`、`toLocaleString()`、`valueOf()` 和 `join()` 方法返回的结果中以空字符串表示。
+
 1).`valueOf()`
 
 调用该方法，返回数组本身
@@ -105,8 +107,6 @@ ary.toString(); //1,2,3,4,5
 3).`toLocaleString()`
 
 一般返回值与 `toString()` 和 `valueOf()` 相同。当调用数组的 `toLocaleString()` 方法时，也会创建以数组值的字符串形式，但每一项调用的是 `toLocaleString()` 方法，而不是 `toString()` 方法。
-
-> 如果数组某一项的值是 `null` 或 `undefined`，那么该值在 `toLocaleString()`、`toString()`、`valueOf()` 和 `join()` 方法返回的结果中以空字符串表示。
 
 4).`join("分隔符")`
 
@@ -128,8 +128,8 @@ ary.toString(); //1,2,3,4,5
 通过 `call` 方法，这个方法也可以用于字符串或类似数组的对象。
 
 ```javascript
-Array.prototype.join.call("hello", "-");
-// "h-e-l-l-o"
+Array.prototype.join.call("hello");
+// "h,e,l,l,o"
 
 var obj = { 0: "a", 1: "b", length: 2 };
 Array.prototype.join.call(obj, "-");
@@ -193,6 +193,8 @@ arr; // [1, 2]
 
 ---
 
+> 同样，对空数组使用 `shift` 方法，不会报错，而是返回 `undefined`。
+
 2).**`unshift(...)`**
 
 在数组最前按照书写添加任意多项
@@ -230,11 +232,16 @@ arr; // [1, 2]
 - 返回值：返回新数组;
 - 参数：不需要参数；或者可以接受一个比较函数作为参数
 
+> 没有参数的排序是字母表排序。
+
 ---
 
 可以接收一个比较函数，以便自定义排序：
 
 ```javascript
+[1, 3, 2].sort(); //[1, 2, 3]
+["a", "c", "b"].sort(); //["a", "b", "c"]
+
 ary.sort(function(a, b) {
   //a 当前项  b 当前项的后一项
   return a - b; //完全排序：从小到大；
@@ -378,6 +385,23 @@ console.log(fn(1, 2, 3));
 
 `forEach` 方法与 `map` 方法很相似，也是对数组的所有成员依次执行参数函数。但是，`forEach` 方法不返回值，只用来操作数据。这就是说，如果数组遍历的目的是为了得到返回值，那么使用 `map` 方法，否则使用 `forEach` 方法。`forEach` 方法无法中断执行，总是会将所有成员遍历完。如果希望符合某种条件时，就中断遍历，要使用 `for` 循环。
 
+如果要提前终止，必须把 `forEach` 放到一个 `try` 块中，并能抛出一个异常。
+
+```js
+function foreach(a, f, t) {
+  try {
+    a.forEach(f, t);
+  } catch (e) {
+    if (e === foreach.break) {
+      return;
+    } else {
+      throw e;
+    }
+  }
+}
+foreach.break = new Error("StopIterrator");
+```
+
 > 重点：1.没有返回值；2.全体遍历，不会中断；
 
 2).**`map()`**
@@ -516,7 +540,7 @@ users
   .filter(function(email) {
     return /^t/.test(email);
   })
-  .forEach(console.log);
+  .forEach(console.log(email));
 
 //tom@example.com 0 [ 'tom@example.com' ]
 ```

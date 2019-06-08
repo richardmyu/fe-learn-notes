@@ -98,6 +98,11 @@ parseInt(0xa); // 10
 
 `toExponential` 方法的参数是小数点后有效数字的位数，范围为 0 到 20，超出这个范围，会抛出一个 `RangeError` 错误。
 
+```js
+(2445).toExponential(2); //"2.45e+3"
+(2.445).toExponential(2); //"2.44e+0"
+```
+
 ##### 4.3.4 number.toPrecision
 
 `toPrecision` 方法用于将一个数转为指定位数的有效数字。
@@ -110,7 +115,7 @@ parseInt(0xa); // 10
 
 `toPrecision` 方法的参数为有效数字的位数，范围是 1 到 21(现在是 1 - 100)，超出这个范围会抛出 `RangeError` 错误。
 
-> `toPrecision` 方法用于四舍五入时不太可靠，跟浮点数不是精确储存有关。
+> 以上三个方法用于四舍五入时都不太可靠，跟浮点数不是精确储存有关。
 
 #### 4.4.自定义方法
 
