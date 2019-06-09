@@ -34,4 +34,4 @@ typeof !a; //boolean
 
 再次取反；将其他数据类型转换为布尔数据类型，相当于 `Boolean(str)`；
 
-更多 demo 见 <a href="./demo/boolean.html">boolean.html</a>
+更多 demo 见 <a href="./demo/boolean.html" target="_blank">boolean.html</a>

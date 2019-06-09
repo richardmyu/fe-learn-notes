@@ -202,7 +202,7 @@ String(true); //'true'
 
 > 3.`null` 和 `undefined` 不具有 `toString` 方法，会调用 `String` 方法；
 
-更多 demo 见 <a href="./demo/string.html">string.html</a>
+更多 demo 见 <a href="./demo/string.html" target="_blank">string.html</a>
 
 #### 4.6.5 字符集
 

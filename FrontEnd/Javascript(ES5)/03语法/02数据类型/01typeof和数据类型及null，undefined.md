@@ -238,4 +238,4 @@ Number(undefined); // NaN
 
 ---
 
-更多 demo 见 <a href="./demo/typeof.html">typeof.html</a>
+更多 demo 见 <a href="./demo/typeof.html" target="_blank">typeof.html</a>

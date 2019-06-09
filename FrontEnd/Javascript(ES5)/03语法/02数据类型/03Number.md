@@ -65,7 +65,7 @@ function myIsNaN(value) {
 }
 ```
 
-更多 demo 见 <a href="./demo/number01.html">number01.html</a>
+更多 demo 见 <a href="./demo/number01.html" target="_blank">number01.html</a>
 
 `isNaN` 也适用于对象。在基于对象调用 `isNaN` 函数时，会首先调用对象的 `valueOf` 方法，然后确定该方法返回的值是否可以装换为数值。如果不能，则基于这个返回值再调用 `toString` 方法，再测试(`parseFloat`)返回值，而这个过程也是 ECMAScript 中内置函数和操作符的一般执行流程。
 
@@ -106,7 +106,7 @@ Number.isFinite(123); //true
 Number.isFinite("1.23"); //false
 ```
 
-更多 demo 见 <a href="./demo/number02.html">number02.html</a>
+更多 demo 见 <a href="./demo/number02.html" target="_blank">number02.html</a>
 
 #### 4.5.3 Number
 
@@ -209,7 +209,7 @@ console.groupEnd();
 
 > 字符串中的前导 0 会被忽略
 
-更多 demo 见 <a href="./demo/number03.html">number03.html</a>
+更多 demo 见 <a href="./demo/number03.html" target="_blank">number03.html</a>
 
 #### 4.5.4 parseInt
 
@@ -347,7 +347,7 @@ parseFloat("0.0000008"); //8e-7
 parseFloat(8e-7); //8e-7
 ```
 
-更多 demo 见 <a href="./demo/number04.html">number04.html</a>
+更多 demo 见 <a href="./demo/number04.html" target="_blank">number04.html</a>
 
 #### 4.5.5 parseFloat
 
@@ -412,7 +412,7 @@ parseFloat(["1", "2"]); //1
 
 > 3.两者在数值类型参数时，能区分各种进制（关于八进制后面有详述）
 
-更多 demo 见 <a href="./demo/number05.html">number05.html</a>
+更多 demo 见 <a href="./demo/number05.html" target="_blank">number05.html</a>
 
 #### 4.5.6 浮点运算
 
@@ -685,7 +685,7 @@ Infinity - Infinity; // NaN
 Infinity / Infinity; // NaN
 ```
 
-更多 demo 见 <a href="./demo/Infinity.html">Infinity.html</a>
+更多 demo 见 <a href="./demo/Infinity.html" target="_blank">Infinity.html</a>
 
 参考：
 

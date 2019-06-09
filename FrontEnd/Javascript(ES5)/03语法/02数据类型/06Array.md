@@ -303,4 +303,4 @@ Array.prototype.forEach.call(arrayLike, print);
 
 > 注意，这种方法比直接使用数组原生的 `forEach` 要慢，所以最好还是先将“类似数组的对象”转为真正的数组，然后再直接调用数组的 `forEach` 方法。
 
-更多 demo 见 <a href="./demo/array.html">array.html</a>
+更多 demo 见 <a href="./demo/array.html" target="_blank">array.html</a>

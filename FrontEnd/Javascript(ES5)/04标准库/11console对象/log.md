@@ -104,7 +104,7 @@ console.log(Date.valueOf()); //f Date() { [native code] }
 ```
 
 > 可以看到，将对象输出的时候是调用对象的 `valueOf()` 方法。对于其他非 string 类型的数据，也是调用 `valueOf()` 方法。
-> 详情见 <a href="./console-log.html">console-log.html</a>
+> 详情见 <a href="./console-log.html" target="_blank">console-log.html</a>
 
 `console.info` 是 `console.log` 方法的别名，用法完全一样。只不过`console.info` 方法会在输出信息的前面，加上一个蓝色图标(chrome 貌似没有...)。
 
@@ -248,7 +248,7 @@ try {
 }
 ```
 
-> 见 <a href="./console-assert.html">console-assert.html</a>
+> 见 <a href="./console-assert.html" target="_blank">console-assert.html</a>
 
 ### 2.7 console.time()，console.timeEnd()
 
@@ -319,7 +319,7 @@ add(3)(2)(3);
 // (anonymous) @ console-trace.html:31
 ```
 
-> 细节见 <a href="./console-trace.html">console-trace.html</a>
+> 细节见 <a href="./console-trace.html" target="_blank">console-trace.html</a>
 
 `console.clear` 方法用于清除当前控制台的所有输出，将光标回置到第一行。如果用户选中了控制台的 “Preserve log” 选项，`console.clear` 方法将不起作用。
 
