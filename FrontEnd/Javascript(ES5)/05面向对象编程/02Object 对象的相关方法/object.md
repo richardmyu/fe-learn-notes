@@ -194,7 +194,7 @@ Object.prototype.isPrototypeOf(Object.create(null)); // false
 
 #### 2.5.`Object.prototype.__proto__`
 
-实例对象的`__proto__`属性，返回该对象的原型。该属性可读写。
+**实例对象的 `__proto__` 属性，返回该对象的原型**。该属性可读写。
 
 ```javascript
 var obj = {};
