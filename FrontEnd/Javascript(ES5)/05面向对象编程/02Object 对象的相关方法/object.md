@@ -302,7 +302,7 @@ console.log(Object.getOwnPropertyNames(Array));
 console.log(Object.keys(Array)); //[]
 
 console.log(Object.getOwnPropertyNames(Object));
-// ["length", "name", "prototype", ..., "entries", "values"]
+//["length", "name", "prototype", ..., "entries", "values"]
 console.log(Object.keys(Object)); //[]
 
 console.log(Object.getOwnPropertyNames(RegExp));
@@ -310,35 +310,35 @@ console.log(Object.getOwnPropertyNames(RegExp));
 console.log(Object.keys(RegExp)); //[]
 ```
 
-对象本身的属性之中，有的是可以遍历的，有的是不可以遍历的。`Object.getOwnPropertyNames`方法返回所有键名，不管是否可以遍历。只获取那些可以遍历的属性，使用`Object.keys`方法。
+对象本身的属性之中，有的是可以遍历的，有的是不可以遍历的。`Object.getOwnPropertyNames` 方法返回所有键名，不管是否可以遍历。只获取那些可以遍历的属性，使用 `Object.keys` 方法。
 
-> `Date`对象所有自身的属性，都是不可以遍历的。
+> `Date` 对象所有自身的属性，都是不可以遍历的。
 
 #### 2.8.Object.prototype.hasOwnProperty()
 
-对象实例的`hasOwnProperty`方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上(用来判断某个属性是否来自本身即是否私有，不区分是否可遍历性)。
+对象实例的 `hasOwnProperty` 方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上(用来判断某个属性是否来自本身即是否私有，不区分是否可遍历性)。
 
 ```javascript
 Date.hasOwnProperty("length"); // true
 Date.hasOwnProperty("toString"); // false
 ```
 
-上面代码表明，`Date.length`（构造函数 Date 可以接受多少个参数）是 Date 自身的属性，`Date.toString`是继承的属性。
+上面代码表明，`Date.length`（构造函数 `Date` 可以接受多少个参数）是 Date 自身的属性，`Date.toString` 是继承的属性。
 
-> 另外，`hasOwnProperty`方法是 JavaScript 之中唯一一个处理对象属性时，不会遍历原型链的方法，即该方法无法检测该对象的原型链中是否具有该属性，该属性必须是对象本身的一个成员。
+> 另外，`hasOwnProperty` 方法是 JavaScript 之中唯一一个处理对象属性时，不会遍历原型链的方法，即该方法无法检测该对象的原型链中是否具有该属性，该属性必须是对象本身的一个成员。
 
 #### 2.9.`in` 运算符和 `for…in` 循环
 
-`in`运算符返回一个布尔值，表示一个对象是否具有某个属性。它不区分该属性是对象自身的属性，还是继承的属性。
+`in` 运算符返回一个布尔值，表示一个对象是否具有某个属性。它不区分该属性是对象自身的属性，还是继承的属性。
 
 ```javascript
 "length" in Date; // true
 "toString" in Date; // true
 ```
 
-`in`运算符常用于检查一个属性是否存在。
+`in` 运算符常用于检查一个属性是否存在。
 
-获得对象的所有可遍历属性（不管是自身的还是继承的；既可以遍历私有属性也可以遍历非内置公有属性，但无法遍历内置公有属性），可以使用`for...in`循环。
+获得对象的所有可遍历属性（不管是自身的还是继承的；既可以遍历私有属性也可以遍历非内置公有属性，但无法遍历内置公有属性），可以使用 `for...in` 循环。
 
 ```javascript
 var o1 = { p1: 123 };
@@ -354,9 +354,9 @@ for (p in o2) {
 // p1
 ```
 
-上面对象中，对象 o2 的 p2 属性是自身的，p1 属性是继承的。这两个属性都会被`for...in`循环遍历。
+上面对象中，对象 o2 的 p2 属性是自身的，p1 属性是继承的。这两个属性都会被 `for...in` 循环遍历。
 
-为了在`for...in`循环中获得对象自身的属性，可以采用`hasOwnProperty`方法判断一下。
+为了在 `for...in` 循环中获得对象自身的属性，可以采用 `hasOwnProperty` 方法判断一下。
 
 ```javascript
 for (var name in object) {
@@ -383,7 +383,7 @@ function inheritedPropertyNames(obj) {
 
 上面代码依次获取 obj 对象的每一级原型对象“自身”的属性，从而获取 Obj 对象的“所有”属性，不管是否可遍历。
 
-下面是一个例子，列出 Date 对象的所有属性。
+下面是一个例子，列出 `Date` 对象的所有属性。
 
 ```javascript
 inheritedPropertyNames(Date);
@@ -425,7 +425,7 @@ function copyOwnPropertiesFrom(target, source) {
 }
 ```
 
-另一种更简单的写法，是利用 ES2017 才引入标准的`Object.getOwnPropertyDescriptors`方法。
+另一种更简单的写法，是利用 ES2017 才引入标准的 `Object.getOwnPropertyDescriptors` 方法。
 
 ```javascript
 function copyObject(orig) {
