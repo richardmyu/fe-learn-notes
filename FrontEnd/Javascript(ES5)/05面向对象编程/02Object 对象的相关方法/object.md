@@ -2,7 +2,7 @@
 
 #### 2.1.Object.getPrototypeOf()
 
-`Object.getPrototypeOf`方法返回参数对象的原型。这是获取原型对象的标准方法。
+`Object.getPrototypeOf` 方法返回参数对象的原型。这是获取原型对象的标准方法。
 
 ```javascript
 var F = function() {};
@@ -26,7 +26,7 @@ Object.getPrototypeOf(f) === Function.prototype; // true
 
 #### 2.2.Object.setPrototypeOf()
 
-`Object.setPrototypeOf`方法为对象设置原型，返回该对象。它接受两个参数，第一个是参数对象，第二个是原型对象。
+`Object.setPrototypeOf` 方法为对象设置原型，返回该对象。它接受两个参数，第一个是参数对象，第二个是原型对象。
 
 ```javascript
 var a = {};
@@ -37,7 +37,7 @@ Object.getPrototypeOf(a) === b; //true
 a.x; // 1
 ```
 
-`new`命令可以使用`Object.setPrototypeOf`方法模拟。
+`new` 命令可以使用 `Object.setPrototypeOf` 方法模拟。
 
 ```javascript
 var F = function() {
@@ -46,6 +46,7 @@ var F = function() {
 
 var f = new F();
 // 等同于
+
 var f = Object.setPrototypeOf({}, F.prototype);
 // !!! 注意要改变this的指向 ？？？
 F.call(f);
@@ -71,7 +72,7 @@ B.print(); // hello
 B.print === A.print; // true
 ```
 
-实际上，`Object.create`方法可以用下面的代码代替。
+实际上，`Object.create` 方法可以用下面的代码代替。
 
 ```javascript
 // 模拟 Object.create
@@ -88,7 +89,7 @@ bb.a; //111
 bb.a === aa.a; //true
 ```
 
-上面代码表明，`Object.create`方法的实质是新建一个空的构造函数 F，然后让 `F.prototype` 属性指向参数对象 obj，最后返回一个 F 的实例，从而实现让该实例继承 obj 的属性。（这样做有什么好处呢？？？）
+上面代码表明，`Object.create` 方法的实质是新建一个空的构造函数 `F`，然后让 `F.prototype` 属性指向参数对象 obj，最后返回一个 `F` 的实例，从而实现让该实例继承 obj 的属性。（这样做有什么好处呢？？？）
 
 下面三种方式生成的新对象是等价的。
 
@@ -98,7 +99,7 @@ var obj2 = Object.create(Object.prototype);
 var obj3 = new Object();
 ```
 
-如果想要生成一个不继承任何属性（比如没有`toString`和`valueOf`方法）的对象，可以将`Object.create`的参数设为`null`。
+如果想要生成一个不继承任何属性（比如没有 `toString` 和 `valueOf` 方法）的对象，可以将 `Object.create` 的参数设为 `null`。
 
 ```javascript
 var obj = Object.create(null);
@@ -107,7 +108,7 @@ obj.valueOf();
 // TypeError: Object [object Object] has no method 'valueOf'
 ```
 
-使用`Object.create`方法的时候，必须提供对象原型，即参数不能为空，或者不是对象，否则会报错。
+使用 `Object.create` 方法的时候，必须提供对象原型，即参数不能为空，或者不是对象，否则会报错。
 
 ```javascript
 Object.create();
@@ -117,7 +118,7 @@ Object.create(123);
 // TypeError: Object prototype may only be an Object or null
 ```
 
-- 1.`object.create`方法生成的新对象，**动态继承**了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
+- 1.`object.create` 方法生成的新对象，**动态继承**了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
 
 ```javascript
 var obj1 = { p: 1 };
@@ -127,7 +128,7 @@ obj1.p = 2;
 obj2.p; // 2
 ```
 
-- 2.除了对象的原型，`Object.create`方法还可以接受第二个参数。该参数是一个**属性描述对象**，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性。
+- 2.除了对象的原型，`Object.create` 方法还可以接受第二个参数。该参数是一个**属性描述对象**，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性。
 
 ```javascript
 var obj = Object.create(
@@ -154,7 +155,7 @@ obj.p1 = 123;
 obj.p2 = "abc";
 ```
 
-- 3.`Object.create`方法生成的对象，继承了它的原型对象的构造函数。
+- 3.`Object.create` 方法生成的对象，继承了它的原型对象的构造函数。
 
 ```javascript
 function A() {}
@@ -167,7 +168,7 @@ b instanceof A; // true
 
 #### 2.4.Object.prototype.isPrototypeOf()
 
-实例对象的`isPrototypeOf`方法，用来判断该对象是否为参数对象的原型。
+实例对象的 `isPrototypeOf` 方法，用来判断该对象是否为参数对象的原型。
 
 ```javascript
 var o1 = {};
@@ -203,9 +204,9 @@ obj.__proto__ = p;
 Object.getPrototypeOf(obj) === p; // true
 ```
 
-根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用 `Object.getPrototypeOf()` 和 `Object.setPrototypeOf()`，进行原型对象的读写操作。
+根据语言标准，`__proto__` 属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用 `Object.getPrototypeOf()` 和 `Object.setPrototypeOf()`，进行原型对象的读写操作。
 
-原型链可以用`__proto__`很直观地表示。
+原型链可以用 `__proto__` 很直观地表示。
 
 ```javascript
 var A = {
@@ -236,7 +237,7 @@ B.print === proto.print; // true
 
 #### 2.6.获取原型对象方法的比较
 
-如前所述，`__proto__`属性指向当前对象的原型对象，即构造函数的`prototype`属性。
+如前所述，`__proto__` 属性指向当前对象的原型对象，即构造函数的 `prototype` 属性。
 
 ```javascript
 var obj = new Object();
@@ -257,7 +258,7 @@ obj.constructor.prototype;
 Object.getPrototypeOf(obj);
 ```
 
-上面三种方法之中，前两种都不是很可靠。`__proto__`属性只有浏览器才需要部署，其他环境可以不部署。而`obj.constructor.prototype`在手动改变原型对象时，可能会失效。
+上面三种方法之中，前两种都不是很可靠。`__proto__` 属性只有浏览器才需要部署，其他环境可以不部署。而 `obj.constructor.prototype` 在手动改变原型对象时，可能会失效。
 
 ```javascript
 var Q = function() {};
@@ -271,7 +272,7 @@ var a = new A();
 a.constructor.prototype === q; // false
 ```
 
-上面代码中，构造函数 A 的原型对象被改成了 q，但是实例对象的`c.constructor.prototype`却没有指向 q。所以，在改变原型对象时，一般要同时设置`constructor`属性。
+上面代码中，构造函数 A 的原型对象被改成了 q，但是实例对象的 `c.constructor.prototype` 却没有指向 q。所以，在改变原型对象时，一般要同时设置 `constructor` 属性。
 
 ```javascript
 C.prototype = p;
@@ -281,11 +282,11 @@ var c = new C();
 c.constructor.prototype === p; // true
 ```
 
-因此，推荐使用第三种`Object.getPrototypeOf`方法，获取原型对象。
+因此，推荐使用第三种 `Object.getPrototypeOf` 方法，获取原型对象。
 
 #### 2.7.Object.getOwnPropertyNames()
 
-`Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名，但不区分是否可遍历属性。
+`Object.getOwnPropertyNames` 方法返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名，但不区分是否可遍历属性。
 
 ```javascript
 console.log(Object.getOwnPropertyNames(Date));

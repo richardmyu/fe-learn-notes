@@ -148,17 +148,24 @@
       console.log(obj.__proto__ === obj.constructor.prototype);
       console.dir(obj.constructor); */
 
-      var Q = function() {};
-      var q = new Q();
+      // var Q = function() {
+      //   return "QQ";
+      // };
+      // var q = new Q();
 
-      var A = function() {};
+      // var A = function() {
+      //   return "AA";
+      // };
 
-      A.prototype = q;
-      var a = new A();
+      // A.prototype = q;
+      // var a = new A();
 
-      console.log(a.constructor.prototype === q); // false
-      console.dir(A.constructor.prototype); // f anonymous()
-      console.log(a.constructor.prototype === A.prototype); // false
+      // console.log(a.constructor.prototype === q); // false
+      // console.log(a.constructor); // f (){ return "QQ"}
+      // console.log(a.constructor.prototype === a); // constructor f
+
+      // console.log(A.constructor.prototype); // f anonymous()
+      // console.log(a.constructor.prototype === A.prototype); // false
       /* var Q = function() {};
       var q = new Q();
 
@@ -171,38 +178,38 @@
       console.log(a.constructor.prototype === q); */
     </script>
     <script>
-      console.log(Object.getOwnPropertyNames(Date));
-      //["length", "name", "prototype", "now", "parse", "UTC"]
-      console.log(Object.keys(Date)); //[]
+      // console.log(Object.getOwnPropertyNames(Date));
+      // //["length", "name", "prototype", "now", "parse", "UTC"]
+      // console.log(Object.keys(Date)); //[]
 
-      console.log(Object.getOwnPropertyNames(Math));
-      //["abs", "acos", "acosh", "asin", ... , "SQRT2"]
-      console.log(Object.keys(Math)); //[]
+      // console.log(Object.getOwnPropertyNames(Math));
+      // //["abs", "acos", "acosh", "asin", ... , "SQRT2"]
+      // console.log(Object.keys(Math)); //[]
 
-      console.log(Object.getOwnPropertyNames(Array));
-      //["length", "name", "prototype", "isArray", "from", "of"]
-      console.log(Object.keys(Array)); //[]
+      // console.log(Object.getOwnPropertyNames(Array));
+      // //["length", "name", "prototype", "isArray", "from", "of"]
+      // console.log(Object.keys(Array)); //[]
 
-      console.log(Object.getOwnPropertyNames(Object));
-      // ["length", "name", "prototype", ..., "entries", "values"]
-      console.log(Object.keys(Object)); //[]
+      // console.log(Object.getOwnPropertyNames(Object));
+      // // ["length", "name", "prototype", ..., "entries", "values"]
+      // console.log(Object.keys(Object)); //[]
 
-      console.log(Object.getOwnPropertyNames(RegExp));
-      //["length", "name", "prototype", "input", ..., "$8", "$9"]
-      console.log(Object.keys(RegExp)); //[]
+      // console.log(Object.getOwnPropertyNames(RegExp));
+      // //["length", "name", "prototype", "input", ..., "$8", "$9"]
+      // console.log(Object.keys(RegExp)); //[]
     </script>
     <script>
-      console.dir(Date);
-      // UTC arguments caller length name now parse prototype
-      console.log(Date.hasOwnProperty("length")); //true
-      console.log(Date.hasOwnProperty("name")); //true
-      console.log(Date.hasOwnProperty("prototype")); //true
-      console.log(Date.hasOwnProperty("now")); //true
-      console.log(Date.hasOwnProperty("parse")); //true
-      console.log(Date.hasOwnProperty("UTC")); //true
+      // console.dir(Date);
+      // // UTC arguments caller length name now parse prototype
+      // console.log(Date.hasOwnProperty("length")); //true
+      // console.log(Date.hasOwnProperty("name")); //true
+      // console.log(Date.hasOwnProperty("prototype")); //true
+      // console.log(Date.hasOwnProperty("now")); //true
+      // console.log(Date.hasOwnProperty("parse")); //true
+      // console.log(Date.hasOwnProperty("UTC")); //true
 
-      console.log(Date.hasOwnProperty("arguments")); //false      
-      console.log(Date.hasOwnProperty("caller")); //false      
+      // console.log(Date.hasOwnProperty("arguments")); //false
+      // console.log(Date.hasOwnProperty("caller")); //false
     </script>
   </body>
 </html>

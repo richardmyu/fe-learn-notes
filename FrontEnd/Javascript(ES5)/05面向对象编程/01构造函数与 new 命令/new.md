@@ -55,9 +55,9 @@ var v = new Vehicle(500);
 v.price; //500
 ```
 
-`new` 命令本身就可以执行构造函数，所以后面的构造函数可以带括号，也可以不带括号。下面两行代码是等价的，但是为了表示这里是函数调用，推荐使用括号。
+`new` 命令本身就可以执行构造函数，所以后面的构造函数可以带括号，也可以不带括号。
 
-```
+```js
 // 推荐的写法
 var v = new Vehicle();
 // 不推荐的写法
@@ -142,7 +142,7 @@ new Vehicle() === 1000;
 // false
 ```
 
-但是，如果`return`语句返回的是一个跟`this`无关的新对象，`new`命令会返回这个新对象，而不是`this`对象。这一点需要特别引起注意。
+但是，如果 `return` 语句返回的是一个跟 `this` 无关的新对象，`new` 命令会返回这个新对象，而不是 `this` 对象。这一点需要特别引起注意。
 
 ```javascript
 var Vehicle = function() {
@@ -154,7 +154,7 @@ new Vehicle().price;
 // 2000
 ```
 
-另一方面，如果对普通函数（内部没有`this`关键字的函数）使用`new`命令，则会返回一个空对象或指定对象（不论有没有 return 语句）。
+另一方面，如果对普通函数（内部没有 `this` 关键字的函数）使用 `new` 命令，则会返回一个空对象或指定对象（不论有没有 `return` 语句）。
 
 ```javascript
 // 有明确的返回值
@@ -178,9 +178,9 @@ console.log(msgs); // {}
 console.log(typeof msgs); // "object"
 ```
 
-**这是因为`new`命令总是返回一个对象，要么是实例对象，要么是`return`语句指定的对象**。
+**这是因为 `new` 命令总是返回一个对象，要么是实例对象，要么是 `return` 语句指定的对象**。
 
-`new`命令简化的内部流程，可以用下面的代码表示。
+`new` 命令简化的内部流程，可以用下面的代码表示。
 
 ```javascript
 function _new(constructor, params) {
@@ -214,7 +214,7 @@ var actor = _new(Person, "张三", 28);
 
 ##### 1.3.3 new.target
 
-函数内部可以使用`new.target`属性。如果当前函数是`new`命令调用，`new.target`指向当前函数，否则为`undefined`。
+函数内部可以使用 `new.target` 属性。如果当前函数是 `new` 命令调用，`new.target` 指向当前函数，否则为 `undefined`。
 
 ```javascript
 function f() {

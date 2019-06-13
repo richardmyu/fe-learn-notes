@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.groupCollapsed("内置对象");
+      {
+        var strPrimitive = "I am a string";
+        console.log(typeof strPrimitive); // "string"
+        console.log(strPrimitive instanceof String); // false
+
+        var strObject = new String("I am a string");
+        console.log(typeof strObject); // "object"
+        console.log(strObject instanceof String); // true
+
+        // 检查 sub-type 对象
+        console.log(Object.prototype.toString.call(strObject)); // [object String]
+        console.log("*****************");
+
+        var numPri = 1234;
+        console.log(typeof numPri); //'number'
+        console.log(numPri instanceof Number); //false
+
+        var numObj = new Number("1234");
+        console.log(typeof numObj); //'object'
+        console.log(numObj instanceof Number); //trueF
+
+        console.log("*****************");
+        var regPri = /\w+/;
+        console.log(regPri);
+        console.log(typeof regPri); //'object'
+        console.log(regPri instanceof RegExp); //true
+
+        var regObj = new RegExp("\\w+");
+        console.log(regObj);
+        console.log(typeof regObj); //'object'
+        console.log(regObj instanceof RegExp); //true
+      }
+      console.groupEnd();
+    </script>
+  </body>
+</html>
