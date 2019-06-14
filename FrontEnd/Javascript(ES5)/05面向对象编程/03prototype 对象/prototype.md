@@ -1,16 +1,18 @@
 ### 3.prototype 对象
 
-许多面向语言都支持两种继承方式：**接口继承**和**实现继承**。接口继承只继承方法签名，而实现继承则继承实际的方法。由于函数没有签名，所以无法实现接口继承，只支持实现继承，而且实现继承主要是依靠原型链来实现的。
+JavaScript 常被描述为一种基于原型的语言 (prototype-based language)——每个对象拥有一个原型对象，对象以其原型为模板、从原型继承方法和属性。原型对象也可能拥有原型，并从中继承方法和属性，一层一层、以此类推。这种关系常被称为原型链 (prototype chain)，它解释了为何一个对象会拥有定义在其他对象中的属性和方法。
 
-大部分面向对象的编程语言，都是通过**类（class）**来实现对象的继承。JavaScript 语言的继承则是通过**原型对象（prototype）**。
+准确地说，这些属性和方法定义在 Object 的构造函数(constructor functions)之上的 prototype 属性上，而非对象实例本身。
+
+在传统的 OOP 中，首先定义“类”，此后创建对象实例时，类中定义的所有属性和方法都被复制到实例中。在 JavaScript 中并不如此复制——而是在对象实例和它的构造器之间建立一个链接（它是 `__proto__` 属性，是从构造函数的 prototype 属性派生的），之后通过上溯原型链，在构造器中找到这些属性和方法。
 
 #### 3.1.原型对象概述
 
 ##### 3.1.1 constructor
 
-为了解决从原型对象生成实例的问题，Javascript 提供了一个**构造函数**（Constructor）模式。
+为了解决从原型对象生成实例的问题，Javascript 提供了一个**构造函数**（Constructor）模式。每个实例对象都从原型中继承了一个 `constructor` 属性，该属性指向了用于构造此实例对象的构造函数。
 
-所谓"构造函数"，其实就是一个普通函数，但是内部使用了 `this` 变量。对构造函数使用 `new` 运算符，就能生成实例，并且 `this` 变量会绑定在实例对象上，同时实例会自动包含一个 `constructor` 属性，指向它们的构造函数。
+所谓"构造函数"，其实就是一个普通函数，但是内部使用了 `this` 变量。对构造函数使用 `new` 运算符，就能生成实例，并且 `this` 变量会绑定在实例对象上，同时实例会自动包含一个 `constructor` 属性。
 
 `prototype` 对象有一个 `constructor` 属性，默认指向 `prototype` 对象所在的构造函数。
 
@@ -210,7 +212,30 @@ Animal.prototype.walk = function() {
 };
 ```
 
-##### 3.1.4 原型链
+##### 3.1.4 `__proto__`
+
+> 该特性已经从 Web 标准中删除，虽然一些浏览器目前仍然支持它，但也许会在未来的某个时间停止支持，请尽量不要使用该特性。
+
+JavaScript 中任意对象都有一个内置属性 `[[prototype]]`，在 ES5 之前没有标准的方法访问这个内置属性，但是大多数浏览器都支持通过 `__proto__` 来访问。ES5 中有了对于这个内置属性标准的 Get 方法 `Object.getPrototypeOf()`。
+
+> `__proto__`，可称为**隐式原型**，指向创建该对象的函数的 `prototype`。
+
+使用 `__proto__` 是有争议的，也不鼓励使用它。因为它从来没有被包括在 EcmaScript 语言规范中，但是现代浏览器都实现了它。`__proto__` 属性已在 ECMAScript 6 语言规范中标准化，用于确保 Web 浏览器的兼容性，因此它未来将被支持。它已被不推荐使用, 现在更推荐使用 `Object.getPrototypeOf/Reflect.getPrototypeOf` 和 `Object.setPrototypeOf/Reflect.setPrototypeOf`（尽管如此，设置对象的 `[[Prototype]]` 是一个缓慢的操作，如果性能是一个问题，应该避免）。
+
+`__proto__` 的设置器(setter)允许对象的 `[[Prototype]]` 被变更。前提是这个对象必须通过 `Object.isExtensible()` 判断为是可扩展的，如果不可扩展，则会抛出一个 `TypeError` 错误。要变更的值必须是一个 `object` 或 `null`，提供其它值将不起任何作用。
+
+```js
+Object.prototype.__proto__ === null; //true
+
+// 内置对象(也是函数)的 __proto__ 都指向 Function.prototype
+Object.__proto__ === Function.prototype; //true
+Function.__proto__ === Function.prototype; //true
+
+// 函数的 prototype 的 __proto__ 都指向 Object.prototype
+Function.prototype.__proto__ === Object.prototype; //true
+```
+
+##### 3.1.5 原型链
 
 JavaScript 规定，**所有对象都有自己的原型对象**。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。如此层层递进，就构成了实例与原型的链条，就会形成一个**原型链（prototype chain）**。
 
@@ -342,6 +367,10 @@ function Fubar(foo, bar) {
 ```
 
 #### 3.3.继承
+
+许多面向语言都支持两种继承方式：**接口继承**和**实现继承**。接口继承只继承方法签名，而实现继承则继承实际的方法。由于函数没有签名，所以无法实现接口继承，只支持实现继承，而且实现继承主要是依靠原型链来实现的。
+
+大部分面向对象的编程语言，都是通过**类（class）**来实现对象的继承。JavaScript 语言的继承则是通过**原型对象（prototype）**。
 
 #### 3.3.1.构造函数的继承
 
