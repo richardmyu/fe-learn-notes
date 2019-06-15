@@ -1,14 +1,36 @@
 ### 2.定时器
 
-JavaScript 提供定时执行代码的功能，叫做**定时器（timer）**，主要由`setTimeout()`和`setInterval()`这两个函数来完成。它们向任务队列添加定时任务。
+JavaScript 提供定时执行代码的功能，叫做**定时器**（timer），主要由 `setTimeout()` 和 `setInterval()` 这两个函数来完成。它们向任务队列添加定时任务。
 
 #### 2.1.setTimeout()
 
-`setTimeout`函数用来指定某个函数或某段代码，在多少毫秒之后执行。它返回一个整数，表示定时器的编号，以后可以用来取消这个定时器。
+`setTimeout` 函数用来指定某个函数或某段代码，在多少毫秒之后执行。
 
-`var timerId = setTimeout(func|code, delay);`
+**语法**
 
-上面代码中，`setTimeout`函数接受两个参数，第一个参数`func|code`是将要推迟执行的函数名或者一段代码，第二个参数 delay 是推迟执行的毫秒数。
+```js
+var timeoutID = scope.setTimeout(function[, delay, param1, param2, ...]);
+var timeoutID = scope.setTimeout(function[, delay]);
+var timeoutID = scope.setTimeout(code[, delay]);
+```
+
+**参数**
+
+- `function`
+
+  - `function` 是你想要在到期时间(`delay` 毫秒)之后执行的函数。注意这里只是传递一个函数名，而不是要执行函数，若执行函数，就不会有延迟效果。
+
+```javascript
+function f() {
+  console.log(2);
+}
+
+setTimeout(f, 1000);
+```
+
+- `code`
+
+  - 这是一个可选语法，你可以使用字符串而不是 `function` ，在 `delay` 毫秒之后编译和执行字符串 (使用该语法是不推荐的, 原因和使用 `eval()` 一样，有安全风险)。若代码不是字符串形式，则不会延迟执行。
 
 ```javascript
 console.log(1);
@@ -19,23 +41,32 @@ console.log(3);
 // 2
 ```
 
-上面代码会先输出 1 和 3，然后等待 1000 毫秒再输出 2。
+- `delay` ~可选~
 
-> 注意，`console.log(2)`必须以字符串的形式，作为`setTimeout`的参数。
+  - 延迟的毫秒数 (一秒等于 1000 毫秒)，函数的调用会在该延迟之后发生。如果省略该参数，`delay` 取默认值 0，意味着“马上”执行，或者尽快执行。不管是哪种情况，实际的延迟时间可能会比期待的(`delay` 毫秒数) 值长。
 
-如果推迟执行的是函数，就直接将函数名，作为`setTimeout`的参数。
+> 实际测试中，发现，对于不同浏览器，默认延迟时间并不一致。
 
-```javascript
-function f() {
-  console.log(2);
+```js
+// 测试代码
+function fn() {
+  console.timeEnd("setTimeout");
 }
-
-setTimeout(f, 1000);
+console.time("setTimeout");
+setTimeout(fn);
 ```
 
-> `setTimeout`的第二个参数如果省略，则默认为 0。
+HTML5 标准规定，`setTimeout` 的最短时间间隔是 4 毫秒；`setInterval` 的最短间隔时间是 10 毫秒，也就是说，小于 10 毫秒的时间间隔会被调整到 10 毫秒
 
-除了前两个参数，`setTimeout`还允许更多的参数。它们将依次传入推迟执行的函数（回调函数）。
+大多数电脑显示器的刷新频率是 60HZ，大概相当于每秒钟重绘 60 次。因此，最平滑的动画效的最佳循环间隔是 1000ms/60，约等于 16.6ms
+
+为了节电，对于那些不处于当前窗口的页面，浏览器会将时间间隔扩大到 1000 毫秒。另外，如果笔记本电脑处于电池供电状态，Chrome 和 IE10+ 浏览器，会将时间间隔切换到系统定时器，大约是 16.6 毫秒
+
+- `param1, ..., paramN` ~可选~
+
+  - 附加参数，一旦定时器到期，它们会作为参数传递给 `function`
+
+> 备注：需要注意的是，IE9 及更早的 IE 浏览器不支持向回调函数传递额外参数。
 
 ```javascript
 setTimeout(
@@ -48,60 +79,13 @@ setTimeout(
 );
 ```
 
-上面代码中，`setTimeout`共有 4 个参数。最后那两个参数，将在 1000 毫秒之后回调函数执行时，作为回调函数的参数。
+- **返回值**
 
-还有一个需要注意的地方，如果回调函数是对象的方法，那么`setTimeout`使得方法内部的`this`关键字指向全局环境，而不是定义时所在的那个对象。
+  - 返回值 `timeoutID` 是一个正整数，表示定时器的编号。这个值可以传递给 `clearTimeout()` 来取消该定时器。
 
-```javascript
-var x = 1;
+需要注意的是 `setTimeout()` 和 `setInterval()` 共用一个编号池，技术上，`clearTimeout()` 和 `clearInterval()` 可以互换。但是，为了避免混淆，不要混用取消定时函数。
 
-var obj = {
-  x: 2,
-  y: function() {
-    console.log(this.x);
-  }
-};
-
-setTimeout(obj.y, 1000); // 1
-```
-
-上面代码输出的是 1，而不是 2。因为当 obj.y 在 1000 毫秒后运行时，`this`所指向的已经不是 obj 了，而是全局环境。
-
-为了防止出现这个问题，一种解决方法是设置`setTimeout`时，将 obj.y 放入一个函数内。
-
-```javascript
-var x = 1;
-
-var obj = {
-  x: 2,
-  y: function() {
-    console.log(this.x);
-  }
-};
-
-setTimeout(function() {
-  obj.y();
-}, 1000);
-// 2
-```
-
-上面代码中，obj.y 放在一个匿名函数之中，这使得 obj.y 在 obj 的作用域执行，而不是在全局作用域内执行，所以能够显示正确的值。
-
-另一种解决方法是，使用`bind`方法，将 obj.y 这个方法绑定在 obj 上面。
-
-```javascript
-var x = 1;
-
-var obj = {
-  x: 2,
-  y: function() {
-    console.log(this.x);
-  }
-};
-
-setTimeout(obj.y.bind(obj), 1000);
-// 2
-```
+在同一个对象上（一个 `window` 或者 `worker`），`setTimeout()` 或者 `setInterval()` 在后续的调用不会重用同一个定时器编号。但是不同的对象使用独立的编号池。
 
 #### 2.2.setInterval()
 
@@ -204,6 +188,71 @@ setTimeout(f, 1000); // 12
 ```
 
 上面代码中，先调用`setTimeout`，得到一个计算器编号，然后把编号比它小的计数器全部取消。
+
+#### 2.4.定时器中关于 this 的问题
+
+一个需要注意的地方，如果回调函数是对象的方法，那么 `setTimeout` 使得方法内部的 `this` 关键字指向全局环境，而不是定义时所在的那个对象。
+
+由 `setTimeout()` 调用的代码运行在与所在函数完全分离的执行环境上。这会导致，这些代码中包含的 `this` 关键字在非严格模式会指向 `window` (或全局)对象，严格模式下为 `undefined`，这和所期望的 `this` 的值是不一样的。
+
+> 备注：在严格模式下，`setTimeout( )` 的回调函数里面的 `this` 仍然默认指向 `window` 对象， 并不是 `undefined`。
+
+```javascript
+var x = 1;
+
+var obj = {
+  x: 2,
+  y: function() {
+    console.log(this.x);
+  }
+};
+
+// 此时的执行环境是 windom 而不是 obj
+setTimeout(obj.y, 1000); // 1
+```
+
+**可能的解决方案**
+
+1.包装函数
+
+```javascript
+var x = 1;
+
+var obj = {
+  x: 2,
+  y: function() {
+    console.log(this.x);
+  }
+};
+
+setTimeout(function() {
+  // 匿名函数内 this 指向 window
+  // 但执行 obj.y 时，obj.y 中的 this 指向 obj
+  obj.y();
+}, 1000);
+// 2
+```
+
+2.强制绑定
+
+```javascript
+var x = 1;
+
+var obj = {
+  x: 2,
+  y: function() {
+    console.log(this.x);
+  }
+};
+
+setTimeout(obj.y.bind(obj), 1000);
+// 2
+```
+
+3.（ES6）箭头函数
+
+```js
+```
 
 #### 2.4.debounce 函数
 
@@ -356,3 +405,13 @@ timer = setTimeout(func, 0);
 上面代码有两种写法，都是改变一个网页元素的背景色。写法一会造成浏览器“堵塞”，因为 JavaScript 执行速度远高于 DOM，会造成大量 DOM 操作“堆积”，而写法二就不会，这就是`setTimeout(f, 0)`的好处。
 
 另一个使用这种技巧的例子是代码高亮的处理。如果代码块很大，一次性处理，可能会对性能造成很大的压力，那么将其分成一个个小块，一次处理一块，比如写成`setTimeout(highlightNext, 50)`的样子，性能压力就会减轻。
+
+参考：
+
+[关于 setTimeout 第一个参数的问题解析](https://segmentfault.com/a/1190000008643378)
+
+[深入理解定时器系列第一篇——理解 setTimeout 和 setInterval](https://www.cnblogs.com/xiaohuochai/p/5773183.html)
+
+[window.setTimeout](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setTimeout)
+
+[window.setInterval](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setInterval)
