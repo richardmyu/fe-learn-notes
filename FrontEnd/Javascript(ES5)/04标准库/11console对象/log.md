@@ -1,8 +1,8 @@
 # 十 console.log 对象
 
-`console` 对象是 JavaScript 的原生对象，它有点像 Unix 系统的标准输出`stdout`和标准错误 `stderr`，可以输出各种信息到控制台，并且还提供了很多有用的辅助方法。
+`console` 对象是 JavaScript 的原生对象，它有点像 Unix 系统的标准输出 `stdout` 和标准错误 `stderr`，可以输出各种信息到控制台，并且还提供了很多有用的辅助方法。
 
-`console`的常见用途有两个。
+`console` 的常见用途有两个。
 
 - 调试程序，显示网页代码运行时的错误信息。
 - 提供了一个命令行接口，用来与网页代码互动。
@@ -56,13 +56,13 @@ console.log(" %s + %s = %s", 1, 1, 2);
 ```javascript
 // %s 会将非字符串的参数转为字符串形式
 console.log("%s", 1); //1
-console.log("%s", 'a'); //a
-console.log(" %s + %s = %s", {}, [1], 'c', 'd'); //Object + Array(1) = c d
+console.log("%s", "a"); //a
+console.log(" %s + %s = %s", {}, [1], "c", "d"); //Object + Array(1) = c d
 
 // %d & %i 都只能识别 number 类型
 console.log(" %d + %i + %f", 1, 1, 1); //1 + 1 + 1
-console.log(" %d + %i + %f", 'a', 'b', 'c'); //NaN + NaN + NaN
-console.log(" %d + %i + %f", '1', '2', '3'); //NaN + NaN + NaN
+console.log(" %d + %i + %f", "a", "b", "c"); //NaN + NaN + NaN
+console.log(" %d + %i + %f", "1", "2", "3"); //NaN + NaN + NaN
 // %f 较 %d & %i 能识别浮点数
 console.log(" %d + %i + %f", 1.0000001, 1.0000001, 1.0000001); //1 + 1 + 1.0000001
 console.log(" %d + %i + %f", 3e7, 3e7, 3e7); //30000000 + 30000000 + 30000000
@@ -73,13 +73,13 @@ console.log(" %d + %i + %f", 0x123, 0x123, 0x123); //291 + 291 + 291
 console.log(" %d + %i + %f", 0b111, 0b111, 0b111); //7 + 7 + 7
 
 // %o 识别 url，但对于不是 www || http/https 开头的字符串会以红色形式输出
-console.log(" %o", 'www.jkl.com'); //"www.jkl.com"
-console.log(" %o", 'zxc.jkl.com'); //"zxc.jkl.com"
-console.log(" %o", 'zxcfhjdghdfj'); //"zxcfhjdghdfj"(字符串内字符为红色)
-console.log(" %o", 'www.zxcfhjdghdfj'); //"www.zxcfhjdghdfj"(字符串内字符为红色)
-console.log(" %o", 'http://zxcfhjdghdfj'); //"http://zxcfhjdghdfj"
-console.log(" %o", 'http://www.jkl.com'); //"http://www.jkl.com"
-console.log(" %o", 'https://www.jkl.com'); //"https://www.jkl.com"
+console.log(" %o", "www.jkl.com"); //"www.jkl.com"
+console.log(" %o", "zxc.jkl.com"); //"zxc.jkl.com"
+console.log(" %o", "zxcfhjdghdfj"); //"zxcfhjdghdfj"(字符串内字符为红色)
+console.log(" %o", "www.zxcfhjdghdfj"); //"www.zxcfhjdghdfj"(字符串内字符为红色)
+console.log(" %o", "http://zxcfhjdghdfj"); //"http://zxcfhjdghdfj"
+console.log(" %o", "http://www.jkl.com"); //"http://www.jkl.com"
+console.log(" %o", "https://www.jkl.com"); //"https://www.jkl.com"
 ```
 
 使用 `%c` 占位符时，对应的参数必须是 CSS 代码，用来对输出内容进行 CSS 渲染。
@@ -95,8 +95,8 @@ console.log(
 
 ```javascript
 console.log({ foo: "bar" }); //Object {foo: "bar"}
-console.log({ foo: 'bar' }.toString()); //[object Object]
-console.log({ foo: 'bar' }.valueOf()); //Object {foo: "bar"}
+console.log({ foo: "bar" }.toString()); //[object Object]
+console.log({ foo: "bar" }.valueOf()); //Object {foo: "bar"}
 
 console.log(Date); //f Date() { [native code] }
 console.log(Date.toString()); //function Date() { [native code] }
@@ -104,11 +104,11 @@ console.log(Date.valueOf()); //f Date() { [native code] }
 ```
 
 > 可以看到，将对象输出的时候是调用对象的 `valueOf()` 方法。对于其他非 string 类型的数据，也是调用 `valueOf()` 方法。
-> 详情见 <a href="./console-log.html" target="_blank">console-log.html</a>
+> 详情见 <a href="./demo/console-log.html" target="_blank">console-log.html</a>
 
-`console.info` 是 `console.log` 方法的别名，用法完全一样。只不过`console.info` 方法会在输出信息的前面，加上一个蓝色图标(chrome 貌似没有...)。
+`console.info` 是 `console.log` 方法的别名，用法完全一样。只不过 `console.info` 方法会在输出信息的前面，加上一个蓝色图标(chrome 貌似没有...)。
 
-`console.debug` 方法与 `console.log` 方法类似，会在控制台输出调试信息。但是，默认情况下(默认显示 info、warnings and errors)，`console.debug` 输出的信息不会显示，只有在打开显示级别在 verbose 的情况下，才会显示。
+`console.debug` 方法与 `console.log` 方法类似，会在控制台输出调试信息。但是，默认情况下(默认显示 `info`、`warnings` and `errors`)，`console.debug` 输出的信息不会显示，只有在打开显示级别在 verbose 的情况下，才会显示。
 
 ```javascript
 console.log("哈哈哈哈"); //哈哈哈哈
@@ -141,7 +141,7 @@ console.warn("Warning! Too few nodes (%d)", document.childNodes.length);
 
 ### 2.3 console.table()
 
-对于某些复合类型的数据(数组内每一项都是对象或者简单对象/嵌套对象，但只能将第一层对象解析出来,可以查看 <a href="./console-table.html">console-table.html</a>)，`console.table` 方法可以将其转为表格显示。
+对于某些复合类型的数据(数组内每一项都是对象或者简单对象/嵌套对象，但只能将第一层对象解析出来,可以查看 <a href="./demo/console-table.html">console-table.html</a>)，`console.table` 方法可以将其转为表格显示。
 
 ```javascript
 var languages = [
@@ -155,13 +155,13 @@ console.table(languages);
 
 上面代码的 `language` 变量，转为表格显示如下。
 
-| (index) | name             | fileExtension |
-| ------- | ---------------- | ------------- |
-| 0       | “JavaScript”   | “.js”       |
-| 1       | “TypeScript”   | “.ts”       |
-| 2       | “CoffeeScript” | “.coffee”   |
+| (index) | name           | fileExtension |
+| ------- | -------------- | ------------- |
+| 0       | “JavaScript”   | “.js”         |
+| 1       | “TypeScript”   | “.ts”         |
+| 2       | “CoffeeScript” | “.coffee”     |
 
-> 对于数组型复杂数据，index 是索引，若是对象则为属性名。
+> 对于数组型复杂数据，`index` 是索引，若是对象则为属性名。
 
 ### 2.4 console.count()
 
@@ -186,7 +186,7 @@ greet("bob");
 // "hi bob"
 ```
 
-上面代码每次调用 greet 函数，内部的 `console.count` 方法就输出执行次数。
+上面代码每次调用 `greet` 函数，内部的 `console.count` 方法就输出执行次数。
 
 该方法可以接受一个字符串作为参数，作为标签，对执行次数进行分类。
 
@@ -209,11 +209,11 @@ greet("bob");
 // "hi bob"
 ```
 
-> 若传入非 string 类型数据会自动转为 string 类型。见 <a href="./console-count.html">console-count.html</a>
+> 若传入非 `string` 类型数据会自动转为 `string` 类型。见 <a href="./demo/console-count.html">console-count.html</a>
 
 ### 2.5 console.dir()，console.dirxml()
 
-`dir` 方法用来对一个对象进行检查（inspect），并以易于阅读和打印的格式显示(即打印出打印对象的详情，而 log 只打印部分信息)。
+`dir` 方法用来对一个对象进行**检查**（inspect），并以易于阅读和打印的格式显示(即打印出打印对象的详情，而 `log` 只打印部分信息)。
 
 该方法对于输出 DOM 对象非常有用，因为会显示 DOM 对象的所有属性。
 
@@ -227,13 +227,13 @@ Node 环境之中，还可以指定以代码高亮的形式输出。
 
 `console.dirxml(document.body)`
 
-如果参数不是 DOM 节点，而是普通的 JavaScript 对象，`console.dirxml`等同于`console.dir`。但注意 `console.dir` 只能识别一个参数，并且对不同数据类型略有差异。简单说对于基本数据类型 `console.dir` 会返回 string，而 `console.dirxml` 返回值类似 `console.log`，返回其原始值；而对于复杂数据类型两者返回等同。详情见 <a href="./console-count.html">console-count.html</a>
+如果参数不是 DOM 节点，而是普通的 JavaScript 对象，`console.dirxml` 等同于 `console.dir`。但注意 `console.dir` 只能识别一个参数，并且对不同数据类型略有差异。简单说对于基本数据类型 `console.dir` 会返回 `string`，而 `console.dirxml` 返回值类似 `console.log`，返回其原始值；而对于复杂数据类型两者返回等同。详情见 <a href="./demo/console-count.html">console-count.html</a>
 
 ### 2.6 console.assert()
 
 `console.assert` 方法主要用于程序运行过程中，进行条件判断，如果不满足条件，就显示一个*错误*，但不会中断程序执行。这样就相当于提示用户，内部状态不正确。
 
-它接受两个参数，第一个参数是表达式，第二个参数是字符串。只有当第一个参数为 false，才会提示有错误，在控制台输出第二个参数，否则不会有任何结果。
+它接受两个参数，第一个参数是表达式，第二个参数是字符串(提示字符)。只有当第一个参数为 false，才会提示有错误，在控制台输出第二个参数，否则不会有任何结果。
 
 ```javascript
 console.assert(false, "判断条件不成立");
@@ -248,7 +248,7 @@ try {
 }
 ```
 
-> 见 <a href="./console-assert.html" target="_blank">console-assert.html</a>
+> 见 <a href="./demo/console-assert.html" target="_blank">console-assert.html</a>
 
 ### 2.7 console.time()，console.timeEnd()
 
@@ -266,7 +266,7 @@ console.timeEnd("Array initialize");
 // Array initialize: 1914.481ms
 ```
 
-`time` 方法表示计时开始，`timeEnd` 方法表示计时结束。它们的参数是计时器的名称。调用`timeEnd`方法之后，控制台会显示“计时器名称: 所耗费的时间”。一个 `time` 方法对应一个 `timeEnd` 方法。否则会抛出警告。见 <a href="./console-time.html">console-time.html</a>
+`time` 方法表示计时开始，`timeEnd` 方法表示计时结束。它们的**参数是计时器的名称**。调用 `timeEnd` 方法之后，控制台会显示“计时器名称: 所耗费的时间”。一个 `time` 方法对应一个 `timeEnd` 方法。否则会抛出警告。见 <a href="./demo/console-time.html">console-time.html</a>
 
 ### 2.8 console.group()，console.groupEnd()，console.groupCollapsed()
 
@@ -294,12 +294,12 @@ console.groupEnd(); // 二级分组结束
 
 ```javascript
 function add(a) {
-  return function (b) {
-    return function (c) {
+  return function(b) {
+    return function(c) {
       console.trace();
       return a + b + c;
-    }
-  }
+    };
+  };
 }
 // console.trace 为默认名，若传入字符，即为标签名，以显示其分类调用
 // (anonymous) 作用域内的函数名（若函数为命名函数）
@@ -319,7 +319,7 @@ add(3)(2)(3);
 // (anonymous) @ console-trace.html:31
 ```
 
-> 细节见 <a href="./console-trace.html" target="_blank">console-trace.html</a>
+> 细节见 <a href="./demo/console-trace.html" target="_blank">console-trace.html</a>
 
 `console.clear` 方法用于清除当前控制台的所有输出，将光标回置到第一行。如果用户选中了控制台的 “Preserve log” 选项，`console.clear` 方法将不起作用。
 
@@ -341,7 +341,7 @@ add(3)(2)(3);
 
 ### 3.4 `$$(selector)`
 
-`$$(selector)` 返回选中的 *DOM 对象*，等同于 `document.querySelectorAll`。
+`$$(selector)` 返回选中的 _DOM 对象_，等同于 `document.querySelectorAll`。
 
 ### 3.5 `$x(path)`
 
@@ -356,7 +356,7 @@ add(3)(2)(3);
 `inspect(object)` 方法打开相关面板，并选中相应的元素，显示它的细节。DOM 元素在 Elements 面板中显示，比如 `inspect(document)` 会在 Elements 面板显示 document 元素。JavaScript 对象在控制台面板 Profiles 面板中显示，比如 `inspect(window)`。
 
 ```javascript
-inspect(window)
+inspect(window);
 //Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, parent: Window, …}
 ```
 
@@ -365,9 +365,11 @@ inspect(window)
 `getEventListeners(object)` 方法返回一个对象，该对象的成员为 `object` 登记了回调函数的各种事件（比如 `click` 或 `keydown`），每个事件对应一个数组，数组的成员为该事件的回调函数。
 
 ```javascript
-<div class="btn" onClick="console.log('\(^o^)/~')">btn</div>
+<div class="btn" onClick="console.log('\(^o^)/~')">
+  btn
+</div>;
 
-getEventListeners($('.btn'))
+getEventListeners($(".btn"));
 //{click: Array(1)}
 ```
 
@@ -394,7 +396,7 @@ values(o);
 monitorEvents(window, "resize");
 // resize Event {isTrusted: true, type: "resize", target: Window, currentTarget: Window, eventPhase: 2, …}
 
-monitorEvents(window, ["resize", "scroll"])
+monitorEvents(window, ["resize", "scroll"]);
 ```
 
 上面代码分别表示单个事件和多个事件的监听方法。
