@@ -134,7 +134,7 @@ document.forms[n];
 
 `document.forms` 返回一个类似数组的对象（HTMLCollection 的实例），包含了当前页面中所有表单（`<form>` 元素）。HTMLCollection 的实例都可以使用某个节点的 `id` 和 `name` 属性，取到该节点。
 
-表单对象本身也是一个 HTMLCollection 对象的实例，它里面的各个子节点也可以用 `id` 属性、`name` 属性或者索引值取到。举例来说，`myForm` 表单的第一个子节点是`<input type="text" name="address">`，它可以用下面的方法取到。
+表单对象本身也是一个 HTMLCollection 对象的实例，它里面的各个子节点也可以用 `id` 属性、`name` 属性或者索引值取到。举例来说，`myForm` 表单的第一个子节点是 `<input type="text" name="address">`，它可以用下面的方法取到。
 
 ```javascript
 document.forms.myForm[0];
@@ -189,7 +189,7 @@ for (var i = 0; i < methods.length; i++) {
 
 Form 对象还有两个属性，可以指定事件的回调函数。
 
-- `onsubmit`：提交表单前调用，只要返回 `false`，就会取消提交。可以在这个函数里面，校验用户的输入。该函数只会在用户提交表单时调用，脚本调用 `submit()`方法是不会触发这个函数的。
+- `onsubmit`：提交表单前调用，只要返回 `false`，就会取消提交。可以在这个函数里面，校验用户的输入。该函数只会在用户提交表单时调用，脚本调用 `submit()` 方法是不会触发这个函数的。
 - `onreset`：重置表单前调用，只要返回 `false`，就会取消表单重置。该函数只能由真实的 `reset` 按钮触发，脚本调用 `reset()` 方法并不会触发这个函数。
 
 ```html

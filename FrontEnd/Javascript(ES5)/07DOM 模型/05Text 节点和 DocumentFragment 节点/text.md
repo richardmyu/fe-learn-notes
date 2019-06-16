@@ -191,7 +191,7 @@ document.queryselector("ul").appendChild(docFrag.cloneNode(true));
 上面这样添加 `DocumentFragment` 节点进入当前文档，不会清空 `DocumentFragment` 节点。
 
 下面是一个例子，使用 `DocumentFragment` 反转一个指定节点的所有子节点的顺序。
- 
+
 ```javascript
 function reverse(n) {
   var f = document.createDocumentFragment();

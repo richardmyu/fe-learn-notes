@@ -41,7 +41,7 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
 由于 `<script>` 标签默认就是 JavaScript 代码。所以，嵌入 JavaScript 脚本时，`type` 属性也可以省略。
 
-如果 `type` 属性的值，浏览器不认识，那么它不会执行其中的代码。利用这一点，可以在 `<script>` 标签之中嵌入任意的文本内容，然后加上一个浏览器不认识的 `type`属性即可。
+如果 `type` 属性的值，浏览器不认识，那么它不会执行其中的代码。利用这一点，可以在 `<script>` 标签之中嵌入任意的文本内容，然后加上一个浏览器不认识的 `type` 属性即可。
 
 ```html
 <script id="myData" type="x-custom-data">
@@ -49,7 +49,7 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 </script>
 ```
 
-上面的代码，浏览器不会执行，也不会显示它的内容，因为不认识它的`type`属性。但是，这个 `<script>` 节点依然存在于 DOM 之中，可以使用 `<script>` 节点的 text 属性读出它的内容。
+上面的代码，浏览器不会执行，也不会显示它的内容，因为不认识它的 `type` 属性。但是，这个 `<script>` 节点依然存在于 DOM 之中，可以使用 `<script>` 节点的 text 属性读出它的内容。
 
 ```javascript
 document.getElementById("myData").text;
@@ -211,7 +211,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 上面代码中，只有等到 DOM 加载完成后，才会执行 `a.js` 和 `b.js`。
 
-`defer`的运行流程如下。
+`defer` 的运行流程如下。
 
 ---
 

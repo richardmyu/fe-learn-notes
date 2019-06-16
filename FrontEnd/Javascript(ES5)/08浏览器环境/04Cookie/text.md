@@ -37,7 +37,7 @@
 window.navigator.cookieEnabled; // true
 ```
 
-`document.cookie`属性返回当前网页的 `Cookie`。
+`document.cookie` 属性返回当前网页的 `Cookie`。
 
 ```javascript
 // 当前网页的 Cookie
@@ -143,7 +143,7 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 
 如果不设置该属性，或者设为 `null`，`Cookie` 只在当前会话（`session`）有效，浏览器窗口一旦关闭，当前 `Session` 结束，该 `Cookie` 就会被删除。另外，浏览器根据本地时间，决定 `Cookie` 是否过期，由于本地时间是不精确的，所以没有办法保证 `Cookie` 一定会在服务器指定的时间过期。
 
-`Max-Age`属性指定从现在开始 `Cookie` 存在的秒数，比如`60 * 60 * 24 * 365`（即一年）。过了这个时间以后，浏览器就不再保留这个 `Cookie`。
+`Max-Age` 属性指定从现在开始 `Cookie` 存在的秒数，比如 `60 * 60 * 24 * 365`（即一年）。过了这个时间以后，浏览器就不再保留这个 `Cookie`。
 
 如果同时指定了 `Expires` 和 `Max-Age`，那么 `Max-Age` 的值将优先生效。
 

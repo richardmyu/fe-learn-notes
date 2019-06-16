@@ -89,7 +89,7 @@ setTimeout(
 
 #### 2.2.setInterval()
 
-`setInterval`函数的用法与`setTimeout`完全一致，区别仅仅在于`setInterval`指定某个任务每隔一段时间就执行一次，也就是无限次的定时执行。
+`setInterval` 函数的用法与 `setTimeout` 完全一致，区别仅仅在于 `setInterval` 指定某个任务每隔一段时间就执行一次，也就是无限次的定时执行。
 
 ```javascript
 var i = 1;
@@ -100,9 +100,9 @@ var timer = setInterval(function() {
 
 上面代码中，每隔 1000 毫秒就输出一个 2，会无限运行下去，直到关闭当前窗口。
 
-与`setTimeout`一样，除了前两个参数，`setInterval`方法还可以接受更多的参数，它们会传入回调函数。
+与 `setTimeout` 一样，除了前两个参数，`setInterval` 方法还可以接受更多的参数，它们会传入回调函数。
 
-下面是一个通过`setInterval`方法实现网页动画的例子。
+下面是一个通过 `setInterval` 方法实现网页动画的例子。
 
 ```javascript
 var div = document.getElementById("someDiv");
@@ -119,7 +119,7 @@ var fader = setInterval(function() {
 
 上面代码每隔 100 毫秒，设置一次 div 元素的透明度，直至其完全透明为止。
 
-`setInterval`的一个常见用途是实现轮询。下面是一个轮询 `URL` 的 `Hash` 值是否发生变化的例子。
+`setInterval` 的一个常见用途是实现轮询。下面是一个轮询 `URL` 的 `Hash` 值是否发生变化的例子。
 
 ```javascript
 var hash = window.location.hash;
@@ -130,9 +130,9 @@ var hashWatcher = setInterval(function() {
 }, 1000);
 ```
 
-`setInterval`指定的是“开始执行”之间的间隔，并不考虑每次任务执行本身所消耗的时间。因此实际上，两次执行之间的间隔会小于指定的时间。比如，`setInterval`指定每 100ms 执行一次，每次执行需要 5ms，那么第一次执行结束后 95 毫秒，第二次执行就会开始。如果某次执行耗时特别长，比如需要 105 毫秒，那么它结束后，下一次执行就会立即开始。
+`setInterval` 指定的是“开始执行”之间的间隔，并不考虑每次任务执行本身所消耗的时间。因此实际上，两次执行之间的间隔会小于指定的时间。比如，`setInterval` 指定每 100ms 执行一次，每次执行需要 5ms，那么第一次执行结束后 95 毫秒，第二次执行就会开始。如果某次执行耗时特别长，比如需要 105 毫秒，那么它结束后，下一次执行就会立即开始。
 
-为了确保两次执行之间有固定的间隔，可以不用`setInterval`，而是每次执行结束后，使用`setTimeout`指定下一次执行的具体时间。
+为了确保两次执行之间有固定的间隔，可以不用 `setInterval`，而是每次执行结束后，使用 `setTimeout` 指定下一次执行的具体时间。
 
 ```javascript
 var i = 1;
@@ -146,7 +146,7 @@ var timer = setTimeout(function f() {
 
 #### 2.3.clearTimeout()，clearInterval()
 
-`setTimeout`和`setInterval`函数，都返回一个整数值，表示计数器编号。将该整数传入`clearTimeout`和`clearInterval`函数，就可以取消对应的定时器。
+`setTimeout` 和 `setInterval` 函数，都返回一个整数值，表示计数器编号。将该整数传入 `clearTimeout` 和 `clearInterval` 函数，就可以取消对应的定时器。
 
 ```javascript
 var id1 = setTimeout(f, 1000);
@@ -158,7 +158,7 @@ clearInterval(id2);
 
 上面代码中，回调函数 f 不会再执行了，因为两个定时器都被取消了。
 
-`setTimeout`和`setInterval`返回的整数值是连续的，也就是说，第二个`setTimeout`方法返回的整数值，将比第一个的整数值大 1。
+`setTimeout` 和 `setInterval` 返回的整数值是连续的，也就是说，第二个 `setTimeout` 方法返回的整数值，将比第一个的整数值大 1。
 
 ```javascript
 function f() {}
@@ -167,9 +167,9 @@ setTimeout(f, 1000); // 11
 setTimeout(f, 1000); // 12
 ```
 
-上面代码中，连续调用三次`setTimeout`，返回值都比上一次大了 1。
+上面代码中，连续调用三次 `setTimeout`，返回值都比上一次大了 1。
 
-利用这一点，可以写一个函数，取消当前所有的`setTimeout`定时器。
+利用这一点，可以写一个函数，取消当前所有的 `setTimeout` 定时器。
 
 ```javascript
 (function() {
@@ -187,7 +187,7 @@ setTimeout(f, 1000); // 12
 })();
 ```
 
-上面代码中，先调用`setTimeout`，得到一个计算器编号，然后把编号比它小的计数器全部取消。
+上面代码中，先调用 `setTimeout`，得到一个计算器编号，然后把编号比它小的计数器全部取消。
 
 #### 2.4.定时器中关于 this 的问题
 
@@ -260,9 +260,9 @@ setTimeout(obj.y.bind(obj), 1000);
 
 `$('textarea').on('keydown', ajaxAction);`
 
-这样写有一个很大的缺点，就是如果用户连续击键，就会连续触发`keydown`事件，造成大量的 Ajax 通信。这是不必要的，而且很可能产生性能问题。
+这样写有一个很大的缺点，就是如果用户连续击键，就会连续触发 `keydown` 事件，造成大量的 Ajax 通信。这是不必要的，而且很可能产生性能问题。
 
-正确的做法应该是，设置一个门槛值，表示两次 Ajax 通信的最小间隔时间。如果在间隔时间内，发生新的`keydown`事件，则不触发 Ajax 通信，并且重新开始计时。如果过了指定时间，没有发生新的`keydown`事件，再将数据发送出去。
+正确的做法应该是，设置一个门槛值，表示两次 Ajax 通信的最小间隔时间。如果在间隔时间内，发生新的 `keydown` 事件，则不触发 Ajax 通信，并且重新开始计时。如果过了指定时间，没有发生新的 `keydown` 事件，再将数据发送出去。
 
 这种做法叫做**防抖动（debounce）**。假定两次 Ajax 通信的间隔不得小于 2500 毫秒，上面的代码可以改写成下面这样。
 
@@ -286,16 +286,16 @@ function debounce(fn, delay) {
 
 #### 2.5.运行机制
 
-`setTimeout`和`setInterval`的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间；如果到了，就执行对应的代码；如果不到，就继续等待。
+`setTimeout` 和 `setInterval` 的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间；如果到了，就执行对应的代码；如果不到，就继续等待。
 
-这意味着，`setTimeout`和`setInterval`指定的回调函数，必须等到本轮事件循环的所有同步任务都执行完，才会开始执行。由于前面的任务到底需要多少时间执行完，是不确定的，所以没有办法保证，`setTimeout`和`setInterval`指定的任务，一定会按照预定时间执行。
+这意味着，`setTimeout` 和 `setInterval` 指定的回调函数，必须等到本轮事件循环的所有同步任务都执行完，才会开始执行。由于前面的任务到底需要多少时间执行完，是不确定的，所以没有办法保证，`setTimeout` 和 `setInterval` 指定的任务，一定会按照预定时间执行。
 
 ```javascript
 setTimeout(someTask, 100);
 veryLongTask();
 ```
 
-上面代码的`setTimeout`，指定 100 毫秒以后运行一个任务。但是，如果后面的 veryLongTask 函数（同步任务）运行时间非常长，过了 100 毫秒还无法结束，那么被推迟运行的`someTask`就只有等着，等到 veryLongTask 运行结束，才轮到它执行。
+上面代码的 `setTimeout`，指定 100 毫秒以后运行一个任务。但是，如果后面的 veryLongTask 函数（同步任务）运行时间非常长，过了 100 毫秒还无法结束，那么被推迟运行的 `someTask` 就只有等着，等到 veryLongTask 运行结束，才轮到它执行。
 
 再看一个 setInterval 的例子。
 
@@ -307,15 +307,15 @@ setInterval(function() {
 sleep(3000);
 ```
 
-上面代码中，`setInterval`要求每隔 1000 毫秒，就输出一个 2。但是，紧接着的 sleep 语句需要 3000 毫秒才能完成，那么`setInterval`就必须推迟到 3000 毫秒之后才开始生效。注意，生效后`setInterval`不会产生累积效应，即不会一下子输出三个 2，而是只会输出一个 2。
+上面代码中，`setInterval` 要求每隔 1000 毫秒，就输出一个 2。但是，紧接着的 sleep 语句需要 3000 毫秒才能完成，那么 `setInterval` 就必须推迟到 3000 毫秒之后才开始生效。注意，生效后 `setInterval` 不会产生累积效应，即不会一下子输出三个 2，而是只会输出一个 2。
 
 #### 2.6.setTimeout(f, 0)
 
 ##### 2.6.1 含义
 
-`setTimeout`的作用是将代码推迟到指定时间执行，如果指定时间为 0，即`setTimeout(f, 0)`，那么会立刻执行吗？
+`setTimeout` 的作用是将代码推迟到指定时间执行，如果指定时间为 0，即 `setTimeout(f, 0)`，那么会立刻执行吗？
 
-答案是不会。因为上一节说过，必须要等到当前脚本的同步任务，全部处理完以后，才会执行`setTimeout`指定的回调函数 f。也就是说，`setTimeout(f, 0)`会在下一轮事件循环一开始就执行。
+答案是不会。因为上一节说过，必须要等到当前脚本的同步任务，全部处理完以后，才会执行 `setTimeout` 指定的回调函数 f。也就是说，`setTimeout(f, 0)` 会在下一轮事件循环一开始就执行。
 
 ```javascript
 setTimeout(function() {
@@ -328,11 +328,11 @@ console.log(2);
 
 上面代码先输出 2，再输出 1。因为 2 是同步任务，在本轮事件循环执行，而 1 是下一轮事件循环执行。
 
-总之，`setTimeout(f, 0)`这种写法的目的是，尽可能早地执行 f，但是并不能保证立刻就执行 f。
+总之，`setTimeout(f, 0)` 这种写法的目的是，尽可能早地执行 f，但是并不能保证立刻就执行 f。
 
 ##### 2.6.2 应用
 
-`setTimeout(f, 0)`有几个非常重要的用途。它的一大应用是，可以调整事件的发生顺序。比如，网页开发中，某个事件先发生在子元素，然后冒泡到父元素，即子元素的事件回调函数，会早于父元素的事件回调函数触发。如果，想让父元素的事件回调函数先发生，就要用到`setTimeout(f, 0)`。
+`setTimeout(f, 0)` 有几个非常重要的用途。它的一大应用是，可以调整事件的发生顺序。比如，网页开发中，某个事件先发生在子元素，然后冒泡到父元素，即子元素的事件回调函数，会早于父元素的事件回调函数触发。如果，想让父元素的事件回调函数先发生，就要用到 `setTimeout(f, 0)`。
 
 ```javascript
 // HTML 代码如下
@@ -351,9 +351,9 @@ document.body.onclick = function C() {
 };
 ```
 
-上面代码在点击按钮后，先触发回调函数 A，然后触发函数 C。函数 A 中，`setTimeout`将函数 B 推迟到下一轮事件循环执行，这样就起到了，先触发父元素的回调函数 C 的目的了。
+上面代码在点击按钮后，先触发回调函数 A，然后触发函数 C。函数 A 中，`setTimeout` 将函数 B 推迟到下一轮事件循环执行，这样就起到了，先触发父元素的回调函数 C 的目的了。
 
-另一个应用是，用户自定义的回调函数，通常在浏览器的默认动作之前触发。比如，用户在输入框输入文本，`keypress`事件会在浏览器接收文本之前触发。因此，下面的回调函数是达不到目的的。
+另一个应用是，用户自定义的回调函数，通常在浏览器的默认动作之前触发。比如，用户在输入框输入文本，`keypress` 事件会在浏览器接收文本之前触发。因此，下面的回调函数是达不到目的的。
 
 ```javascript
 // HTML 代码如下
@@ -364,7 +364,7 @@ document.getElementById("input-box").onkeypress = function(event) {
 };
 ```
 
-上面代码想在用户每次输入文本后，立即将字符转为大写。但是实际上，它只能将本次输入前的字符转为大写，因为浏览器此时还没接收到新的文本，所以`this.value`取不到最新输入的那个字符。只有用`setTimeout`改写，上面的代码才能发挥作用。
+上面代码想在用户每次输入文本后，立即将字符转为大写。但是实际上，它只能将本次输入前的字符转为大写，因为浏览器此时还没接收到新的文本，所以 `this.value` 取不到最新输入的那个字符。只有用 `setTimeout` 改写，上面的代码才能发挥作用。
 
 ```javascript
 document.getElementById("input-box").onkeypress = function() {
@@ -375,9 +375,9 @@ document.getElementById("input-box").onkeypress = function() {
 };
 ```
 
-上面代码将代码放入`setTimeout`之中，就能使得它在浏览器接收到文本之后触发。
+上面代码将代码放入 `setTimeout` 之中，就能使得它在浏览器接收到文本之后触发。
 
-由于`setTimeout(f, 0)`实际上意味着，将任务放到浏览器最早可得的空闲时段执行，所以那些计算量大、耗时长的任务，常常会被放到几个小部分，分别放到`setTimeout(f, 0)`里面执行。
+由于 `setTimeout(f, 0)` 实际上意味着，将任务放到浏览器最早可得的空闲时段执行，所以那些计算量大、耗时长的任务，常常会被放到几个小部分，分别放到 `setTimeout(f, 0)` 里面执行。
 
 ```javascript
 var div = document.getElementsByTagName("div")[0];
@@ -402,9 +402,9 @@ function func() {
 timer = setTimeout(func, 0);
 ```
 
-上面代码有两种写法，都是改变一个网页元素的背景色。写法一会造成浏览器“堵塞”，因为 JavaScript 执行速度远高于 DOM，会造成大量 DOM 操作“堆积”，而写法二就不会，这就是`setTimeout(f, 0)`的好处。
+上面代码有两种写法，都是改变一个网页元素的背景色。写法一会造成浏览器“堵塞”，因为 JavaScript 执行速度远高于 DOM，会造成大量 DOM 操作“堆积”，而写法二就不会，这就是 `setTimeout(f, 0)` 的好处。
 
-另一个使用这种技巧的例子是代码高亮的处理。如果代码块很大，一次性处理，可能会对性能造成很大的压力，那么将其分成一个个小块，一次处理一块，比如写成`setTimeout(highlightNext, 50)`的样子，性能压力就会减轻。
+另一个使用这种技巧的例子是代码高亮的处理。如果代码块很大，一次性处理，可能会对性能造成很大的压力，那么将其分成一个个小块，一次处理一块，比如写成 `setTimeout(highlightNext, 50)` 的样子，性能压力就会减轻。
 
 参考：
 

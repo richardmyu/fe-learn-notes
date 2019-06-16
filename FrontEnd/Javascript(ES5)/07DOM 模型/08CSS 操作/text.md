@@ -834,7 +834,7 @@ function onTransitionEnd() {
 }
 ```
 
-`transitionEnd`的事件对象具有以下属性。
+`transitionEnd` 的事件对象具有以下属性。
 
 ---
 

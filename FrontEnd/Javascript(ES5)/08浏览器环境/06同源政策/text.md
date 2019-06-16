@@ -86,7 +86,7 @@ https://www.example.com/dir/page.html：不同源（协议不同）
 document.domain = "example.com";
 ```
 
-注意，A 和 B 两个网页都需要设置 `document.domain` 属性，才能达到同源的目的。因为设置 `document.domain` 的同时，会把端口重置为`null`，因此如果只设置一个网页的 `document.domain`，会导致两个网址的端口不同，还是达不到同源的目的。
+注意，A 和 B 两个网页都需要设置 `document.domain` 属性，才能达到同源的目的。因为设置 `document.domain` 的同时，会把端口重置为 `null`，因此如果只设置一个网页的 `document.domain`，会导致两个网址的端口不同，还是达不到同源的目的。
 
 现在，A 网页通过脚本设置一个 `Cookie`。
 
@@ -139,7 +139,7 @@ window.parent.document.body;
 
 ##### 3.1 片段识别符
 
-片段标识符（fragment identifier）指的是，URL 的 `#` 号后面的部分，比如`http://example.com/x.html#fragment` 的 `#fragment`。如果只是改变片段标识符，页面不会重新刷新。
+片段标识符（fragment identifier）指的是，URL 的 `#` 号后面的部分，比如 `http://example.com/x.html#fragment` 的 `#fragment`。如果只是改变片段标识符，页面不会重新刷新。
 
 父窗口可以把信息，写入子窗口的片段标识符。
 
@@ -178,7 +178,7 @@ var popup = window.open("http://bbb.com", "title");
 popup.postMessage("Hello World!", "http://bbb.com");
 ```
 
-`postMessage` 方法的第一个参数是具体的信息内容，第二个参数是接收消息的窗口的源（origin），即“`协议 + 域名 + 端口`”。也可以设为 `*`，表示不限制域名，向所有窗口发送。
+`postMessage` 方法的第一个参数是具体的信息内容，第二个参数是接收消息的窗口的源（origin），即“` 协议 + 域名 + 端口 `”。也可以设为 `*`，表示不限制域名，向所有窗口发送。
 
 子窗口向父窗口发送消息的写法类似。
 

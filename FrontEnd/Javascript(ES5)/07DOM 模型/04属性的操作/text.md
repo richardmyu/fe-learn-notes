@@ -96,11 +96,11 @@ f.method = "POST";
 HTML 元素的属性名是大小写不敏感的，但是 JavaScript 对象的属性名是大小写敏感的。转换规则是，转为 JavaScript 属性名时，一律采用小写。如果属性名包括多个单词，则采用骆驼拼写法，即从第二个单词开始，每个单词的首字母采用大写，比如 `onClick`。
 
 有些 HTML 属性名是 JavaScript 的保留字，转为 JavaScript 属性时，必须改名。主要是以下两个。
- 
+
 ---
 
-- `for`属性改为`htmlFor`
-- `class`属性改为`className`
+- `for` 属性改为 `htmlFor`
+- `class` 属性改为 `className`
 
 ---
 

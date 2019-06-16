@@ -1164,11 +1164,11 @@ function doDragOver(event) {
 
 ##### 7.14.3 DataTransfer 的实例方法
 
-`DataTransfer`对象有以下方法。
+`DataTransfer` 对象有以下方法。
 
 1).setData
 
-`setData` 方法用来设置事件所带有的指定类型的数据。它接受两个参数，第一个是数据类型，第二个是具体数据。如果指定的类型在现有数据中不存在，则该类型将写入`types` 属性；如果已经存在，在该类型的现有数据将被替换。
+`setData` 方法用来设置事件所带有的指定类型的数据。它接受两个参数，第一个是数据类型，第二个是具体数据。如果指定的类型在现有数据中不存在，则该类型将写入 `types` 属性；如果已经存在，在该类型的现有数据将被替换。
 
 `event.dataTransfer.setData("text/plain", "Text to drag");`
 
@@ -1686,7 +1686,7 @@ function changeEventHandler(event) {
 
 `beforeunload` 事件在窗口将要关闭，或者网页（即 `document` 对象）将要卸载时触发。它可以用来防止用户不小心关闭网页。
 
-根据标准，只要在该事件的回调函数中，调用了 `event.preventDefault()`，或者 `event.returnValue`属性的值是一个非空的值，就会自动跳出一个确认框，让用户确认是否关闭网页。如果用户点击“取消”按钮，网页就不会关闭。`event.returnValue` 属性的值，会显示在确认对话框之中。
+根据标准，只要在该事件的回调函数中，调用了 `event.preventDefault()`，或者 `event.returnValue` 属性的值是一个非空的值，就会自动跳出一个确认框，让用户确认是否关闭网页。如果用户点击“取消”按钮，网页就不会关闭。`event.returnValue` 属性的值，会显示在确认对话框之中。
 
 ```javascript
 window.addEventListener("beforeunload", function(event) {
@@ -1966,7 +1966,7 @@ history.go(2); // state: {"page":3}
 - `paste` 事件：在剪贴板内容被粘贴到文档后触发。
 
 ---
- 
+
 这三个事件都有一个 `clipboardData` 只读属性。该属性存放剪贴的数据，是一个 `DataTransfer` 对象。
 
 ##### 7.21.6 焦点事件

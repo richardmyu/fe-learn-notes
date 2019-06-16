@@ -131,7 +131,7 @@ Rabin-Karp 字符串搜索算法是一个相对快速的[字符串搜索算法](
 
 可以使用 `document.createDocumentFragment` 方法或者构造函数来创建一个空的 `DocumentFragment`.
 
-很明显，它有一种特殊的行为，该行为使得它非常有用，即当请求把一个`DocumentFragment` 节点插入文档树时，插入的不是 `DocumentFragment` 自身，而是它的所有子孙节点。这使得 `DocumentFragment` 成了有用的占位符，暂时存放那些一次插入文档的节点。它还有利于实现文档的剪切、复制和粘贴操作。
+很明显，它有一种特殊的行为，该行为使得它非常有用，即当请求把一个 `DocumentFragment` 节点插入文档树时，插入的不是 `DocumentFragment` 自身，而是它的所有子孙节点。这使得 `DocumentFragment` 成了有用的占位符，暂时存放那些一次插入文档的节点。它还有利于实现文档的剪切、复制和粘贴操作。
 
 ### 5.1 JavaScript Tips - 使用 DocumentFragment 加快 DOM 渲染速度
 

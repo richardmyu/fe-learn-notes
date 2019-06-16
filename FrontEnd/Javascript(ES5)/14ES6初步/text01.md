@@ -64,7 +64,7 @@ console.log(a);
 2）.块级作用域
 以大括号为界，形成的作用域；块级作用域内的变量是私有的，外界无法访问；
 
-> 要调用的对象，不能置于行首，会形成块级作用域；所以使用`eval()`转换时，注意用小括号包含对象；
+> 要调用的对象，不能置于行首，会形成块级作用域；所以使用 `eval()` 转换时，注意用小括号包含对象；
 
 3）.全局属性
 
@@ -173,7 +173,7 @@ console.log(aa, x, y); //1 2 3
 
 - 3.复制目标非对象
 
-默认调用`Object()`方法将非对象转换为对象；
+默认调用 `Object()` 方法将非对象转换为对象；
 
 ```javascript
 let { n, m } = 1;
@@ -449,7 +449,7 @@ for (var [key, val] of map.entries()) {
 
 ### 7.`Set()`
 
-`Set`对象允许您存储任何类型的唯一值，无论是原始值还是对象引用。
+`Set` 对象允许您存储任何类型的唯一值，无论是原始值还是对象引用。
 
 ```javascript
 参数
@@ -514,13 +514,13 @@ for (var [key, val] of map.entries()) {
 
 ### 8.HTML5 新增的 3 种 selector 方法
 
-尽管 DOM 作为 API 已经非常完善了，但是为了实现更多的功能，DOM 仍然进行了扩展，其中一个重要的扩展就是对选择器 API 的扩展。人们对 jQuery 的称赞，很多是由于 jQuery 方便的元素选择器。除了前面已经介绍过的`getElementsByClassName()`方法外，DOM 拓展了`querySelectorAll()`、`querySelector()`和`matchesSelector()`这 3 种方法，通过 CSS 选择符查询 DOM 文档取得元素的引用的功能变成了原生的 API，解析和树查询操作在浏览器内部通过编译后的代码来完成，极大地改善了性能。
+尽管 DOM 作为 API 已经非常完善了，但是为了实现更多的功能，DOM 仍然进行了扩展，其中一个重要的扩展就是对选择器 API 的扩展。人们对 jQuery 的称赞，很多是由于 jQuery 方便的元素选择器。除了前面已经介绍过的 `getElementsByClassName()` 方法外，DOM 拓展了 `querySelectorAll()`、`querySelector()` 和 `matchesSelector()` 这 3 种方法，通过 CSS 选择符查询 DOM 文档取得元素的引用的功能变成了原生的 API，解析和树查询操作在浏览器内部通过编译后的代码来完成，极大地改善了性能。
 
-> 使用`querySelector()`和`querySelectorAll()`这两个方法无法查找带伪类状态的元素，比如`querySelector(':hover')`不会得到预期结果。
+> 使用 `querySelector()` 和 `querySelectorAll()` 这两个方法无法查找带伪类状态的元素，比如 `querySelector(':hover')` 不会得到预期结果。
 
 - `querySelector`
 
-`querySelector()`方法接收一个 CSS 选择符，按照深度优先和先序遍历的原则使用参数提供的 CSS 选择器在 DOM 进行查找，返回第一个满足条件的元素；如果没有找到匹配的元素，返回 null。该方法既可用于文档 document 类型，也可用于元素 element 类型。
+`querySelector()` 方法接收一个 CSS 选择符，按照深度优先和先序遍历的原则使用参数提供的 CSS 选择器在 DOM 进行查找，返回第一个满足条件的元素；如果没有找到匹配的元素，返回 null。该方法既可用于文档 document 类型，也可用于元素 element 类型。
 
 ```javascript
 element = document.querySelector("div#container");
@@ -531,14 +531,14 @@ element = document.querySelector(".foo,.bar");
 
 - `querySelectorAll`
 
-`querySelectorAll()`接收一个 CSS 选择符，返回一个类数组对象 NodeList 的实例。具体来说，返回的值实际上是带有所有属性和方法的 NodeList，而其底层实现则类似于一组元素的快照，而非不断对文档进行搜索的动态查询。这样实现可以避免使用 NodeList 对象通常会引起的大多数性能问题。只要传给`querySelectorAll()`方法的 CSS 选择符有效，该方法都会返回一个 NodeList 对象，而不管找到多少匹配的元素没有匹配元素时，返回空的类数组对象，而不是 null。
+`querySelectorAll()` 接收一个 CSS 选择符，返回一个类数组对象 NodeList 的实例。具体来说，返回的值实际上是带有所有属性和方法的 NodeList，而其底层实现则类似于一组元素的快照，而非不断对文档进行搜索的动态查询。这样实现可以避免使用 NodeList 对象通常会引起的大多数性能问题。只要传给 `querySelectorAll()` 方法的 CSS 选择符有效，该方法都会返回一个 NodeList 对象，而不管找到多少匹配的元素没有匹配元素时，返回空的类数组对象，而不是 null。
 
 ```javascript
 elements = document.querySelectorAll("div.foo");
 //返回所有带foo类样式的div
 ```
 
-但需要注意的是返回的 nodeList 集合中的元素是非实时`（no-live）`的，想要区别什么是实时非实时的返回结果，请看下例：
+但需要注意的是返回的 nodeList 集合中的元素是非实时 `（no-live）` 的，想要区别什么是实时非实时的返回结果，请看下例：
 
 ```javascript
 <div id="container">
@@ -552,11 +552,11 @@ container.appendChild(document.createElement("div"));
 console.log(container.childNodes.length); //3
 ```
 
-通过上面的例子就很好地理解了什么是会实时更新的元素。`document.getElementById`返回的便是实时结果，上面对其添加一个子元素后，再次获取所有子元素个数，已经由原来的 2 个更新为 3 个(这里不考虑有些浏览器比如 Chrome 会把空白也解析为一个子节点)。
+通过上面的例子就很好地理解了什么是会实时更新的元素。`document.getElementById` 返回的便是实时结果，上面对其添加一个子元素后，再次获取所有子元素个数，已经由原来的 2 个更新为 3 个(这里不考虑有些浏览器比如 Chrome 会把空白也解析为一个子节点)。
 
 - `matchesSelector()`
 
-`matchesSelector()`方法接收一个 CSS 选择符参数，如果调用元素与该选择符相匹配，返回 true；否则返回 false
+`matchesSelector()` 方法接收一个 CSS 选择符参数，如果调用元素与该选择符相匹配，返回 true；否则返回 false
 
 ```javascript
 <body id="test">
@@ -567,11 +567,11 @@ console.log(container.childNodes.length); //3
 </body>
 ```
 
-由于兼容性问题，现在各个浏览器都只支持加前缀的方法。IE9+浏览器支持`msMatchesSelector()`方法，firefox 支持`mozMatchesSelector()`方法，safari 和 chrome 支持`webkitMatchesSelector()`方法。
+由于兼容性问题，现在各个浏览器都只支持加前缀的方法。IE9+浏览器支持 `msMatchesSelector()` 方法，firefox 支持 `mozMatchesSelector()` 方法，safari 和 chrome 支持 `webkitMatchesSelector()` 方法。
 
 - 非实时
 
-与`getElementById()`和`getElementsByTagName()`方法不同，`querySelector()`和`querySelectorAll()`方法得到的类数组对象是非动态实时的。
+与 `getElementById()` 和 `getElementsByTagName()` 方法不同，`querySelector()` 和 `querySelectorAll()` 方法得到的类数组对象是非动态实时的。
 
 - 缺陷
 
@@ -609,15 +609,15 @@ console.log(container.querySelectorAll('div'));//[div div]
 
 - 关于转义
 
-我们知道反斜杠是用来转义用的，比如在字符串里我们想表示空字符就使用'\b'，换行'\n'。同样，在提供给`querySelector`和`querySelectorAll`的参数也支持转义，了解这点非常重要。
+我们知道反斜杠是用来转义用的，比如在字符串里我们想表示空字符就使用'\b'，换行'\n'。同样，在提供给 `querySelector` 和 `querySelectorAll` 的参数也支持转义，了解这点非常重要。
 
-先看个例子，比如我们有个 div 它的样式类为`'foo:bar'`，当然我知道你一般不会这样写。当我们需要选择它的时候，就需要将其中的冒号进行转义，否则抛错。
+先看个例子，比如我们有个 div 它的样式类为 `'foo:bar'`，当然我知道你一般不会这样写。当我们需要选择它的时候，就需要将其中的冒号进行转义，否则抛错。
 
 同时，有趣的事情来了，或许你以为将冒号直接转义就解决问题了。
 
 同样，也表示非法。原因就在于反斜杠在字符串中本身就表示转义的意思，它于冒号结合转不出东西来，于是抛错。
 
-所以正确的做法是将反斜杠转义后'.foo\:bar'再传递给`querySelector`，后者在接收到'.foo\:bar'这个参数后，字符串将两个反斜杠转义成一个，然后`querySelector`前面得到的一个反斜杠与冒号结合进行转义得到正确结果。
+所以正确的做法是将反斜杠转义后'.foo\:bar'再传递给 `querySelector`，后者在接收到'.foo\:bar'这个参数后，字符串将两个反斜杠转义成一个，然后 `querySelector` 前面得到的一个反斜杠与冒号结合进行转义得到正确结果。
 
 ### 9.class 类的基本方法
 
@@ -875,7 +875,7 @@ point.hasOwnProperty("toString"); // false
 point.__proto__.hasOwnProperty("toString"); // true
 ```
 
-上面代码中，x 和 y 都是实例对象 point 自身的属性（因为定义在 this 变量上），所以`hasOwnProperty`方法返回 true，而 toString 是原型对象的属性（因为定义在 Point 类上），所以`hasOwnProperty`方法返回 false。这些都与 ES5 的行为保持一致。
+上面代码中，x 和 y 都是实例对象 point 自身的属性（因为定义在 this 变量上），所以 `hasOwnProperty` 方法返回 true，而 toString 是原型对象的属性（因为定义在 Point 类上），所以 `hasOwnProperty` 方法返回 false。这些都与 ES5 的行为保持一致。
 
 与 ES5 一样，类的所有实例共享一个原型对象。
 
@@ -887,9 +887,9 @@ p1.__proto__ === p2.__proto__;
 //true
 ```
 
-上面代码中，p1 和 p2 都是 Point 的实例，它们的原型都是`Point.prototype`，所以`__proto__`属性是相等的。
+上面代码中，p1 和 p2 都是 Point 的实例，它们的原型都是 `Point.prototype`，所以 `__proto__` 属性是相等的。
 
-这也意味着，可以通过实例的`__proto__`属性为“类”添加方法。
+这也意味着，可以通过实例的 `__proto__` 属性为“类”添加方法。
 
 > `__proto__` 并不是语言本身的特性，这是各大厂商具体实现时添加的私有属性，虽然目前很多现代浏览器的 JS 引擎中都提供了这个私有属性，但依旧不建议在生产中使用该属性，避免对环境产生依赖。生产环境中，我们可以使用 `Object.getPrototypeOf` 方法来获取实例对象的原型，然后再来为原型添加方法/属性。
 
@@ -905,7 +905,7 @@ var p3 = new Point(4, 2);
 p3.printName(); // "Oops"
 ```
 
-上面代码在 p1 的原型上添加了一个 printName 方法，由于 p1 的原型就是 p2 的原型，因此 p2 也可以调用这个方法。而且，此后新建的实例 p3 也可以调用这个方法。这意味着，使用实例的`__proto__`属性改写原型，必须相当谨慎，不推荐使用，因为这会改变“类”的原始定义，影响到所有实例。
+上面代码在 p1 的原型上添加了一个 printName 方法，由于 p1 的原型就是 p2 的原型，因此 p2 也可以调用这个方法。而且，此后新建的实例 p3 也可以调用这个方法。这意味着，使用实例的 `__proto__` 属性改写原型，必须相当谨慎，不推荐使用，因为这会改变“类”的原始定义，影响到所有实例。
 
 ##### 5.Class 表达式
 
@@ -1505,7 +1505,7 @@ class Rectangle {
 }
 ```
 
-> 函数声明和类声明之间的一个重要区别是函数声明会声明提升，类声明不会。你首先需要声明你的类，然后访问它，否则会抛出一个`ReferenceError`。
+> 函数声明和类声明之间的一个重要区别是函数声明会声明提升，类声明不会。你首先需要声明你的类，然后访问它，否则会抛出一个 `ReferenceError`。
 
 - 类表达式
 
@@ -1543,7 +1543,7 @@ let Rectangle = class Rectangle {
 
 - 构造函数
 
-构造函数方法是一个特殊的方法，其用于创建和初始化使用一个类创建的一个对象。一个类只能拥有一个名为 `constructor`的特殊方法。如果类包含多个构造函数的方法，则将抛出 一个`SyntaxError` 。
+构造函数方法是一个特殊的方法，其用于创建和初始化使用一个类创建的一个对象。一个类只能拥有一个名为 `constructor` 的特殊方法。如果类包含多个构造函数的方法，则将抛出 一个 `SyntaxError` 。
 
 一个构造函数可以使用 `super` 关键字来调用一个父类的构造函数。
 
@@ -1667,7 +1667,7 @@ b.speak(); //Mitzie makes a noise.
 d.speak(); //Mitzie barks.
 ```
 
-如果子类中存在构造函数，则需要在使用“this”之前首先调用`super()`。
+如果子类中存在构造函数，则需要在使用“this”之前首先调用 `super()`。
 
 子类必须在 constructor 方法中调用 super 方法，否则新建实例时会报错。 这是因为子类没有自己的 this 对象，而是继承父类的 this 对象，然后对其进行加工。如果不调用 super 方法，子类就得不到 this 对象。
 
@@ -1718,7 +1718,7 @@ d.speak(); // Mitzie makes a noise.
 
 你可能希望在派生数组类 MyArray 中返回 Array 对象。这种类/种类模式允许你覆盖默认的构造函数。
 
-例如，当使用像`map()`返回默认构造函数的方法时，您希望这些方法返回一个父 Array 对象，而不是 MyArray 对象。`Symbol.species` 符号可以让你这样做：
+例如，当使用像 `map()` 返回默认构造函数的方法时，您希望这些方法返回一个父 Array 对象，而不是 MyArray 对象。`Symbol.species` 符号可以让你这样做：
 
 ```javascript
 class MyArray extends Array {
@@ -1791,7 +1791,7 @@ class Bar extends calculatorMixin(randomizerMixin(Foo)) {}
 Class 之间可以通过 `extends` 关键字实现继承，这比 ES5 的通过修改原型链实现继承，要清晰和方便很多。
 `class ColorPoint extends Point {}`
 
-上面代码定义了一个 ColorPoint 类，该类通过`extends`关键字，继承了 Point 类的所有属性和方法。但是由于没有部署任何代码，所以这两个类完全一样，等于复制了一个 Point 类。下面，我们在 ColorPoint 内部加上代码。
+上面代码定义了一个 ColorPoint 类，该类通过 `extends` 关键字，继承了 Point 类的所有属性和方法。但是由于没有部署任何代码，所以这两个类完全一样，等于复制了一个 Point 类。下面，我们在 ColorPoint 内部加上代码。
 
 ```javascript
 class ColorPoint extends Point {
@@ -1807,9 +1807,9 @@ class ColorPoint extends Point {
 }
 ```
 
-上面代码中，constructor 方法和`toString`方法之中，都出现了`super` 关键字，它在这里表示父类的构造函数，用来新建父类的 this 对象。
+上面代码中，constructor 方法和 `toString` 方法之中，都出现了 `super` 关键字，它在这里表示父类的构造函数，用来新建父类的 this 对象。
 
-子类必须在 constructor 方法中调用`super`方法，否则新建实例时会报错。这是因为子类没有自己的 this 对象，而是继承父类的 this 对象，然后对其进行加工。如果不调用`super`方法，子类就得不到 this 对象。
+子类必须在 constructor 方法中调用 `super` 方法，否则新建实例时会报错。这是因为子类没有自己的 this 对象，而是继承父类的 this 对象，然后对其进行加工。如果不调用 `super` 方法，子类就得不到 this 对象。
 
 ```javascript
 class Point {
@@ -1833,7 +1833,7 @@ constructor(...args) {
 }
 ```
 
-另一个需要注意的地方是，在子类的构造函数中，只有调用`super`之后，才可以使用`this`关键字，否则会报错。这是因为子类实例的构建，是基于对父类实例加工，只有`super`方法才能返回父类实例。
+另一个需要注意的地方是，在子类的构造函数中，只有调用 `super` 之后，才可以使用 `this` 关键字，否则会报错。这是因为子类实例的构建，是基于对父类实例加工，只有 `super` 方法才能返回父类实例。
 
 ```javascript
 class Point {
@@ -1851,7 +1851,7 @@ class ColorPoint extends Point {
 }
 ```
 
-上面代码中，子类的 constructor 方法没有调用`super`之前，就使用`this`关键字，结果报错，而放在`super`方法之后就是正确的。
+上面代码中，子类的 constructor 方法没有调用 `super` 之前，就使用 `this` 关键字，结果报错，而放在 `super` 方法之后就是正确的。
 下面是生成子类实例的代码。
 
 ```javascript
@@ -1862,12 +1862,12 @@ cp instanceof Point; // true
 
 上面代码中， 实例对象 cp 同时是 ColorPoint 和 Point 两个类的实例， 这与 ES5 的行为完全一致。
 
-- 类的`prototype`属性和 `__proto__` 属性
+- 类的 `prototype` 属性和 `__proto__` 属性
 
-大多数浏览器的 ES5 实现之中，每一个对象都有`__proto__`属性，指向对应的构造函数的`prototype`属性。Class 作为构造函数的语法糖，同时有`prototype`属性和`__proto__`属性，因此同时存在两条继承链。
+大多数浏览器的 ES5 实现之中，每一个对象都有 `__proto__` 属性，指向对应的构造函数的 `prototype` 属性。Class 作为构造函数的语法糖，同时有 `prototype` 属性和 `__proto__` 属性，因此同时存在两条继承链。
 
-1).子类的`__proto__`属性，表示构造函数的继承，总是指向父类。
-2).子类`prototype`属性的`__proto__`属性，表示方法的继承，总是指向父类的`prototype`属性。
+1).子类的 `__proto__` 属性，表示构造函数的继承，总是指向父类。
+2).子类 `prototype` 属性的 `__proto__` 属性，表示方法的继承，总是指向父类的 `prototype` 属性。
 
 ```javascript
 class A {}
@@ -1876,7 +1876,7 @@ B.__proto__ === A; // true
 B.prototype.__proto__ === A.prototype; // true
 ```
 
-上面代码中，子类 B 的`__proto__`属性指向父类 A，子类 B 的`prototype`属性的`__proto__`属性指向父类 A 的`prototype`属性。
+上面代码中，子类 B 的 `__proto__` 属性指向父类 A，子类 B 的 `prototype` 属性的 `__proto__` 属性指向父类 A 的 `prototype` 属性。
 
 这样的结果是因为， 类的继承是按照下面的模式实现的。
 
@@ -1889,7 +1889,7 @@ Object.setPrototypeOf(B.prototype, A.prototype);
 Object.setPrototypeOf(B, A);
 ```
 
-《对象的扩展》一章给出过`Object.setPrototypeOf`方法的实现。
+《对象的扩展》一章给出过 `Object.setPrototypeOf` 方法的实现。
 
 ```javascript
 Object.setPrototypeOf = function(obj, proto) {
@@ -1910,7 +1910,7 @@ Object.setPrototypeOf(B, A);
 B.__proto__ = A;
 ```
 
-这两条继承链，可以这样理解：作为一个对象，子类(B)的原型（ `__proto__`属性）是父类(A)；作为一个构造函数，子类(B)的原型（ `prototype`属性）是父类的实例。
+这两条继承链，可以这样理解：作为一个对象，子类(B)的原型（ `__proto__` 属性）是父类(A)；作为一个构造函数，子类(B)的原型（ `prototype` 属性）是父类的实例。
 
 ```javascript
 Object.create(A.prototype);
@@ -1923,7 +1923,7 @@ B.prototype.__proto__ = A.prototype;
 extends 关键字后面可以跟多种类型的值。
 `class B extends A {}`
 
-上面代码的 A，只要是一个有`prototype`属性的函数，就能被 B 继承。由于函数都有`prototype`属性（ 除了`Function.prototype`函数），因此 A 可以是任意函数。
+上面代码的 A，只要是一个有 `prototype` 属性的函数，就能被 B 继承。由于函数都有 `prototype` 属性（ 除了 `Function.prototype` 函数），因此 A 可以是任意函数。
 
 下面， 讨论三种特殊情况。
 第一种特殊情况， 子类继承 Object 类。
@@ -1944,7 +1944,7 @@ A.__proto__ === Function.prototype; // true
 A.prototype.__proto__ === Object.prototype; // true
 ```
 
-这种情况下，A 作为一个基类（即不存在任何继承），就是一个普通函数， 所以直接继承`Funciton.prototype`。但是，A 调用后返回一个空对象（即 Object 实例），所以`A.prototype.__proto__`指向构造函数（Object）的`prototype`属性。
+这种情况下，A 作为一个基类（即不存在任何继承），就是一个普通函数， 所以直接继承 `Funciton.prototype`。但是，A 调用后返回一个空对象（即 Object 实例），所以 `A.prototype.__proto__` 指向构造函数（Object）的 `prototype` 属性。
 
 第三种特殊情况， 子类继承 null。
 
@@ -1954,7 +1954,7 @@ A.__proto__ === Function.prototype; // true
 A.prototype.__proto__ === undefined; // true
 ```
 
-这种情况与第二种情况非常像。A 也是一个普通函数，所以直接继承 Funciton.prototype。但是，A 调用后返回的对象不继承任何方法，所以它的`__proto__`指向`Function.prototype`，即实质上执行了下面的代码。
+这种情况与第二种情况非常像。A 也是一个普通函数，所以直接继承 Funciton.prototype。但是，A 调用后返回的对象不继承任何方法，所以它的 `__proto__` 指向 `Function.prototype`，即实质上执行了下面的代码。
 
 ```javascript
 class C extends null {
@@ -1966,7 +1966,7 @@ class C extends null {
 
 - `Object.getPrototypeOf()`
 
-`Object.getPrototypeOf`方法可以用来从子类上获取父类。
+`Object.getPrototypeOf` 方法可以用来从子类上获取父类。
 
 `Object.getPrototypeOf(ColorPoint) === Point // true`
 因此， 可以使用这个方法判断， 一个类是否继承了另一个类。
@@ -1974,8 +1974,8 @@ class C extends null {
 - `super` 关键字
 
 super 这个关键字，有两种用法，含义不同。
-1).作为函数调用时（即`super(...args)`），super 代表父类的构造函数。
-2).作为对象调用时（即`super.prop`或`super.method()`），super 代表父类。注意，此时 super 即可以引用父类实例的属性和方法，也可以引用父类的静态方法。
+1).作为函数调用时（即 `super(...args)`），super 代表父类的构造函数。
+2).作为对象调用时（即 `super.prop` 或 `super.method()`），super 代表父类。注意，此时 super 即可以引用父类实例的属性和方法，也可以引用父类的静态方法。
 
 ```javascript
 class B extends A {
@@ -2000,9 +2000,9 @@ var obj = {
 obj.toString(); // MyObject: [object Object]
 ```
 
-- 实例的`__proto__`属性
+- 实例的 `__proto__` 属性
 
-子类实例的`__proto__`属性的`__proto__`属性，指向父类实例的 `__proto__`属性。也就是说，子类的原型的原型，是父类的原型。
+子类实例的 `__proto__` 属性的 `__proto__` 属性，指向父类实例的 `__proto__` 属性。也就是说，子类的原型的原型，是父类的原型。
 
 ```javascript
 var p1 = new Point(2, 3);
@@ -2013,7 +2013,7 @@ p2.__proto__.__proto__ === p1.__proto__; // true
 
 上面代码中，ColorPoint 继承了 Point，导致前者原型的原型是后者的原型。
 
-因此，通过子类实例的`__proto__.__proto__`属性，可以修改父类实例的行为。
+因此，通过子类实例的 `__proto__.__proto__` 属性，可以修改父类实例的行为。
 
 ```javascript
 p2.__proto__.__proto__.printName = function() {
@@ -2068,9 +2068,9 @@ colors.length = 0;
 colors[0]; // "red"
 ```
 
-之所以会发生这种情况，是因为子类无法获得原生构造函数的内部属性，通过`Array.apply()`或者分配给原型对象都不行。原生构造函数会忽略 apply 方法传入的 this，也就是说，原生构造函数的 this 无法绑定， 导致拿不到内部属性。
+之所以会发生这种情况，是因为子类无法获得原生构造函数的内部属性，通过 `Array.apply()` 或者分配给原型对象都不行。原生构造函数会忽略 apply 方法传入的 this，也就是说，原生构造函数的 this 无法绑定， 导致拿不到内部属性。
 
-ES5 是先新建子类的实例对象 this，再将父类的属性添加到子类上，由于父类的内部属性无法获取，导致无法继承原生的构造函数。比如，Array 构造函数有一个内部属性`[[DefineOwnProperty]]`，用来定义新属性时，更新 length 属性，这个内部属性无法在子类获取，导致子类的 length 属性行为不正常。
+ES5 是先新建子类的实例对象 this，再将父类的属性添加到子类上，由于父类的内部属性无法获取，导致无法继承原生的构造函数。比如，Array 构造函数有一个内部属性 `[[DefineOwnProperty]]`，用来定义新属性时，更新 length 属性，这个内部属性无法在子类获取，导致子类的 length 属性行为不正常。
 
 下面的例子中，我们想让一个普通对象继承 Error 对象。
 
@@ -2082,7 +2082,7 @@ Object.getOwnPropertyNames(e);
 // []
 ```
 
-上面代码中，我们想通过`Error.call(e)`这种写法，让普通对象 e 具有 Error 对象的实例属性。但是，`Error.call()`完全忽略传入的第一个参数，而是返回一个新对象，e 本身没有任何变化。这证明了`Error.call(e)`这种写法，无法继承原生构造函数。
+上面代码中，我们想通过 `Error.call(e)` 这种写法，让普通对象 e 具有 Error 对象的实例属性。但是，`Error.call()` 完全忽略传入的第一个参数，而是返回一个新对象，e 本身没有任何变化。这证明了 `Error.call(e)` 这种写法，无法继承原生构造函数。
 
 ES6 允许继承原生构造函数定义子类，因为 ES6 是先新建父类的实例对象 this，然后再用子类的构造函数修饰 this，使得父类的所有行为都可以继承。下面是一个继承 Array 的例子。
 
@@ -2171,4 +2171,4 @@ var o = new NewObj({
 console.log(o.attr === true); // false
 ```
 
-上面代码中，NewObj 继承了 Object，但是无法通过 super 方法向父类 Object 传参。这是因为 ES6 改变了 Object 构造函数的行为， 一旦发现 Object 方法不是通过`new Object()`这种形式调用， ES6 规定 Object 构造函数会忽略参数。
+上面代码中，NewObj 继承了 Object，但是无法通过 super 方法向父类 Object 传参。这是因为 ES6 改变了 Object 构造函数的行为， 一旦发现 Object 方法不是通过 `new Object()` 这种形式调用， ES6 规定 Object 构造函数会忽略参数。

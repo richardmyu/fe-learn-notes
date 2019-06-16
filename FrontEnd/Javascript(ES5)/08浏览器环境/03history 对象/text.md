@@ -38,7 +38,7 @@ document.getElementById("backLink").onclick = function() {
 
 #### 2.history.pushState()
 
-HTML5 为 `history` 对象添加了两个新方法，`history.pushState()`和`history.replaceState()`，用来在浏览历史中添加和修改记录。
+HTML5 为 `history` 对象添加了两个新方法，`history.pushState()` 和 `history.replaceState()`，用来在浏览历史中添加和修改记录。
 
 ```javascript
 if (!!(window.history && history.pushState)) {

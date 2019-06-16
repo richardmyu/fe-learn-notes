@@ -480,7 +480,7 @@ mainDoc.head.appendChild(styles.cloneNode(true));
 
 ### 5.3 Web Component 的封装
 
-对于 `Web Component` 来说，`HTML Import`的一个重要应用是在所加载的网页中，自动登记 `Custom Element`。
+对于 `Web Component` 来说，`HTML Import` 的一个重要应用是在所加载的网页中，自动登记 `Custom Element`。
 
 ```html
 <script>

@@ -236,7 +236,7 @@ data = JSON.parse(data);
 
 ##### 2.6 responseXML
 
-`responseXML` 属性返回从服务器接收到的 `Document` 对象，该属性为只读。如果本次请求没有成功，或者数据不完整，或者不能被解析为 XML 或 HTML，该属性等于`null`。
+`responseXML` 属性返回从服务器接收到的 `Document` 对象，该属性为只读。如果本次请求没有成功，或者数据不完整，或者不能被解析为 XML 或 HTML，该属性等于 `null`。
 
 返回的数据会被直接解析为 DOM 对象。
 
@@ -740,7 +740,7 @@ function loadEnd(e) {
 
 1).传递参数的方式
 
-- `get` 请求的参数放置在 URL 上，通过 "`？参数=值&参数=值`" 的形式传递，`xhr.open("get","url")`；
+- `get` 请求的参数放置在 URL 上，通过 "`？参数=值&参数=值 `" 的形式传递，`xhr.open("get","url")`；
 - `post` 请求的参数放置在请求主体中，`xhr.send('参数=值&参数=值')`
 
   2).参数大小限制

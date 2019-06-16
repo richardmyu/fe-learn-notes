@@ -2,7 +2,7 @@
 
 #### 3.1.概述
 
-`Promise` 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到**代理作用（proxy）**，充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。`Promise` 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。
+`Promise` 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到**代理作用**（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。`Promise` 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。
 
 首先，`Promise` 是一个对象，也是一个构造函数。
 
@@ -14,9 +14,9 @@ function f1(resolve, reject) {
 var p1 = new Promise(f1);
 ```
 
-上面代码中，`Promise`构造函数接受一个回调函数 f1 作为参数，f1 里面是异步操作的代码。然后，返回的 p1 就是一个 `Promise` 实例。
+上面代码中，`Promise` 构造函数接受一个回调函数 f1 作为参数，f1 里面是异步操作的代码。然后，返回的 p1 就是一个 `Promise` 实例。
 
-`Promise` 的设计思想是，所有异步任务都返回一个 `Promise` 实例。`Promise` 实例有一个`then`方法，用来指定下一步的回调函数。
+`Promise` 的设计思想是，所有异步任务都返回一个 `Promise` 实例。`Promise` 实例有一个`then` 方法，用来指定下一步的回调函数。
 
 ```javascript
 var p1 = new Promise(f1);
@@ -84,7 +84,7 @@ new Promise(step1)
 
 #### 3.3.Promise 构造函数
 
-JavaScript 提供原生的`Promise`构造函数，用来生成 `Promise` 实例。
+JavaScript 提供原生的 `Promise` 构造函数，用来生成 `Promise` 实例。
 
 ```javascript
 var promise = new Promise(function (resolve, reject) {
@@ -98,11 +98,11 @@ var promise = new Promise(function (resolve, reject) {
 });
 ```
 
-上面代码中，`Promise`构造函数接受一个函数作为参数，该函数的两个参数分别是`resolve`和`reject`。它们是两个函数，由 JavaScript 引擎提供，不用自己实现。
+上面代码中，`Promise` 构造函数接受一个函数作为参数，该函数的两个参数分别是 `resolve` 和 `reject`。它们是两个函数，由 JavaScript 引擎提供，不用自己实现。
 
-`resolve`函数的作用是，将`Promise`实例的状态从“未完成”变为“成功”（即从 pending 变为 fulfilled），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去。
+`resolve` 函数的作用是，将 `Promise` 实例的状态从“未完成”变为“成功”（即从 `pending` 变为 `fulfilled`），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去。
 
-`reject`函数的作用是，将`Promise`实例的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。
+`reject` 函数的作用是，将 `Promise` 实例的状态从“未完成”变为“失败”（即从 `pending` 变为 `rejected`），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。
 
 下面是一个例子。
 
@@ -116,13 +116,13 @@ function timeout(ms) {
 timeout(100);
 ```
 
-上面代码中，timeout(100)返回一个 `Promise` 实例。100 毫秒以后，该实例的状态会变为 fulfilled。
+上面代码中，`timeout(100)` 返回一个 `Promise` 实例。100 毫秒以后，该实例的状态会变为 `fulfilled`。
 
 #### 3.4.Promise.prototype.then()
 
-`Promise` 实例的`then`方法，用来添加回调函数。
+`Promise` 实例的 `then` 方法，用来添加回调函数。
 
-`then`方法可以接受两个回调函数，第一个是异步操作成功时（变为 fulfilled 状态）时的回调函数，第二个是异步操作失败（变为 rejected）时的回调函数（该参数可以省略）。一旦状态改变，就调用相应的回调函数。
+`then` 方法可以接受两个回调函数，第一个是异步操作成功时（变为 `fulfilled` 状态）时的回调函数，第二个是异步操作失败（变为 `rejected`）时的回调函数（该参数可以省略）。一旦状态改变，就调用相应的回调函数。
 
 ```javascript
 var p1 = new Promise(function(resolve, reject) {
@@ -138,9 +138,9 @@ p2.then(console.log, console.error);
 // Error: 失败
 ```
 
-上面代码中，p1 和 p2 都是`Promise` 实例，它们的`then`方法绑定两个回调函数：成功时的回调函数`console.log`，失败时的回调函数`console.error`（可以省略）。p1 的状态变为成功，p2 的状态变为失败，对应的回调函数会收到异步操作传回的值，然后在控制台输出。
+上面代码中，p1 和 p2 都是 `Promise` 实例，它们的 `then` 方法绑定两个回调函数：成功时的回调函数 `console.log`，失败时的回调函数 `console.error`（可以省略）。p1 的状态变为成功，p2 的状态变为失败，对应的回调函数会收到异步操作传回的值，然后在控制台输出。
 
-`then`方法可以链式使用。
+`then` 方法可以链式使用。
 
 ```javascript
 p1.then(step1)
@@ -151,11 +151,11 @@ p1.then(step1)
 
 上面代码中，p1 后面有四个 `then`，意味依次有四个回调函数。只要前一步的状态变为 fulfilled，就会依次执行紧跟在后面的回调函数（如果抛出错误呢？？？）。
 
-最后一个`then`方法，回调函数是`console.log`和`console.error`，用法上有一点重要的区别。`console.log`只显示 step3 的返回值，而`console.error`可以显示 p1、step1、step2、step3 之中任意一个发生的错误。举例来说，如果 step1 的状态变为 rejected，那么 step2 和 step3 都不会执行了（因为它们是 resolved 的回调函数）。`Promise` 开始寻找，接下来第一个为 rejected 的回调函数，在上面代码中是`console.error`。这就是说，`Promise` 对象的报错具有传递性。
+最后一个 `then` 方法，回调函数是 `console.log` 和 `console.error`，用法上有一点重要的区别。`console.log` 只显示 step3 的返回值，而 `console.error` 可以显示 p1、step1、step2、step3 之中任意一个发生的错误。举例来说，如果 step1 的状态变为 rejected，那么 step2 和 step3 都不会执行了（因为它们是 `resolved` 的回调函数）。`Promise` 开始寻找，接下来第一个为 `rejected` 的回调函数，在上面代码中是 `console.error`。这就是说，`Promise` 对象的报错具有传递性。
 
 #### 3.5.then() 用法辨析
 
-`Promise` 的用法，简单说就是一句话：使用`then`方法添加回调函数。但是，不同的写法有一些细微的差别，请看下面四种写法，它们的差别在哪里？
+`Promise` 的用法，简单说就是一句话：使用 `then` 方法添加回调函数。但是，不同的写法有一些细微的差别，请看下面四种写法，它们的差别在哪里？
 
 ```javascript
 // 写法一
@@ -185,7 +185,7 @@ f1()
   .then(f3);
 ```
 
-写法二的 f3 回调函数的参数是`undefined`。
+写法二的 f3 回调函数的参数是 `undefined`。
 
 ```javascript
 f1()
@@ -216,7 +216,7 @@ f1()
 
 ##### 3.6.1 加载图片
 
-我们可以把图片的加载写成一个`Promise`对象。
+我们可以把图片的加载写成一个 `Promise` 对象。
 
 ```javascript
 var preloadImage = function(path) {
@@ -314,7 +314,7 @@ function imgLoad(url) {
 
 而且，`Promise` 还有一个传统写法没有的好处：它的状态一旦改变，无论何时查询，都能得到这个状态。这意味着，无论何时为 `Promise` 实例添加回调函数，该函数都能正确执行。所以，你不用担心是否错过了某个事件或信号。如果是传统写法，通过监听事件来执行回调函数，一旦错过了事件，再添加回调函数是不会执行的。
 
-`Promise` 的缺点是，编写的难度比传统写法高，而且阅读代码也不是一眼可以看懂。你只会看到一堆`then`，必须自己在`then`的回调函数里面理清逻辑。
+`Promise` 的缺点是，编写的难度比传统写法高，而且阅读代码也不是一眼可以看懂。你只会看到一堆 `then`，必须自己在 `then` 的回调函数里面理清逻辑。
 
 #### 3.8.微任务
 
@@ -330,7 +330,7 @@ console.log(2);
 // 1
 ```
 
-但是，`Promise` 的回调函数不是正常的异步任务，而是**微任务（microtask）**。它们的区别在于，正常任务追加到下一轮事件循环，微任务追加到本轮事件循环。这意味着，微任务的执行时间一定早于正常异步任务。
+但是，`Promise` 的回调函数不是正常的异步任务，而是**微任务**（microtask）。它们的区别在于，正常任务追加到下一轮事件循环，微任务追加到本轮事件循环。这意味着，微任务的执行时间一定早于正常异步任务。
 
 ```javascript
 setTimeout(function() {
@@ -347,4 +347,4 @@ console.log(3);
 // 1
 ```
 
-上面代码的输出结果是 321。这说明`then`的回调函数的执行时间，早于`setTimeout(fn, 0)`。因为`then`是本轮事件循环执行，`setTimeout(fn, 0)`在下一轮事件循环开始时执行。
+上面代码的输出结果是 321。这说明 `then` 的回调函数的执行时间，早于 `setTimeout(fn, 0)`。因为 `then` 是本轮事件循环执行，`setTimeout(fn, 0)` 在下一轮事件循环开始时执行。
