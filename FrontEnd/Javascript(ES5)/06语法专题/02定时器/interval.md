@@ -139,8 +139,6 @@ var timer = setTimeout(function f() {
 }, 2000);
 ```
 
-
-
 #### 2.3.clearTimeout()，clearInterval()
 
 `setTimeout` 和 `setInterval` 函数，都返回一个整数值，表示计数器编号。将该整数传入 `clearTimeout` 和 `clearInterval` 函数，就可以取消对应的定时器。

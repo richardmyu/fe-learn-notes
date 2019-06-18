@@ -14,16 +14,12 @@ function f1(resolve, reject) {
 var p1 = new Promise(f1);
 ```
 
-上面代码中，`Promise` 构造函数接受一个回调函数 f1 作为参数，f1 里面是异步操作的代码。然后，返回的 p1 就是一个 `Promise` 实例。
-
 `Promise` 的设计思想是，所有异步任务都返回一个 `Promise` 实例。`Promise` 实例有一个`then` 方法，用来指定下一步的回调函数。
 
 ```javascript
 var p1 = new Promise(f1);
 p1.then(f2);
 ```
-
-上面代码中，f1 的异步操作执行完成，就会执行 f2。
 
 传统的写法可能需要把 f2 作为回调函数传入 f1，比如写成 f1(f2)，异步操作完成后，在 f1 内部调用 f2。`Promise` 使得 f1 和 f2 变成了链式写法。不仅改善了可读性，而且对于多层嵌套的回调函数尤其方便。
 
@@ -46,11 +42,9 @@ new Promise(step1)
   .then(step4);
 ```
 
-从上面代码可以看到，采用 `Promises` 以后，程序流程变得非常清楚，十分易读。
-
 总的来说，传统的回调函数写法使得代码混成一团，变得横向发展而不是向下发展。`Promise` 就是解决这个问题，使得异步流程可以写成同步流程。
 
-`Promise` 原本只是社区提出的一个构想，一些函数库率先实现了这个功能。ECMAScript 6 将其写入语言标准，目前 JavaScript 原生支持 `Promise` 对象。
+> `Promise` 原本只是社区提出的一个构想，一些函数库率先实现了这个功能。ECMAScript 6 将其写入语言标准，目前 JavaScript 原生支持 `Promise` 对象。
 
 #### 3.2.Promise 对象的状态
 
@@ -142,16 +136,16 @@ p2.then(console.log, console.error);
 
 `then` 方法可以链式使用。
 
-```javascript
+```js
 p1.then(step1)
   .then(step2)
   .then(step3)
   .then(console.log, console.error);
 ```
 
-上面代码中，p1 后面有四个 `then`，意味依次有四个回调函数。只要前一步的状态变为 fulfilled，就会依次执行紧跟在后面的回调函数（如果抛出错误呢？？？）。
+上面代码中，p1 后面有四个 `then`，意味依次有四个回调函数。只要前一步的状态变为 `fulfilled`，就会依次执行紧跟在后面的回调函数。
 
-最后一个 `then` 方法，回调函数是 `console.log` 和 `console.error`，用法上有一点重要的区别。`console.log` 只显示 step3 的返回值，而 `console.error` 可以显示 p1、step1、step2、step3 之中任意一个发生的错误。举例来说，如果 step1 的状态变为 rejected，那么 step2 和 step3 都不会执行了（因为它们是 `resolved` 的回调函数）。`Promise` 开始寻找，接下来第一个为 `rejected` 的回调函数，在上面代码中是 `console.error`。这就是说，`Promise` 对象的报错具有传递性。
+最后一个 `then` 方法，回调函数是 `console.log` 和 `console.error`，用法上有一点重要的区别。`console.log` 只显示 step3 的返回值，而 `console.error` 可以显示 p1、step1、step2、step3 之中任意一个发生的错误。举例来说，如果 step1 的状态变为 `rejected`，那么 step2 和 step3 都不会执行了（因为它们是 `resolved` 的回调函数）。`Promise` 开始寻找，接下来第一个为 `rejected` 的回调函数，在上面代码中是 `console.error`。这就是说，`Promise` 对象的报错具有传递性。
 
 #### 3.5.then() 用法辨析
 
@@ -204,7 +198,7 @@ f1()
   .then(f3);
 ```
 
-写法四与写法一只有一个差别，那就是 f2 会接收到 f1()返回的结果(???)。
+写法四与写法一只有一个差别，那就是 f2 会接收到 f1() 返回的结果。
 
 ```javascript
 f1()
