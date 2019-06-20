@@ -1,6 +1,6 @@
 ### 6.同源政策
 
-浏览器安全的基石是**同源政策（same-origin policy）**。
+浏览器安全的基石是**同源政策**（same-origin policy）。
 
 #### 1.概述
 

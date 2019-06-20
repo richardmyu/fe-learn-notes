@@ -97,8 +97,6 @@ el.addEventListener(
 );
 ```
 
-上面代码通过匿名函数，向监听函数 `print` 传递了一个参数。
-
 监听函数内部的 `this`，指向当前事件所在的那个对象。
 
 ```javascript
@@ -113,8 +111,6 @@ para.addEventListener(
   false
 );
 ```
-
-上面代码中，监听函数内部的 `this` 指向事件所在的对象 `para`。
 
 ##### 6.1.2 EventTarget.removeEventListener()
 
@@ -172,7 +168,7 @@ if (canceled) {
 
 #### 6.2.监听函数
 
-浏览器的事件模型，就是通过监听函数（listener）对事件做出反应。事件发生后，浏览器监听到了这个事件，就会执行对应的监听函数。这是**事件驱动编程模式（event-driven）**的主要编程方式。
+浏览器的事件模型，就是通过监听函数（listener）对事件做出反应。事件发生后，浏览器监听到了这个事件，就会执行对应的监听函数。这是**事件驱动编程模式**（event-driven）的主要编程方式。
 
 JavaScript 有三种方法，可以为事件绑定监听函数。
 
@@ -189,7 +185,7 @@ HTML 语言允许在元素的属性中，直接定义某些事件的监听代码
 
 元素的事件监听属性，都是 `on` 加上事件名，比如 `onload` 就是 `on + load`，表示 `load` 事件的监听代码。
 
-注意，这些属性的值是将会执行的代码，而不是一个函数。
+注意，这些属**性的值是将会执行的代码**，而不是一个函数。
 
 ```javascript
 <!-- 正确 -->
@@ -291,13 +287,13 @@ btn.addEventListener(
 
 #### 6.4.事件的传播
 
-一个事件发生后，会在子元素和父元素之间**传播（propagation）**。这种传播分成三个阶段。
+一个事件发生后，会在子元素和父元素之间**传播**（propagation）。这种传播分成三个阶段。
 
 ---
 
-- 第一阶段：从 window 对象传导到目标节点（上层传到底层），称为**捕获阶段（capture phase）**。
-- 第二阶段：在目标节点上触发，称为**目标阶段（target phase）**。
-- 第三阶段：从目标节点传导回 window 对象（从底层传回上层），称为**冒泡阶段（bubbling phase）**。
+- 第一阶段：从 window 对象传导到目标节点（上层传到底层），称为**捕获阶段**（capture phase）。
+- 第二阶段：在目标节点上触发，称为**目标阶段**（target phase）。
+- 第三阶段：从目标节点传导回 window 对象（从底层传回上层），称为**冒泡阶段**（bubbling phase）。
 
 ---
 
@@ -355,9 +351,9 @@ function callback(event) {
 
 事件传播的最上层对象是 `window`，接着依次是 `document`，`html（document.documentElement）` 和 `body（document.body）`。也就是说，上例的事件传播顺序，在捕获阶段依次为 `window`、`document`、`html`、`body`、`div`、`p`，在冒泡阶段依次为 `p`、`div`、`body`、`html`、`document`、`window`。
 
-#### 6.5.事件的代理
+#### 6.5.事件代理/委托
 
-由于事件会在冒泡阶段向上传播到父节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。这种方法叫做事件的**代理（delegation）**。
+由于事件会在冒泡阶段向上传播到父节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。这种方法叫做**事件代理/委托**（delegation）。
 
 ```javascript
 var ul = document.querySelector("ul");
