@@ -8,7 +8,7 @@
 
 `select` 是下拉列表元素。
 
-```javascript
+```html
 <div>
 <label for="os">Operating System</label>
 <select name="os" id="os">
