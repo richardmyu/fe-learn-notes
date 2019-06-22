@@ -508,7 +508,7 @@ self.addEventListener("fetch", function(event) {
 
 先看网页代码 `index.html`。
 
-```javascript
+```html
 <!DOCTYPE html>
 <html>
 <head>

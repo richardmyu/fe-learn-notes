@@ -2,7 +2,7 @@
 
 ## 1.概述
 
-各种网站往往需要一些相同的模块，比如日历、调色板等等，这种模块就被称为“组件”（component）。Web Component 就是网页组件式开发的技术规范。
+各种网站往往需要一些相同的模块，比如日历、调色板等等，这种模块就被称为“**组件**”（component）。Web Component 就是网页组件式开发的技术规范。
 
 采用组件进行网站开发，有很多优点。
 
@@ -75,7 +75,7 @@ var clone = document.importNode(template.content, true);
 document.body.appendChild(clone);
 ```
 
-接受 `template` 插入的元素，叫做宿主元素（host）。在 `template` 之中，可以对宿主元素设置样式。
+接受 `template` 插入的元素，叫做**宿主元素**（host）。在 `template` 之中，可以对宿主元素设置样式。
 
 ```html
 <template>
