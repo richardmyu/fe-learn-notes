@@ -12,7 +12,7 @@ export function upLoadImg(file, fileList, complete, error, next) {
         useCdnDomain: true,
         disableStatisticReport: false,
         retryCount: 6,
-        region: qiniu.region.zl
+        region: qiniu.region
       };
 
       let putExtra = {
