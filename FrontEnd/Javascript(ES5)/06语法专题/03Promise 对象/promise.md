@@ -147,7 +147,7 @@ p1.then(step1)
 
 最后一个 `then` 方法，回调函数是 `console.log` 和 `console.error`，用法上有一点重要的区别。`console.log` 只显示 step3 的返回值，而 `console.error` 可以显示 p1、step1、step2、step3 之中任意一个发生的错误。举例来说，如果 step1 的状态变为 `rejected`，那么 step2 和 step3 都不会执行了（因为它们是 `resolved` 的回调函数）。`Promise` 开始寻找，接下来第一个为 `rejected` 的回调函数，在上面代码中是 `console.error`。这就是说，`Promise` 对象的报错具有传递性。
 
-#### 3.5.then() 用法辨析???
+#### 3.5.then() 用法辨析
 
 `Promise` 的用法，简单说就是一句话：使用 `then` 方法添加回调函数。但是，不同的写法有一些细微的差别，请看下面四种写法，它们的差别在哪里？
 
