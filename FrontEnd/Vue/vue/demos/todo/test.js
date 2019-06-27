@@ -1,3 +1,4 @@
+// @ts-ignore
 const vm = new Vue({
   el: "#app",
   directives: {
