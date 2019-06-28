@@ -129,9 +129,7 @@ HTML5 标准规定了 `setTimeout()` 的第二个参数的最小值（最短间�
 
 ## 四.Node.js 的 Event Loop
 
-Node.js 也是单线程的 Event Loop，但是它的运行机制不同于浏览器环境。
-
-> Node.js 在 11.0 版本开始向浏览器靠拢
+事件循环是 Node.js 处理非阻塞 I/O 操作的机制——尽管 JavaScript 是单线程处理的——当有可能的时候，它们会把操作转移到系统内核中去。
 
 ![Node.js 的 Event Loop（作者@BusyRich）](http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100803.png)
 
@@ -217,9 +215,41 @@ process.nextTick(function foo() {
 
 另外，由于 `process.nextTick` 指定的回调函数是在本次"事件循环"触发，而 `setImmediate` 指定的是在下次"事件循环"触发，所以很显然，前者总是比后者发生得早，而且执行效率也高（因为不用检查"任务队列"）。
 
-### 1.轮询机制在浏览器和 Node 中的区别
+### 1.事件轮询机制解析
 
-### 1.1 browsing contexts
+当 Node.js 启动后，它会初始化事件轮询；处理已提供的输入脚本（或丢入 REPL，本文不涉及到），它可能会调用一些异步的 API 函数调用，安排任务处理事件，或者调用 process.nextTick()，然后开始处理事件循环。
+
+下面的图表显示了事件循环的概述以及操作顺序。
+
+```javascript
+// 每一步都是事件循环机制的一个阶段
+
+  |-->   timer
+  |        |
+  |        |
+  |    I/O callbacks
+  |        |
+  |        |
+  |    idle,prepare
+  |        |
+  |        |                  incoming:
+  |      poll <-------------  connections,
+  |        |                  data,etc.
+  |        |
+  |      check
+  |        |
+  |        |
+  |--> close callbacks
+
+```
+
+每个阶段都有一个 FIFO 队列来执行回调。虽然每个阶段都是特殊的，但通常情况下，当事件循环进入给定的阶段时，它将执行特定于该阶段的任何操作，然后在该阶段的队列中执行回调，直到队列用尽或最大回调数已执行。当该队列已用尽或达到回调限制，事件循环将移动到下一阶段，等等。
+
+由于这些操作中的任何一个都可能计划 更多的 操作，并且在 轮询 阶段处理的新事件由内核排队，因此在处理轮询事件时，轮询事件可以排队。因此，长时间运行回调可以允许轮询阶段运行大量长于计时器的阈值。
+
+### 2.轮询机制在浏览器和 Node 中的区别
+
+### 2.1 browsing contexts
 
 Event Loop 在 HTML 规范中的定义
 
@@ -307,7 +337,7 @@ task 执行顺序是由进入队列的时间决定的，先进队列的先被执
 
 ![Event Loop 循环过程](https://camo.githubusercontent.com/0f06e87b8257a838886422e139eff9bc5d683f6e/68747470733a2f2f692e6c6f6c692e6e65742f323031382f30372f30352f356233646364383536663536632e706e67)
 
-### 1.2 node
+### 2.2 node
 
 Node 中的 Event Loop 由 libuv 库实现，它为 Node.js 提供了跨平台，线程池，事件池，异步 I/O 等能力。
 
