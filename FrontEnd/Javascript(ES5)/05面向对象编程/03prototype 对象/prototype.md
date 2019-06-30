@@ -372,68 +372,108 @@ function Fubar(foo, bar) {
 
 大部分面向对象的编程语言，都是通过**类（class）**来实现对象的继承。JavaScript 语言的继承则是通过**原型对象（prototype）**。
 
-#### 3.3.1.构造函数的继承
+##### 3.3.1.原型(链)继承
 
-让一个构造函数继承另一个构造函数，是非常常见的需求。这可以分成两步实现。第一步是在子类的构造函数中，调用父类的构造函数。
+原型继承是一种简化的继承机制，实际上，JavaScript 就是一种基于原型的语言。
+
+在原型继承中，类和实例概念就被淡化了，一切都从对象角度来考虑。所以直接定义对象，该对象被其他对象引用，这样就形成了一种继承关系，其中被引用对象就称之为**原型对象**；JavaScript 可以根据原型链来查找对象之间的这种继承关系。
+
+基于原型的编程是面向对象编程的一种特定的形式。在这种编程模型中，不需要声明静态类，而可以**通过复制语句存在的原型对象来实现继承关系**。因此，基于原型的模型没有类的概念，原型继承中的类仅是一种模拟，从而不需要通过复制属性的方式进快速的实现继承。
+
+我们需要创建的两个对象应该是相互独立的，显然，仅仅通过原型这样的方式会带来高耦合性的，在实际程序设计过程中单独使用原型模式来创建对象无疑会带来一些潜在的弊端，这也是面向对象程序设计理念“低耦合高复用”所不允许的。
 
 ```javascript
+function Super() {
+  this.property = true;
+}
+
+Super.prototype.getValue = function() {
+  return this.property;
+};
+
+function Sub() {
+  this.subProperty = false;
+}
+
+// 继承 Super
+Sub.prototype = new Super();
+
+// 其他方法
+// Object.assign(target,source) 方法只会拷贝源对象自身的并且可枚举的属性到目标对象,返回目标对象
+//合并对象(只能获得 B 的私有变量，无法获得 B 的原型上的变量；但可以保留自身原来原型上的变量)；
+Object.assign(A.prototype, new B());
+
+//自定义 assign 方法；通过结合两者方法，使得实例可以获得两个类的私有属性和公有属性；
+function assign(obj1, obj2) {
+  for (var key in obj2) {
+    if (obj2.hasOwnProperty(key)) {
+      obj1[key] = obj2[key];
+    } else {
+      obj1.__proto__[key] = obj2[key];
+    }
+  }
+}
+```
+
+**问题**
+
+- 引用类型值的原型属性会被所有实例共享
+- 创建子类型的实例时，不能向超类型的构造函数传递参数
+
+##### 3.3.2.构造函数继承
+
+在解决原型包含引用类型值所带来的问题的过程中，开发人员开始使用一种叫作**借用构造函数**（constructor stealing）的技术，有时候也叫伪造对象或经典继承。这种技术的基本思想相当简单，即在子类型构造函数的内部调用超类型构造函数。
+
+```javascript
+function Super() {
+  this.colors = ["red", "green", "blue"];
+}
+
+Super.prototype.getValue = function() {
+  return this.colors;
+};
+
 function Sub(value) {
+  // 在实例上调用父类的构造函数 Super，就会让子类实例具有父类实例的属性
   Super.call(this);
   this.prop = value;
 }
 ```
 
-上面代码中，Sub 是子类的构造函数，`this` 是子类的实例。在实例上调用父类的构造函数 `Super`，就会让子类实例具有父类实例的属性。
+缺点：
 
-第二步，是让子类的原型指向父类的原型，这样子类就可以继承父类原型。
+- 只能继承父类的实例属性和方法，不能继承原型属性/方法
+- 无法实现复用，每个子类都有父类实例函数的副本，影响性能
 
-```javascript
-Sub.prototype = Object.create(Super.prototype);
-//Sub.prototype --> Super
-Sub.prototype.constructor = Sub;
-```
+##### 3.3.3.组合继承
 
-上面代码中，`Sub.prototype` 是子类的原型，要将它赋值为 `Object.create(Super.prototype)`，而不是直接等于 `Super.prototype`。否则后面对 `Sub.prototype` 的操作，会连父类的原型 `Super.prototype` 一起修改掉。
-
----
-
-另外一种写法是 `Sub.prototype` 等于一个父类实例。
-
-`Sub.prototype = new Super();`
-
-上面这种写法也有继承的效果，但是子类会具有父类实例的方法。有时，这可能不是我们需要的，所以不推荐使用这种写法。
+组合上述两种方法就是**组合继承**（combination inheritance），也叫伪经典继承。用原型链实现对原型属性和方法的继承，用借用构造函数技术来实现实例属性的继承。
 
 举例来说，下面是一个 Shape 构造函数。
 
 ```javascript
-function Shape() {
-  this.x = 0;
-  this.y = 0;
+function Super(name) {
+  this.name = name;
+  this.colors = ["red", "green", "blue"];
 }
 
-Shape.prototype.move = function(x, y) {
-  this.x += x;
-  this.y += y;
-  console.info("Shape moved.");
+Super.prototype.getName = function() {
+  return this.name;
 };
-```
 
-我们需要让 Rectangle 构造函数继承 Shape。
-
-```javascript
 // 第一步，子类继承父类的实例
-function Rectangle() {
-  Shape.call(this); // 调用父类构造函数
+function Sub() {
+  Super.call(this); // 调用父类构造函数
 }
 // 另一种写法
-function Rectangle() {
-  this.base = Shape;
+function Sub() {
+  this.base = Super;
   this.base();
 }
 
 // 第二步，子类继承父类的原型
-Rectangle.prototype = Object.create(Shape.prototype);
-Rectangle.prototype.constructor = Rectangle;
+Sub.prototype = new Super();
+Sub.prototype.constructor = Sub;
 ```
 
 采用这样的写法以后，`instanceof` 运算符会对子类和父类的构造函数，都返回 true。
@@ -456,237 +496,128 @@ ClassB.prototype.print = function() {
 
 上面代码中，子类 B 的 print 方法先调用父类 A 的 print 方法，再部署自己的代码。这就等于继承了父类 A 的 print 方法。
 
-#### 3.3.2.非构造函数的继承
+组合继承避免了原型链和构造函数的缺陷，融合了它们的优点，成为 JavaScript 中最常用的继承模式，而且， `instanceof` 和 `isPropertyOf()` 也能够用于识别基于组合继承创建的对象。
 
-```javascript
-var Chinese = {
-  nation: "中国"
-};
+最大的问题是：无论什么情况下，都会调用两次超类型构造函数。第一次在子类型原型上添加属性，第二次在在调用子类型构造函数的时候，给子类型的实例添加同样的属性，这样就屏蔽了原型上的属性。解决这个问题，需要用到寄生组合式继承。
 
-var Doctor = {
-  career: "医生"
-};
-```
+##### 3.3.4.原型式继承
 
-请问怎样才能让"医生"去继承"中国人"，也就是说，我怎样才能生成一个"中国医生"的对象？
+利用一个空对象作为中介，将某个对象直接赋值给空对象构造函数的原型。
 
-这里要注意，这两个对象都是普通对象，不是构造函数，无法使用构造函数方法实现"继承"。
-
-`json` 格式的发明人 Douglas Crockford，提出了一个 `object()` 函数，可以做到这一点。
-
-```javascript
-function object(o) {
+```js
+function object(obj) {
   function F() {}
-  F.prototype = o;
+  F.prototype = obj;
   return new F();
 }
 ```
 
-这个 `object()` 函数，其实只做一件事，就是把子对象的 `prototype` 属性，指向父对象，从而使得子对象与父对象连在一起。具体使用：
+从本质上讲，`object()` 对传入其中的对象执行了一次浅复制，将构造函数 F 的原型直接指向传入的对象。
 
 ```js
-// 第一步先在父对象的基础上，生成子对象：
-var Doctor = object(Chinese);
+var person = {
+  name: "Nicholas",
+  friends: ["Shelby", "Court", "Van"]
+};
 
-// 然后，再加上子对象本身的属性：
-Doctor.career = "医生";
+var anotherPerson = object(person);
+// var anotherPerson = Object.create(person);
+anotherPerson.name = "Greg";
+anotherPerson.friends.push("Rob");
 
-// 这时，子对象已经继承了父对象的属性
-Doctor.nation; //中国
+var yetAnotherPerson = object(person);
+yetAnotherPerson.name = "Linda";
+yetAnotherPerson.friends.push("Barbie");
 
-Doctor.__proto__ === Chinese; //true
+alert(person.friends); //"Shelby,Court,Van,Rob,Barbie"
 ```
 
-- **浅拷贝**
+缺点：
 
-除了使用"prototype 链"以外，还有另一种思路：把父对象的属性，全部拷贝给子对象，也能实现继承。
+- 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能。
+- 无法传递参数
 
-下面这个函数，就是在做拷贝：
+另外，ES5 通过新增的 `Object.create()` 的方法规范了原型式继承。但是还是会像原型模式一样，引用类型值的属性始终都会共享相应的值。
 
-```javascript
-function extendCopy(p) {
-  var c = {};
-  for (var i in p) {
-    c[i] = p[i];
-  }
-  c.uber = p; //???
-  return c;
+##### 3.3.5.寄生式继承
+
+寄生式（parasitic）继承是与原型式继承紧密相关的一种思路。寄生式继承的思路与寄生构造函数和工厂模式类似，即创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后返回对象。
+
+```js
+function createAnother(original) {
+  var clone = object(original); // 通过调用函数创建一个新对象
+  clone.sayHi = function() {
+    // 以某种方式来增强对象
+    alert("hi");
+  };
+  return clone; // 返回这个对象
 }
 ```
 
-使用的时候，这样写：
+函数的主要作用是为构造函数新增属性和方法，以增强函数
 
-```javascript
-var Doctor = extendCopy(Chinese);
-Doctor.career = "医生";
-alert(Doctor.nation); // 中国
+```js
+var person = {
+  name: "Nicholas",
+  friends: ["Shelby", "Court", "Van"]
+};
+var anotherPerson = createAnother(person);
+anotherPerson.sayHi(); //"hi"
 ```
 
-但是，这样的拷贝有一个问题。那就是，如果父对象的属性等于数组或另一个对象，那么实际上，子对象获得的只是一个内存地址，而不是真正拷贝，因此存在父对象被篡改的可能。
+在主要考虑对象而不是自定义类型和构造函数的情况下，寄生式继承也是一种有用的模式。
 
-请看，现在给 Chinese 添加一个"出生地"属性，它的值是一个数组。
+> 使用寄生式继承来为对象添加函数，会由于不能做到函数复用而降低效率，这一点和构造函数模式类似。
 
-`Chinese.birthPlaces = ['北京','上海','香港'];`
+缺点（同原型式继承）：
 
-通过 `extendCopy()` 函数，Doctor 继承了 Chinese。
+- 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能。
+- 无法传递参数
 
-`var Doctor = extendCopy(Chinese);`
+##### 3.3.6.寄生组合式继承
 
-然后，我们为 Doctor 的"出生地"添加一个城市：
+所谓寄生组合式继承，即通过借用构造函数来继承属性，通过原型链的混成形式来继承方法。其背后的思路是：不必为了指定子类型的原型而调用超类型的构造函数，我们所需要的无法就是超类型原型的一个副本。本质上，就是使用寄生式继承来继承超类型的原型，然后再将结果指定给子类型的原型。
 
-`Doctor.birthPlaces.push('厦门');`
-
-发生了什么事？Chinese 的"出生地"也被改掉了！
-
-```javascript
-alert(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
-alert(Chinese.birthPlaces); //北京, 上海, 香港, 厦门
-```
-
-所以，`extendCopy()` 只是拷贝基本类型的数据，我们把这种拷贝叫做"浅拷贝"。这是早期 jQuery 实现继承的方式。
-
-- **深拷贝**
-
-所谓"深拷贝"，就是能够实现真正意义上的数组和对象的拷贝。它的实现并不难，只要递归调用"浅拷贝"就行了。
-
-```javascript
-function deepCopy(p, c) {
-  var c = c || {};
-  for (var i in p) {
-    if (typeof p[i] === "object") {
-      // ??? 为什么用的是 constructor
-      c[i] = p[i].constructor === Array ? [] : {};
-      deepCopy(p[i], c[i]);
-    } else {
-      c[i] = p[i];
-    }
-  }
-  return c;
-}
-```
-
-使用的时候这样写：
-
-`var Doctor = deepCopy(Chinese);`
-
-现在，给父对象加一个属性，值为数组。然后，在子对象上修改这个属性：
-
-```javascript
-Chinese.birthPlaces = ["北京", "上海", "香港"];
-Doctor.birthPlaces.push("厦门");
-```
-
-这时，父对象就不会受到影响了。
-
-```javascript
-alert(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
-alert(Chinese.birthPlaces); //北京, 上海, 香港
-```
-
-目前，jQuery 库使用的就是这种继承方法。
-
-#### 3.3.3.原型继承
-
-原型继承是一种简化的继承机制，实际上，JavaScript 就是一种基于原型的语言。
-
-在原型继承中，类和实例概念就被淡化了，一切都从对象角度来考虑。所以直接定义对象，该对象被其他对象引用，这样就形成了一种继承关系，其中被引用对象就称之为**原型对象**；JavaScript 可以根据原型链来查找对象之间的这种继承关系。
-
-基于原型的编程是面向对象编程的一种特定的形式。在这种编程模型中，不需要声明静态类，而可以**通过复制语句存在的原型对象来实现继承关系**。因此，基于原型的模型没有类的概念，原型继承中的类仅是一种模拟，从而不需要通过复制属性的方式进快速的实现继承。
-
-我们需要创建的两个对象应该是相互独立的，显然，仅仅通过原型这样的方式会带来高耦合性的，在实际程序设计过程中单独使用原型模式来创建对象无疑会带来一些潜在的弊端，这也是面向对象程序设计理念“低耦合高复用”所不允许的。
-
-```javascript
-//可以获得 B 的私有变量以及原型上的变量；但丢失自身原来原型上的变量
-A.prototype = new B();
-
-// Object.assign(target,source) 方法只会拷贝源对象自身的并且可枚举的属性到目标对象,返回目标对象
-//合并对象(只能获得 B 的私有变量，无法获得 B 的原型上的变量；但可以保留自身原来原型上的变量)；
-Object.assign(A.prototype, new B());
-
-//自定义 assign 方法；通过结合两者方法，使得实例可以获得两个类的私有属性和公有属性；
-function assign(obj1, obj2) {
-  for (var key in obj2) {
-    if (obj2.hasOwnProperty(key)) {
-      obj1[key] = obj2[key];
-    } else {
-      obj1.__proto__[key] = obj2[key];
-    }
-  }
-}
-```
-
-#### 3.3.4.call 继承
-
-在一个类中 A 执行另一个类 B，并用 `call` 使该类 B 指向类 A，从而使得 A 类的实例可以获得 B 类上的私有变量或属性，同时能保存自身原型上的公有变量或属性，但不会继承 B 类原型上的属性或方法。
-
-```javascript
-function A() {
-  this.a = 1;
-  B.call(this);
+```js {.line-numbers}
+function inheritPrototype(subType, superType) {
+  var prototype = object(superType.prototype); // 创建对象，创建父类原型的一个副本
+  prototype.constructor = subType; // 增强对象，弥补因重写原型而失去的默认的constructor 属性
+  subType.prototype = prototype; // 指定对象，将新创建的对象赋值给子类的原型
 }
 
-function B() {
-  this.b = 2;
+// 父类初始化实例属性和原型属性
+function SuperType(name) {
+  this.name = name;
+  this.colors = ["red", "blue", "green"];
+}
+SuperType.prototype.sayName = function() {
+  alert(this.name);
+};
+
+// 借用构造函数传递增强子类实例属性（支持传参和避免篡改）
+function SubType(name, age) {
+  SuperType.call(this, name);
+  this.age = age;
 }
 
-A.prototype.getA = function() {};
-B.prototype.getB = function() {};
+// 将父类原型指向子类
+inheritPrototype(SubType, SuperType);
 
-var a = new A();
-a; //A{a:1,b:2}
-"getA" in a; //true
-"getB" in a; //false
+// 新增子类原型属性
+SubType.prototype.sayAge = function() {
+  alert(this.age);
+};
+
+var instance1 = new SubType("xyc", 23);
+var instance2 = new SubType("lxy", 23);
+
+instance1.colors.push("2"); // ["red", "blue", "green", "2"]
+instance2.colors.push("3"); // ["red", "blue", "green", "3"]
 ```
 
-#### 3.3.5.寄生组合继承
+这个例子的高效率体现在它只调用了一次 SuperType  构造函数，并且因此避免了在 SubType.prototype  上创建不必要的、多余的属性。于此同时，原型链还能保持不变；因此，还能够正常使用 `instanceof`  和 `isPrototypeOf()`。这是最成熟的方法，也是现在库实现的方法。
 
-原型继承和 `call` 继承组合
-
-```javascript
-function A() {
-  this.a = 1;
-  B.call(this);
-}
-
-function B() {
-  this.b = 2;
-}
-
-B.prototype.getB = function() {};
-A.prototype.getA = function() {};
-
-// 666
-Object.assign(A.prototype, B.prototype);
-
-var a = new A();
-console.log(a);
-//A{a:1,b:2,[[__proto__]]{getA:f(),getB:f()}
-```
-
-#### 3.3.6.强制改变原型指向
-
-```javascript
-//只能改变引用类型数据或通过构造函数的方法产生的类型；
-function sum() {
-  arguments.__proto__ = Array.prototype;
-  return arguments.join("+");
-}
-console.log(sum(1, 2, 3, 4));
-//1+2+3+4
-
-var ary = [1, 2, 3, 4];
-console.log(ary.toString()); //"1,2,3,4"
-ary.__proto__ = Object.prototype;
-console.log(ary.toString()); //[object Array]
-
-var time = new Date();
-console.log(time.toString());
-//Sat Sep 23 2017 15:46:08 GMT+0800 (中国标准时间)
-time.__proto__ = Object.prototype;
-console.log(time.toString()); //[object Date]
-```
-
-#### 3.3.7.多重继承
+##### 3.3.7.多重继承
 
 JavaScript 不提供多重继承功能，即不允许一个对象同时继承多个对象。但是，可以通过变通方法，实现这个功能。
 
@@ -884,3 +815,93 @@ var module1 = (function($, YAHOO) {
 ```
 
 上面代码中，finalCarousel 对象输出到全局，对外暴露 init 和 destroy 接口，内部方法 go、handleEvents、initialize、dieCarouselDie 都是外部无法调用的。
+
+#### 3.5.拷贝
+
+##### 3.5.1.浅拷贝
+
+除了使用"prototype 链"以外，还有另一种思路：把父对象的属性，全部拷贝给子对象，也能实现继承。
+
+下面这个函数，就是在做拷贝：
+
+```javascript
+function extendCopy(p) {
+  var c = {};
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p; //???
+  return c;
+}
+```
+
+使用的时候，这样写：
+
+```javascript
+var Doctor = extendCopy(Chinese);
+Doctor.career = "医生";
+alert(Doctor.nation); // 中国
+```
+
+但是，这样的拷贝有一个问题。那就是，如果父对象的属性等于数组或另一个对象，那么实际上，子对象获得的只是一个内存地址，而不是真正拷贝，因此存在父对象被篡改的可能。
+
+请看，现在给 Chinese 添加一个"出生地"属性，它的值是一个数组。
+
+`Chinese.birthPlaces = ['北京','上海','香港'];`
+
+通过 `extendCopy()` 函数，Doctor 继承了 Chinese。
+
+`var Doctor = extendCopy(Chinese);`
+
+然后，我们为 Doctor 的"出生地"添加一个城市：
+
+`Doctor.birthPlaces.push('厦门');`
+
+发生了什么事？Chinese 的"出生地"也被改掉了！
+
+```javascript
+alert(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
+alert(Chinese.birthPlaces); //北京, 上海, 香港, 厦门
+```
+
+所以，`extendCopy()` 只是拷贝基本类型的数据，我们把这种拷贝叫做"浅拷贝"。这是早期 jQuery 实现继承的方式。
+
+##### 3.5.2.深拷贝
+
+所谓"深拷贝"，就是能够实现真正意义上的数组和对象的拷贝。它的实现并不难，只要递归调用"浅拷贝"就行了。
+
+```javascript
+function deepCopy(p, c) {
+  var c = c || {};
+  for (var i in p) {
+    if (typeof p[i] === "object") {
+      // ??? 为什么用的是 constructor
+      c[i] = p[i].constructor === Array ? [] : {};
+      deepCopy(p[i], c[i]);
+    } else {
+      c[i] = p[i];
+    }
+  }
+  return c;
+}
+```
+
+使用的时候这样写：
+
+`var Doctor = deepCopy(Chinese);`
+
+现在，给父对象加一个属性，值为数组。然后，在子对象上修改这个属性：
+
+```javascript
+Chinese.birthPlaces = ["北京", "上海", "香港"];
+Doctor.birthPlaces.push("厦门");
+```
+
+这时，父对象就不会受到影响了。
+
+```javascript
+alert(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
+alert(Chinese.birthPlaces); //北京, 上海, 香港
+```
+
+目前，jQuery 库使用的就是这种继承方法。
