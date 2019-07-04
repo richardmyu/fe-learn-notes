@@ -172,10 +172,23 @@
       // }
       // var obj = { name: "asd" };
       // console.log(obj._proto_ === Object.prototype);
-      const obj = {};
-      const o = Object.setPrototypeOf(obj, null);
-      console.log({}.toString);
-      console.log(obj.toString);
+      // const obj = {};
+      // const o = Object.setPrototypeOf(obj, null);
+      // console.log({}.toString);
+      // console.log(obj.toString);
+      // console.log(typeof Number(1));
+      // console.log(typeof Object(1));
+
+      // const obj = { foo: "bar", baz: "O(∩_∩)O" };
+      // console.log(Object.values(obj));
+
+      // var o = Object.fromEntries([["foo", "bar"], ["baz", 42]]);
+      // console.log(o);
+      // console.log(typeof o);
+      // console.log(o.toString);
+
+			var o = Object.fromEntries(new URLSearchParams("foo=bar&baz=qux"));
+			console.log(o);
     </script>
   </body>
 </html>

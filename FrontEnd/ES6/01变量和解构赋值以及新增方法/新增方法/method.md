@@ -816,8 +816,148 @@ Object.setPrototypeOf(true, {}) === true; // true
 
 #### 2.4.3.Object.getPrototypeOf()
 
-该方法与Object.setPrototypeOf方法配套，用于读取一个对象的原型对象。
+该方法与 Object.setPrototypeOf 方法配套，用于读取一个对象的原型对象。
 
 ```js
+function Rectangle() {}
 
+const rec = new Rectangle();
+
+Object.getPrototypeOf(rec) === Rectangle.prototype;
+// true
+
+Object.setPrototypeOf(rec, Object.prototype);
+Object.getPrototypeOf(rec) === Rectangle.prototype;
+// false
+```
+
+如果参数不是对象，会被自动转为对象。如果参数是 undefined 或 null，它们无法转为对象，所以会报错。
+
+```js
+Object.getPrototypeOf(1);
+// Number {[[PrimitiveValue]]: 0}
+
+Object.getPrototypeOf("foo");
+// String {length: 0, [[PrimitiveValue]]: ""}
+
+Object.getPrototypeOf(true);
+// Boolean {[[PrimitiveValue]]: false}
+
+Object.getPrototypeOf(1) === Number.prototype; // true
+Object.getPrototypeOf("foo") === String.prototype; // true
+Object.getPrototypeOf(true) === Boolean.prototype; // true
+```
+
+### 2.5.Object.keys()，Object.values()，Object.entries()
+
+#### 2.5.1.Object.keys()
+
+ES5 引入了 Object.keys 方法，返回一个成员是参数 _对象自身_ 的（不含继承的）所有 _可遍历_（enumerable）属性的 _键名数组_。
+
+```js
+var obj = { foo: "bar", baz: 42 };
+Object.keys(obj);
+// ["foo", "baz"]
+```
+
+ES2017 引入了跟 Object.keys 配套的 Object.values 和 Object.entries，作为遍历一个对象的补充手段，供 for...of 循环使用。
+
+#### 2.5.2.Object.values()
+
+Object.values 方法返回一个，成员是参数 _对象自身_ 的（不含继承的）所有 _可遍历_（enumerable）属性的 _键值数组_。
+
+```js
+const obj = { foo: "bar", baz: "O(∩_∩)O" };
+Object.values(obj); // ["bar", "O(∩_∩)O"]
+
+const obj = { 100: "a", 2: "b", 7: "c" };
+Object.values(obj);
+// ["b", "c", "a"]
+```
+
+Object.values 会过滤属性名为 Symbol 值的属性。
+
+```js
+Object.values({ [Symbol()]: 123, foo: "abc" });
+// ['abc']
+```
+
+如果参数不是对象，Object.values 会先将其转为对象。由于数值和布尔值的包装对象，都不会为实例添加非继承的属，所以，Object.values 会返回空数组；而字符串会返回各个字符组成的一个数组。
+
+```js
+Object.values("foo");
+// ['f', 'o', 'o']
+
+Object.values(42); // []
+```
+
+#### 2.5.3.Object.entries()
+
+`Object.entries()` 方法返回一个数组，成员是参数 _对象自身_ 的（不含继承的）所有 _可遍历_（enumerable）属性的 _键值对数组_。
+
+```js
+const obj = { foo: "bar", baz: 42 };
+Object.entries(obj);
+// [ ["foo", "bar"], ["baz", 42] ]
+```
+
+除了返回值不一样，该方法的行为与 Object.values 基本一致（忽略是 Symbol 值的属性名，转换费对象参数。。。）。
+
+Object.entries 方法的另一个用处是，将 _对象转为真正的 Map 结构_。
+
+```js
+const obj = { foo: "bar", baz: 42 };
+const map = new Map(Object.entries(obj));
+map; // Map { foo: "bar", baz: 42 }
+```
+
+自己实现 Object.entries 方法，非常简单。
+
+```js
+// Generator函数的版本
+function* entries(obj) {
+  for (let key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
+}
+
+// 非Generator函数的版本
+function entries(obj) {
+  let arr = [];
+  for (let key of Object.keys(obj)) {
+    arr.push([key, obj[key]]);
+  }
+  return arr;
+}
+```
+
+#### 2.6.Object.fromEntries()
+
+`Object.fromEntries()` 方法是 `Object.entries()` 的逆操作，用于将一个键值对数组转为对象。
+
+```js
+Object.fromEntries([["foo", "bar"], ["baz", 42]]);
+// { foo: "bar", baz: 42 }
+```
+
+该方法的主要目的，是将 *键值对的数据结构还原为对象*，因此特别适合将 Map 结构转为对象。
+
+```js
+// 例一
+const entries = new Map([["foo", "bar"], ["baz", 42]]);
+
+Object.fromEntries(entries);
+// { foo: "bar", baz: 42 }
+
+// 例二
+const map = new Map().set("foo", true).set("bar", false);
+Object.fromEntries(map);
+// { foo: true, bar: false }
+```
+
+该方法的一个用处是配合 URLSearchParams 对象，将查询字符串转为对象。
+
+```js
+Object.fromEntries(new URLSearchParams("foo=bar&baz=qux"));
+// { foo: "bar", baz: "qux" }
 ```
