@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // function fn() {}
+      // console.log(fn.name);
+      // const person = {
+      //   sayName() {
+      //     console.log("hello!");
+      //   }
+      // };
+
+      // console.log(person.sayName.name); // "sayName"
+
+      // console.log(new Function().name);
+
+      // var doSomething = function() {};
+      // console.log(doSomething.bind().name); // "bound doSomething"
+
+      // var o = Reflect.ownKeys({ [Symbol()]: 0, b: 0, 10: 0, 2: 0, a: 0 });
+      // console.log(o);
+
+      // const obj = {
+      //   foo: super.foo
+      // };
+
+      // 报错
+      // const obj = {
+      //   foo: () => super.foo
+      // };
+
+      // 报错
+      // const obj = {
+      //   foo: function() {
+      //     return super.foo;
+      //   }
+      // };
+
+      // let z = { a: 3, b: 4 };
+      // let n = { ...z };
+      // console.log(n);; // { a: 3, b: 4 }
+
+      let a = { name: "mark" };
+      let b = { age: 12 };
+      let ab = { name: "jack", ...a, ...b, age: 23 };
+      // 等同于
+      // let ab = Object.assign({}, a, b);
+      console.log(ab);
+    </script>
+  </body>
+</html>
