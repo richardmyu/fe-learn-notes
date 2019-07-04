@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // console.log(String.fromCharCode(0x20bb7));
+      // console.log(String.fromCharCode(0xbb7));
+
+      // console.log(
+      //   String.fromCodePoint(0x78, 0x1f680, 0x79) === "x\uD83D\uDE80y"
+      // );
+      // console.log(String.fromCodePoint(0x69, 0x69, 0x69));
+      // console.log(String.raw`Hi\n${2 + 3}!`);
+      // let str = String.raw`Hi\u000A!`;
+      // console.log(str, str.length);
+
+      // const tt = `
+      // <div class="hhh">sdgjfksdhgfjkl</div>
+      // `;
+      // const html = String.raw;
+      // const ww = html`
+      //   <div class="hhh">sdgjfksdhgfjkl</div>
+      // `;
+      // console.log(ww);
+
+      // var s = "𠮷";
+
+      // console.log(s.length); // 2
+      // console.log(s.charAt(0)); // �
+      // console.log(s.charAt(1)); // �
+      // console.log(s.charCodeAt(0)); // 55362
+      // console.log(s.charCodeAt(1)); // 57271
+      // console.log(s.charCodeAt(2)); // 57271
+      // console.log(s.codePointAt(0));
+      // console.log(s.codePointAt(1));
+      // console.log(s.codePointAt(2));
+      // let s = "𠮷a";
+      // for (let ch of s) {
+      //   console.log(ch.codePointAt(0).toString(16));
+      // }
+      // 20bb7
+      // 61
+      // let arr = [..."𠮷a"]; // arr.length === 2
+      // arr.forEach(ch => console.log(ch.codePointAt(0).toString(16)));
+
+      // console.log("\u01D1" === "\u004F\u030C"); //false
+      // console.log("\u01D1".length); // 1
+      // console.log("\u004F\u030C".length); // 2
+      // console.log("\u01D1".normalize() === "\u004F\u030C".normalize());
+
+      // console.log("\u004F\u030C".normalize("NFC")); // 1
+      // console.log("\u004F\u030C".normalize("NFD")); // 2
+
+      // console.log("na".repeat(NaN));
+      // console.log("na".repeat([]));
+      // console.log("na".repeat({}));
+      // console.log("na".repeat("NaN"));
+      // console.log("na".repeat("2.1"));
+      // console.log("xxx".padStart(2, "ab"));
+      // console.log("12".padStart(10, "0"));
+      // console.log("12".padStart(10, "YYYY-MM-DD"));
+
+      // var regex = /t(e)(st(\d?))/g;
+      // var string = "test111test2test3";
+
+      // var matches = [];
+      // var match;
+      // while ((match = regex.exec(string))) {
+      //   matches.push(match);
+      // }
+
+      // console.log(matches);
+
+      // const string = "test1test2test3";
+
+      // const regex = /t(e)(st(\d?))/;
+
+      // for (const match of string.matchAll(regex)) {
+      // 	console.log(Array.from(string.matchAll(regex)));
+      //   console.log(match);
+      // }
+      // console.log(Object.is('foo', 'foo'));
+
+      // const target = { a: 1 };
+
+      // const source1 = { b: 2 };
+      // const source2 = { b: 3 };
+
+      // Object.assign(target, source1, source2);
+      // console.log(target); // {a:1, b:3}
+
+      // const v1 = "abc";
+      // const v2 = true;
+      // const v3 = 10;
+
+      // const obj = Object.assign({}, v1, v2, v3);
+      // console.log(Object(v1));
+      // console.log(Object("abc"));
+      // console.log(obj); // { "0": "a", "1": "b", "2": "c" }
+
+      // const target = { a: { b: "c", d: "e" } };
+      // const source = { a: { b: "hello" } };
+      // console.log(Object.assign(target, source));
+
+      // const source = {
+      //   get foo() {
+      //     return 1;
+      //   }
+      // };
+      // console.log(Object.assign({}, source));
+      // const obj = {
+      //   foo: 123,
+      //   get bar() {
+      //     return "abc";
+      //   }
+      // };
+
+      // console.log(Object.getOwnPropertyDescriptors(obj));;
+
+      // const source = {
+      //   set foo(value) {
+      //     console.log(value);
+      //   }
+      // };
+
+      // var target = Object.defineProperties(
+      //   {},
+      //   Object.getOwnPropertyDescriptors(source)
+      // );
+      // console.log(Object.getOwnPropertyDescriptor(target, "foo"));
+      // const shallowMerge = (target = {}, source) =>
+      //   Object.defineProperties(
+      //     target,
+      //     Object.getOwnPropertyDescriptors(source)
+      //   );
+
+      // var obj = Object.getOwnPropertyDescriptor(
+      //   shallowMerge({}, source),
+      //   "foo"
+      // );
+      // console.log(obj);
+
+      // Object.defineProperty(Object.prototype, "_proto_", {
+      //   get() {
+      //     let _thisObj = Object(this);
+      //     return Object.getPrototypeOf(_thisObj);
+      //   },
+      //   set(proto) {
+      //     if (this === undefined || this === null) {
+      //       throw new TypeError();
+      //     }
+      //     if (!isObject(this)) {
+      //       return undefined;
+      //     }
+      //     if (!isObject(proto)) {
+      //       return undefined;
+      //     }
+      //     let status = Reflect.setPrototypeOf(this, proto);
+      //     if (!status) {
+      //       throw new TypeError();
+      //     }
+      //   }
+      // });
+
+      // function isObject(value) {
+      //   return Object(value) === value;
+      // }
+      // var obj = { name: "asd" };
+      // console.log(obj._proto_ === Object.prototype);
+      const obj = {};
+      const o = Object.setPrototypeOf(obj, null);
+      console.log({}.toString);
+      console.log(obj.toString);
+    </script>
+  </body>
+</html>
