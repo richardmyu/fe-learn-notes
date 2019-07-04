@@ -7,8 +7,83 @@
     <title>Document</title>
   </head>
   <body>
-		<script>
+    <script>
+      // function* fibs() {
+      //   let a = 0;
+      //   let b = 1;
+      //   while (true) {
+      //     yield a;
+      //     [a, b] = [b, a + b];
+      //   }
+      // }
 
-		</script>
+      // let [first, second, third, fourth, fifth, sixth] = fibs();
+      // console.log(first, second, third, fourth, fifth, sixth); // 5
+
+      // function f() {
+      //   // console.log("aaa");
+      //   return "aaa";
+      // }
+
+      // let [x = f()] = [];
+      // console.log(x);
+
+      // const { log } = console;
+      // log("hello"); // hello
+      // let { foo: baz } = { foo: "aaa", bar: "bbb" };
+      // console.log(baz); // "aaa"
+      // console.log(foo); // error: foo is not defined
+
+      // let obj = {
+      //   p: ["Hello", { y: "World" }]
+      // };
+      // let {
+      //   p,
+      //   p: [x, { y }]
+      // } = obj;
+      // console.log(x); // "Hello"
+      // console.log(y); // "World"
+      // console.log(p); // ["Hello", {y: "World"}]
+
+      // let {
+      //   foo: { bar }
+      // } = { baz: "baz" };
+
+      // const obj1 = {};
+      // const obj2 = { foo: "bar" };
+      // Object.setPrototypeOf(obj1, obj2);
+
+      // const { foo } = obj1;
+      // console.log(foo); // "bar"
+      // const { toString: toS } = Array;
+      // console.log(toS);
+
+      // console.log([1, 7, 11].map((...val) => val));
+      // console.log([1, 7, 11].map(parseInt));;
+      // [1, NaN, 3]
+
+      // function move({ x, y } = { x: 0, y: 0 }) {
+      //   return [x, y];
+      // }
+
+      // console.log(move({ x: 3, y: 8 })); // [3, 8]
+      // console.log(move({ x: 3 })); // [3, undefined]
+      // console.log(move({})); // [undefined, undefined]
+      // console.log(move()); // [0, 0]
+      // console.log(move([])); // [0, 0]
+
+      // let [(a)] = [1];
+      // let {x: (c)} = {};
+      // let ({x: c}) = {};
+      // let {(x: c)} = {};
+      // let {(x): c} = {};
+      // let { o: { p: p } } = { o: { p: 2 } };
+      // ({ p: (a) } = { p: 42 })
+      function f([x, y = 0, z = 0]) {
+        console.log(x, y, z);
+      }
+      f([1, 2, 3]);
+      f([1]);
+    </script>
   </body>
 </html>
