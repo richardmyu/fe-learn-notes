@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // const obj = {
+      //   toString() {
+      //     return "abc";
+      //   }
+      // };
+      // const sym = Symbol(obj);
+      // console.log(sym); // Symbol(abc)
+      // console.log(Symbol({}));
+      // console.log(Symbol({ name: "123" }));
+
+      // let mySymbol = Symbol();
+
+      // let a = {};
+      // a[mySymbol] = "Hello!";
+
+      // let a = {
+      //   [mySymbol]: "Hello!"
+      // };
+
+      // let a = {};
+      // Object.defineProperty(a, mySymbol, { value: "Hello!" });
+
+      // console.log(a[mySymbol]);; // "Hello!"
+
+      // const shapeType = {
+      //   triangle: Symbol()
+      // };
+
+      // function getArea(shape, options) {
+      // 	let area = 0;
+      //   switch (shape) {
+      //     case shapeType.triangle:
+      //       area = 0.5 * options.width * options.height;
+      //       break;
+      // 	}
+      // 	console.log(area);
+      //   return area;
+      // }
+
+      // getArea(shapeType.triangle, { width: 100, height: 100 });
+
+      // let obj = { name: "kkk" };
+      // let str = Symbol("obj");
+      // Object.defineProperty(obj, Symbol("obj"), {
+      //   enumerable: true,
+      //   value: "hhh"
+      // });
+      // let obj = {
+      //   name: "kkk",
+      //   [str]: "hhh"
+      // };
+      // console.log(obj);
+      // console.log(Object.keys(obj)); //["name"]
+      // console.log(obj[str]); //hhh
+      // for (let key in obj) {
+      //   console.log(key);
+      // }
+      // console.log(Object.getOwnPropertyNames(obj));
+      // console.log(JSON.stringify(obj));
+
+      // const obj = {};
+
+      // let foo = Symbol("foo");
+
+      // Object.defineProperty(obj, foo, {
+      //   value: "foobar",
+      //   enumerable: true
+      // });
+
+      // for (let i in obj) {
+      //   console.log(i); // 无输出
+      // }
+
+      // console.log(Object.getOwnPropertyNames(obj));
+      // // []
+
+      // console.log(Object.getOwnPropertySymbols(obj));
+      // [Symbol(foo)]
+      var global = {};
+      const FOO_KEY = Symbol.for("foo");
+
+      function A() {
+        this.foo = "hello";
+      }
+
+      if (!global[FOO_KEY]) {
+        global[FOO_KEY] = new A();
+        Object.defineProperty(global, FOO_KEY, {
+          configurable: false,
+          writable: false
+        });
+      }
+      console.log(global[FOO_KEY]);
+      global[FOO_KEY] = { foo: "world" };
+      console.log(global[FOO_KEY]);
+    </script>
+  </body>
+</html>
