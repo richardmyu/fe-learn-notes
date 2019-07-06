@@ -36,40 +36,40 @@
       // console.log(proxy.name); // 35
       // console.log(proxy.title); // 35
 
-      // let person = {
-      //   name: "xiaoming",
-      //   age: 30
-      // };
-      // let handler = {
-      //   set(target, key, value, receiver) {
-      //     if (key === "name" && typeof value !== "string") {
-      //       throw new Error("用户姓名必须是字符串类型");
-      //     }
-      //     if (key === "age" && typeof value !== "number") {
-      //       throw new Error("用户年龄必须是数字类型");
-      //     }
-      //     console.log(Reflect);
-      //     return Reflect.set(target, key, value, receiver);
-      //   }
-      // };
-      // let boy = new Proxy(person, handler);
-      // try {
-      //   boy.name = "xiaohong"; // OK
-      //   boy.age = "18"; // 报错  用户年龄必须是数字类型
-      // } catch (err) {
-      //   console.error(err);
-      // }
-      const target = {
-        m() {
-          console.log(this === proxy);
+      let person = {
+        name: "xiaoming",
+        age: 30
+      };
+      let handler = {
+        set(target, key, value, receiver) {
+          if (key === "name" && typeof value !== "string") {
+            throw new Error("用户姓名必须是字符串类型");
+          }
+          if (key === "age" && typeof value !== "number") {
+            throw new Error("用户年龄必须是数字类型");
+          }
+          return Reflect.set(target, key, value, receiver);
         }
       };
-      const handler = {};
+      let boy = new Proxy(person, handler);
+      try {
+        boy.name = "xiaohong"; // OK
+        boy.age = "18"; // 报错  用户年龄必须是数字类型
+      } catch (err) {
+        console.error(err);
+      }
 
-      const proxy = new Proxy(target, handler);
+      // const target = {
+      //   m() {
+      //     console.log(this === proxy);
+      //   }
+      // };
+      // const handler = {};
 
-      target.m(); // false
-      proxy.m(); // true
+      // const proxy = new Proxy(target, handler);
+
+      // target.m(); // false
+      // proxy.m(); // true
     </script>
   </body>
 </html>
