@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // class Point {
+      //   constructor(x, y) {
+      //     this.x = x;
+      //     this.y = y;
+      //   }
+
+      //   toString() {
+      //     return "(" + this.x + ", " + this.y + ")";
+      //   }
+      // }
+      // console.log(typeof Point);
+      // console.log(Point === Point.prototype.constructor);
+      // var b = new Point(100, 100);
+      // console.log(b.toString()); // "stuff"
+
+      // class Point {
+      //   constructor(x, y) {
+      //     this.x = x;
+      //     this.y = y;
+      //   }
+
+      //   toString() {
+      //     return "(" + this.x + ", " + this.y + ")";
+      //   }
+      // }
+
+      // var point = new Point(2, 3);
+
+      // console.log(point.toString()); // (2, 3)
+
+      // console.log(point.hasOwnProperty("x")); // true
+      // console.log(point.hasOwnProperty("y")); // true
+      // console.log(point.hasOwnProperty("toString")); // false
+      // console.log(Object.getPrototypeOf(point).hasOwnProperty("toString")); // true
+
+      // class MyClass {
+      //   constructor() {
+      //     this.propValue = "";
+      //   }
+      //   get prop() {
+      //     console.log("getter", this.propValue);
+      //     return this.propValue;
+      //   }
+      //   set prop(value) {
+      //     this.propValue = value;
+      //     console.log("setter" + value);
+      //   }
+      // }
+
+      // let inst = new MyClass();
+
+      // inst.prop = 123;
+
+      // console.log(inst.prop);
+
+      // class My {
+      //   constructor(name) {
+      //     this.name = name;
+      //   }
+
+      //   sayName() {
+      //     console.log(this.name);
+      //   }
+      // }
+      // let person = new My("张三");
+
+      // person.sayName();
+
+      // class Foo {
+      //   constructor(...args) {
+      //     console.log(...args);
+      //     this.args = args;
+      //     console.log(this.args);
+      //   }
+      //   *[Symbol.iterator]() {
+      //     for (let arg of this.args) {
+      //       yield arg;
+      //     }
+      //   }
+      // }
+
+      // for (let x of new Foo("hello", "world")) {
+      //   console.log(x);
+      // }
+      // function fn(...as) {
+      //   console.log(...as);
+      // }
+      // fn(1);
+      // fn(1, 2);
+      // fn(1, 2, 3);
+      // fn(1, 2, 3, 4);
+
+      // class Foo {
+      //   static classMethod() {
+      //     return "hello";
+      //   }
+      // }
+
+      // class Bar extends Foo {
+      //   static classMethod() {
+      //     return super.classMethod() + ", too";
+      //   }
+      // }
+      // console.log(Bar.classMethod());
+
+      // class Foo {}
+
+      // Foo.prop = 1;
+
+      // class Foo {
+      //   static prop = 1;
+      // }
+      // console.log(Foo.prop); // 1
+
+      // class IncreasingCounter {
+      //   #count = 0;
+      //   get value() {
+      //     console.log("Getting the current value!");
+      //     return this.#count;
+      //   }
+      //   increment() {
+      //     this.#count++;
+      //   }
+      // }
+      // const counter = new IncreasingCounter();
+      // counter.#count // 报错
+      // counter.#count = 42 // 报错
+
+      // class Foo {
+      //   #privateValue = 42;
+      //   static getPrivateValue(foo) {
+      //     return foo.#privateValue;
+      //   }
+      // }
+
+      // console.log(Foo.getPrivateValue(new Foo())); // 42
+    </script>
+  </body>
+</html>
