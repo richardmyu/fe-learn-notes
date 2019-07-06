@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // function* helloWorldGenerator() {
+      //   console.log("一切猜刚刚开始");
+      //   yield "hello";
+      //   console.log("准备好了吗？");
+      //   console.log("omg，已经开始了吗？");
+      //   yield "world";
+      //   console.log("也许我可以做得更多");
+      //   return "ending";
+      // }
+
+      // var hw = helloWorldGenerator();
+      // console.log(hw);
+
+      // console.log(hw.next());
+      // // 一切猜刚刚开始
+      // // { value: 'hello', done: false }
+
+      // console.log(hw.next());
+      // // 准备好了吗？
+      // // omg，已经开始了吗？
+      // // { value: 'world', done: false }
+
+      // console.log(hw.next());
+      // // 也许我可以做得更多
+      // // { value: 'ending', done: true }
+
+      // console.log(hw.next());
+      // // { value: undefined, done: true }
+
+      // function* f() {
+      //   console.log("执行了！");
+      // }
+
+      // var generator = f();
+
+      // generator.next();
+      // generator.next();
+      // setTimeout(function() {
+      //   generator.next();
+      // }, 0);
+
+      var arr = [1, [[2, 3], 4], [5, 6]];
+
+      var flat = function*(a) {
+        var length = a.length;
+        for (var i = 0; i < length; i++) {
+          var item = a[i];
+          if (typeof item !== "number") {
+            yield* flat(item);
+          } else {
+            yield item;
+          }
+        }
+      };
+      for (var f of flat(arr)) {
+        console.log(f);
+      }
+    </script>
+  </body>
+</html>
