@@ -8,21 +8,21 @@
   </head>
   <body>
     <script>
-      var obj = new Proxy(
-        {},
-        {
-          get: function(target, key, receiver) {
-            console.log(`getting ${key}!`);
-            return Reflect.get(target, key, receiver);
-          },
-          set: function(target, key, value, receiver) {
-            console.log(`setting ${key}!`);
-            return Reflect.set(target, key, value, receiver);
-          }
-        }
-      );
-      obj.count = 1;
-      console.log(++obj.count);
+      // var obj = new Proxy(
+      //   {},
+      //   {
+      //     get: function(target, key, receiver) {
+      //       console.log(`getting ${key}!`);
+      //       return Reflect.get(target, key, receiver);
+      //     },
+      //     set: function(target, key, value, receiver) {
+      //       console.log(`setting ${key}!`);
+      //       return Reflect.set(target, key, value, receiver);
+      //     }
+      //   }
+      // );
+      // obj.count = 1;
+      // console.log(++obj.count);
       // var proxy = new Proxy(
       //   {},
       //   {
@@ -35,6 +35,41 @@
       // console.log(proxy.time); // 35
       // console.log(proxy.name); // 35
       // console.log(proxy.title); // 35
+
+      // let person = {
+      //   name: "xiaoming",
+      //   age: 30
+      // };
+      // let handler = {
+      //   set(target, key, value, receiver) {
+      //     if (key === "name" && typeof value !== "string") {
+      //       throw new Error("用户姓名必须是字符串类型");
+      //     }
+      //     if (key === "age" && typeof value !== "number") {
+      //       throw new Error("用户年龄必须是数字类型");
+      //     }
+      //     console.log(Reflect);
+      //     return Reflect.set(target, key, value, receiver);
+      //   }
+      // };
+      // let boy = new Proxy(person, handler);
+      // try {
+      //   boy.name = "xiaohong"; // OK
+      //   boy.age = "18"; // 报错  用户年龄必须是数字类型
+      // } catch (err) {
+      //   console.error(err);
+      // }
+      const target = {
+        m() {
+          console.log(this === proxy);
+        }
+      };
+      const handler = {};
+
+      const proxy = new Proxy(target, handler);
+
+      target.m(); // false
+      proxy.m(); // true
     </script>
   </body>
 </html>
