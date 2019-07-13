@@ -6,11 +6,11 @@ JavaScript 语言具有很强的面向对象编程能力。
 
 #### 1.1.对象是什么
 
-**面向对象编程（Object Oriented Programming，缩写为 OOP）**是目前主流的编程范式。它将真实世界各种复杂的关系，抽象为一个个对象，然后由对象之间的分工与合作，完成对真实世界的模拟。
+**面向对象编程**（Object Oriented Programming，缩写为 OOP）是目前主流的编程范式。它将真实世界各种复杂的关系，抽象为一个个对象，然后由对象之间的分工与合作，完成对真实世界的模拟。
 
-每一个对象都是功能中心，具有明确分工，可以完成接受信息、处理数据、发出信息等任务。对象可以复用，通过继承机制还可以定制。因此，面向对象编程具有灵活、代码可复用、高度模块化等特点，容易维护和开发，比起由一系列函数或指令组成的传统的**过程式编程（procedural programming）**，更适合多人合作的大型软件项目。
+每一个对象都是功能中心，具有明确分工，可以完成接受信息、处理数据、发出信息等任务。对象可以复用，通过继承机制还可以定制。因此，面向对象编程具有灵活、代码可复用、高度模块化等特点，容易维护和开发，比起由一系列函数或指令组成的传统的**过程式编程**（procedural programming），更适合多人合作的大型软件项目。
 
-对象是单个实物的抽象；对象是一个容器，封装了**属性（property）**和**方法（method）**。
+对象是单个实物的抽象；对象是一个容器，封装了**属性**（property）和**方法**（method）。
 
 > **属性是对象的状态，方法是对象的行为**。
 
@@ -18,13 +18,13 @@ JavaScript 语言具有很强的面向对象编程能力。
 
 面向对象编程的第一步，就是要生成对象。通常需要一个模板，表示某一类实物的共同特征，然后对象根据这个模板生成。
 
-典型的面向对象编程语言（比如 C++ 和 Java），都有**类（class）**这个概念。所谓“类”就是对象的模板，对象就是“类”的实例。但是，JavaScript 语言的对象体系，不是基于“类”的，而是基于**构造函数（constructor）**和**原型（prototype）**。
+典型的面向对象编程语言（比如 C++ 和 Java），都有**类**（class）这个概念。所谓“类”就是对象的模板，对象就是“类”的实例。但是，JavaScript 语言的对象体系，不是基于“类”的，而是基于**构造函数**（constructor）和**原型**（prototype）。
 
-JavaScript 语言使用构造函数作为对象的模板。**所谓”构造函数”，就是专门用来生成实例对象的函数**。它就是对象的模板，描述实例对象的基本结构。一个构造函数，可以生成多个实例对象，这些实例对象都有相同的结构。
+JavaScript 语言使用构造函数作为对象的模板。所谓”构造函数”，就是专门用来生成实例对象的函数。它就是对象的模板，描述实例对象的基本结构。一个构造函数，可以生成多个实例对象，这些实例对象都有相同的结构。
 
-构造函数就是一个普通的函数，但是有自己的特征和用法。为了与普通函数区别，构造函数名字的第一个字母通常大写(这是规范要求，不是实际区分普通函数和构造函数的关键点，区分的关键点在于内部是否使用 `this` 关键字以及在调用的时候是否需要 `new` 关键字)。
+构造函数就是一个普通的函数，但是有自己的特征和用法。为了与普通函数区别，构造函数名字的第一个字母通常大写(这是规范要求，不是实际区分普通函数和构造函数的关键点)。
 
-构造函数的特点有两个。
+构造函数的特点（区分的关键点）有两个。
 
 - 函数体内部使用了 `this` 关键字，代表了所要生成的对象实例。
 - 生成对象的时候，必须使用 `new` 命令。
@@ -41,14 +41,15 @@ var Vehicle = function() {
 };
 
 var v = new Vehicle();
+v; // Vehicle {price: 1000}
 v.price; // 1000
 ```
 
 使用 `new` 命令时，根据需要，构造函数也可以接受参数。
 
 ```javascript
-var Vehicle = function(p) {
-  this.price = p;
+var Vehicle = function(num) {
+  this.price = num;
 };
 
 var v = new Vehicle(500);
@@ -61,12 +62,12 @@ v.price; //500
 // 推荐的写法
 var v = new Vehicle();
 // 不推荐的写法
-var v = new Vehicle;
+var v = new Vehicle();
 ```
 
 一个很自然的问题是，如果忘了使用 `new` 命令，直接调用构造函数会发生什么事？
 
-这种情况下，构造函数就变成了普通函数，并不会生成实例对象。如果函数在全局下定义，那么 `this` 这时代表全局对象，将造成一些意想不到的结果。。。
+这种情况下，构造函数就变成了普通函数，并不会生成实例对象。如果函数在全局下定义，那么 `this` 这时代表全局对象。
 
 ```javascript
 var Vehicle = function() {
@@ -75,6 +76,7 @@ var Vehicle = function() {
 
 var v = Vehicle();
 console.log(v); // undefined
+console.log(v.price); // TypeError
 console.log(price); // 1000
 ```
 
@@ -107,17 +109,20 @@ function Fubar(foo, bar) {
   this.bar = bar;
 }
 
-console.log(Fubar(1, 2));
+Fubar(1, 2);
 //Fubar {foo: 1, bar: 2}
-console.log(new Fubar(1, 2));
+
+new Fubar(1, 2);
 //Fubar {foo: 1, bar: 2}
-console.log(Fubar(1, 2).foo); //1
-console.log(new Fubar(1, 2).foo); //1
+
+Fubar(1, 2).foo; //1
+
+new Fubar(1, 2).foo; //1
 ```
 
 ##### 1.3.2 new 命令的原理
 
-使用 `new` 命令时，它后面的函数依次执行下面的步骤。
+使用 `new` 命令时，它后面的函数依次执行下面的步骤（<a href="./demo/new.html" target="_blank">demo</a>）。
 
 ---
 
@@ -130,7 +135,27 @@ console.log(new Fubar(1, 2).foo); //1
 
 也就是说，构造函数内部，`this` 指的是一个新生成的空对象，所有针对 `this` 的操作，都会发生在这个空对象上。构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作一个空对象（即 `this` 对象），将其“构造”为需要的样子。默认返回 `this` 对象。
 
-如果构造函数内部有 `return` 语句，而且 `return` 后面跟着一个对象，`new` 命令会返回 `return` 语句指定的对象；否则，就会不管 `return` 语句，返回 `this` 对象。
+`new` 命令简化的内部流程，可以用下面的代码表示。
+
+```javascript
+// ES5
+function _new(constructor, params) {
+  var args = [].slice.call(arguments);
+  var constructor = args.shift();
+  var context = Object.create(constructor.prototype);
+  var result = constructor.apply(context, args);
+  return typeof result === "object" && result != null ? result : context;
+}
+
+// ES6
+function _new(constructor, ...params) {
+  let context = Object.create(constructor.prototype);
+  let result = constructor.apply(context, params);
+  return typeof result === "object" && result != null ? result : context;
+}
+```
+
+如果构造函数内部有 `return` 语句，而且 `return` 后面跟着一个对象，`new` 命令则会返回 `return` 语句指定的对象；否则，就会不管 `return` 语句，返回 `this` 对象。
 
 ```javascript
 var Vehicle = function() {
@@ -178,54 +203,24 @@ console.log(msgs); // {}
 console.log(typeof msgs); // "object"
 ```
 
-**这是因为 `new` 命令总是返回一个对象，要么是实例对象，要么是 `return` 语句指定的对象**。
-
-`new` 命令简化的内部流程，可以用下面的代码表示。
-
-```javascript
-function _new(constructor, params) {
-  //constructor  构造函数
-  //params  构造函数参数
-
-  // 将 arguments 对象转为数组
-  var args = [].slice.call(arguments);
-  // 取出构造函数
-  var constructor = args.shift();
-
-  // 1.创建一个空对象；2.将这个空对象的原型指向构造函数的 prototype 属性
-  var context = Object.create(constructor.prototype);
-
-  // 3.将此空对象赋值给 this；4.执行构造函数内的代码
-  var result = constructor.apply(context, args);
-
-  // 如果返回结果是对象，就直接返回，否则返回 context 对象
-  return typeof result === "object" && result != null ? result : context;
-}
-
-function Person(name, age) {
-  this.name = name;
-  this.age = age;
-}
-
-// 实例
-var actor = _new(Person, "张三", 28);
-//Person {name: "张三", age: 28}
-```
+> 因为 `new` 命令总是返回一个对象，要么是实例对象，要么是 `return` 语句指定的对象。
 
 ##### 1.3.3 new.target
 
-函数内部可以使用 `new.target` 属性。如果当前函数是 `new` 命令调用，`new.target` 指向当前函数，否则为 `undefined`。
+函数内部可以使用 `new.target` 属性。如果当前函数是 `new` 命令调用，`new.target` 指向当前函数，否则为 `undefined`。但注意，不能直接使用 `new`。
 
 ```javascript
 function f() {
+  // console.log(new); // SyntaxError: Unexpected token )
+  console.log(new.target);
   console.log(new.target === f);
 }
 
-f(); // false
-new f(); // true
+f(); // undefined  false
+new f(); // f(){...}  true
 ```
 
-使用这个属性，可以判断函数调用的时候，是否使用`new`命令。
+使用这个属性，可以判断函数调用的时候，是否使用 `new` 命令。
 
 ```javascript
 function f() {

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Test</title>
+  </head>
+  <body>
+    <script>
+      function f() {
+				// console.dir(new);
+				console.log(new.target);
+        console.log(new.target === f);
+      }
+
+      // f();
+      new f();
+    </script>
+  </body>
+</html>
