@@ -48,7 +48,7 @@ var f = new F();
 // 等同于
 
 var f = Object.setPrototypeOf({}, F.prototype);
-// !!! 注意要改变this的指向 ？？？
+// !!! 注意要改变this的指向
 F.call(f);
 ```
 

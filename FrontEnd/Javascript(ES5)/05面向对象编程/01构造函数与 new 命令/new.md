@@ -220,7 +220,7 @@ f(); // undefined  false
 new f(); // f(){...}  true
 ```
 
-使用这个属性，可以判断函数调用的时候，是否使用 `new` 命令。
+使用这个属性，可以判断 函数调用的时候，是否使用 `new` 命令。
 
 ```javascript
 function f() {
