@@ -21,7 +21,15 @@
       Fn.prototype.ss = function() {
         console.log("lll");
       };
-      console.log(fn);
+      // console.log(fn);
+    </script>
+    <script>
+      let obj1 = { p: 1 };
+      // let obj2 = Object.create(obj1, null);
+      // let obj3 = Object.create(obj1, undefined);
+      // let obj4 = Object.create(obj1, 123);
+      let obj5 = Object.create(obj1, "123");
+      console.log(obj2);
     </script>
   </body>
 </html>

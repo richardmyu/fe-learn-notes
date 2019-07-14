@@ -79,7 +79,19 @@ F.call(f);
 
 #### 2.3.Object.create()
 
-该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例 完全继承 原型对象的属性。
+`Object.create()` 方法创建一个新对象，使用现有的对象来提供新创建的对象的`__proto__`。 该新对象 _完全继承_ 原型对象的属性。
+
+**语法**
+
+`Object.create(proto, [propertiesObject])`
+
+**参数**
+
+- proto
+  - 新创建对象的原型对象。
+    >
+- propertiesObject
+  - 可选。如果没有指定为 `undefined`，则是要添加到新创建对象的可枚举属性（即其自身定义的属性，而不是其原型链上的枚举属性）对象的属性描述符以及相应的属性名称。这些属性对应 `Object.defineProperties()` 的第二个参数。
 
 ```javascript
 // 原型对象
@@ -89,7 +101,7 @@ var A = {
   }
 };
 
-// 实例对象
+// 新对象
 var B = Object.create(A);
 
 Object.getPrototypeOf(B) === A; // true
@@ -97,7 +109,7 @@ B.print(); // hello
 B.print === A.print; // true
 ```
 
-实际上，`Object.create` 方法可以用下面的代码代替。
+实际上，`Object.create` 方法可以用下面的代码模拟：
 
 ```javascript
 // 模拟 Object.create
@@ -113,8 +125,6 @@ Object.getPrototypeOf(bb) === aa; //true
 bb.a; //111
 bb.a === aa.a; //true
 ```
-
-上面代码表明，`Object.create` 方法的实质是新建一个空的构造函数 `F`，然后让 `F.prototype` 属性指向参数对象 obj，最后返回一个 `F` 的实例，从而实现让该实例继承 obj 的属性。（这样做有什么好处呢？？？）
 
 下面三种方式生成的新对象是等价的。
 
@@ -189,6 +199,36 @@ var b = Object.create(a);
 
 b.constructor === A; // true
 b instanceof A; // true
+```
+
+**返回值**
+
+一个新对象，带着指定的原型对象和属性。
+
+**例外**
+
+~~如果 propertiesObject 参数是 `null` 或非原始包装对象，则抛出一个 `TypeError` 异常。~~如果 propertiesObject 参数是 `null` 或非原始包装对象，则抛出一个 `TypeError` 异常。
+
+```js
+// 2019-07-14 Google Chrome  75.0.3770.100（正式版本） （64 位）
+let obj1 = { p: 1 };
+let obj2 = Object.create(obj1, null);
+// TypeError: Cannot convert undefined or null to object
+
+let obj3 = Object.create(obj1, undefined);
+// {}
+//   __proto__:
+//     p: 1
+//     __proto__: Object
+
+let obj4 = Object.create(obj1, 123);
+// {}
+//   __proto__:
+//     p: 1
+//     __proto__: Object
+
+let obj4 = Object.create(obj1, "123");
+// TypeError: Property description must be an object: 1
 ```
 
 #### 2.4.Object.prototype.isPrototypeOf()
