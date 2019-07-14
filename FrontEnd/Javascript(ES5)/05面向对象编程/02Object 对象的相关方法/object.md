@@ -2,12 +2,15 @@
 
 #### 2.1.Object.getPrototypeOf()
 
-`Object.getPrototypeOf` 方法返回参数对象的原型。这是获取原型对象的标准方法。
+`Object.getPrototypeOf` 方法返回参数对象的原型（内部 `[[Prototype]]` 属性的值）。这是获取原型对象的标准方法。如果没有继承属性，则返回 `null`。在 ES5 中，如果参数不是一个对象类型，将抛出一个 `TypeError` 异常。在 ES6 中，参数会被强制转换为一个 Object。
 
 ```javascript
 var F = function() {};
 var f = new F();
 Object.getPrototypeOf(f) === F.prototype; // true
+
+Object.getPrototypeOf(null);
+// TypeError: Cannot convert undefined or null to object
 ```
 
 下面是几种特殊对象的原型。
@@ -19,6 +22,9 @@ Object.getPrototypeOf({}) === Object.prototype; // true
 // Object.prototype 的原型是 null
 Object.getPrototypeOf(Object.prototype) === null; // true
 
+// Function.prototype 的原型是 Object.prototype
+Object.getPrototypeOf(Function.prototype) === Object.prototype; // true
+
 // 函数的原型是 Function.prototype
 function f() {}
 Object.getPrototypeOf(f) === Function.prototype; // true
@@ -26,7 +32,7 @@ Object.getPrototypeOf(f) === Function.prototype; // true
 
 #### 2.2.Object.setPrototypeOf()
 
-`Object.setPrototypeOf` 方法为对象设置原型，返回该对象。它接受两个参数，第一个是参数对象，第二个是原型对象。
+`Object.setPrototypeOf` 方法为对象设置原型，返回该对象。它接受两个参数，第一个是参数对象，第二个是新原型对象或 `null`（忽略其他类型值）。
 
 ```javascript
 var a = {};
@@ -35,6 +41,25 @@ var b = { x: 1 };
 Object.setPrototypeOf(a, b) === a; //true
 Object.getPrototypeOf(a) === b; //true
 a.x; // 1
+```
+
+> 警告: 由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，更改对象的 `[[Prototype]]` 在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 `obj.__proto__ = ...` 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何 `[[Prototype]]` 已被更改的对象的代码。如果你关心性能，你应该避免设置一个对象的 `[[Prototype]]`。相反，你应该使用 `Object.create()` 来创建带有你想要的 `[[Prototype]]` 的新对象。
+
+如果对象的 `[[Prototype]]` 被修改成不可扩展(通过 `Object.isExtensible()` 查看)，就会抛出 `TypeError` 异常。？？？
+
+```js
+function Fn() {
+  this.name = "jack";
+}
+let fn = new Fn();
+
+// case 1：对象原型不可扩展，设置原型不会报错
+Object.preventExtensions(Object.getPrototypeOf(fn));
+Object.setPrototypeOf(fn, {}); //...
+
+// case 2：对象不可扩展，设置原型报错
+Object.preventExtensions(fn);
+Object.setPrototypeOf(fn, {}); //TypeError: #<Fn> is not extensible
 ```
 
 `new` 命令可以使用 `Object.setPrototypeOf` 方法模拟。

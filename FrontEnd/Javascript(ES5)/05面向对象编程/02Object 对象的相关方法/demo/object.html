@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Object 对象的相关方法</title>
+  </head>
+  <body>
+    <script>
+      function Fn() {
+        this.name = "jack";
+      }
+      let fn = new Fn();
+      // console.log(Object.getPrototypeOf(fn));
+      // console.log(Object.isExtensible(Object.getPrototypeOf(fn)));
+      Object.preventExtensions(Object.getPrototypeOf(fn));
+      // Object.preventExtensions(fn);
+      // console.log(Object.isExtensible(Object.getPrototypeOf(fn)));
+      // Object.setPrototypeOf(fn, {});
+      Fn.prototype.ss = function() {
+        console.log("lll");
+      };
+      console.log(fn);
+    </script>
+  </body>
+</html>
