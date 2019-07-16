@@ -14,6 +14,7 @@
     <br/>
     <br/>
     <router-view></router-view>
+    <p>{{b}}</p>
   </div>
 </template>
 
@@ -22,8 +23,30 @@ import HelloWorld from "./components/HelloWorld.vue";
 
 export default {
   name: "app",
+  data() {
+    return {
+      a: 1
+    };
+  },
+  computed: {
+    b() {
+      console.log(this.a);
+      return this.a;
+    }
+  },
   components: {
     HelloWorld
+  },
+  methods: {
+    c() {
+      for (let i = 0; i < 9; i++) {
+        console.log(i, this.a);
+        this.a++;
+      }
+    }
+  },
+  mounted() {
+    this.c();
   }
 };
 </script>
