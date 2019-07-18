@@ -2,7 +2,7 @@
 
 ### 什么是 REST？
 
-REST即表述性状态传递（英文：Representational State Transfer，简称REST）是 Roy Fielding 博士在2000年他的博士论文中提出来的一种软件架构风格。
+REST 即表述性状态传递（英文：Representational State Transfer，简称 REST）是 Roy Fielding 博士在 2000 年他的博士论文中提出来的一种软件架构风格。
 
 表述性状态转移是一组架构约束条件和原则。满足这些约束条件和原则的应用程序或设计就是 RESTful。需要注意的是，REST 是设计风格而不是标准。REST 通常基于使用 HTTP，URI 和 XML（标准通用标记语言下的一个子集）以及 HTML（标准通用标记语言下的一个应用）这些现有的广泛流行的协议和标准。REST 通常使用 JSON 数据格式。
 
@@ -10,7 +10,8 @@ REST即表述性状态传递（英文：Representational State Transfer，简称
 
 以下为 REST 基本架构的四个方法：
 
-- --
+---
+
 GET - 用于获取数据。
 
 PUT - 用于更新或添加数据。
@@ -18,7 +19,8 @@ PUT - 用于更新或添加数据。
 DELETE - 用于删除数据。
 
 POST - 用于添加数据。
-- --
+
+---
 
 ### RESTful Web Services
 
@@ -61,13 +63,12 @@ RESTful Web 服务通常可以通过自动客户端或代表用户的应用程�
 
 基于以上数据，我们创建以下 RESTful API：
 
-|序号|URI|HTTP方法|发送内容|结果|
-|--|--|--|--|--|
-|1|listUsers|GET|空|显示所有用户列表|
-|2|addUser|POST|JSON|字符串|添加新用户|
-|3|deleteUser|DELETE|JSON|字符串|删除用户|
-|4|:id|GET|空|显示用户详细信息|
-
+| 序号 | URI        | HTTP 方法 | 发送内容 | 结果             |
+| ---- | ---------- | --------- | -------- | ---------------- |
+| 1    | listUsers  | GET       | 空       | 显示所有用户列表 |
+| 2    | addUser    | POST      | JSON     | 字符串           | 添加新用户 |
+| 3    | deleteUser | DELETE    | JSON     | 字符串           | 删除用户 |
+| 4    | :id        | GET       | 空       | 显示用户详细信息 |
 
 - 获取用户列表：
 
@@ -167,7 +168,7 @@ var server = app.listen(8081, function () {
 接下来执行以下命令：
 
 ```
-$ node server.js 
+$ node server.js
 应用实例，访问地址为 http://0.0.0.0:8081
 ```
 
@@ -193,13 +194,13 @@ $ node server.js
    { name: 'mohit',
      password: 'password4',
      profession: 'teacher',
-     id: 4 } 
+     id: 4 }
 }
 ```
 
 - 显示用户详情
 
-以下代码，我们创建了 RESTful API :id（用户id）， 用于读取指定用户的详细信息，server.js 文件代码如下所示：
+以下代码，我们创建了 RESTful API :id（用户 id）， 用于读取指定用户的详细信息，server.js 文件代码如下所示：
 
 ```
 var express = require('express');
@@ -210,7 +211,7 @@ app.get('/:id', function (req, res) {
    // 首先我们读取已存在的用户
    fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
        data = JSON.parse( data );
-       var user = data["user" + req.params.id] 
+       var user = data["user" + req.params.id]
        console.log( user );
        res.end( JSON.stringify(user));
    });
@@ -228,7 +229,7 @@ var server = app.listen(8081, function () {
 接下来执行以下命令：
 
 ```
-$ node server.js 
+$ node server.js
 应用实例，访问地址为 http://0.0.0.0:8081
 ```
 
@@ -260,7 +261,7 @@ app.get('/deleteUser', function (req, res) {
    fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
        data = JSON.parse( data );
        delete data["user" + 2];
-       
+
        console.log( data );
        res.end( JSON.stringify(data));
    });
@@ -277,7 +278,7 @@ var server = app.listen(8081, function () {
 接下来执行以下命令：
 
 ```
-$ node server.js 
+$ node server.js
 应用实例，访问地址为 http://0.0.0.0:8081
 ```
 
@@ -293,7 +294,7 @@ $ node server.js
    { name: 'ramesh',
      password: 'password3',
      profession: 'clerk',
-     id: 3 } 
+     id: 3 }
 }
 ```
 
@@ -342,7 +343,7 @@ undefined
 undefined
 ```
 
-- --
+---
 
 原文：
 

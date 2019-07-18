@@ -1,8 +1,8 @@
-## 我所理解的RESTful Web API [设计篇]
+## 我所理解的 RESTful Web API [设计篇]
 
 ### 1.为什么叫这个“奇怪”的名字？
 
-2000 年，Roy Thomas Fielding 博士在他那篇著名的博士论文《Architectural Styles and the Design of Network-based Software Architectures》中提出了几种软件应用的架构风格，REST 作为其中的一种架构风格在这篇论文的第5章中进行了概括性的介绍。我个人建议本书的读者都能读读这篇论文，原文和中文译文都可以从网络上找到。
+2000 年，Roy Thomas Fielding 博士在他那篇著名的博士论文《Architectural Styles and the Design of Network-based Software Architectures》中提出了几种软件应用的架构风格，REST 作为其中的一种架构风格在这篇论文的第 5 章中进行了概括性的介绍。我个人建议本书的读者都能读读这篇论文，原文和中文译文都可以从网络上找到。
 
 REST 是 “REpresentational State Transfer” 的缩写，可以翻译成“表现状态转换”，但是在绝大多数场合中我们只说 REST 或者 RESTful。为什么会起这么一个奇怪的名字呢？我们可以从上述这篇论文中找到答案。Fielding 在论文中将 REST 定位为“分布式超媒体应用（Distributed Hypermedia System）”的架构风格，它在文中提到一个名为 “HATEOAS（Hypermedia as the engine of application state）”的概念。
 
@@ -47,12 +47,12 @@ URI 除了可以标识某个独立的资源外（比如 “`http://www.artech.co
   10:   </starring>
   11:   <supportingActors>
   12:     <add ref = "http://www.artech.com/actors/charlize-theron ">查理兹.塞隆</add>
-  13:     <add ref = "http://www.artech.com/actors/jeffrey-jones ">杰弗瑞.琼斯</add>  
-  14:     <add ref = "http://www.artech.com/actors/connie-nielsen">康尼.尼尔森</add>  
+  13:     <add ref = "http://www.artech.com/actors/jeffrey-jones ">杰弗瑞.琼斯</add>
+  14:     <add ref = "http://www.artech.com/actors/connie-nielsen">康尼.尼尔森</add>
   15:   </supportingActors>
   16:   <scriptWriters>
   17:     <add ref = "http://www.artech.com/scriptwriters/jonathan-lemkin">乔纳森•莱姆金</add>
-  19:     <add ref = "http://www.artech.com/scriptwriters/tony-gilroy">托尼•吉尔罗伊 </add>  
+  19:     <add ref = "http://www.artech.com/scriptwriters/tony-gilroy">托尼•吉尔罗伊 </add>
   20:   </scriptWriters>
   21:   <language>英语</language>
   22:   <poster ref = "http://www.artech.com/images/the-devil-s-advocate"/>
@@ -86,7 +86,7 @@ Fielding 在他的论文中将 REST 定位为“分布式超媒体应用”的�
    3:     public IEnumerable<string> GetAllRoles();
    4:     public void CreateRole(string roleName);
    5:     public void DeleteRole(string roleName);
-   6:  
+   6:
    7:     public void AddRolesInUser(string userName, string[] roleNames);
    8:     public void RemoveRolesFromUser(string userName, string[] roleNames);
    9: }
@@ -101,7 +101,7 @@ Fielding 在他的论文中将 REST 定位为“分布式超媒体应用”的�
    4:     public void Create(string roleName);
    5:     public void Delete(string roleName);
    6: }
-   7:  
+   7:
    8: public class RoleAssignmentsService
    9: {
   10:     public void Create(RoleAssignment roleName);
@@ -119,41 +119,41 @@ Fielding 在他的论文中将 REST 定位为“分布式超媒体应用”的�
    1: public class ResourceService
    2: {
    3:     public IEnumerable<Resource>[] Get();
-   4:     public void Post(Resource resource); 
+   4:     public void Post(Resource resource);
    5:     public void Put(Resource resource);
    6:     public void Patch (Resource resource);
    7:     public void Delete(string id);
-   8:  
+   8:
    9:     public void Head(string id);
   10:     public void Options();
   11: }
 ```
 
-上面代码片断提供的7个方法涉及到了7个常用的 HTTP 方法，接下来我们针对资源操作的语义对它们作一个简单的介绍。首先 GET、HEAD 和 OPTIONS 这三个 HTTP 方法旨在发送请求以或者所需的信息。对于 GET，相应所有人对它已经非常熟悉了，它用于获取所需的资源，服务器一般讲对应的资源置于响应的主体部分返回给客户端。
+上面代码片断提供的 7 个方法涉及到了 7 个常用的 HTTP 方法，接下来我们针对资源操作的语义对它们作一个简单的介绍。首先 GET、HEAD 和 OPTIONS 这三个 HTTP 方法旨在发送请求以或者所需的信息。对于 GET，相应所有人对它已经非常熟悉了，它用于获取所需的资源，服务器一般讲对应的资源置于响应的主体部分返回给客户端。
 
 HEAD 和 OPTIONS 相对少见。从资源操作的语义来讲，一个针对某个目标资源发送的 HEAD 请求一般不是为了获取目标资源本身的内容，而是得到描述目标资源的元数据信息。服务器一般讲对应资源的元数据置于响应的报头集合返回给客户端，这样的响应一般不具有主体部分。OPTIONS 请求旨在发送一种“探测”请求以确定针对某个目标地址的请求必须具有怎样的约束（比如应该采用怎样的 HTTP 方法以及自定义的请求报头），然后根据其约束发送真正的请求。比如针对“跨域资源”的预检（Preflight）请求采用的 HTTP 方法就是 OPTIONS。
 
 至于其它 4 中 HTTP 方法（POST、PUT、PATCH 和 DELETE），它们旨在针对目标资源作添加、修改和删除操作。对于 DELETE，它的语义很明确，就是删除一个已经存在的资源。我们着重推荐其它三个旨在完成资源的添加和修改的 HTTP 方法作一个简单的介绍。
 
-通过发送 POST 和 PUT 请求均可以添加一个新的资源，但是两者的不同之处在于：对于前者，请求着一般不能确定标识添加资源最终采用的 URI，即服务端最终为成功添加的资源指定 URI；对于后者，最终标识添加资源的 URI 是可以由请求者控制的。也正是因为这个原因，如果发送 PUT 请求，我们一般直接将标识添加资源的URI作为请求的 URI；对于 POST 请求来说，其 URI 一般是标识添加资源存放容器的 URI。
+通过发送 POST 和 PUT 请求均可以添加一个新的资源，但是两者的不同之处在于：对于前者，请求着一般不能确定标识添加资源最终采用的 URI，即服务端最终为成功添加的资源指定 URI；对于后者，最终标识添加资源的 URI 是可以由请求者控制的。也正是因为这个原因，如果发送 PUT 请求，我们一般直接将标识添加资源的 URI 作为请求的 URI；对于 POST 请求来说，其 URI 一般是标识添加资源存放容器的 URI。
 
 比如我们分别发送 PUT 和 POST 请求以添加一个员工，标识员工的 URI 由其员工 ID 来决定。如果员工 ID 由客户端来指定，我们可以发送 PUT 请求；如果员工 ID 由服务端生成，我们一般发送 POST 请求。具体的请求与下面提供的代码片断类似，可以看出它们的 URI 也是不一样的。
 
 ```
    1: PUT http://www.artech.com/employees/300357 HTTP/1.1
    2: ...
-   3:  
+   3:
    4: <employee>
-   5:   <id>300357</id> 
+   5:   <id>300357</id>
    6:   <name>张三</name>
    7:   <gender>男<gender>
    8:   <birthdate>1981-08-24</birthdate>
    9:   <department>3041</department>
   10: </employee>
- 
+
    1: POST http://www.artech.com/employees HTTP/1.1
    2: ...
-   3:  
+   3:
    4: <employee>
    5:   <name>张三</name>
    6:   <gender>男<gender>
@@ -166,7 +166,7 @@ POST 和 PUT 请求一般将所加资源的内容置于请求的主体。但是�
 
 ```
    1: PUT http://www.artech.com/roles/admin HTTP/1.1
-   2:  
+   2:
    3: ...
 ```
 
@@ -190,17 +190,21 @@ POST 和 PUT 请求一般将所加资源的内容置于请求的主体。但是�
 
 ### 7.支持多种资源表示方式
 
-资源和资源的表示（Representaion）是两个不同的概念，资源本身是一个抽象的概念，是看不见摸不着的，而看得见摸得着的是资源的表现。比如一个表示一个财年销售情况的资源，它既可以表示为一个列表、一个表格或者是一个图表。如果采用图表，又可以使用柱状图、K线图和饼图等，这一切都是针对同一个资源的不同表示。
+资源和资源的表示（Representaion）是两个不同的概念，资源本身是一个抽象的概念，是看不见摸不着的，而看得见摸得着的是资源的表现。比如一个表示一个财年销售情况的资源，它既可以表示为一个列表、一个表格或者是一个图表。如果采用图表，又可以使用柱状图、K 线图和饼图等，这一切都是针对同一个资源的不同表示。
 
 我们说“调用 Web API 获取资源”，这句话其实是不正确的，因为我们获取的不是资源本身，仅仅是资源的某一种表示而已。对于 Web 来说，目前具有两种主流的数据结构，XML 和 JSON，它们也是资源的两种主要的呈现方式。在多语言环境下，还应该考虑描述资源采用的语言。
 
 我们在设计 Web API 的时候，应该支持不同的资源表示，我们不能假定请求提供的资源一定表示成 XML，也不能总是以 JSON 格式返回获取的资源，正确的做法是：根据请求携带的信息识别提交和希望返回的资源表示。对于请求提交的资源，我们一般利用请求的 Content-Type 报头携带的媒体类型来判断其采用的表示类型。对于响应资源表示类型的识别，可以采用如下两种方式。
 
-- --
+---
+
 让请求 URI 包含资源表示类型，这种方式使用的最多的是针对多语言的资源，我们一般讲表示语言（也可以包含地区）的代码作为 URI 的一部分，比如 “`http://www.artech.com/en/orders/2013`” 表示将 2013 年的订单以英文的形式返回。
-- --
+
+---
+
 采用“内容协商（Content Negotiation）”根据请求相关报头来判断它所希望的资源表示类型，比如 “Accept” 和 “Accept-language” 报头可以体现请求可以接受的响应媒体类型和语言。
-- --
+
+---
 
 对于上述两种资源表示识别机制，我们很多人会喜欢后者，因为第一种不够“智能”。实际上前者具有一个后者不具有的特性：“浏览器兼容型”[2]。对于 Web API 开发来说，浏览器应该成为一种最为常用的测试工具。在不借助任何插件的情况下，我们利用浏览器访问我们在地址栏中输入的 URI 时对生成的请求内容不能作任何干预的，如果与资源表示相关的信息（比如语言、媒体类型）被直接包含到请求的 URI 中，那么所有的情况都可以利用浏览器直接测试。
 
@@ -218,23 +222,26 @@ Web API 只会定义根据具体页码的数据查询定义相关的操作，当
 
 第一种貌似很“智能”，其实就是一种画蛇添足的作法，因为它破坏了 Web API 的无状态性。设计无状态的 Web API 不仅仅使 Web API 自身显得简单而精炼，还因减除了针对客户端的“亲和度（Affinty）”使我们可以有效地实施负载均衡，因为只有这样集群中的每一台服务器对于每个客户端才是等效的。
 
-- --
+---
+
 [1] 大部分计算机书籍都将 Side Effect 翻译成“副作用”，而我们一般将“副（负）作用”理解为负面的作用，其实计算机领域 Side Effect 表示的作用无所谓正负，所以我们觉得还是还原其字面的含义“边界效用”。除此之外，对于 GET、HEAD 和 OPTIONS 请求来说，如果服务端需要对它们作日志、缓存甚至计数操作，严格来说这也算是一种 Side Effect，但是请求的发送者不对此负责。
 
 [2] 这里的“兼容”不是指支持由浏览器发送的请求，因为通过执行 JavaScript 脚本可以让作为宿主的浏览器发送任何我们希望的请求，这里的兼容体现在尽可能地支持浏览器访问我们在地址栏中输入的 URI 默认发送的 HTTP-GET 请求。
-- --
+
+---
 
 参考资料：
 
-[1] 《HTTP： The Definitive Guide》, By By David Gourley, Brian Totty, Marjorie Sayer, Anshu Aggarwal, Sailu Reddy 
+[1] 《HTTP： The Definitive Guide》, By By David Gourley, Brian Totty, Marjorie Sayer, Anshu Aggarwal, Sailu Reddy
 
-[2] 《RESTful Web Services》, RESTful Web Services 
+[2] 《RESTful Web Services》, RESTful Web Services
 
-[3] 《A Brief Introduction to REST》，http://www.infoq.com/articles/rest-introduction 
+[3] 《A Brief Introduction to REST》，http://www.infoq.com/articles/rest-introduction
 
 [4] 《TCP/IP Illustrated (Volumn 1: The Protocol)》, by W. Richard Stevens
 
-- --
+---
+
 原文：
 
-[我所理解的RESTful Web API [设计篇]]("https://www.cnblogs.com/artech/p/3506553.html")
+[我所理解的 RESTful Web API [设计篇]]("https://www.cnblogs.com/artech/p/3506553.html")

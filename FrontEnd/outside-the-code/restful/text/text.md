@@ -1,26 +1,27 @@
 ## RESTful 架构详解
 
-### 1.什么是REST
+### 1.什么是 REST
 
 REST 全称是 Representational State Transfer，中文意思是表述（编者注：通常译为表征）性状态转移。 它首次出现在 2000 年 Roy Fielding 的博士论文中，Roy Fielding 是 HTTP 规范的主要编写者之一。 他在论文中提到："我这篇文章的写作目的，就是想在符合架构原理的前提下，理解和评估以网络为基础的应用软件的架构设计，得到一个功能强、性能好、适宜通信的架构。REST 指的是一组架构约束条件和原则。"如果一个架构符合 REST 的约束条件和原则，我们就称它为 RESTful 架构"。
 
 REST 本身并没有创造新的技术、组件或服务，而隐藏在 RESTful 背后的理念就是使用 Web 的现有特征和能力， 更好地使用现有 Web 标准中的一些准则和约束。虽然 REST 本身受 Web 技术的影响很深， 但是理论上 REST 架构风格并不是绑定在 HTTP 上，只不过目前 HTTP 是唯一与 REST 相关的实例。 所以我们这里描述的 REST 也是通过 HTTP 实现的 REST。
 
-### 2.理解RESTful
+### 2.理解 RESTful
 
 要理解 RESTful 架构，需要理解 Representational State Transfer 这个词组到底是什么意思，它的每一个词都有些什么涵义。
 
 下面我们结合 REST 原则，围绕资源展开讨论，从资源的定义、获取、表述、关联、状态变迁等角度，列举一些关键概念并加以解释。
 
-#### 2.1 资源与URI
+#### 2.1 资源与 URI
 
-REST 全称是表述性状态转移，那究竟指的是什么的表述? 其实指的就是资源。任何事物，只要有被引用到的必要，它就是一个资源。资源可以是实体(例如手机号码)，也可以只是一个抽象概念(例如价值) 。 
+REST 全称是表述性状态转移，那究竟指的是什么的表述? 其实指的就是资源。任何事物，只要有被引用到的必要，它就是一个资源。资源可以是实体(例如手机号码)，也可以只是一个抽象概念(例如价值) 。
 
 要让一个资源可以被识别，需要有个唯一标识，在 Web 中这个唯一标识就是 URI(Uniform Resource Identifier)。
 
 URI 既可以看成是资源的地址，也可以看成是资源的名称。如果某些信息没有使用 URI 来表示，那它就不能算是一个资源， 只能算是资源的一些信息而已。URI 的设计应该遵循可寻址性原则，具有自描述性，需要在形式上给人以直觉上的关联。这里以 github 网站为例，给出一些还算不错的 URI：
 
-- --
+---
+
 - https://github.com/git
 - https://github.com/git/git
 - https://github.com/git/git/blob/master/block-sha1/sha1.h
@@ -28,7 +29,8 @@ URI 既可以看成是资源的地址，也可以看成是资源的名称。如�
 - https://github.com/git/git/pulls
 - https://github.com/git/git/pulls?state=closed
 - https://github.com/git/git/compare/master…next
-- --
+
+---
 
 下面让我们来看看 URI 设计上的一些技巧:
 
@@ -58,14 +60,17 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 
 **GET**
 
-- --
+---
+
 - 安全且幂等
 - 获取表示
 - 变更时获取表示（缓存）
-- --
+
+---
+
 - 200（OK） - 表示已在响应中发出
 - 204（无内容） - 资源有空表示
-- 301（Moved Permanently） - 资源的URI已被更新
+- 301（Moved Permanently） - 资源的 URI 已被更新
 - 303（See Other） - 其他（如，负载均衡）
 - 304（not modified）- 资源未更改（缓存）
 - 400 （bad request）- 指代坏请求（如，参数错误）
@@ -73,22 +78,25 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 - 406 （not acceptable）- 服务端不支持所需表示
 - 500 （internal server error）- 通用错误响应
 - 503 （Service Unavailable）- 服务端当前无法处理请求
-- --
 
+---
 
 **POST**
 
-- --
+---
+
 - 不安全且不幂等
 - 使用服务端管理的（自动产生）的实例号创建资源
 - 创建子资源
 - 部分更新资源
 - 如果没有被修改，则不过更新资源（乐观锁）
-- --
+
+---
+
 - 200（OK）- 如果现有资源已被更改
 - 201（created）- 如果新资源被创建
 - 202（accepted）- 已接受处理请求但尚未完成（异步处理）
-- 301（Moved Permanently）- 资源的URI被更新
+- 301（Moved Permanently）- 资源的 URI 被更新
 - 303（See Other）- 其他（如，负载均衡）
 - 400（bad request）- 指代坏请求
 - 404 （not found）- 资源不存在
@@ -98,19 +106,23 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 - 415 （unsupported media type）- 接受到的表示不受支持
 - 500 （internal server error）- 通用错误响应
 - 503 （Service Unavailable）- 服务当前无法处理请求
-- --
+
+---
 
 **PUT**
 
-- --
+---
+
 - 不安全但幂等
 - 用客户端管理的实例号创建一个资源
 - 通过替换的方式更新资源
 - 如果未被修改，则更新资源（乐观锁）
-- --
+
+---
+
 - 200 （OK）- 如果已存在资源被更改
 - 201 （created）- 如果新资源被创建
-- 301（Moved Permanently）- 资源的URI已更改
+- 301（Moved Permanently）- 资源的 URI 已更改
 - 303 （See Other）- 其他（如，负载均衡）
 - 400 （bad request）- 指代坏请求
 - 404 （not found）- 资源不存在
@@ -120,35 +132,40 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 - 415 （unsupported media type）- 接受到的表示不受支持
 - 500 （internal server error）- 通用错误响应
 - 503 （Service Unavailable）- 服务当前无法处理请求
-- --
+
+---
 
 **DELETE**
 
-- --
+---
+
 - 不安全但幂等
 - 删除资源
-- --
+
+---
+
 - 200 （OK）- 资源已被删除
-- 301 （Moved Permanently）- 资源的URI已更改
+- 301 （Moved Permanently）- 资源的 URI 已更改
 - 303 （See Other）- 其他，如负载均衡
 - 400 （bad request）- 指代坏请求
 - 404 （not found）- 资源不存在
 - 409 （conflict）- 通用冲突
 - 500 （internal server error）- 通用错误响应
 - 503 （Service Unavailable）- 服务端当前无法处理请求
-- --
+
+---
 
 下面我们来看一些实践中常见的问题:
 
 - POST 和 PUT 用于创建资源时有什么区别?
 
-POST 和 PUT 在创建资源的区别在于，所创建的资源的名称(URI)是否由客户端决定。 
+POST 和 PUT 在创建资源的区别在于，所创建的资源的名称(URI)是否由客户端决定。
 
 例如为我的博文增加一个 java 的分类，生成的路径就是分类名 `/categories/java`，那么就可以采用 `PUT` 方法。不过很多人直接把 POST、GET、PUT、DELETE 直接对应上 CRUD，例如在一个典型的 rails 实现的 RESTful 应用中就是这么做的。
 
 我认为，这是因为 rails 默认使用服务端生成的 ID 作为 URI 的缘故，而不少人就是通过 rails 实践 REST 的，所以很容易造成这种误解。
 
-- 客户端不一定都支持这些HTTP方法吧?
+- 客户端不一定都支持这些 HTTP 方法吧?
 
 的确有这种情况，特别是一些比较古老的基于浏览器的客户端，只能支持 GET 和 POST 两种方法。
 
@@ -187,9 +204,9 @@ DELETE /deleteUser/1
 
 - 直接忽视缓存可取吗?
 
-即使你按各个动词的原本意图来使用它们，你仍可以轻易禁止缓存机制。 
+即使你按各个动词的原本意图来使用它们，你仍可以轻易禁止缓存机制。
 
-最简单的做法就是在你的 HTTP 响应里增加这样一个报头：  `Cache-control: no-cache`。 但是，同时你也对失去了高效的缓存与再验证的支持(使用 Etag 等机制)。
+最简单的做法就是在你的 HTTP 响应里增加这样一个报头： `Cache-control: no-cache`。 但是，同时你也对失去了高效的缓存与再验证的支持(使用 Etag 等机制)。
 
 对于客户端来说，在为一个 REST 式服务实现程序客户端时，也应该充分利用现有的缓存机制，以免每次都重新获取表示。
 
@@ -285,7 +302,7 @@ Content-Type: application/json; charset=utf-8
 
 {"message":"Must ACCEPT application/json: [\"text/xml\"]"}
 ```
-　　
+
 #### 2.4 资源的链接
 
 我们知道 REST 是使用标准的 HTTP 方法来操作资源的，但仅仅因此就理解成带 CURD 的 Web 数据库架构就太过于简单了。
@@ -331,7 +348,7 @@ Content-Type: application/json; charset=utf-8
 ]
 ```
 
-上面的例子展示了如何使用超媒体来增强资源的连通性。很多人在设计RESTful架构时，使用很多时间来寻找漂亮的URI，而忽略了超媒体。所以，应该多花一些时间来给资源的表述提供链接，而不是专注于"资源的 CRUD"。
+上面的例子展示了如何使用超媒体来增强资源的连通性。很多人在设计 RESTful 架构时，使用很多时间来寻找漂亮的 URI，而忽略了超媒体。所以，应该多花一些时间来给资源的表述提供链接，而不是专注于"资源的 CRUD"。
 
 #### 2.5 状态的转移
 
@@ -365,7 +382,7 @@ Content-Type: application/json; charset=utf-8
 
 这些类似"下一页"之类的链接起的就是这种推进状态的作用——指引你如何从当前状态进入下一个可能的状态。
 
-- --
+---
 
 原文：
 [RESTful 架构详解]("http://www.runoob.com/w3cnote/restful-architecture.html")
