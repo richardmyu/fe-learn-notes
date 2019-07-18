@@ -179,8 +179,6 @@ web 是基于没有任何特殊字符的文本文件创建的。这样才允许�
 
 语义是对标记与符号之间的关系，以及它们的含义的研究。在语言学中，这主要是对语言中的符号（如单词，短语，或声音）意义的研究。在前端 web 开发的上下文中，语义大多是与元素，属性，和属性值（包括像 Microdata 之类的扩展）的一致认同意义相关。这些认同意义通常在规范中被定义概念，它们可以帮助程序员（也就是人类）更好的理解网站中信息的不同方面。但是，即使是规范化以后，元素，属性，和属性值的语义还是受制于开发者对其的适应与吸收。这可能会导致后续对正式认同语义的修改（这也是一个 HTML 设计原则）。[^[3]^](#yyh3)
 
-编写“语义 HTML”的原则是现代专业前端开发的基础之一。大多数语义与现有或预期内容的性质有关（e.g.h1 元素,lang 属性,type 属性的 email 值, Microdata）。然而，不是所有的语义都要源于内容。Class 名不能是“非语义”（unsemantic）的。无论使用什么名字，都要有意义、有目的。Class 名的语义可以和那些 HTML 元素不一样。 我们可以统一利用“全局”的语义命名 HTML 元素、某些 HTML 属性、微数据等等，以免和“本地”的网站/应用专属的常常包含在属性值内的语义相混淆，比如 theclassattribute。
-
 参考：
 
 1. 《Head First HTML 与 CSS》
@@ -192,3 +190,7 @@ web 是基于没有任何特殊字符的文本文件创建的。这样才允许�
 4. [如何理解 Web 语义化？](https://www.zhihu.com/question/20455165)
 
 5. [Semantic HTML](http://justineo.github.io/slideshows/semantic-html/#/)
+
+6. [HTML5 Semantic Elements](https://www.w3schools.com/html/html5_semantic_elements.asp)
+
+7. [深入理解 HTML5 标签](https://segmentfault.com/a/1190000002695791)
