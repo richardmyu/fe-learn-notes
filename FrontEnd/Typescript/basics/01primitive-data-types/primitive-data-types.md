@@ -136,7 +136,7 @@ let nStr: null = "哈哈哈";
 
 undefined 类型的变量只能被赋值为 undefined，null 类型的变量只能被赋值为 null。（根据实际结果来看，undefined 类型的变量也可以被赋值为 null，null 类型的变量也可以被赋值为 undefined）
 
-与 void 的区别是，undefined 和 null 是所有类型的子类型。也就是说 undefined 类型的变量，可以赋值给 number 类型的变量：
+与 void 的区别是，默认情况下 undefined 和 null 是所有类型的子类型。也就是说 undefined 类型的变量，可以赋值给 number 类型的变量：
 
 ```ts
 // 这样不会报错
@@ -144,13 +144,15 @@ let num: number = undefined;
 // 这样也不会报错
 let u: undefined;
 let num: number = u;
+
+// 但我的检测插件会有错误提示
 ```
 
 而 void 类型的变量不能赋值给 number 类型的变量：
 
 ```ts
-let u: void;
-let num: number = u;
+let v: void;
+let num: number = v;
 
-// index.ts(2,5): error TS2322: Type 'void' is not assignable to type 'number'.
+// error TS2322: Type 'void' is not assignable to type 'number'.
 ```

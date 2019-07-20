@@ -33,10 +33,15 @@ function alertName() {
     alert("My name is Tom");
 }
 var unusable = undefined;
+var unusableStr = "undefined";
 // let unusableStr: void = "undefined";
 var u = undefined;
 var n = null;
 var un = null;
 var nu = undefined;
-var uStr = "哈哈哈哈";
-var nStr = "哈哈哈";
+// let uStr: undefined = "哈哈哈哈";
+// let nStr: null = "哈哈哈";
+var numU = undefined;
+var numN = null;
+var v;
+var num = v;

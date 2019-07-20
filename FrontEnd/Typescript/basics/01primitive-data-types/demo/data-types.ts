@@ -43,6 +43,7 @@ function alertName(): void {
 }
 
 let unusable: void = undefined;
+let unusableStr: void = "undefined";
 
 // let unusableStr: void = "undefined";
 
@@ -52,3 +53,10 @@ let un: undefined = null;
 let nu: null = undefined;
 // let uStr: undefined = "哈哈哈哈";
 // let nStr: null = "哈哈哈";
+
+
+let numU: number = undefined;
+let numN: number = null;
+
+let v: void;
+let num: number = v;
