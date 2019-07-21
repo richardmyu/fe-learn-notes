@@ -1,0 +1,12 @@
+// let someValue: any = "this is a string";
+var someValue = 1234;
+console.log(someValue);
+console.log(someValue);
+console.log(someValue);
+console.log(someValue.length);
+console.log(someValue.length);
+console.log(someValue.length);
+var strLength = someValue.length;
+var strLengthAs = someValue.length;
+var strLengthNo = someValue.length;
+console.log(strLength, strLengthAs, strLengthNo);

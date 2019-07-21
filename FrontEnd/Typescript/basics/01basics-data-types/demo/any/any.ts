@@ -33,3 +33,10 @@ console.log(typeof something); // string
 something = 7;
 console.log(something); // 7
 console.log(typeof something); // number
+
+let list: any[] = [1, true, "free"];
+console.log(list); //[ 1, true, 'free' ]
+list[1] = 100;
+console.log(list); //[ 1, 100, 'free' ]
+
+
