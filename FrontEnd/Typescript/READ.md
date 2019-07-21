@@ -2,4 +2,4 @@ TypeScript 学习笔记
 
 参考：
 
-[TypeScript 入门教程](https://ts.xcatliu.com/)
+[TypeScript Handbook（中文版）](https://zhongsp.gitbooks.io/typescript-handbook/content/)
