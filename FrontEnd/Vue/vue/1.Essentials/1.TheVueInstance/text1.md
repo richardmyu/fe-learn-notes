@@ -4,10 +4,10 @@
 
 1.1 构造器(实例化)
 
-```JS
-var vm = new Vue({　
+```js
+var vm = new Vue({
   //选项
-})
+});
 ```
 
 - **DOM**

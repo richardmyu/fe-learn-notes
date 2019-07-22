@@ -38,7 +38,7 @@
 
 ```
 //beforeUpdate
-//this.a === 11 
+//this.a === 11
 //document.getElementsByTagName('p')[0].innerHTML === 10
 <div id="app">
   <p>11</p>
@@ -49,7 +49,7 @@
 </div>
 
 //updated
-//this.a === 11 
+//this.a === 11
 //document.getElementsByTagName('p')[0].innerHTML === 11
 <div id="app">
   <p>11</p>
@@ -65,10 +65,10 @@
 ```
 //beforeUpdate
 <div id="app">
-  <p>10</p> 
-  <br> 
-  <button>add a</button> 
-  <br> 
+  <p>10</p>
+  <br>
+  <button>add a</button>
+  <br>
   <button>add a</button>
 </div>
 ```
@@ -87,7 +87,7 @@
   |
   |
   |
-  |------ beforeCreate 在实例初始化之后，注入 和 响应 配置之前被调用
+  |------ **beforeCreate** 在实例初始化之后，注入 和 响应 配置之前被调用
   |
   |
   |
@@ -95,7 +95,7 @@
   |
   |
   |
-  |------ created 在实例创建完成后被立即调用。实例已完成以下的配置：响应数据，属性和方法的运算，watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。（这是一个常用的生命周期，可以调用 methods 中的方法、改变 data 中的数据，并且修改可以通过 vue 的响应式绑定体现在页面上、获取 computed 中的计算属性等等）
+  |------ **created** 在实例创建完成后被立即调用。实例已完成以下的配置：响应数据，属性和方法的运算，watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。（这是一个常用的生命周期，可以调用 methods 中的方法、改变 data 中的数据，并且修改可以通过 vue 的响应式绑定体现在页面上、获取 computed 中的计算属性等等）
   |
   |
   |-- ...  这里有一个对是否有根元素的判断以及对渲染模板的选择判断，不累叙
@@ -105,7 +105,7 @@
   |
   |
   |
-  |------ beforeMount 在挂载开始之前被调用，相关的 render 函数首次被调用；render 函数的存在触发 beforeMount 
+  |------ **beforeMount** 在挂载开始之前被调用，相关的 render 函数首次被调用；render 函数的存在触发 beforeMount
   |
   |
   |
@@ -113,7 +113,7 @@
   |
   |
   |
-  |------ mounted render 函数执行后触发 mounted（如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$el 也在文档内），挂载完成，在这里可以操作真实 DOM ，一般在这里进行 ajax 操作；mounted 只执行一次；
+  |------ **mounted** render 函数执行后触发 mounted（如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$el 也在文档内），挂载完成，在这里可以操作真实 DOM ，一般在这里进行 ajax 操作；mounted 只执行一次；
   |
   |
   |
@@ -124,7 +124,7 @@
   |      |
   |      |
   |      |
-  |      |------ beforeUpdate 数据更新时触发 beforeUpdate，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。(只有初次渲染会在服务端进行)
+  |      |------ **beforeUpdate** 数据更新时触发 beforeUpdate，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。(只有初次渲染会在服务端进行)
   |      |
   |      |
   |      |
@@ -132,7 +132,7 @@
   |      |
   |      |
   |      |
-  |      |------ updated 由于数据更改导致的虚拟 DOM 重新渲染和打补丁触发 updated。当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。(然而在大多数情况下，你应该避免在此期间更改状态。如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之。)
+  |      |------ **updated** 由于数据更改导致的虚拟 DOM 重新渲染和打补丁触发 updated。当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。(然而在大多数情况下，你应该避免在此期间更改状态。如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之。)
   |      |
   | <----|
   |
@@ -142,7 +142,7 @@
   |
   |
   |
-  |------ beforeDestroy 实例销毁之前调用。在这一步，实例仍然完全可用。
+  |------ **beforeDestroy** 实例销毁之前调用。在这一步，实例仍然完全可用。
   |
   |
   |
@@ -150,7 +150,7 @@
   |
   |
   |
-  |-- Destroyed
+  |-- **Destroyed**
   |      |
   |      |------ destroyed Vue 实例销毁后调用
   |
