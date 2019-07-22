@@ -1,6 +1,6 @@
 # 错误集合
 
-## git错误
+## git 错误
 
 #### 1.`fatal: unable to access 'https://github.com/.../': Empty reply from server`
 
@@ -27,7 +27,7 @@ Username for 'https://github.com':
 
 补上用户名，随后输入密码。但是每次都要提交很麻烦，改 https 提交为 ssh 提交。
 
-重新设置ssh提交：
+重新设置 ssh 提交：
 
 ```javascript
 git remote rm origin
@@ -39,7 +39,7 @@ git push -u origin master
 
 ##### 问题描述
 
-在本地创建的一个分支gh-pages，在master上合并该分支时报错：
+在本地创建的一个分支 gh-pages，在 master 上合并该分支时报错：
 
 ```javascript
 $ git merge gh-pages
@@ -48,7 +48,7 @@ fatal: refusing to merge unrelated histories
 
 ##### 问题分析
 
-这是因为远程仓库origin上的分支master和本地分支master被Git认为是相同的仓库，可以直接合并；但gh-pages分支和本地分支master没有共同祖先，无法合并。
+这是因为远程仓库 origin 上的分支 master 和本地分支 master 被 Git 认为是相同的仓库，可以直接合并；但 gh-pages 分支和本地分支 master 没有共同祖先，无法合并。
 
 #### 4.`git push origin master` 错误
 
@@ -59,14 +59,13 @@ fatal: Could not read from remote repository.
 Please make sure you have the correct access rights and the repository exists.
 ```
 
-在GitHub创建仓库后；然后`git pull origin`，再推；
+在 GitHub 创建仓库后；然后`git pull origin`，再推；
 
-
-#### 6.本地创建仓库关联github仓库，失败哦
+#### 6.本地创建仓库关联 github 仓库，失败哦
 
 ##### 问题描述
 
-在GitHub创建仓库，默认生成README.md文件，本地创建仓库，也生成README.TXT文件，提交后，执行
+在 GitHub 创建仓库，默认生成 README.md 文件，本地创建仓库，也生成 README.TXT 文件，提交后，执行
 
 `git remote add origin git@github.com:richardmyu/learnGit.git`
 `git push -u origin master`
@@ -116,7 +115,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 ##### 错误分析
 
-GitHub远程仓库中的README.md文件不在本地仓库中。 (是否就是说以后若本地仓库与远程仓库有不一样的时候，先拉取再推送)
+GitHub 远程仓库中的 README.md 文件不在本地仓库中。 (是否就是说以后若本地仓库与远程仓库有不一样的时候，先拉取再推送)
 
 ##### 解决
 
@@ -145,7 +144,7 @@ Did you intend to checkout 'origin/dev' which can not be resolved as commit?
 先：`git fetch`
 再：`$ git checkout -b dev origin/dev`
 
-#### pull强制描述
+#### pull 强制描述
 
 ##### 问题描述
 
@@ -198,7 +197,6 @@ fatal: Ambiguous object name: 'origin/dev'.
 
 还有其他办法吗？？？
 
-
 #### `git pull`失败
 
 ##### 问题描述
@@ -211,17 +209,17 @@ fatal: Not a git repository (or any of the parent directories): .git
 
 ##### 问题分析
 
-没有fork到自己的远程仓库
+没有 fork 到自己的远程仓库
 
 ##### 解决
 
-先fork，再克隆
+先 fork，再克隆
 
 #### `git add .`报错
 
 ##### 问题描述
 
-从远处仓库通过ssh方式克隆到本地，删除文件，执行	`git add .`报错：
+从远处仓库通过 ssh 方式克隆到本地，删除文件，执行 `git add .`报错：
 
 ```javascript
 fatal: Not a git repository (or any of the parent directories): .git
@@ -229,62 +227,27 @@ fatal: Not a git repository (or any of the parent directories): .git
 
 ##### 问题分析
 
-没有`.git`文件
+没有 `.git` 文件
 
 ##### 解决
 
-先初始化`git init`
+先初始化 `git init`
 
+#### fatal error in commit_refs
 
-## Hexo
+#### 问题描述
 
-#### 1.`hexo d`
+提交代码报错：
 
-##### 问题分析
-
-执行`hexo d`报错
-
-```javascript
-fatal: HttpRequestException encountered.
-   ▒▒▒▒▒▒▒▒ʱ▒▒▒▒
-bash: /dev/tty: No such device or address
-error: failed to execute prompt script (exit code 1)
-fatal: could not read Username for 'https://github.com': No error
-FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html
-Error: fatal: HttpRequestException encountered.
-   ��������ʱ����
-bash: /dev/tty: No such device or address
-error: failed to execute prompt script (exit code 1)
-fatal: could not read Username for 'https://github.com': No error
+```shell
+remote: Resolving deltas: 100% (5/5), completed with 3 local objects.
+remote: fatal error in commit_refs
+To github.com:richardmyu/learnRep.git
+ ! [remote rejected] master -> master (failure)
+error: failed to push some refs to 'git@github.com:richardmyu/learnRep.git'
 ```
 
 ##### 问题分析
 
-...
-
-##### 解决
-
-```javascript
-deploy:
-  type: git
-  //用git不用https
-  repo: git@github.com:username/username.github.io.git
-```
-
-#### 2.`hexo g`报错
-
-##### 问题描述
-
-```javascript
-$ hexo g
-INFO  Start processing
-FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html
-TypeError: Cannot read property 'count' of undefined
-```
-
-##### 问题分析
-
-
-
-##### 解决
+打开对应仓库查看，页面返回 500，服务器错误
 
