@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <learn-no-com></learn-no-com>
-    <hr>
-    <learn-com></learn-com>
+    <router-link to="/learncom">learncom</router-link>
+    <router-link to="/learnnocom">learnnocom</router-link>
+    <router-link to="/propcom">propcom</router-link>
+    <router-link to="/propstreamcom">propstreamcom</router-link>
+    <router-link to="/propsingle">propsingle</router-link>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import learnCom from "./components/learnCom";
-import learnNoCom from "./components/learnNoCom";
-
 export default {
   name: "App",
-  components: {
-    "learn-com": learnCom,
-    "learn-no-com": learnNoCom
-  }
+  components: {}
 };
 </script>
-
 <style>
+a{
+  padding: 5px 20px;
+}
 </style>
