@@ -31,9 +31,13 @@ const router = new vueRouter({
       path: '/propsingle',
       name: 'propSingle',
       component: () => import('../components/propSingle.vue')
+    },
+    {
+      path: '/demoindex',
+      name: 'DemoIndex',
+      component: () => import('../components/DemoIndex.vue')
     }
   ]
 })
-console.log(router);
 
 export default router

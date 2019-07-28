@@ -5,6 +5,7 @@
     <router-link to="/propcom">propcom</router-link>
     <router-link to="/propstreamcom">propstreamcom</router-link>
     <router-link to="/propsingle">propsingle</router-link>
+    <router-link to="/demoindex">demoindex</router-link>
     <router-view></router-view>
   </div>
 </template>
