@@ -2,73 +2,73 @@
 
 如 index.htm2 所表达
 
-1.`beforeCreate`:`vm.$el`、data 的值都为 undefined
+1.`beforeCreate`: `vm.$el`、data 的值都为 undefined
 
-2.`created`:data 已被赋值，`vm.$el` 的值仍为 undefined
+2.`created`: data 已被赋值，`vm.$el` 的值仍为 undefined
 
-3.`beforeMount`:`vm.$el` 已被赋值，拿到虚拟的 DOM
+3.`beforeMount`: `vm.$el` 已被赋值，拿到虚拟的 DOM
 
-4.`mounted`:在 `beforeMount` 和 `mounted` 之间，虚拟 DOM 被替换为真实 DOM，然后渲染到页面
+4.`mounted`: 在 `beforeMount` 和 `mounted` 之间，虚拟 DOM 被替换为真实 DOM，然后渲染到页面
 
 关于 `beforeMount` 和 `mounted` 都可以拿到 `vm.$el` 值的问题，其实 `<div id="app"></div>` 是根结点，两个阶段都可以拿到，但内面的内容不一样，我们可以在控制台打开：
 
-```
-//beforeMount
-  <div id="app">
-    <p>{{a}}</p>
-    <br>
-    <button v-on:click="a++">add a</button>
-    <br>
-    <button v-on:click="++a">add a</button>
-  </div>
+```html
+<!-- beforeMount -->
+<div id="app">
+  <p>{{a}}</p>
+  <br />
+  <button v-on:click="a++">add a</button>
+  <br />
+  <button v-on:click="++a">add a</button>
+</div>
 
-//mounted
-  <div id="app">
-    <p>10</p>
-    <br>
-    <button>add a</button>
-    <br>
-    <button>add a</button>
-  </div>
+<!-- mounted -->
+<div id="app">
+  <p>10</p>
+  <br />
+  <button>add a</button>
+  <br />
+  <button>add a</button>
+</div>
 ```
 
 很清楚的看到，在 `beforeMount` 阶段的 DOM 跟我们定义的一样，即只有结构，没有数据，而在 `mounted` 阶段，数据绑定了结构，并将其渲染到页面。
 
 关于 `beforeUpdate` 和 `updated` 的一点问题：
 
-```
-//beforeUpdate
-//this.a === 11
-//document.getElementsByTagName('p')[0].innerHTML === 10
+```html
+<!-- beforeUpdate -->
+<!-- this.a === 11 -->
+<!-- document.getElementsByTagName('p')[0].innerHTML === 10 -->
 <div id="app">
   <p>11</p>
-  <br>
+  <br />
   <button>add a</button>
-  <br>
+  <br />
   <button>add a</button>
 </div>
 
-//updated
-//this.a === 11
-//document.getElementsByTagName('p')[0].innerHTML === 11
+<!-- updated -->
+<!-- this.a === 11 -->
+<!-- document.getElementsByTagName('p')[0].innerHTML === 11 -->
 <div id="app">
   <p>11</p>
-  <br>
+  <br />
   <button>add a</button>
-  <br>
+  <br />
   <button>add a</button>
 </div>
 ```
 
 我们在 `beforeUpdate` 和 `updated` 之间打个断点：
 
-```
-//beforeUpdate
+```html
+<!-- beforeUpdate -->
 <div id="app">
   <p>10</p>
-  <br>
+  <br />
   <button>add a</button>
-  <br>
+  <br />
   <button>add a</button>
 </div>
 ```
@@ -77,7 +77,7 @@
 
 由此可知，数据变化才会触发 `beforeUpdate`，而要触发 `updated` 则重新渲染视图。这里就引出一个点，什么数据/如何变化才会导致页面重绘？
 
-```
+```shell
   |
   |-- new Vue() 创建实例
   |
@@ -95,7 +95,9 @@
   |
   |
   |
-  |------ **created** 在实例创建完成后被立即调用。实例已完成以下的配置：响应数据，属性和方法的运算，watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。（这是一个常用的生命周期，可以调用 methods 中的方法、改变 data 中的数据，并且修改可以通过 vue 的响应式绑定体现在页面上、获取 computed 中的计算属性等等）
+  |------ **created** 在实例创建完成后被立即调用。实例已完成以下的配置：响应数据，属性和方法的运算，watch/event 事件回调。
+  |       然而，挂载阶段还没开始，$el 属性目前不可见。（这是一个常用的生命周期，可以调用 methods 中的方法、改变 data 中的数据
+  |       并且修改可以通过 vue 的响应式绑定体现在页面上、获取 computed 中的计算属性等等）
   |
   |
   |-- ...  这里有一个对是否有根元素的判断以及对渲染模板的选择判断，不累叙
@@ -109,11 +111,13 @@
   |
   |
   |
-  |-- create vm.$el and replace 'el' with it 将上面编译好的虚拟 DOM 代替 根元素放入页面；在此过程中，将数据与虚拟 DOM 绑定，并挂载到实例上，即 render 函数的执行是在 beforeMount 和 mounted 之间
+  |-- create vm.$el and replace 'el' with it 将上面编译好的虚拟 DOM 代替 根元素放入页面；
+  |   在此过程中，将数据与虚拟 DOM 绑定，并挂载到实例上，即 render 函数的执行是在 beforeMount 和 mounted 之间
   |
   |
   |
-  |------ **mounted** render 函数执行后触发 mounted（如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$el 也在文档内），挂载完成，在这里可以操作真实 DOM ，一般在这里进行 ajax 操作；mounted 只执行一次；
+  |------ **mounted** render 函数执行后触发 mounted（如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$el 也在文档内）
+  |       挂载完成，在这里可以操作真实 DOM ，一般在这里进行 ajax 操作；mounted 只执行一次；
   |
   |
   |
@@ -124,7 +128,8 @@
   |      |
   |      |
   |      |
-  |      |------ **beforeUpdate** 数据更新时触发 beforeUpdate，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。(只有初次渲染会在服务端进行)
+  |      |------ **beforeUpdate** 数据更新时触发 beforeUpdate，发生在虚拟 DOM 打补丁之前。
+  |      |       这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。(只有初次渲染会在服务端进行)
   |      |
   |      |
   |      |
@@ -132,7 +137,9 @@
   |      |
   |      |
   |      |
-  |      |------ **updated** 由于数据更改导致的虚拟 DOM 重新渲染和打补丁触发 updated。当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。(然而在大多数情况下，你应该避免在此期间更改状态。如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之。)
+  |      |------ **updated** 由于数据更改导致的虚拟 DOM 重新渲染和打补丁触发 updated。当这个钩子被调用时
+  |      |       组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。(然而在大多数情况下，你应该避免在此期间更改状态
+  |      |       如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之。)
   |      |
   | <----|
   |
@@ -146,7 +153,8 @@
   |
   |
   |
-  |-- Teardown watchers,child components and event listeners 解绑 watch、子组件和事件监听...（Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。）
+  |-- Teardown watchers,child components and event listeners 解绑 watch、子组件和事件监听...
+  |   Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
   |
   |
   |
@@ -162,7 +170,7 @@
 
 1.`mounted` 不会承诺所有的子组件也都一起被挂载。如果你希望等到整个视图都渲染完毕，可以用 `vm.$nextTick` 替换掉 `mounted`：
 
-```
+```js
 mounted: function () {
   this.$nextTick(function () {
     // Code that will run only after the
@@ -173,7 +181,7 @@ mounted: function () {
 
 2.`updated` 不会承诺所有的子组件也都一起被重绘。如果你希望等到整个视图都重绘完毕，可以用 `vm.$nextTick` 替换掉 `updated`：
 
-```
+```js
 updated: function () {
   this.$nextTick(function () {
     // Code that will run only after the
@@ -188,6 +196,4 @@ updated: function () {
 
 2.[选项 / 生命周期钩子](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90)
 
-3.[关于Vue.js2.0生命周期的研究与理解](https://segmentfault.com/a/1190000010336178)
-
-4.[]()
+3.[关于 Vue.js2.0 生命周期的研究与理解](https://segmentfault.com/a/1190000010336178)

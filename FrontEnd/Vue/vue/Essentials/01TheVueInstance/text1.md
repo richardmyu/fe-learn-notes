@@ -7,83 +7,83 @@
 ```js
 var vm = new Vue({
   //选项
-});
+})
 ```
 
-- **DOM**
+**DOM**
 
 - el //提供一个在页面上已存在的 DOM 元素作为 Vue 实例的挂载目标
-
+  >
 - template //一个字符串模板作为 Vue 实例的标识使用。模板将会 替换 挂载的元素。挂载元素的内容都将被忽略，除非模板的内容有分发 slot
-
+  >
 - render //字符串模板的代替方案
 
 ---
 
-- **数据**
+**数据**
 
 - data //Vue 实例的数据对象。Vue 将会递归将 data 的属性转换为 getter/setter，从而让 data 的属性能够响应数据变化
-
+  >
 - props //可以是数组或对象，用于接收来自父组件的数据
-
+  >
 - propsData //创建实例时传递 props。主要作用是方便测试
-
+  >
 - computed //计算属性将被混入到 Vue 实例中。所有 getter 和 setter 的 this 上下文自动地绑定为 Vue 实例
-
+  >
 - methods //methods 将被混入到 Vue 实例中。可以直接通过 VM 实例访问这些方法，或者在指令表达式中使用。方法中的 this 自动绑定为 Vue 实例
-
+  >
 - watch //一个对象，键是需要观察的表达式，值是对应回调函数
 
 ---
 
-- **生命周期钩子**
+**生命周期钩子**
 
 - beforeCreate
-
+  >
 - created
-
+  >
 - beforeMount
-
+  >
 - mounted
-
+  >
 - beforeUpdate
-
+  >
 - updated
-
+  >
 - activated //keep-alive 组件激活时调用
-
+  >
 - deactivated //keep-alive 组件停用时调用
-
+  >
 - beforeDestroy
-
+  >
 - destroyed
 
 ---
 
 > 有关生命周期更详细的内容看 <a href="./text2.md">text2.md</a>
 
-- **资源**
+**资源**
 
 - directives //包含 Vue 实例可用指令的哈希表
-
+  >
 - filters //包含 Vue 实例可用过滤器的哈希表
-
+  >
 - components //包含 Vue 实例可用组件的哈希表
 
 ---
 
-- **杂项**
+**杂项**
 
 - parent //指定已创建的实例之父实例，在两者之间建立父子关系。子实例可以用 `this.$parent` 访问父实例，子实例被推入父实例的 `$children` 数组中
-
+  >
 - mixins //mixins 选项接受一个混合对象的数组。Mixin 钩子按照传入顺序依次调用,并在调用组件自身的钩子之前被调用
-
+  >
 - name //允许组件模板递归地调用自身。注意，组件在全局用 `Vue.component()` 注册时，全局 ID 自动作为组件的 name
-
+  >
 - extends //允许声明扩展另一个组件。这主要是为了便于扩展单文件组件。这和 mixins 类似，区别在于，组件自身的选项会比要扩展的源组件具有更高的优先级
-
+  >
 - delimiters //改变纯文本插入分隔符
-
+  >
 - functional //使组件无状态（没有 data ）和无实例（没有 this 上下文）。他们用一个简单的 render 函数返回虚拟节点使他们更容易渲染
 
 ---
