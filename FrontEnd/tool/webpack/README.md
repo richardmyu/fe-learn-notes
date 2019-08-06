@@ -10,8 +10,6 @@ Webpack 是当下最热门的前端资源模块化管理和打包工具。它可
 
 [Webpack 学习总结](https://diamont1001.github.io/webpack-summary/)
 
-[Webpack 学习－工作原理（上）](http://wushaobin.top/2019/02/12/webpackPrinciple/)
-
 [webpack 学习小结](https://imweb.io/topic/579e011a93d9938132cc8d90)
 
 [webpack 学习之路](https://github.com/wangning0/Autumn_Ning_Blog/blob/master/blogs/3-12/webpack.md)
