@@ -8,6 +8,8 @@ Webpack 是当下最热门的前端资源模块化管理和打包工具。它可
 
 [webpack 中文文档（v4.15.1）](http://webpack.html.cn/)
 
+[Webpack 中文指南](https://zhaoda.net/webpack-handbook/index.html)
+
 [Webpack 学习总结](https://diamont1001.github.io/webpack-summary/)
 
 [webpack 学习小结](https://imweb.io/topic/579e011a93d9938132cc8d90)
