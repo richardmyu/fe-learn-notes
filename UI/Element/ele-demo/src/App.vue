@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'App'
 }
@@ -16,6 +15,8 @@ export default {
   min-width: 600px;
   max-width: 1200px;
   margin: 0 auto;
+  line-height: 30px;
+
   .container {
     width: 100%;
     box-sizing: border-box;
@@ -27,10 +28,10 @@ export default {
       margin-bottom: 60px;
       h1 {
         font-size: 36px;
-        margin-bottom: 10px;
+        margin-bottom: 30px;
         color: #000000;
       }
-      p{
+      p {
         text-align: left;
         margin-bottom: 10px;
       }
