@@ -2,9 +2,7 @@
 
 Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
 
-
-
-## 参考：
+## 参考
 
 [jest](https://github.com/facebook/jest)
 
@@ -37,5 +35,3 @@ Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
 [全栈测试实战：用 Jest 测试 Vue + Koa 全栈应用](https://molunerfinn.com/Use-Jest-To-Test-Vue-Koa/#%E5%89%8D%E8%A8%80)
 
 [如何為 vue 補上單元測試來確保品質(vue 單元測試系列-1)](https://dotblogs.com.tw/kinanson/2017/07/20/075338)
-
-[]()

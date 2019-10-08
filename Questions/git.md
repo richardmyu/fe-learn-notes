@@ -8,14 +8,14 @@
 
 #### 2.远程推送失败
 
-##### 问题描述：
+##### 问题描述
 
 执行`git push origin master`,出错
 
-```
+```git
 $ git push origin master
 fatal: HttpRequestException encountered.
-   ▒▒▒▒▒▒▒▒ʱ▒▒▒▒
+...
 Username for 'https://github.com':
 ```
 
@@ -29,10 +29,10 @@ Username for 'https://github.com':
 
 重新设置 ssh 提交：
 
-```javascript
-git remote rm origin
-git remote add origin git@github.com:username/repository.git
-git push -u origin master
+```git
+$ git remote rm origin
+$ git remote add origin git@github.com:username/repository.git
+$ git push -u origin master
 ```
 
 #### 3.合并分支失败
@@ -41,7 +41,7 @@ git push -u origin master
 
 在本地创建的一个分支 gh-pages，在 master 上合并该分支时报错：
 
-```javascript
+```git
 $ git merge gh-pages
 fatal: refusing to merge unrelated histories
 ```
@@ -52,7 +52,7 @@ fatal: refusing to merge unrelated histories
 
 #### 4.`git push origin master` 错误
 
-```javascript
+```git
 fatal: 'origin' does not appear to be a git repository
 fatal: Could not read from remote repository.
 
@@ -67,12 +67,14 @@ Please make sure you have the correct access rights and the repository exists.
 
 在 GitHub 创建仓库，默认生成 README.md 文件，本地创建仓库，也生成 README.TXT 文件，提交后，执行
 
-`git remote add origin git@github.com:richardmyu/learnGit.git`
-`git push -u origin master`
+```git
+$ git remote add origin git@github.com:richardmyu/learnGit.git
+$ git push -u origin master
+```
 
 此时报错：
 
-```javascript
+```git
 To github.com:richardmyu/learngit.git
  ! [rejected]        master -> master (fetch first)
 error: failed to push some refs to 'git@github.com:richardmyu/learngit.git'
@@ -87,7 +89,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 `git pull origin`
 
-```javascript
+```git
 warning: no common commits
 remote: Counting objects: 6, done.
 remote: Compressing objects: 100% (2/2), done.
@@ -102,7 +104,7 @@ for your current branch, you must specify a branch on the command line.
 
 再次执行推送：
 
-```javascript
+```git
 $ git push -u origin master
 To github.com:richardmyu/learngit.git
  ! [rejected]        master -> master (non-fast-forward)
@@ -119,8 +121,10 @@ GitHub 远程仓库中的 README.md 文件不在本地仓库中。 (是否就是
 
 ##### 解决
 
-`$ git pull --rebase origin master`
-`$ git push -u origin master`
+```git
+$ git pull --rebase origin master
+$ git push -u origin master
+```
 
 #### 创建远程分支到本地出错
 
@@ -132,7 +136,7 @@ GitHub 远程仓库中的 README.md 文件不在本地仓库中。 (是否就是
 
 结果报错：
 
-```javascript
+```git
 fatal: Cannot update paths and switch to branch 'dev' at the same time.
 Did you intend to checkout 'origin/dev' which can not be resolved as commit?
 ```
@@ -154,9 +158,9 @@ Did you intend to checkout 'origin/dev' which can not be resolved as commit?
 
 再次`git pull`，然后进入
 
-```javascript
+```git
 # Please enter a commit message to explain why this merge is necessary
-#especiially if it merge an updated upstream into a topic branch
+# especiially if it merge an updated upstream into a topic branch
 #...
 ~
 ```
@@ -167,7 +171,7 @@ Did you intend to checkout 'origin/dev' which can not be resolved as commit?
 
 先`Esc`，再`: wq`,强制退出；界面如下：
 
-```javascript
+```git
 $ git pull
 Merge made by the 'recursive' strategy.
  test/msg.txt | 0
@@ -181,7 +185,7 @@ Merge made by the 'recursive' strategy.
 
 关联本地分支与远程分支出错：
 
-```javascript
+```git
 $ git branch --set-upstream-to=origin/dev dev
 warning: refname 'origin/dev' is ambiguous.
 fatal: Ambiguous object name: 'origin/dev'.
@@ -203,7 +207,7 @@ fatal: Ambiguous object name: 'origin/dev'.
 
 克隆远程仓库，本地拉取
 
-```javascript
+```git
 fatal: Not a git repository (or any of the parent directories): .git
 ```
 
@@ -221,7 +225,7 @@ fatal: Not a git repository (or any of the parent directories): .git
 
 从远处仓库通过 ssh 方式克隆到本地，删除文件，执行 `git add .`报错：
 
-```javascript
+```git
 fatal: Not a git repository (or any of the parent directories): .git
 ```
 
@@ -239,7 +243,7 @@ fatal: Not a git repository (or any of the parent directories): .git
 
 提交代码报错：
 
-```shell
+```git
 remote: Resolving deltas: 100% (5/5), completed with 3 local objects.
 remote: fatal error in commit_refs
 To github.com:richardmyu/learnRep.git
@@ -250,4 +254,3 @@ error: failed to push some refs to 'git@github.com:richardmyu/learnRep.git'
 ##### 问题分析
 
 打开对应仓库查看，页面返回 500，服务器错误
-

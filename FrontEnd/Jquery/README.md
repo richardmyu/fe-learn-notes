@@ -32,24 +32,6 @@ jQuery 学习计划
 
 中级学习：
 
-[jQuery v1.3.2 原理的模拟代码系列](https://www.cnblogs.com/haogj/archive/2010/08/07/1794623.html)
-
-[javascript v1.4.1 笔记：临摹 jQuery](https://www.cnblogs.com/sharpxiajun/archive/2011/09/22/2185566.html)
-
-[jQuery v1.6.1 源码分析系列（停止更新）](https://www.cnblogs.com/nuysoft/archive/2011/11/14/2248023.html)
-
-[jQuery v1.7.2 源码分析系列](https://www.cnblogs.com/chyingp/category/546594.html)
-
-[jQuery1.8.2 源码解析系列](https://www.cnblogs.com/lovesueee/tag/jquery/)
-
-[jQuery v1.10.2 源码解读](https://github.com/chokcoco/jQuery-)
-
-[jQuery v1.11 源码分析](https://www.cnblogs.com/suprise/tag/jQuery/)
-
-[jQuery v2.0.3 源码分析系列](https://www.cnblogs.com/aaronjs/p/3279314.html)
-
-[jquery v2.0.4 实现原理](https://blog.csdn.net/lihongxun945/article/details/10304243)
-
 [jQuery v3.1.1 源码解读](https://github.com/songjinzhong/JQuerySource)
 
 [jQuery 历代记](https://adamed.iteye.com/blog/1426963)

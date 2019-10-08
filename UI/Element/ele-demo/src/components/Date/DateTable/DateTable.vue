@@ -19,11 +19,11 @@
           <ul>注释：
             <li class="text-indent">
               <p>斑马纹：stripe 属性可以创建带斑马纹的表格。它接受一个 Boolean，默认为 false，设置为 true 即为启用。改变条纹背景色：</p>
-              <pre><code class="language-css">.el-table--striped .el-table__body tr.el-table__row--striped td {background-color: rgba(25, 68, 209, 0.5);}</code></pre>
+              <pre class="language-css"><code>.el-table--striped .el-table__body tr.el-table__row--striped td {background-color: rgba(25, 68, 209, 0.5);}</code></pre>
               </li>
             <li class="text-indent">
               <p>带(竖)边框：默认情况下，Table 组件是不具有竖直方向的边框的，如果需要，可以使用 border 属性，它接受一个 Boolean，设置为 true 即可启用。本质上是给 el-table 增加一个类名：el-table--border</p>
-              <pre><code class="language-css">.el-table--border th {border-right: 1px solid #EBEEF5;}</code></pre>
+              <pre class="language-css"><code>.el-table--border th {border-right: 1px solid #EBEEF5;}</code></pre>
               </li>
           </ul>
         </div>
