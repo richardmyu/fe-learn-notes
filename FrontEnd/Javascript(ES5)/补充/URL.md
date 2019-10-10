@@ -1,3 +1,5 @@
+# URL 详解
+
 ## 1.JavaScript URIs
 
 当用户点击一个以 `javascript: URI` 时，它会评估 URI 中的代码，然后用返回的值替换页面内容，除非返回的值是 `undefined`。`void` 运算符可用于返回 `undefined`。例如：
