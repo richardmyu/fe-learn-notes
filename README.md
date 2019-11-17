@@ -1,8 +1,6 @@
 # learnRep
 
-by RichardYu
-
-这是一个个人仓库，嗯，差不多就是一个笔记本吧
+by RichardYus
 
 ## 1.DataScience
 
