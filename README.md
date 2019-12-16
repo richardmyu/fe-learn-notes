@@ -1,5 +1,6 @@
 # learnRep
 
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
 
 ## DataStructures and Algorithms
 
@@ -10,7 +11,7 @@ GitHub：[loiane/javascript-datastructures-algorithms](https://github.com/loiane
 ## FrontEnd
 
 前端学习笔记
-s
+
 ### Javascript(ES5)
 
 主体是学习 JavaScript 时总结的笔记，附带有学习其他一些具体实现或技术的笔记
