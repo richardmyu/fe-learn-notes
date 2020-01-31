@@ -96,7 +96,7 @@ class Person {
   }
 
   set name(value) {
-    return this._name=value;
+    return this._name = value;
   }
 }
 

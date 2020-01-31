@@ -24,7 +24,7 @@ function aryAdd(ary,...params){
   return ary;
 }
 
-console.log(aryAdd([], 1, 2, 3, 4, 5));*/
+console.log(aryAdd([], 1, 2, 3, 4, 5));
 
 let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 for (let i = 0; i < numbers.length; i++) {
@@ -37,10 +37,10 @@ console.log(numbers);
 //[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, undefined]
 
 //二维和多维数组
-let averageTemp = [];
-averageTemp[0] = [72, 75, 79, 79, 81, 81];
-averageTemp[1] = [81, 79, 75, 75, 73, 72];
-console.log(averageTemp);
+let averageTemps = [];
+averageTemps[0] = [72, 75, 79, 79, 81, 81];
+averageTemps[1] = [81, 79, 75, 75, 73, 72];
+console.log(averageTemps);
 
 function printMatrix(myMat) {
   for (var i = 0; i < myMat.length; i++) {
@@ -50,7 +50,7 @@ function printMatrix(myMat) {
   }
 }
 
-printMatrix(averageTemp);
+printMatrix(averageTemps);
 
 let matrix3x3x3=[];
 for(var i=0;i<3;i++){
