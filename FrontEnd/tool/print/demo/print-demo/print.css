@@ -1,0 +1,19 @@
+@media print {
+    /* section标签之前总是插入分页符,意思就是每个section标签都会自动分页 */
+  section {
+		page-break-before: always;
+	}
+    /* h1之后总是插入分页符,意思就是h1标签后的内容会被分到下一页 */
+  h1 {
+		page-break-after: always;
+	}
+    /* 避免在p标签中插入分页符,但是当该标签的内容长度超出一页时还是会继续分页 */
+  p {
+		page-break-inside: avoid;
+	}
+    /* 当p标签内部发生分页时,页面底部至少保留3行,顶部至少保留2行 */
+  p {
+		orphans:3;
+		widows:2;
+	}
+}
