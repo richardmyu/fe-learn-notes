@@ -213,6 +213,9 @@ console.groupEnd();
 
 #### 4.5.4 parseInt
 
+> [如何实现一个parseInt](https://www.lagou.com/lgeduarticle/111969.html)
+> [parseInt (string , radix)](http://ecma-international.org/ecma-262/5.1/#sec-15.1.2.2)
+
 非强制数据类型转换
 
 1).主要用于将**字符串**转为整数；
