@@ -1,1 +1,0 @@
-{ "query": { "presets": ["@babel/react", "@babel/stage-0"], "plugins": [""] } }
