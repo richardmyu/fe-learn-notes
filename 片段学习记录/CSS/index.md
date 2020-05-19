@@ -9,3 +9,7 @@
 `<img src="1.jpg" style="width:480px!important;”>`
 
 > [第 60 题：已知如下代码，如何修改才能让图片宽度为 300px ？注意下面代码不可修改。 #105](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/105)
+
+### 3.第 68 题： 如何解决移动端 Retina 屏 1px 像素问题 #115
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/115)

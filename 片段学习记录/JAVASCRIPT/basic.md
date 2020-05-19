@@ -288,3 +288,126 @@ console.log(b.x)
 ### 18.第 59 题：给定两个数组，写一个方法来计算它们的交集。 #102
 
 > [第 59 题：给定两个数组，写一个方法来计算它们的交集。 #102](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/102)
+
+### 19.第 65 题： a.b.c.d 和 a['b']['c']['d']，哪个性能更高？ #111
+
+> [第 65 题： a.b.c.d 和 a['b']['c']['d']，哪个性能更高？ #111](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/111)
+
+### 20.第 66 题：ES6 代码转成 ES5 代码的实现思路是什么 #112
+
+> [第 66 题：ES6 代码转成 ES5 代码的实现思路是什么 #112](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/112)
+
+### 21.数组编程题
+
+随机生成一个长度为 10 的整数类型的数组，例如 [2, 10, 3, 4, 5, 11, 10, 11, 20]，将其排列成一个新数组，要求新数组形式如下，例如 [[2, 3, 4, 5], [10, 11], [20]]。 #113
+
+> [第 67 题：随机生成一个长度为 10 的整数类型的数组，例如 [2, 10, 3, 4, 5, 11, 10, 11, 20]，将其排列成一个新数组，要求新数组形式如下，例如 [[2, 3, 4, 5], [10, 11], [20]]。 #113](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/113)
+
+### 22.大小写转换
+
+如何把一个字符串的大小写取反（大写变小写小写变大写），例如 ’AbC' 变成 'aBc' 。
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/116)
+
+### 23.第 72 题：为什么普通 for 循环的性能远远高于 forEach 的性能，请解释其中的原因 #121
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/121)
+
+### 24.第 75 题：数组里面有10万个数据，取第一个元素和第10万个元素的时间相差多少 #124
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/124)
+
+### 25.第 76 题：输出以下代码运行结果 #125
+
+```js
+// example 1
+var a={}, b='123', c=123;
+a[b]='b';
+a[c]='c';
+console.log(a[b]);
+
+---------------------
+// example 2
+var a={}, b=Symbol('123'), c=Symbol('123');
+a[b]='b';
+a[c]='c';
+console.log(a[b]);
+
+---------------------
+// example 3
+var a={}, b={key:'123'}, c={key:'456'};
+a[b]='b';
+a[c]='c';
+console.log(a[b]);
+```
+
+> [source](https://github.com/yygmind/blog/issues/43)
+
+### 26.第 83 题：var、let 和 const 区别的实现原理是什么 #133
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/133)
+
+### 27.第 84 题：请实现一个 add 函数，满足以下功能。 #134
+
+```js
+add(1); // 1
+add(1)(2); // 3
+add(1)(2)(3)；// 6
+add(1)(2, 3); // 6
+add(1, 2)(3); // 6
+add(1, 2, 3); // 6
+```
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/134)
+
+### 28.第 87 题：在输入框中如何判断输入的是一个正确的网址 #138
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/138)
+
+### 29.第 95 题：模拟实现一个深拷贝，并考虑对象相互引用以及 Symbol 拷贝的情况 #148
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/148)
+
+### 30.第 98 题：写出如下代码的打印结果 #152
+
+```js
+function changeObjProperty(o) {
+  o.siteUrl = "http://www.baidu.com"
+  o = new Object()
+  o.siteUrl = "http://www.google.com"
+}
+let webSite = new Object();
+changeObjProperty(webSite);
+console.log(webSite.siteUrl);
+```
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/152)
+
+### 31.编程算法题 #153
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/153)
+
+### 32.第 100 题：请写出如下代码的打印结果 #155
+
+```js
+function Foo() {
+  Foo.a = function() {
+    console.log(1)
+  }
+  this.a = function() {
+    console.log(2)
+  }
+}
+Foo.prototype.a = function() {
+  console.log(3)
+}
+Foo.a = function() {
+  console.log(4)
+}
+Foo.a();
+let obj = new Foo();
+obj.a();
+Foo.a();
+```
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/155)
