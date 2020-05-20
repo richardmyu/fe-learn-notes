@@ -1,10 +1,10 @@
 # 算法
 
-### 1.第 71 题： 实现一个字符串匹配算法，从长度为 n 的字符串 S 中，查找是否存在字符串 T，T 的长度是 m，若存在返回所在位置。 #119
+### 1.实现一个字符串匹配算法，从长度为 n 的字符串 S 中，查找是否存在字符串 T，T 的长度是 m，若存在返回所在位置
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/119)
 
-### 2.第 77 题：旋转数组算法题 #126
+### 2.旋转数组算法题
 
 给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
 
@@ -31,7 +31,7 @@
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/126)
 
-### 3.第 81 题：打印出 1 - 10000 之间的所有对称数 例如 121、1331 等 #131
+### 3.打印出 1 - 10000 之间的所有对称数 例如 121、1331 等
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/131)
 
@@ -68,7 +68,7 @@
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/pull/136)
 
-### 6.第 88 题：实现 convert 方法，把原始 list 转换成树形结构，要求尽可能降低时间复杂度 #139
+### 6.实现 convert 方法，把原始 list 转换成树形结构，要求尽可能降低时间复杂度
 
 以下数据结构中，id 代表部门编号，name 是部门名称，parentId 是父部门编号，为 0 代表一级部门，现在要求实现一个 convert 方法，把原始 list 转换成树形结构，parentId 为多少就挂载在该 id 的属性 children 数组下，结构如下：
 
@@ -129,7 +129,7 @@ let result = [
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/139)
 
-### 7.第 92 题：已知数据格式，实现一个函数 fn 找出链条中所有的父级 id #143
+### 7.已知数据格式，实现一个函数 fn 找出链条中所有的父级 id
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/143)
 
@@ -138,4 +138,3 @@ let result = [
 第 93 题：给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。请找出这两个有序数组的中位数。要求算法的时间复杂度为 O(log(m+n))。 #144
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/144)
-

@@ -1,12 +1,12 @@
 # setState
 
-### React 中 setState 什么时候是同步的，什么时候是异步的？
+### 1.React 中 setState 什么时候是同步的，什么时候是异步的？
 
 react 会表现出同步和异步的现象，但本质上是同步的，是其批处理机制造成了一种异步的假象。（其实完全可以在开发过程中，在合成事件和生命周期函数里，完全可以将其视为异步）
 
-> [第 18 题：React 中 setState 什么时候是同步的，什么时候是异步的？ #17](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/17)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/17)
 
-### React setState 笔试题，下面的代码输出什么？
+### 2.React setState 笔试题，下面的代码输出什么
 
 ```jsx
 class Example extends React.Component {
@@ -41,4 +41,4 @@ class Example extends React.Component {
 
 第一次和第二次会合并：都是 `val(= 0) + 1` 操作。
 
-> [第 19 题：React setState 笔试题，下面的代码输出什么？ #18](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/18)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/18)

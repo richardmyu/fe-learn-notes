@@ -1,6 +1,6 @@
 # class
 
-### 1.第 56 题：要求设计 LazyMan 类，实现以下功能。 #98
+### 1.要求设计 LazyMan 类，实现以下功能
 
 ```js
 LazyMan('Tony');
@@ -26,4 +26,4 @@ LazyMan('Tony').eat('lunch').eat('dinner').sleepFirst(5).sleep(10).eat('junk foo
 // I am eating junk food
 ```
 
-> [第 56 题：要求设计 LazyMan 类，实现以下功能。 #98](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/98)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/98)

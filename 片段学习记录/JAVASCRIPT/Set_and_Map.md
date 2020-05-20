@@ -1,5 +1,5 @@
 
-# 介绍下 Set、Map、WeakSet 和 WeakMap 的区别？
+# 介绍下 Set、Map、WeakSet 和 WeakMap 的区别
 
 Set 和 Map 主要的应用场景在于 数据重组 和 数据储存
 
@@ -351,4 +351,4 @@ c.dec()
 
 上面代码中，`Countdown` 类的两个内部属性 `_counter` 和 `_action`，是实例的弱引用，所以如果删除实例，它们也就随之消失，不会造成内存泄漏。
 
-> [第 4 题：介绍下 Set、Map、WeakSet 和 WeakMap 的区别？#6](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/6)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/6)

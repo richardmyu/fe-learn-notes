@@ -1,6 +1,6 @@
 # NPM
 
-### 介绍下 npm 模块安装机制，为什么输入 npm install 就可以自动安装对应的模块？
+### 1.介绍下 npm 模块安装机制，为什么输入 npm install 就可以自动安装对应的模块？
 
 **1.npm 模块安装机制：**
 
@@ -58,7 +58,7 @@
 
 最后一步是生成或更新版本描述文件，`npm install` 过程完成。
 
-> [第 20 题：介绍下 npm 模块安装机制，为什么输入 npm install 就可以自动安装对应的模块？ #22](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/22)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/22)
 
 阅读：
 

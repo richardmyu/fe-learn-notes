@@ -1,6 +1,6 @@
 # basic
 
-### 1.['1', '2', '3'].map(parseInt) what & why ?
+### 1.['1', '2', '3'].map(parseInt) what & why
 
 1.map 给 parseInt 传入的参数：item,index
 
@@ -14,7 +14,7 @@ let parse = unary(parseInt)
 console.log(['1.1', '2', '0.3'].map(parse))
 ```
 
-> 出处：[第 2 题：['1', '2', '3'].map(parseInt) what & why ? #4](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/4)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/4)
 >
 ### 2.将数组扁平化并去除其中重复数据，最终得到一个升序且不重复的数组
 
@@ -34,7 +34,7 @@ ary.map((item, index) => {
 }).filter(item => item)
 ```
 
-> [第 11 题：将数组扁平化并去除其中重复数据，最终得到一个升序且不重复的数组 #8]([第 11 题：将数组扁平化并去除其中重复数据，最终得到一个升序且不重复的数组 #8](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/8))
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/8)
 
 ### 3.`Object.prototype.toString.call()` 、 `instanceof` 以及 `Array.isArray()`
 
@@ -114,7 +114,7 @@ if (!Array.isArray) {
 }
 ```
 
-> [第 21 题：有以下 3 个判断数组的方法，请分别介绍它们之间的区别和优劣Object.prototype.toString.call() 、 instanceof 以及 Array.isArray() #23](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/23)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/23)
 
 ### 4.关于 const 和 let 声明的变量不在 window 上
 
@@ -142,7 +142,7 @@ console.log(window.bb); // undefined
 
 通过上图也可以看到，在全局作用域中，用 `let` 和 `const` 声明的全局变量并没有在全局对象中，只是一个块级作用域（Script）中。
 
-> [第 27 题：关于 const 和 let 声明的变量不在 window 上 #30](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/30)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/30)
 
 更多阅读：
 
@@ -169,9 +169,9 @@ console.log(
 );
 ```
 
-> [第 30 题：请把俩个数组 [A1, A2, B1, B2, C1, C2, D1, D2] 和 [A, B, C, D]，合并为 [A1, A2, A, B1, B2, B, C1, C2, C, D1, D2, D]。 #39](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/39)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/39)
 
-### 6.改造下面的代码，使之输出0 - 9，写出你能想到的所有解法。
+### 6.改造下面的代码，使之输出0 - 9，写出你能想到的所有解法
 
 ```js
 for (var i = 0; i< 10; i++){
@@ -181,21 +181,9 @@ for (var i = 0; i< 10; i++){
 }
 ```
 
-> [第 31 题：改造下面的代码，使之输出0 - 9，写出你能想到的所有解法。 #43](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/43)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/43)
 
-### 7.下面的代码打印什么内容，为什么？
-
-```js
-var b = 10;
-(function b(){
-  b = 20;
-  console.log(b);
-})();
-```
-
-> [第 33 题：下面的代码打印什么内容，为什么？ #48](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/48)
-
-### 8.第 34 题：简单改造下面的代码，使之分别打印 10 和 20。
+### 7.下面的代码打印什么内容，为什么
 
 ```js
 var b = 10;
@@ -205,13 +193,25 @@ var b = 10;
 })();
 ```
 
-> [第 34 题：简单改造下面的代码，使之分别打印 10 和 20。 #51](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/51)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/48)
+
+### 8.第 34 题：简单改造下面的代码，使之分别打印 10 和 20
+
+```js
+var b = 10;
+(function b(){
+  b = 20;
+  console.log(b);
+})();
+```
+
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/51)
 
 ### 9.使用迭代的方式实现 flatten 函数
 
-> [第 36 题：使用迭代的方式实现 flatten 函数 #54](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/54)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/54)
 
-### 10.下面代码中 a 在什么情况下会打印 1？
+### 10.下面代码中 a 在什么情况下会打印 1
 
 ```js
 var a = ?;
@@ -220,7 +220,7 @@ if(a == 1 && a == 2 && a == 3){
 }
 ```
 
-> [第 38 题：下面代码中 a 在什么情况下会打印 1？ #57](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/57)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/57)
 
 ### 11.下面代码输出什么
 
@@ -235,13 +235,13 @@ var a = 10;
 })()
 ```
 
-> [第 41 题：考察作用域的一道代码题 #61](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/61)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/61)
 
 ### 12.使用 sort() 对数组 [3, 15, 8, 29, 102, 22] 进行排序，输出结果
 
-> [第 43 题：使用 sort() 对数组 [3, 15, 8, 29, 102, 22] 进行排序，输出结果 #66](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/66)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/66)
 
-### 13.第 46 题：输出以下代码执行的结果并解释为什么 #76
+### 13.输出以下代码执行的结果并解释为什么
 
 ```js
 var obj = {
@@ -256,17 +256,17 @@ obj.push(2)
 console.log(obj)
 ```
 
-> [输出以下代码执行的结果并解释为什么](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/76)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/76)
 
 ### 14.call 和 apply 的区别是什么，哪个性能更好一些
 
-> [call 和 apply 的区别是什么，哪个性能更好一些](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/84)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/84)
 
-### 15.第 50 题：实现 (5).add(3).minus(2) 功能 #88
+### 15.实现 (5).add(3).minus(2) 功能
 
-> [第 50 题：实现 (5).add(3).minus(2) 功能 #88](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/88)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/88)
 
-### 16.第 53 题：输出以下代码的执行结果并解释为什么 #93
+### 16.输出以下代码的执行结果并解释为什么
 
 ```js
 var a = {n: 1};
@@ -277,31 +277,31 @@ console.log(a.x)
 console.log(b.x)
 ```
 
-> [第 53 题：输出以下代码的执行结果并解释为什么 #93](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/93)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/93)
 
-### 17.第 55 题：某公司 1 到 12 月份的销售额存在一个对象里面 #96
+### 17.某公司 1 到 12 月份的销售额存在一个对象里面
 
 如下：{1:222, 2:123, 5:888}，请把数据处理为如下结构：[222, 123, null, null, 888, null, null, null, null, null, null, null]。
 
-> [第 55 题：某公司 1 到 12 月份的销售额存在一个对象里面 #96](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/96)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/96)
 
-### 18.第 59 题：给定两个数组，写一个方法来计算它们的交集。 #102
+### 18.给定两个数组，写一个方法来计算它们的交集
 
-> [第 59 题：给定两个数组，写一个方法来计算它们的交集。 #102](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/102)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/102)
 
-### 19.第 65 题： a.b.c.d 和 a['b']['c']['d']，哪个性能更高？ #111
+### 19.a.b.c.d 和 a['b']['c']['d']，哪个性能更高
 
-> [第 65 题： a.b.c.d 和 a['b']['c']['d']，哪个性能更高？ #111](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/111)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/111)
 
-### 20.第 66 题：ES6 代码转成 ES5 代码的实现思路是什么 #112
+### 20.ES6 代码转成 ES5 代码的实现思路是什么
 
-> [第 66 题：ES6 代码转成 ES5 代码的实现思路是什么 #112](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/112)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/112)
 
 ### 21.数组编程题
 
 随机生成一个长度为 10 的整数类型的数组，例如 [2, 10, 3, 4, 5, 11, 10, 11, 20]，将其排列成一个新数组，要求新数组形式如下，例如 [[2, 3, 4, 5], [10, 11], [20]]。 #113
 
-> [第 67 题：随机生成一个长度为 10 的整数类型的数组，例如 [2, 10, 3, 4, 5, 11, 10, 11, 20]，将其排列成一个新数组，要求新数组形式如下，例如 [[2, 3, 4, 5], [10, 11], [20]]。 #113](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/113)
+> [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/113)
 
 ### 22.大小写转换
 
@@ -309,15 +309,15 @@ console.log(b.x)
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/116)
 
-### 23.第 72 题：为什么普通 for 循环的性能远远高于 forEach 的性能，请解释其中的原因 #121
+### 23.为什么普通 for 循环的性能远远高于 forEach 的性能，请解释其中的原因
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/121)
 
-### 24.第 75 题：数组里面有10万个数据，取第一个元素和第10万个元素的时间相差多少 #124
+### 24.数组里面有10万个数据，取第一个元素和第10万个元素的时间相差多少
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/124)
 
-### 25.第 76 题：输出以下代码运行结果 #125
+### 25.输出以下代码运行结果
 
 ```js
 // example 1
@@ -343,11 +343,11 @@ console.log(a[b]);
 
 > [source](https://github.com/yygmind/blog/issues/43)
 
-### 26.第 83 题：var、let 和 const 区别的实现原理是什么 #133
+### 26.var、let 和 const 区别的实现原理是什么
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/133)
 
-### 27.第 84 题：请实现一个 add 函数，满足以下功能。 #134
+### 27.请实现一个 add 函数，满足以下功能
 
 ```js
 add(1); // 1
@@ -360,15 +360,15 @@ add(1, 2, 3); // 6
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/134)
 
-### 28.第 87 题：在输入框中如何判断输入的是一个正确的网址 #138
+### 28.在输入框中如何判断输入的是一个正确的网址
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/138)
 
-### 29.第 95 题：模拟实现一个深拷贝，并考虑对象相互引用以及 Symbol 拷贝的情况 #148
+### 29.模拟实现一个深拷贝，并考虑对象相互引用以及 Symbol 拷贝的情况
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/148)
 
-### 30.第 98 题：写出如下代码的打印结果 #152
+### 30.写出如下代码的打印结果
 
 ```js
 function changeObjProperty(o) {
@@ -383,11 +383,11 @@ console.log(webSite.siteUrl);
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/152)
 
-### 31.编程算法题 #153
+### 31.编程算法题
 
 > [source](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/153)
 
-### 32.第 100 题：请写出如下代码的打印结果 #155
+### 32.请写出如下代码的打印结果
 
 ```js
 function Foo() {
