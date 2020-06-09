@@ -278,7 +278,10 @@ promise3--res2:  1
 promise3--res3:  1
 ```
 
-由以上测试可知，在调用过程出错的时候，程序沿着 promise 链寻找第一个 `onRejected` 回调（没有设置 `onRejected` 函数的时候，才会被 `.catch()` 捕获），被捕获的错不会继续传递；若 `onRejected` 回调有返回值，则在下一个 `then()` 可以获取到这个返回值，否则后续调用都将获取不到参数（都只会得到 `undefined`）。
+由以上测试可知：
+
+- 在调用过程出错的时候，程序沿着 promise 链寻找第一个 `onRejected` 回调（没有设置 `onRejected` 函数的时候，才会被 `.catch()` 捕获）；
+- 被捕获的错误不会继续被传递；但若 `onRejected` 回调有返回值，则在下一个 `then()` 可以获取到这个返回值，否则后续调用（若有）都将获取不到参数（都只会得到 `undefined`）；
 
 参考：
 
