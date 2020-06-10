@@ -115,9 +115,9 @@ new Promise((res, rej) => {
 
 > 本质上，`catch(callback)` 是 `then(null, callback)` 的缩略形式，所以一样也会返回一个新 promise，继续链式调用。
 
-##### 1.2.错误传递
+##### 1.2.异常传递
 
-通常，一遇到异常抛出，浏览器就会顺着 promise 链寻找下一个 `onRejected` 失败回调函数或者由 `.catch()` 指定的回调函数。这和以下的同步代码的执行过程很相似。
+通常，一遇到异常抛出，浏览器就会顺着 promise 链寻找下一个 `onRejected` 失败回调函数或者由 `.catch()` 指定的回调函数（若没有指定 `onRejected` 回调函数或者 `.catch()` 调用，见下节：【promise 拒绝事件】 ）。这和以下的同步代码的执行过程很相似。
 
 ```js
 try {
@@ -281,7 +281,7 @@ promise3--res3:  1
 由以上测试可知：
 
 - 在调用过程出错的时候，程序沿着 promise 链寻找第一个 `onRejected` 回调（没有设置 `onRejected` 函数的时候，才会被 `.catch()` 捕获）；
-- 被捕获的错误不会继续被传递；但若 `onRejected` 回调有返回值，则在下一个 `then()` 可以获取到这个返回值，否则后续调用（若有）都将获取不到参数（都只会得到 `undefined`）；
+- 被捕获的异常不会继续被传递；但若 `onRejected` 回调有返回值，则在下一个 `then()` 可以获取到这个返回值，否则后续调用（若有）都将获取不到参数（都只会得到 `undefined`）；
 
 ### 2.promise 拒绝事件
 
@@ -446,23 +446,36 @@ PromiseRejectionEvent
   <prototype>: PromiseRejectionEventPrototype { promise: Getter, reason: Getter, … }
 ```
 
+##### 2.4.实际测试
+
 > demo: 浏览器环境 - [demo/test07.js](demo/test07.js)  node 环境 - [demo/test08.js](demo/test08.js)
 
-两个环境中均没有监听到 `rejectionhandled` 和 `unhandledrejection` 事件？通过阅读 [unhandledrejection 处理没有显式捕获的 Promise 异常 #7](https://github.com/justjavac/the-front-end-knowledge-you-may-not-know/issues/7) 和 [unhandledrejection not working in Chrome](https://stackoverflow.com/questions/40026381/unhandledrejection-not-working-in-chrome)，解决了在浏览器端监听不到的问题，但是在 node 环境没有解决！
+两个环境中均没有监听到 `rejectionhandled` 和 `unhandledrejection` 事件？通过阅读 [unhandledrejection 处理没有显式捕获的 Promise 异常 #7](https://github.com/justjavac/the-front-end-knowledge-you-may-not-know/issues/7) 和 [unhandledrejection not working in Chrome](https://stackoverflow.com/questions/40026381/unhandledrejection-not-working-in-chrome)，解决了在浏览器端监听不到的问题。而在 [Tracking unhandled rejected Promises](https://2ality.com/2016/04/unhandled-rejections.html) 中指出， Node.js v6.6.0+ 默认自动处理 promise 拒绝事件，而不需要主动监听（即无法通过监听这两事件，来捕获 promise 异常）。
 
-> **Note**: 据我所知，原因是 “unhandledrejection” 事件处理程序如果源于不同的脚本源，则会被静默忽略。Chrome 尤其严格要求文件 URL 的安全来源，但我发现在不知不觉中破坏相同来源策略也可能由于其他原因而发生（例如在开启 Chrome 开发工具的webpack-dev-server）。（firefox 也是如此）
+> **Note**: 据我所知，原因是 “unhandledrejection” 事件处理程序如果源于不同的脚本源，则会被静默忽略。Chrome 尤其严格要求文件 URL 的安全来源（firefox 也是如此），但我发现在不知不觉中破坏相同来源策略也可能由于其他原因而发生（例如在开启 Chrome 开发工具的 webpack-dev-server）。
 
 浏览器测试环境中，确实把 promise 代码放到单独的文件中，使用代理服务或者将 promise 代码放回 HTML 文件，都可以正常监听到这两个函数。
+
+还有一点：浏览器环境中，没有 reject 处理函数的时候，异常会在控制台被打印出来。原因在于，当 Promise 发生异常后，会从 `.then` 链进入到 `.catch` 链（若有）， 而 Promise 链结束后依然存在异常，即 Promise 依然是 reject 状态，Promise 会 `throw` 一个 `uncaughtException` 异常，此异常一层一层向外传播，如果所有函数都没有捕获，则在 devtools 的 `console` 输出此异常。为了避免这种异常打印，可以使用 `event.preventDefault` [Tracking unhandled rejected Promises](https://2ality.com/2016/04/unhandled-rejections.html):
+
+```js
+window.addEventListener("rejectionhandled", event => {
+  // 阻止异常（在控制台）被打印出来
+  event.preventDefault();
+  console.log('rejectionhandled: ', event)
+}, false)
+```
+
 
 参考：
 
 1.[使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
 
-[Window: rejectionhandled event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/rejectionhandled_event)
+2.[Window: rejectionhandled event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/rejectionhandled_event)
 
-[unhandledrejection](https://developer.mozilla.org/zh-CN/docs/Web/Events/unhandledrejection)
+3.[unhandledrejection](https://developer.mozilla.org/zh-CN/docs/Web/Events/unhandledrejection)
 
-[PromiseRejectionEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)
+4.[PromiseRejectionEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)
 
 2.[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 

@@ -4,15 +4,13 @@
 
 const process = require("process");
 
-process.on("rejectionhandled", event => {
-	console.log('rejectionhandled: ---', event.reason);
-	event.preventDefault();
+process.on("rejectionhandled", (reason, promise) => {
+	console.log('rejectionhandled: ---', reason);
 });
 
 
-process.on("unhandledrejection", event => {
-	console.log('unhandledrejection: ---', event.reason);
-	event.preventDefault();
+process.on("unhandledrejection", (reason, promise) => {
+	console.log('unhandledrejection: ---', reason);
 });
 
 function foo() {

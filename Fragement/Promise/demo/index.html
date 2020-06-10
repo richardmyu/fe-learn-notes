@@ -18,11 +18,14 @@
 		console.log(window.onunhandledrejection)
 		console.log(window)
 		window.addEventListener("rejectionhandled", event => {
+			// 组织错误（在控制台）被打印出来
+			event.preventDefault();
 			console.log('rejectionhandled: ', event)
 		}, false)
 
 
 		window.addEventListener("unhandledrejection", event => {
+			event.preventDefault();
 			console.log('unhandledrejection: ', event)
 		}, false)
 
