@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<!-- <div>
+		<button id="handled">New Handled Rejection</button>
+		<button id="unhandled">New Unhandled Rejection</button>
+		<button id="report">Report Unhandled Rejection</button>
+	</div> -->
+	<script>
+		console.log(window.onrejectionhandled)
+		console.log(window.onunhandledrejection)
+		console.log(window)
+		window.addEventListener("rejectionhandled", event => {
+			console.log('rejectionhandled: ', event)
+		}, false)
+
+
+		window.addEventListener("unhandledrejection", event => {
+			console.log('unhandledrejection: ', event)
+		}, false)
+
+		function foo() {
+			return Promise.reject("Hello")
+		}
+
+		let fn = foo();
+
+		setTimeout(() => {
+			fn.catch(err => {
+				console.log('---', err)
+			})
+		}, 3000)
+	</script>
+
+	<!-- <script src="./test07.js"></script> -->
+</body>
+
+</html>

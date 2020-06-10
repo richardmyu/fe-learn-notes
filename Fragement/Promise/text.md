@@ -283,9 +283,186 @@ promise3--res3:  1
 - 在调用过程出错的时候，程序沿着 promise 链寻找第一个 `onRejected` 回调（没有设置 `onRejected` 函数的时候，才会被 `.catch()` 捕获）；
 - 被捕获的错误不会继续被传递；但若 `onRejected` 回调有返回值，则在下一个 `then()` 可以获取到这个返回值，否则后续调用（若有）都将获取不到参数（都只会得到 `undefined`）；
 
+### 2.promise 拒绝事件
+
+当 Promise 被拒绝时，会有下文所述的两个事件之一被派发到全局作用域（通常而言，就是 window；如果是在 web worker 中使用的话，就是 Worker 或者其他 worker-based 接口）。
+
+##### 2.1.PromiseRejectionEvent
+
+`PromiseRejectionEvent` 接口表示出现在 JavaScript Promises 被 `rejecte` (拒绝) 时触发的事件。这些事件对遥测(远程测试)和调试特别的有用。
+
+**构造函数：**
+
+`PromiseRejectionEvent()`
+
+- 用给定的参数生成一个 `PromiseRejectionEvent` 事件。
+
+语法：
+
+```js
+new PromiseRejectionEvent(type, {
+  promise: somePromise,
+  reason : someValue
+});
+```
+
+参数：
+
+`PromiseRejectionEvent()` 构造函数继承了 `Event()` 的参数。
+
+- type
+
+  - 一个代表 `PromiseRejectionEvent` 的类型名称的字符串。这是区分大小写的同时必须是 "`rejectionhandled`" 或者 "`unhandledrejection`" 其中之一。
+>
+- promise
+
+  - 代表被 `rejected` 的Promise。
+>
+- reason
+
+  - 代表 promise 被 `rejected` 的原因的值或者对象 Object 。
+
+**属性：**
+
+也从它的父级Event继承属性。
+
+`PromiseRejectionEvent.promise` | 只读
+
+- 被 rejected 的 JavaScript Promise 。
+
+`PromiseRejectionEvent.reason` | 只读
+
+- 一个值或 Object 表明为什么 promise 被 rejected，并传递给 `Promise.reject()`。
+
+**方法：**
+
+没有特定的方法; 从它的父级 Event继承方法。
+
+**事件：**
+
+`unhandledrejection`
+
+`rejectionhandled`
+
+##### 2.2.rejectionhandled
+
+当 Promise 被 rejected 且有 rejection 处理器时会在全局触发 `rejectionhandled` 事件(通常是发生在 window 下，但是也可能发生在 Worker 中)。
+
+根据当前测试时间阶段来看，`PromiseRejectionEvent` 的属性有添加：
+
+```js
+// chrome: rejectionhandled
+PromiseRejectionEvent
+  bubbles: false
+  cancelBubble: false
+  cancelable: false
+  composed: false
+  currentTarget: Window {…}
+  defaultPrevented: false
+  eventPhase: 0
+  isTrusted: true
+  path: [Window]
+  promise: Promise {<rejected>: "Hello"}
+  reason: "Hello"
+  returnValue: true
+  srcElement: Window {…}
+  target: Window {…}
+  timeStamp: 3018.260000011651
+  type: "rejectionhandled"
+  __proto__: PromiseRejectionEvent
+```
+
+```js
+// firefox: rejectionhandled
+​PromiseRejectionEvent
+  bubbles: false
+  cancelBubble: false
+  cancelable: false
+  composed: false
+  currentTarget: null
+  defaultPrevented: false
+  eventPhase: 0
+  explicitOriginalTarget: Window file:///D:/xxx/index.html
+  isTrusted: true
+  originalTarget: Window file:///D:/xxx/index.html
+  reason: "Hello"
+  returnValue: true
+  srcElement: Window file:///D:/xxx/index.html
+  target: Window file:///D:/xxx/index.html
+  timeStamp: 3038
+  type: "rejectionhandled"
+  <get isTrusted()>: function isTrusted()
+  <prototype>: PromiseRejectionEventPrototype { promise: Getter, reason: Getter, … }
+```
+
+##### 2.3.unhandledrejection
+
+当Promise 被 reject 且没有 reject 处理器的时候，会触发 `unhandledrejection` 事件；这可能发生在 window 下，但也可能发生在 Worker 中。
+
+根据当前测试时间阶段来看，`PromiseRejectionEvent` 的属性有添加：
+
+```js
+// chrome: unhandledrejection
+PromiseRejectionEvent
+  bubbles: false
+  cancelBubble: false
+  cancelable: true
+  composed: false
+  currentTarget: Window {…}
+  defaultPrevented: false
+  eventPhase: 0
+  isTrusted: true
+  path: [Window]
+  promise: Promise {<rejected>: "Hello"}
+  reason: "Hello"
+  returnValue: true
+  srcElement: Window {…}
+  target: Window {…}
+  timeStamp: 18.08500000333879
+  type: "unhandledrejection"
+  __proto__: PromiseRejectionEvent
+```
+
+```js
+// firefox: unhandledrejection
+​PromiseRejectionEvent
+  bubbles: false
+  cancelBubble: false
+  cancelable: true
+  composed: false
+  currentTarget: null
+  defaultPrevented: false
+  eventPhase: 0
+  explicitOriginalTarget: Window file:///D:/xxx/index.html
+  isTrusted: true
+  originalTarget: Window file:///D:/xxx/index.html
+  reason: "Hello"
+  returnValue: true
+  srcElement: Window file:///D:/xxx/index.html
+  target: Window file:///D:/xxx/index.html
+  timeStamp: 40
+  type: "unhandledrejection"
+  <get isTrusted()>: function isTrusted()
+  <prototype>: PromiseRejectionEventPrototype { promise: Getter, reason: Getter, … }
+```
+
+> demo: 浏览器环境 - [demo/test07.js](demo/test07.js)  node 环境 - [demo/test08.js](demo/test08.js)
+
+两个环境中均没有监听到 `rejectionhandled` 和 `unhandledrejection` 事件？通过阅读 [unhandledrejection 处理没有显式捕获的 Promise 异常 #7](https://github.com/justjavac/the-front-end-knowledge-you-may-not-know/issues/7) 和 [unhandledrejection not working in Chrome](https://stackoverflow.com/questions/40026381/unhandledrejection-not-working-in-chrome)，解决了在浏览器端监听不到的问题，但是在 node 环境没有解决！
+
+> **Note**: 据我所知，原因是 “unhandledrejection” 事件处理程序如果源于不同的脚本源，则会被静默忽略。Chrome 尤其严格要求文件 URL 的安全来源，但我发现在不知不觉中破坏相同来源策略也可能由于其他原因而发生（例如在开启 Chrome 开发工具的webpack-dev-server）。（firefox 也是如此）
+
+浏览器测试环境中，确实把 promise 代码放到单独的文件中，使用代理服务或者将 promise 代码放回 HTML 文件，都可以正常监听到这两个函数。
+
 参考：
 
 1.[使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
+
+[Window: rejectionhandled event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/rejectionhandled_event)
+
+[unhandledrejection](https://developer.mozilla.org/zh-CN/docs/Web/Events/unhandledrejection)
+
+[PromiseRejectionEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)
 
 2.[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
