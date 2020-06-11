@@ -172,7 +172,7 @@ promise.then(res => {
 })
 ```
 
-若没有使用 `reject`，而是手动抛出一个错误，或者其他代码错误，也能被 `onreject` 或 `catch` 捕获，但是 promise 自身状态不会变。
+很自然的，若没有使用 `reject`，而是手动抛出一个错误，或者其他代码错误，或怎么样呢？当然也能被 `onreject` 或 `catch` 捕获，但是 promise 自身状态不会变（改变 promise 状态的方法只有一个，调用 `resolve` 或者 `reject`，如果同时调用呢？记住 promise 状态改变以后就固定了，所以谁先调用谁改变状态）。
 
 ```js
 const promiseErr = new Promise((res, rej) => {
@@ -189,7 +189,9 @@ const promiseErr = new Promise((res, rej) => {
 })
 ```
 
-结果（谷歌浏览器的输出有点让人疑惑）：
+> [demo](./demo/part02/test01.js)
+
+谷歌浏览器的输出有时候有点让人疑惑：
 
 ```js
 // chrome
@@ -236,7 +238,133 @@ Promise()
 
 ##### 3.1.Promise.prototype.then()
 
+作用是为 Promise 实例添加状态改变时的回调函数。`then` 方法的第一个参数是 `resolved` 状态的回调函数，第二个参数（可选）是 `rejected` 状态的回调函数。
+
+`then` 方法返回的是一个**新** Promise 实例（注意，不是原来那个 Promise 实例）。因此可以采用链式写法，即 `then` 方法后面再调用另一个 `then` 或者其他方法。
+
+```js
+new Promise((res, rej) => {
+  const num = Math.random();
+
+  if (num > 0.5) {
+    res(1);
+  } else {
+    rej(0);
+  }
+}).then(res => {
+  console.log("resolve: ", res)
+}, err => {
+  console.log("reject: ", err)
+})
+```
+
+采用链式的 `then`，可以指定一组按照次序调用的回调函数。这时，前一个回调函数，有可能返回的还是一个 Promise 对象（即有异步操作），这时后一个回调函数，就会等待该 Promise 对象的状态发生变化，才会被调用。
+
+```js
+const p1 = new Promise((res, rej) => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    res(1);
+  }, 2000)
+});
+
+const p2 = new Promise((res, rej) => {
+  // 等到 p1 的状态确定以后，才会执行
+  res(p1);
+});
+
+const p2then = p2.then(res => {
+  console.log("res: ", res);
+});
+
+p2then.catch(err => {
+  console.log(err);
+}).finally(() => {
+  // 可以看出 then 返回了【新】promise
+  console.log(p2); // Promise {<resolved>: 1}
+  console.log(p2then); // Promise {<resolved>: undefined}
+});
+```
+
 ##### 3.2.Promise.prototype.catch()
+
+`catch()` 方法是 `.then(null, rejection)` 或 `.then(undefined, rejection)` 的等价写法，用于指定发生错误时的回调函数。
+
+```js
+// catch
+new Promise((res, rej) => {
+  rej(1);
+}).catch(err => {
+  console.log(err)
+})
+
+// 等价方法 1
+new Promise((res, rej) => {
+  rej(2);
+}).then(null, err => {
+  console.log(err)
+})
+
+// 等价方法 2
+new Promise((res, rej) => {
+  rej(3);
+}).then(undefined, err => {
+  console.log(err)
+})
+
+// 等价方法 3
+new Promise((res, rej) => {
+  rej(4);
+}).then(() => { }, err => {
+  console.log(err)
+})
+```
+
+> 一般来说，不要在 `then()` 方法里面定义 `onreject` 状态的回调函数，总是使用 `catch` 方法。理由是 `catch` 可以捕获前面 `then` 方法执行中的错误，也更接近同步的写法（try/catch）。
+
+如果 Promise 状态已经改变，再抛出错误是无效的。
+
+```js
+// 先改变状态，再抛出错误
+new Promise((res, rej) => {
+  res(1);
+  throw new Error('err res');
+}).then(res => {
+  console.log('res-res', res); // res-res 1
+}).catch(err => {
+  console.log('res-err', err);
+});
+
+// 先抛出错误，再改变状态
+new Promise((res, rej) => {
+  throw new Error('err res');
+  res(1);
+}).then(res => {
+  console.log('res-res', res);
+}).catch(err => {
+  console.log('res-err', err); // res-err Error:err res
+});
+
+// 在 promise 外（此时 promise已完成）抛出错误
+new Promise((res, rej) => {
+  rej(22);
+  setTimeout(() => {
+    throw new Error('err res');
+  }, 0)
+}).then(res => {
+  console.log('rej-res', res);
+}).catch(err => {
+  console.log('rej-err', err);
+});
+// rej-err 22
+// Error: err res
+```
+
+综合前文，结合上文，可知：`onReject` 或 `catch` 只能捕获状态改变之前的非 `reject` 异常，以及 `reject` 本身。
+
+跟传统的 `try/catch` 代码块不同的是，如果没有使用 `catch()` 方法指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。但是会再控制台打印错误。具体细节见 【拒绝事件】。
+
+一般总是建议，Promise 对象后面要跟 `catch()` 方法，这样可以处理 Promise 内部发生的错误。`catch()` 方法返回的还是一个 Promise 对象，因此后面还可以接着调用 `then()` 方法。
 
 **catch 的后续链式操作**
 
@@ -264,9 +392,52 @@ new Promise((res, rej) => {
 不管你们执行不执行，反正我要执行
 ```
 
-> 本质上，`catch(callback)` 是 `then(null, callback)` 的缩略形式，所以一样也会返回一个新 promise，继续链式调用。
+> `catch`方法之中，还能再抛出错误。若没有下一个 `catch` 方法，这个错误也会被漏掉。
 
 ##### 3.3.Promise.prototype.finally()
+
+`finally()` 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。该方法是 ES2018 引入标准的。
+
+```js
+new Promise((res, rej) => {
+  const num = Math.random();
+  if (num > 0.5) {
+    res(1);
+  } else {
+    rej(0)
+  }
+}).then(res => {
+  console.log("resolve: ", res)
+}).catch(err => {
+  console.log("reject/err: ", err)
+}).finally(() => {
+  console.log("啦啦啦")
+})
+```
+
+`finally` 方法的回调函数不接受任何参数，这意味着没有办法知道，前面的 Promise 状态到底是 `fulfilled` 还是 `rejected`。这表明，`finally` 方法里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果。
+
+`finally` 本质上是 `then` 方法的特例。
+
+```js
+promise
+.finally(() => {
+  // 语句
+});
+
+// 等同于
+promise
+.then(
+  result => {
+    // 语句
+    return result;
+  },
+  error => {
+    // 语句
+    throw error;
+  }
+);
+```
 
 ##### 3.4.Promise.all()
 
