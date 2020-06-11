@@ -10,7 +10,7 @@ let curPath = process.cwd().toString()
 
 if (/demo/.test(curPath)) {
 	// powershell 运行（node 运行环境在当前文件）
-	imgPath = './img/sl.jpg'
+	imgPath = '../img/sl.jpg'
 } else {
 	// vscode 输出（node 运行环境在根文件）
 	imgPath = './Fragement/Promise/demo/img/sl.jpg'
