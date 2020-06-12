@@ -382,6 +382,19 @@ new Promise((res, rej) => {
 }).then(() => {
   console.log("不管你们执行不执行，反正我要执行")
 })
+
+// 更好的例子
+new Promise((res, rej) => {
+  console.log("初始化");
+  res();
+}).then(() => {
+  throw new Error("哪里不对");
+  console.log("执行【这个】");
+}).catch(err => {
+  console.log("执行【那个】");
+}).finally(() => {
+  console.log("不管你们执行不执行，反正我要执行")
+});
 ```
 
 结果如下：
@@ -404,15 +417,15 @@ new Promise((res, rej) => {
   if (num > 0.5) {
     res(1);
   } else {
-    rej(0)
+    rej(0);
   }
 }).then(res => {
-  console.log("resolve: ", res)
+  console.log("resolve: ", res);
 }).catch(err => {
-  console.log("reject/err: ", err)
-}).finally(() => {
-  console.log("啦啦啦")
-})
+  console.log("reject/err: ", err);
+}).finally((str) => {
+  console.log("啦啦啦", str); // 啦啦啦 undefined
+});
 ```
 
 `finally` 方法的回调函数不接受任何参数，这意味着没有办法知道，前面的 Promise 状态到底是 `fulfilled` 还是 `rejected`。这表明，`finally` 方法里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果。
@@ -439,7 +452,119 @@ promise
 );
 ```
 
+它的实现也很简单。
+
+```js
+Promise.prototype.finally = function (callback) {
+  let P = this.constructor;
+  return this.then(
+    value  => P.resolve(callback()).then(() => value),
+    reason => P.resolve(callback()).then(() => { throw reason })
+  );
+};
+```
+
+> [demo](./demo/part03/mock_finally.js)
+
+`finally` 也会返回一个**新** promise：
+
+```js
+const p1 = new Promise((res, rej) => {
+  res(1);
+});
+
+const p2 = p1.then(res => {
+  console.log("res ", res);
+});
+
+const p3 = p2.catch(err => {
+  console.log("err ", err);
+});
+
+const p4 = p3.finally((str) => {
+  console.log("str ", str);
+});
+
+setTimeout(() => {
+  console.log("p1 ", p1); // Promise { <state>: "fulfilled", <value>: 1 }
+  console.log("p2 ", p2); // Promise { <state>: "fulfilled", <value>: undefined }
+  console.log("p3 ", p3); // Promise { <state>: "fulfilled", <value>: undefined }
+  console.log("p4 ", p4); // Promise { <state>: "fulfilled", <value>: undefined }
+}, 1000)
+```
+
 ##### 3.4.Promise.all()
+
+`Promise.all()` 方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。
+
+```js
+const p = Promise.all([p1, p2, p3]);
+```
+
+`Promise.all()` 方法接受一个数组作为参数，p1、p2、p3 都是 Promise 实例，如果不是，就会先调用 `Promise.resolve` 方法，将参数转为 Promise 实例，再进一步处理。另外，`Promise.all()` 方法的参数可以不是数组，但必须具有 `Iterator` 接口，且返回的每个成员都是 Promise 实例。
+
+p 的状态由 p1、p2、p3 决定，分成两种情况。
+
+（1）只有 p1、p2、p3 的状态都变成 `fulfilled`，p 的状态才会变成 `fulfilled`，此时 p1、p2、p3 的返回值组成一个数组，传递给 p 的回调函数。
+
+（2）只要 p1、p2、p3 之中有一个被 `rejected`，p 的状态就变成 `rejected`，此时第一个被 `reject` 的实例的返回值，会传递给 p 的回调函数。
+
+```js
+const p1 = Promise.resolve(1);
+const p2 = Promise.resolve(2);
+
+const p3 = new Promise((res, rej) => {
+  const num = Math.random();
+  if (num > 0.5) {
+    res(1);
+  } else {
+    rej(0);
+  }
+});
+
+const p = Promise.all([p1, p2, p3]);
+
+setTimeout(() => {
+  console.log(p1)
+  console.log(p2)
+  console.log(p3)
+  console.log(p)
+});
+```
+
+chrome:
+
+```js
+// Promise {<resolved>: 1}
+// Promise {<resolved>: 2}
+// Promise {<resolved>: 1}
+// Promise {<resolved>: [1, 2, 1]}
+
+// or
+
+// Promise {<resolved>: 1}
+// Promise {<resolved>: 2}
+// Promise {<resolved>: 0}
+// Promise {<resolved>: 0}
+```
+
+foxfire:
+
+```js
+// Promise { <state>: "fulfilled", <value>: 1 }
+// Promise { <state>: "fulfilled", <value>: 2 }
+// Promise { <state>: "fulfilled", <value>: 1 }
+// Promise { <state>: "fulfilled", <value>: (3) [1, 2, 1] }
+
+// or
+
+// Promise { <state>: "fulfilled", <value>: 1 }
+// Promise { <state>: "fulfilled", <value>: 1 }
+// Promise { <state>: "rejected" }
+// Promise { <state>: "rejected" }
+```
+
+注意：p3 中没有添加 `then` 或 `catch`，如果添加了，会有不一样的情况，见 [demo](demo/part03/all.js)。
 
 ##### 3.5.Promise.race()
 
