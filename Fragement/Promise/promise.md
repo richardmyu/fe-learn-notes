@@ -799,6 +799,8 @@ p2.then(res => {
 
 ##### 3.10.Promise.try()
 
+
+
 ### 4.拒绝事件
 
 当 Promise 被拒绝时，会有下文所述的两个事件之一被派发到全局作用域（通常而言，就是 window；如果是在 web worker 中使用的话，就是 Worker 或者其他 worker-based 接口）。
