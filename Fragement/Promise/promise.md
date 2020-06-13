@@ -103,6 +103,8 @@ Promise 对象是一个代理对象（代理一个值），被代理的值在 Pr
 
 `pending` 状态的 Promise 对象可能会变为 `fulfilled` 状态并传递一个值给相应的状态处理方法，也可能变为 `rejected` 并传递失败信息。当其中任一种情况出现时，Promise 对象的 `then` 方法绑定的处理方法（handlers ）就会被调用（`then` 方法包含两个参数：`onfulfilled` 和 `onrejected`，它们都是 Function 类型。当 Promise 状态为 `fulfilled` 时，调用 `then` 的 `onfulfilled` 方法，当 Promise 状态为 `rejected` 时，调用 `then` 的 `onrejected` 方法， 所以在异步操作的完成和绑定处理方法之间不存在竞争）。
 
+> 在 chrome 中，用 resolved 代替了 fulfilled，而 foxfire 则使用 fulfilled，在下文中，不具体分 resolved 或 fulfilled，当作同义词使用。
+
 因为 `Promise.prototype.then` 和  `Promise.prototype.catch` 方法返回 promise 对象， 所以它们可以被链式调用。
 
 ![](https://mdn.mozillademos.org/files/8633/promises.png)
@@ -524,7 +526,7 @@ const p3 = new Promise((res, rej) => {
 
 const p = Promise.all([p1, p2, p3]);
 
-setTimeout(() => {
+p.then(() => {
   console.log(p1)
   console.log(p2)
   console.log(p3)
@@ -564,11 +566,102 @@ foxfire:
 // Promise { <state>: "rejected" }
 ```
 
-注意：p3 中没有添加 `then` 或 `catch`，如果添加了，会有不一样的情况，见 [demo](demo/part03/all.js)。
+注意：p3 中没有添加 `then` 或 `catch`，如果添加了，会有不一样的情况。如果作为参数的 Promise 实例，自己定义了 `catch` 方法，那么它一旦被 `rejected`，并不会触发 `Promise.all()` 的 `catch` 方法。见 [demo](demo/part03/all.js)。
 
 ##### 3.5.Promise.race()
 
+`Promise.race()` 方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。
+
+```js
+const p = Promise.race([p1, p2, p3]);
+```
+
+参数与 `Promise.all()` 方法一样，如果不是 Promise 实例，就会先调用 `Promise.resolve()`方法，将参数转为 Promise 实例，再进一步处理。只要有一个参数状态改变，`p` 的状态就改变，并且会得到率先改变的参数 promise 的返回值。
+
+```js
+const p1 = new Promise((res, rej) => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    res(1);
+  }, 1000)
+});
+
+const p2 = new Promise((res, rej) => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    res(2);
+  }, 2000)
+});
+
+const p3 = new Promise((res, rej) => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    res(3);
+  }, 3000)
+});
+
+const p = Promise.race([p1, p2, p3]);
+
+p.then(res => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    console.log("p-res: ", res); // p-res:  1
+    console.log("p1 ", p1); // Promise {<resolved>: 1}
+    console.log("p2 ", p2); // Promise {<resolved>: 2}
+    console.log("p3 ", p3); // Promise {<resolved>: 3}
+    console.log("p ", p); // Promise {<resolved>: 1}
+  }, 4000);
+});
+```
+
+参数 promise 若没有 `catch` 处理，会被 `Promise.race` 的 `catch` 捕获。
+
 ##### 3.6.Promise.allSettled()
+
+`Promise.allSettled()` 方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果，不管是 `fulfilled` 还是`rejected`，包装实例才会结束。该方法由 ES2020 引入。
+
+```js
+const p1 = new Promise((res, rej) => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    res(1);
+  }, 1000)
+});
+
+const p2 = new Promise((res, rej) => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    res(2);
+  }, 2000)
+});
+
+const p3 = new Promise((res, rej) => {
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    res(3);
+  }, 3000)
+});
+
+const p = Promise.allSettled([p1, p2, p3]);
+
+p.then(res => {
+  console.log("p-res: ", res);
+  // p-res: [{status: "fulfilled", value: 1}, {status: "fulfilled", value: 2}, {status: "fulfilled", value: 3}]
+
+  console.log("p1 ", p1); // Promise {<resolved>: 1}
+  console.log("p2 ", p2); // Promise {<resolved>: 2}
+  console.log("p3 ", p3); // Promise {<resolved>: 3}
+
+  // 一旦结束，总是 resolve
+  console.log("p ", p); // Promise {<resolved>: Array(3)}
+});
+```
+
+该方法返回的新的 Promise 实例，一旦结束，状态总是 `fulfilled`，不会变成 `rejected`。状态变成 `fulfilled` 后，Promise 的监听函数接收到的参数是一个数组，每个成员对应一个传入 `Promise.allSettled()` 的 Promise 实例。
+
+> 若参数 promise 执行一个 `rejected`，即便没有 `catch`，也能正常被 `Promise.allSettled` 处理。
+
+有时候，我们不关心异步操作的结果，只关心这些操作有没有结束。这时，`Promise.allSettled()` 方法就很有用。如果没有这个方法，想要确保所有操作都结束，就很麻烦。`Promise.all()` 方法无法做到这一点。
 
 ##### 3.7.Promise.any()
 
