@@ -665,9 +665,137 @@ p.then(res => {
 
 ##### 3.7.Promise.any()
 
+> 注意！ `Promise.any()` 方法依然是实验性的，尚未被所有的浏览器完全支持。它当前处于 [TC39 第三阶段草案（Stage 3）](https://github.com/tc39/proposal-promise-any)。
+
+`Promise.any()` 方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只要参数实例有一个变成 `fulfilled` 状态，包装实例就会变成 `fulfilled` 状态；如果所有参数实例都变成 `rejected` 状态，包装实例就会变成 `rejected` 状态。
+
+`Promise.any()` 跟 `Promise.race()` 方法很像，只有一点不同，就是不会因为某个 Promise 变成 `rejected` 状态而结束。
+
+`Promise.any()` 抛出的错误，不是一个一般的错误，而是一个 `AggregateError` 实例。它相当于一个数组，每个成员对应一个被 `rejected` 的操作所抛出的错误。
+
 ##### 3.8.Promise.resolve()
 
+有时需要将现有对象转为 Promise 对象，`Promise.resolve()` 方法就起到这个作用。
+
+`Promise.resolve()` 等价于下面的写法。
+
+```js
+Promise.resolve('foo')
+// 等价于
+new Promise(resolve => resolve('foo'))
+```
+
+`Promise.resolve` 方法的参数分成四种情况。
+
+（1）参数是一个 Promise 实例
+
+如果参数是 Promise 实例，那么 `Promise.resolve` 将不做任何修改、原封不动地返回这个实例。
+
+```js
+const p1 = new Promise((res, rej) => {
+  res(1);
+});
+
+const p2 = Promise.resolve(p1);
+
+p2.then(res => {
+  console.log("res: ", res); // res:  1
+  console.log("p1 ", p1); // p1 Promise {<resolved>: 1}
+  console.log("p2 ", p2); // p2 Promise {<resolved>: 1}
+})
+```
+
+（2）参数是一个 `thenable` 对象
+
+> `thenable` 对象指的是具有 `then` 方法的 promise 对象。
+
+`Promise.resolve` 方法会将这个对象转为 Promise 对象，然后就立即执行 `thenable` 对象的 `then` 方法。
+
+```js
+const p3 = {
+  then: function (resolve, reject) {
+    resolve(11);
+  }
+};
+
+const p4 = Promise.resolve(p3);
+
+p4.then(res => {
+  console.log("p4-res: ", res); // p4-res:  11
+  console.log("p3 ", p3); // p3 {then: ƒ}
+  console.log("p4 ", p4); // p4 Promise {<resolved>: 11}
+});
+```
+
+注意，会落后其他类型参数一轮（此处有两次 `then`，其他类型只有一次）。
+
+（3）参数不是具有 `then` 方法的对象，或根本就不是对象
+
+如果参数是一个原始值，或者是一个不具有 `then` 方法的对象，则 `Promise.resolve` 方法返回一个新的 Promise 对象，状态为 `resolved`。
+
+```js
+// 没有 then 方法的对象
+const p5 = {
+  say: function () {
+    return 'hi';
+  }
+}
+const p6 = Promise.resolve(p5);
+
+p6.then(res => {
+  console.log("p6-res: ", res); // p6-res:  {say: ƒ}
+  console.log("p5 ", p5); // p5 {say: ƒ}
+  console.log("p6 ", p6); // p6 Promise {<resolved>: {say: ƒ}}
+});
+
+// 原始值
+const p7 = 123
+const p8 = Promise.resolve(p7);
+
+p8.then(res => {
+  console.log("p8-res: ", res); // p8-res:  123
+  console.log("p7 ", p7); // p7  123
+  console.log("p8 ", p8); // p8  Promise {<resolved>: 123}
+})
+```
+
+（4）不带有任何参数
+
+`Promise.resolve()` 方法允许调用时不带参数，直接返回一个 `resolved` 状态的 Promise 对象。
+
+所以，如果希望得到一个 Promise 对象，比较方便的方法就是直接调用 `Promise.resolve()` 方法。
+
+```js
+const p9 = Promise.resolve();
+
+p9.then(res => {
+  console.log("p9-res: ", res);  // p9-res:  undefined
+  console.log("p9 ", p9); // p9 Promise {<resolved>: undefined}
+});
+```
+
 ##### 3.8.Promise.reject()
+
+`Promise.reject(reason)` 方法也会返回一个新的 Promise 实例，该实例的状态为 `rejected`。`Promise.reject()` 方法的参数，会原封不动地作为 `reject` 的理由，变成后续方法的参数。这一点与 `Promise.resolve` 方法不一致。
+
+```js
+// 参数是一个 Promise 实例
+const p1 = new Promise((res, rej) => {
+  res(1);
+});
+
+const p2 = Promise.reject(p1);
+
+p2.then(res => {
+  console.log("p2-res: ", res);
+
+}).catch(err => {
+  console.log("p2-err: ", err)
+}).finally(() => {
+  console.log("p1 ", p1);
+  console.log("p2 ", p2);
+});
+```
 
 ##### 3.10.Promise.try()
 
@@ -1027,18 +1155,14 @@ window.addEventListener("rejectionhandled", event => {
 
 1.[使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
 
-2.[Window: rejectionhandled event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/rejectionhandled_event)
+2.[PromiseRejectionEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)
 
-3.[unhandledrejection](https://developer.mozilla.org/zh-CN/docs/Web/Events/unhandledrejection)
+3.[How to handle "unhandled Promise rejections" #72](https://github.com/tc39/ecmascript-asyncawait/issues/72)
 
-4.[PromiseRejectionEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)
+4.[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-5.[How to handle "unhandled Promise rejections" #72](https://github.com/tc39/ecmascript-asyncawait/issues/72)
+5.[Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
 
-6.[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+6.[Promise原理浅析](https://imweb.io/topic/565af932bb6a753a136242b0)
 
-7.[Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
-
-8.[Promise原理浅析](https://imweb.io/topic/565af932bb6a753a136242b0)
-
-9.[剖析 Promise 之基础篇](https://tech.meituan.com/2014/06/05/promise-insight.html)
+7.[剖析 Promise 之基础篇](https://tech.meituan.com/2014/06/05/promise-insight.html)
