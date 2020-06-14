@@ -238,11 +238,11 @@ Promise()
 
 ### 3.promise 方法
 
-##### 3.1.Promise.prototype.then()
+##### 3.1.Promise.prototype.then(onFulfilled, onRejected)
 
 作用是为 Promise 实例添加状态改变时的回调函数。`then` 方法的第一个参数是 `resolved` 状态的回调函数，第二个参数（可选）是 `rejected` 状态的回调函数。
 
-`then` 方法返回的是一个**新** Promise 实例（注意，不是原来那个 Promise 实例）。因此可以采用链式写法，即 `then` 方法后面再调用另一个 `then` 或者其他方法。
+`then` 方法返回的是一个**新** Promise 实例（注意，不是原来那个 Promise 实例），将以回调的返回值来 `resolve`。因此可以采用链式写法，即 `then` 方法后面再调用另一个 `then` 或者其他方法。
 
 ```js
 new Promise((res, rej) => {
@@ -288,7 +288,11 @@ p2then.catch(err => {
 });
 ```
 
+> 注意：如果忽略针对某个状态的回调函数参数，或者提供非函数 (nonfunction) 参数，那么 `then` 方法将会丢失关于该状态的回调函数信息，但是并不会产生错误。如果调用 `then` 的 Promise 的状态（`fulfillment` 或 `rejection`）发生改变，但是 `then` 中并没有关于这种状态的回调函数，那么 `then` 将创建一个没有经过回调函数处理的新 Promise 对象，这个新 Promise 只是简单地接受调用这个 `then` 的原 Promise 的终态作为它的终态。
+
 ##### 3.2.Promise.prototype.catch()
+
+添加一个拒绝(`rejection`) 回调到当前 promise，返回一个新的 promise。当这个回调函数被调用，新 promise 将以它的返回值来 `resolve`，否则如果当前 promise 进入 `fulfilled` 状态，则以当前 promise 的完成结果作为新 promise 的完成结果。
 
 `catch()` 方法是 `.then(null, rejection)` 或 `.then(undefined, rejection)` 的等价写法，用于指定发生错误时的回调函数。
 
@@ -298,28 +302,28 @@ new Promise((res, rej) => {
   rej(1);
 }).catch(err => {
   console.log(err)
-})
+});
 
 // 等价方法 1
 new Promise((res, rej) => {
   rej(2);
 }).then(null, err => {
   console.log(err)
-})
+});
 
 // 等价方法 2
 new Promise((res, rej) => {
   rej(3);
 }).then(undefined, err => {
   console.log(err)
-})
+});
 
 // 等价方法 3
 new Promise((res, rej) => {
   rej(4);
 }).then(() => { }, err => {
   console.log(err)
-})
+});
 ```
 
 > 一般来说，不要在 `then()` 方法里面定义 `onreject` 状态的回调函数，总是使用 `catch` 方法。理由是 `catch` 可以捕获前面 `then` 方法执行中的错误，也更接近同步的写法（try/catch）。
@@ -1217,12 +1221,22 @@ window.addEventListener("rejectionhandled", event => {
 
 参考：
 
-1.[使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
+[使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
 
-2.[PromiseRejectionEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)
+[PromiseRejectionEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)
 
-3.[How to handle "unhandled Promise rejections" #72](https://github.com/tc39/ecmascript-asyncawait/issues/72)
+[Window: rejectionhandled event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/rejectionhandled_event)
 
-4.[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+[unhandledrejection](https://developer.mozilla.org/zh-CN/docs/Web/Events/unhandledrejection)
 
-5.[Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
+[How to handle "unhandled Promise rejections" #72](https://github.com/tc39/ecmascript-asyncawait/issues/72)
+
+[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
+[Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
+
+[Promise.prototype.then()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)
+
+[Promise.prototype.catch()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)
+
+[Promise.prototype.finally()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally)
