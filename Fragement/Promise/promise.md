@@ -776,7 +776,7 @@ p9.then(res => {
 
 ##### 3.8.Promise.reject()
 
-`Promise.reject(reason)` 方法也会返回一个新的 Promise 实例，该实例的状态为 `rejected`。`Promise.reject()` 方法的参数，会原封不动地作为 `reject` 的理由，变成后续方法的参数。这一点与 `Promise.resolve` 方法不一致。
+`Promise.reject()` 方法会返回一个**新**的 Promise 实例，该实例的状态为 `rejected`。`Promise.reject()` 方法的参数，会原封不动地作为 `reject` 的理由，变成后续方法的参数。这一点与 `Promise.resolve` 方法不一致。
 
 ```js
 // 参数是一个 Promise 实例
@@ -792,14 +792,76 @@ p2.then(res => {
 }).catch(err => {
   console.log("p2-err: ", err)
 }).finally(() => {
-  console.log("p1 ", p1);
-  console.log("p2 ", p2);
+  console.log("p1 ", p1); // p1  Promise {<resolved>: 1}
+  console.log("p2 ", p2); // p2  Promise {<rejected>: Promise}
 });
 ```
 
 ##### 3.10.Promise.try()
 
+> 草案
 
+实际开发中，经常遇到一种情况：不知道或者不想区分，函数 `f` 是同步函数还是异步操作，但是想用 Promise 来处理它。因为这样就可以不管 `f` 是否包含异步操作，都用 `then` 方法指定下一步流程，用 `catch` 方法处理 `f` 抛出的错误。一般就会采用下面的写法。
+
+```js
+Promise.resolve().then(f);
+```
+
+但这样的写法有一个缺点，就是如果 `f` 是同步函数，那么它会在本轮事件循环的末尾执行。
+
+```js
+const f = () => console.log("hello");
+
+Promise.resolve().then(f);
+
+console.log('world');
+
+// world
+// hello
+```
+
+那么有没有一种方法，让同步函数同步执行，异步函数异步执行，并且让它们具有统一的 API 呢？回答是可以的，并且还有两种写法。第一种写法是用 `async` 函数来写。
+
+```js
+const f = () => console.log("hello");
+
+// Promise.resolve().then(f);
+(async () => f())();
+
+console.log('world');
+
+// hello
+// world
+```
+
+需要注意的是，`async () => f()` 会吃掉 `f()` 抛出的错误。所以，如果想捕获错误，要使用 `promise.catch` 方法。
+
+第二种写法是使用 `new Promise()`。
+
+```js
+const f = () => console.log("hello");
+
+// Promise.resolve().then(f);
+// (async () => f())();
+(() => new Promise(res => res(f())))();
+
+console.log('world');
+
+// hello
+// world
+```
+
+鉴于这是一个很常见的需求，所以现在有一个提案，提供 `Promise.try` 方法替代上面的写法。
+
+```js
+const f = () => console.log('now');
+Promise.try(f);
+console.log('next');
+// now
+// next
+```
+
+事实上，`Promise.try` 就是模拟 `try` 代码块，就像 `promise.catch` 模拟的是 `catch` 代码块。
 
 ### 4.拒绝事件
 
@@ -1032,7 +1094,7 @@ new PromiseRejectionEvent(type, {
 
 ##### 4.3.rejectionhandled
 
-当 Promise 被 rejected 且有 rejection 处理器时会在全局触发 `rejectionhandled` 事件(通常是发生在 window 下，但是也可能发生在 Worker 中)。
+当 Promise 被 `rejected` 且有 `rejection` 处理器时会在全局触发 `rejectionhandled` 事件(通常是发生在 window 下，但是也可能发生在 Worker 中)。
 
 根据当前测试时间阶段来看，`PromiseRejectionEvent` 的属性有添加：
 
@@ -1083,7 +1145,7 @@ PromiseRejectionEvent
 
 ##### 4.4.unhandledrejection
 
-当Promise 被 reject 且没有 reject 处理器的时候，会触发 `unhandledrejection` 事件；这可能发生在 window 下，但也可能发生在 Worker 中。
+当 Promise 被 `reject` 且没有 `reject` 处理器的时候，会触发 `unhandledrejection` 事件；这可能发生在 window 下，但也可能发生在 Worker 中。
 
 根据当前测试时间阶段来看，`PromiseRejectionEvent` 的属性有添加：
 
@@ -1164,7 +1226,3 @@ window.addEventListener("rejectionhandled", event => {
 4.[Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 5.[Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
-
-6.[Promise原理浅析](https://imweb.io/topic/565af932bb6a753a136242b0)
-
-7.[剖析 Promise 之基础篇](https://tech.meituan.com/2014/06/05/promise-insight.html)

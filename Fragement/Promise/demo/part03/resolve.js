@@ -89,3 +89,13 @@ p9.then(res => {
 	console.log("p9-res: ", res);
 	console.log("p9 ", p9);
 });
+
+// 函数
+const p10 = Promise.resolve(() => {
+	console.log("---");
+});
+p10.then(res => {
+	console.log();
+	console.log("p10-res: ", res);
+	console.log("p10 ", p10);
+})
