@@ -1240,3 +1240,9 @@ window.addEventListener("rejectionhandled", event => {
 [Promise.prototype.catch()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)
 
 [Promise.prototype.finally()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally)
+
+待阅读：
+
+[剖析 Promise 之基础篇](https://tech.meituan.com/2014/06/05/promise-insight.html)
+
+[Promise原理浅析](https://imweb.io/topic/565af932bb6a753a136242b0)
