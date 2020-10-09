@@ -1,13 +1,36 @@
 # introduction
 
-笔记是以 JavaScript 标准参考教程（alpha）为模板，参考其他诸多网站，教材经过整理而成。
+笔记是参考其他诸多网站，教材经过整理而成。
 
-> 参考书籍以及网
+### MENU
+
+```
+|
+|----01 简介
+|        |
+|        |----001Javascript 语言
+|        |
+|        |----
+|        |
+|
+|
+|
+|
+|
+|
+```
+
+### 参考
 
 1.《JavaScript 高级程序设计》（第三版） Nicholas C.Zakas
 
 2.《JavaScript 权威指南》David Flanagan
 
-3.[JavaScript 标准参考教程（alpha）阮一峰](http://javascript.ruanyifeng.com/)
+3.[JavaScript 教程（阮一峰）](https://wangdoc.com/javascript/index.html)
 
-4.[JavaScript 教程 廖雪峰](https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000)
+4.[JavaScript 教程（廖雪峰）](https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000)
+
+5.[JavaScript（MDN）](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
+
+6.[JavaScript 教程（W3C）](https://www.w3school.com.cn/js/index.asp)
+
