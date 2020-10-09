@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>class & style</title>
+</head>
+
+<body>
+  <div id="app">
+    <div :class="{active:isActive}">one</div>
+    <div class="static" :class="{active:isActive,'text-danger':hasError}">two</div>
+    <div :class="classObj">three</div>
+    <div :class="claObj">four</div>
+    <div :class="[activeClass,errorClass]">five-ary</div>
+    <hr/>
+    <div :style="{color:activeColor,fontSize:fontSize+'px'}">style one</div>
+    <div :style="styleObj">style two obj</div>
+    <div :style="[baseStyle,overStyle]">style three ary</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        isActive: true,
+        hasError: false,
+        error: false,
+        classObj: {
+          active: true,
+          'text-danger': true
+        },
+        activeClass: 'active',
+        errorClass: 'text-danger',
+        activeColor: 'red',
+        fontSize: 30,
+        styleObj: {
+          color: 'green',
+          fontSize: '20px'
+        },
+        baseStyle: {
+          color: 'yellow',
+          fontSize: '20px',
+          width: '120px',
+          height: '60px'
+        },
+        overStyle: {
+          backgroundColor: '#eee',
+          width: '60px',
+          height: '120px'
+        }
+      },
+      computed: {
+        claObj: function () {
+          return {
+            active: this.isActive && !this.error,
+            'text-danger': this.error && this.error.type === "fatal"
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

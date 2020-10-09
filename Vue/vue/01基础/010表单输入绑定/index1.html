@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>checkbox</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- checkbox 只有一个值的时候，自动进行布尔转化 -->
+    <input type="checkbox" v-model="a">{{a}}
+    <br/> learn:
+    <!-- checkbox 多个值的时候，绑定同一个布尔值，彼此行为一至(b 的值为 [] 或 null)；若改为数组并加上 value 属性，即可以达到多选的目的(b 的值为被选择的 input 的 value 值) -->
+    <input type="checkbox" v-model="b" value="vue">vue
+    <input type="checkbox" v-model="b" value="react">react
+    <input type="checkbox" v-model="b" value="ang">ang
+    {{b}}
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        a: 0,
+        b: []
+      }
+    })
+  </script>
+</body>
+
+</html>

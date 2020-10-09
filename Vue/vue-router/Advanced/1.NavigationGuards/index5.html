@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>完整的导航解析流程</title>
+    <style lang=""></style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <div id="app"><router-view></router-view></div>
+
+    <script>
+      /* 
+      1.导航被触发。
+
+      2.在失活的组件里调用离开守卫。
+
+      3.调用全局的 beforeEach 守卫。
+
+      4.在重用的组件里调用 beforeRouteUpdate 守卫(2.2 +) 。
+
+      5.在路由配置里调用 beforeEnter。
+
+      6.解析异步路由组件。
+
+      7.在被激活的组件里调用 beforeRouteEnter。
+
+      8.调用全局的 beforeResolve 守卫(2.5 +) 。
+
+      9.导航被确认。
+
+      10.调用全局的 afterEach 钩子。
+
+      11.触发 DOM 更新。
+      
+      12.用创建好的实例调用 beforeRouteEnter 守卫中传给 next 的回调函数。 
+      */
+
+      const router = new VueRouter({
+        routes: {}
+      });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

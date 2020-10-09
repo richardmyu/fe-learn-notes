@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>prop 验证</title>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="post of posts">
+        <my-com v-bind="post"></my-com>
+      </li>
+    </ul>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script>
+    Vue.component('myCom', {
+      props: {
+        id: Number,
+        title: [String, Number],
+        author: {
+          type: String,
+          required: true
+        },
+        hot: {
+          type: String,
+          default: 100
+        },
+        des: {
+          type: Object,
+          default: function () {
+            return { message: 'hello' }
+          }
+        },
+        propF: {
+          validator: function (value) {
+            // 这个值必须匹配下列字符串中的一个
+            return ['success', 'warning', 'danger'].indexOf(value) !== -1
+          }
+        }
+      },
+      template: `
+      <div>
+        <p>{{id}}</p>
+        <p>{{title}}</p>
+        <p>{{author}}</p>
+        <p>{{hot}}</p>
+        <p>{{des}}</p>
+        <p>{{propF}}</p>
+        </div>
+      `
+    })
+
+  </script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        posts: [
+          { id: 1, title: 'test', author: 'richyu', hot: '123', des: { 'tag': 'js/css' }, propF: 'danger' },
+          { id: 2, title: 194, author: 'richyu', hot: '', des: { 'tag': 'js/css' }, propF: 'danger' },
+          { id: 3, title: 'test146', author: 'richyu', hot: "23", propF: 'danger' }
+        ]
+      }
+    })
+  </script>
+
+</body>
+
+</html>
