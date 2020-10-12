@@ -1,4 +1,4 @@
-# 一 JavaScript 语言
+## 一 JavaScript 语言
 
 JavaScript 是一种轻量级的脚本语言。所谓"**脚本语言**"，指的是它不具备开发操作系统的能力，而是只用来编写控制其他大型应用程序的"脚本"。
 
@@ -16,41 +16,41 @@ JavaScript 的核心语法部分相当精简，只包括两个部分：基本的
 
 如果宿主环境是服务器，则会提供各种操作系统的 `API`，比如文件操作 `API`、网络通信 `API` 等等。这些你都可以在 Node 环境中找到。
 
-## 1 广泛的使用领域
+### 1 广泛的使用领域
 
 近年来，JavaScript 的使用范围，慢慢超越了浏览器，正在向通用的系统语言发展。
 
-### 1.1 浏览器的平台化
+#### 1.1 浏览器的平台化
 
 随着 HTML5 的出现，浏览器本身的功能越来越强，不再仅仅能浏览网页，而是越来越像一个平台，JavaScript 因此得以调用许多系统功能，比如操作本地文件、操作图片、调用摄像头和麦克风等等。这使得 JavaScript 可以完成许多以前无法想象的事情。
 
 > HTML5 : HTML5 是 HTML 最新的修订版本，2014 年 10 月由万维网联盟（W3C）完成标准制定。HTML5 的设计目的是为了在移动设备上支持多媒体。
 
-### 1.2 Node
+#### 1.2 Node
 
 Node 项目使得 JavaScript 可以用于开发服务器端的大型项目，网站的前后端都用 JavaScript 开发已经成为了现实。有些嵌入式平台能够安装 Node，于是 JavaScript 就能为这些平台开发应用程序。
 
 > Node : Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。 Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型，使其轻量又高效。
 
-### 1.3 数据库操作
+#### 1.3 数据库操作
 
 JavaScript 甚至也可以用来操作数据库。NoSQL 数据库这个概念，本身就是在 JSON 格式的基础上诞生的，大部分 NoSQL 数据库允许 JavaScript 直接操作。基于 SQL 语言的开源数据库 PostgreSQL 支持 JavaScript 作为操作语言，可以部分取代 SQL 查询语言。
 
-### 1.4 跨移动平台
+#### 1.4 跨移动平台
 
 JavaScript 也正在成为手机应用的开发语言。一般来说，安卓平台使用 Java 语言开发，iOS 平台使用 Objective-C 或 Swift 语言开发。许多人正在努力，让 JavaScript 成为各个平台的通用开发语言。
 
 > PhoneGap 项目就是将 JavaScript 和 HTML5 打包在一个容器之中，使得它能同时在 iOS 和安卓上运行。Facebook 公司的 React Native 项目则是将 JavaScript 写的组件，编译成原生组件，从而使它们具备优秀的性能。
 
-### 1.5 内嵌脚本语言
+#### 1.5 内嵌脚本语言
 
 越来越多的应用程序，将 JavaScript 作为内嵌的脚本语言，比如 Adobe 公司的著名 PDF 阅读器 Acrobat、Linux 桌面环境 GNOME3。
 
-### 1.6 跨平台的桌面应用程序
+#### 1.6 跨平台的桌面应用程序
 
 Chromium OS、Windows8 等操作系统直接支持 JavaScript 编写应用程序。Mozilla 的 Open Web Apps 项目、Google 的 Chrome App 项目、Github 的 Electron 项目、以及 TideSDK 项目，都可以用来编写运行于 Windows、Mac OS 和 Android 等多个桌面平台的程序，不依赖浏览器。
 
-## 2 与主流语言的相似性
+### 2 与主流语言的相似性
 
 JavaScript 的语法很类似 C/C++ 和 Java，如果学过这些语言，JavaScript 的入门会非常容易。
 
@@ -66,9 +66,9 @@ JavaScript 的语法很类似 C/C++ 和 Java，如果学过这些语言，JavaSc
 
 学习 JavaScript，很大一部分时间是用来搞清楚哪些地方有陷阱。Douglas Crockford 写过一本有名的书，名字就叫《JavaScript: The Good Parts》，言下之意就是这门语言不好的地方很多，必须写一本书才能讲清楚。另外一些程序员则感到，为了更合理地编写 JavaScript 程序，就不能用 JavaScript 来写，而必须发明新的语言，比如 CoffeeScript、TypeScript、Dart 这些新语言的发明目的，多多少少都有这个因素。
 
-## 3 强大的性能
+### 3 强大的性能
 
-### 3.1 灵活的语法，表达力强
+#### 3.1 灵活的语法，表达力强
 
 JavaScript 既支持类似 C 语言清晰的**过程式编程**，也支持灵活的函数式编程。可以用来写**并发处理（concurrent）**。这些语法特性已经被证明非常强大，可以用于许多场合，尤其适用异步编程。
 
@@ -76,15 +76,17 @@ JavaScript 的所有值都是对象，这为程序员提供了灵活性和便利
 
 JavaScript 的标准还在快速进化中，并不断合理化，并添加更适用的语法特性。
 
-### 3.2 支持编译运行
+#### 3.2 支持编译运行
 
 JavaScript 语言本身，虽然是一种解释型语言，但是在现代浏览器中，JavaScript 都是编译后运行。程序会被高度优化，运行效率接近二进制程序。而且，JavaScript 引擎正在快速发展，性能将越来越好。
 
-### 3.3 事件驱动和非阻塞式设计
+此外，还有一种 WebAssembly 格式，它是 JavaScript 引擎的中间码格式，全部都是二进制代码。由于跳过了编译步骤，可以达到接近原生二进制代码的运行速度。各种语言（主要是 C 和 C++）通过编译成 WebAssembly，就可以在浏览器里面运行。
+
+#### 3.3 事件驱动和非阻塞式设计
 
 JavaScript 程序可以采用**事件驱动**（event-driven）和**非阻塞式**（non-blocking）设计，在服务器端适合高并发环境，普通的硬件就可以承受很大的访问量。
 
-## 4.开放性
+### 4.开放性
 
 JavaScript 是一种开放的语言。它的标准 ECMA-262 是 ISO 国际标准，写得非常详尽明确；该标准的主要实现（比如 V8 和 SpiderMonkey 引擎）都是开放的，而且质量很高。这保证了这门语言不属于任何公司或个人，不存在版权和专利的问题。
 
