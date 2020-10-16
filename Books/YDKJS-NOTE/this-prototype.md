@@ -983,6 +983,421 @@ Object.defineProperty( myObject, "FAVORITE_NUMBER", {
 } );
 ```
 
+2.**禁止扩展**
+
+如果一个对象可以添加新的属性，则这个对象是可扩展的。`Object.preventExtensions()` 将对象标记为不再可扩展，这样它将永远不会具有它被标记为不可扩展时持有的属性之外的属性。注意，一般来说，不可扩展对象的属性可能仍然可被删除。尝试将新属性添加到不可扩展对象将静默失败或抛出 `TypeError`（最常见的情况是 `strict mode` 中，但不排除其他情况）。
+
+`Object.preventExtensions()` 仅阻止添加自身的属性。但其对象类型的原型依然可以添加新的属性。
+
+该方法使得目标对象的 `[[prototype]]`  不可变；任何重新赋值 `[[prototype]]` 操作都会抛出 `TypeError`。这种行为只针对内部的 `[[prototype]]` 属性， 目标对象的其它属性将保持可变。
+
+一旦将对象变为不可扩展的对象，就再也不能使其可扩展。
+
+```js
+// Object.preventExtensions 将原对象变的不可扩展,并且返回原对象.
+var obj = {};
+var obj2 = Object.preventExtensions(obj);
+obj === obj2;  // true
+
+// 字面量方式定义的对象默认是可扩展的.
+var empty = {};
+Object.isExtensible(empty) //=== true
+
+// ...但可以改变.
+Object.preventExtensions(empty);
+Object.isExtensible(empty) //=== false
+
+// 使用 Object.defineProperty 方法为一个不可扩展的对象添加新属性会抛出异常.
+var nonExtensible = { removable: true };
+Object.preventExtensions(nonExtensible);
+Object.defineProperty(nonExtensible, "new", { value: 8675309 }); // TypeError
+
+// 在严格模式中,为一个不可扩展对象的新属性赋值会抛出 TypeError 异常.
+function fail()
+{
+  "use strict";
+  nonExtensible.newProperty = "FAIL"; // TypeError
+}
+fail();
+
+// 不可扩展对象的原型是不可变的
+var fixed = Object.preventExtensions({});
+// TypeError
+fixed.__proto__ = { oh: 'hai' };
+```
+
+在 ES5 中，如果参数不是一个对象类型（而是原始类型），将抛出一个 `TypeError` 异常。在 ES2015 中，非对象参数将被视为一个不可扩展的普通对象，因此会被直接返回。
+
+```js
+Object.preventExtensions(1);
+// TypeError: 1 is not an object (ES5 code)
+
+Object.preventExtensions(1);
+// 1                             (ES2015 code)
+```
+
+3.**密封**
+
+通常，一个对象是可扩展的（可以添加新的属性）。密封一个对象会让这个对象变的不能添加新属性，且所有已有属性会变的不可配置。属性不可配置的效果就是属性变的不可删除，以及一个数据属性不能被重新定义成为访问器属性，或者反之。但属性的值仍然可以修改。尝试删除一个密封对象的属性或者将某个密封对象的属性从数据属性转换成访问器属性，结果会静默失败或抛出 `TypeError`（在严格模式 中最常见的，但不唯一）。
+
+不会影响从原型链上继承的属性。但 `__proto__ ` 属性的值也会不能修改。
+
+返回被密封对象的引用。
+
+> `Object.seal()` 会创建一个“密封”的对象，这个方法实际上会在一个现有对象上调用 `Object.preventExtensions()` 并把所有现有属性标记为 `configurable:false`。
+
+```js
+var obj = {
+  prop: function () { },
+  foo: 'bar'
+};
+
+// 可以添加新的属性
+// 可以更改或删除现有的属性
+obj.foo = 'baz';
+obj.lumpy = 'woof';
+delete obj.prop;
+
+var o = Object.seal(obj);
+
+o === obj; // true
+Object.isSealed(obj); // === true
+
+// 仍然可以修改密封对象的属性值
+obj.foo = 'quux';
+
+
+// 但是你不能将属性重新定义成为访问器属性
+// 反之亦然
+Object.defineProperty(obj, 'foo', {
+  get: function () { return 'g'; }
+}); // TypeError
+
+// 除了属性值以外的任何变化，都会失败.
+obj.quaxxor = 'the friendly duck';
+// 添加属性将会失败
+delete obj.foo;
+// 删除属性将会失败
+
+// 在严格模式下，这样的尝试将会抛出错误
+function fail() {
+  'use strict';
+  delete obj.foo; // TypeError
+  obj.sparky = 'arf'; // TypeError
+}
+fail();
+
+// 通过 Object.defineProperty 添加属性将会报错
+Object.defineProperty(obj, 'ohai', {
+  value: 17
+}); // TypeError
+Object.defineProperty(obj, 'foo', {
+  value: 'eit'
+}); // 通过 Object.defineProperty 修改属性值
+```
+
+在 ES5 中，如果这个方法的参数不是一个（原始）对象，那么它将导致 `TypeError`。在ES2015中，非对象参数将被视为已被密封的普通对象，会直接返回它。
+
+```js
+Object.seal(1);
+// TypeError: 1 is not an object (ES5 code)
+
+Object.seal(1);
+// 1                             (ES2015 code)
+```
+
+> 使用 `Object.freeze()` 冻结的对象中的现有属性值是不可变的。用 `Object.seal()` 密封的对象可以改变其现有属性值。
+
+4.**冻结**
+
+`Object.freeze()` 方法可以冻结一个对象。一个被冻结的对象再也不能被修改；冻结了一个对象则不能向这个对象添加新的属性，不能删除已有属性，不能修改该对象已有属性的可枚举性、可配置性、可写性，以及不能修改已有属性的值。此外，冻结一个对象后该对象的原型也不能被修改。`freeze()` 返回和传入的参数相同的对象。
+
+被冻结对象自身的所有属性都不可能以任何方式被修改。任何修改尝试都会失败，无论是静默地还是通过抛出 `TypeError` 异常（最常见但不仅限于 `strict mode`）。
+
+数据属性的值不可更改，访问器属性（有 `getter` 和 `setter`）也同样（但由于是函数调用，给人的错觉是还是可以修改这个属性）。如果一个属性的值是个对象，则这个对象中的属性是可以修改的，除非它也是个冻结对象。数组作为一种对象，被冻结，其元素不能被修改。没有数组元素可以被添加或移除。
+
+这个方法返回传递的对象，而不是创建一个被冻结的副本。
+
+> `Object.freeze()` 会创建一个冻结对象，这个方法实际上会在一个现有对象上调用 `Object.seal()` 并把所有“数据访问”属性标记为 `writable:false`，这样就无法修改它们的值。
+
+```js
+var obj = {
+  prop: function() {},
+  foo: 'bar'
+};
+
+// 新的属性会被添加, 已存在的属性可能
+// 会被修改或移除
+obj.foo = 'baz';
+obj.lumpy = 'woof';
+delete obj.prop;
+
+// 作为参数传递的对象与返回的对象都被冻结
+// 所以不必保存返回的对象（因为两个对象全等）
+var o = Object.freeze(obj);
+
+o === obj; // true
+Object.isFrozen(obj); // === true
+
+// 现在任何改变都会失效
+obj.foo = 'quux'; // 静默地不做任何事
+// 静默地不添加此属性
+obj.quaxxor = 'the friendly duck';
+
+// 在严格模式，如此行为将抛出 TypeErrors
+function fail(){
+  'use strict';
+  obj.foo = 'sparky'; // TypeError
+  delete obj.quaxxor; // 返回 true，因为 quaxxor 属性从来未被添加
+  obj.sparky = 'arf'; // TypeError
+}
+
+fail();
+
+// 试图通过 Object.defineProperty 更改属性
+// 下面两个语句都会抛出 TypeError.
+Object.defineProperty(obj, 'ohai', { value: 17 });
+Object.defineProperty(obj, 'foo', { value: 'eit' });
+
+// 也不能更改原型
+// 下面两个语句都会抛出 TypeError.
+Object.setPrototypeOf(obj, { x: 20 })
+obj.__proto__ = { x: 20 }
+```
+
+##### 3.2.7.`[[Get]]`
+
+```js
+var myObject = {
+  a: 2
+};
+
+myObject.a; // 2
+```
+
+ `myObject.a` 是一次属性访问，但是这条语句并不仅仅是在 `myObjet` 中查找名字为a的属性，虽然看起来好像是这样。
+
+在语言规范中，`myObject.a` 在 `myObject` 上实际上是实现了 `[[Get]]` 操作（有点像函数调用：`[[Get]]()）`。对象默认的内置 `[[Get]]` 操作首先在对象中查找是否有名称相同的属性，如果找到就会返回这个属性的值。
+
+然而，如果没有找到名称相同的属性，按照 `[[Get]]` 算法的定义会执行另外一种非常重要的行为。
+
+如果无论如何都没有找到名称相同的属性，那 `[[Get]]` 操作会返回值 `undefined`：
+
+```js
+var myObject = {
+  a:2
+};
+
+myObject.b; // undefined
+```
+
+注意，这种方法和访问变量时是不一样的。如果你引用了一个当前词法作用域中不存在的变量，并不会像对象属性一样返回 `undefined`，而是会抛出一个 `ReferenceError` 异常：
+
+```js
+var myObject = {
+  a: undefined
+};
+
+myObject.a; // undefined
+
+myObject.b; // undefined
+```
+
+从返回值的角度来说，这两个引用没有区别——它们都返回了 `undefined`。然而，尽管乍看之下没什么区别，实际上底层的 `[[Get]]` 操作对 `myObject.b` 进行了更复杂的处理。
+
+仅通过返回值，你无法判断一个属性是存在并且持有一个 `undefined` 值，还是变量不存在，所以 `[[Get]]` 无法返回某个特定值而返回默认的 `undefined`。
+
+##### 3.2.8.`[[Put]]`
+
+既然有可以获取属性值的 `[[Get]]` 操作，就一定有对应的 `[[Put]]` 操作。
+
+你可能会认为给对象的属性赋值会触发 `[[Put]]` 来设置或者创建这个属性。但是实际情况并不完全是这样。
+
+`[[Put]]` 被触发时，实际的行为取决于许多因素，包括对象中是否已经存在这个属性（这是最重要的因素）。
+
+如果已经存在这个属性，`[[Put]]`算法大致会检查下面这些内容。
+
+1. 属性是否是访问描述符？如果是并且存在 `setter` 就调用 `setter`。
+
+2. 属性的数据描述符中`writable` 是否是 `false`？如果是，在非严格模式下静默失败，在严格模式下抛出 `TypeError` 异常。
+
+3. 如果都不是，将该值设置为属性的值。
+
+如果对象中不存在这个属性，`[[Put]]` 操作会更加复杂。
+
+##### 3.2.9.Getter 和 Setter
+
+对象默认的 `[[Put]]` 和 `[[Get]]` 操作分别可以控制属性值的设置和获取。
+
+在 ES5 中可以使用 `getter` 和 `setter` 部分改写默认操作，但是只能应用在单个属性上，无法应用在整个对象上。`getter` 是一个隐藏函数，会在获取属性值时调用。`setter` 也是一个隐藏函数，会在设置属性值时调用。
+
+当你给一个属性定义 `getter`、`setter` 或者两者都有时，这个属性会被定义为“**访问描述符**”（和“**数据描述符**”相对）。对于【访问描述符】来说，JavaScript 会忽略它们的 `value` 和 `writable` 特性，取而代之的是关心 `set` 和 `get`（还有 `configurable` 和 `enumerable`）特性。
+
+```js
+var myObject = {
+  // 给 a 定义一个getter
+  get a() {
+    return 2;
+  }
+};
+
+myObject.a = 3;
+
+myObject.a; // 2
+```
+
+由于我们只定义了 `a` 的 `getter`，所以对 `a` 的值进行设置时 `set` 操作会忽略赋值操作，不会抛出错误。而且即便有合法的 `setter`，由于我们自定义的 `getter` 只会返回 2，所以 `set` 操作是没有意义的。
+
+为了让属性更合理，还应当定义 `setter`，和你期望的一样，`setter` 会覆盖单个属性默认的 `[[Put]]`（也被称为赋值）操作。通常来说 `getter` 和 `setter` 是成对出现的（只定义一个的话通常会产生意料之外的行为）。
+
+##### 3.2.10.存在性
+
+`myObject.a` 的属性访问返回值可能是 `undefined`，但是这个值有可能是属性中存储的 `undefined`，也可能是因为属性不存在所以返回 `undefined`。那么如何区分这两种情况呢？
+
+```js
+var myObject = {
+  a:2
+};
+
+("a" in myObject); // true
+("b" in myObject); // false
+
+myObject.hasOwnProperty( "a" ); // true
+myObject.hasOwnProperty( "b" ); // false
+```
+
+`in` 操作符会检查属性是否在对象及其 `[[Prototype]]` 原型链中（参见第5章）。相比之下，`hasOwnProperty(..)` 只会检查属性是否在 `myObject` 对象中，不会检查 `[[Prototype]]` 链。
+
+所有的普通对象都可以通过对于 `Object.prototype` 的委托来访问 `hasOwnProperty(..)`，但是有的对象可能没有连接到 `Object.prototype`（通过 `Object.create(null)`来创建）。在这种情况下，形如 `myObejct.hasOwnProperty(..)` 就会失败。
+
+这时可以使用一种更加强硬的方法来进行判断：`Object.prototype.hasOwnProperty.call(myObject,"a")`，它借用基础的 `hasOwnProperty(..)` 方法并把它显式绑定到 `myObject` 上。
+
+看起来 `in` 操作符可以检查容器内是否有某个值，但是它实际上检查的是某个属性名是否存在。对于数组来说这个区别非常重要，`4 in [2, 4, 6]` 的结果并不是你期待的 `True`，因为 `[2, 4, 6]` 这个数组中包含的属性名是 0、1、2，没有 4。
+
+1.**枚举**
+
+“可枚举”就相当于“可以出现在对象属性的遍历中”。
+
+> 在数组上应用 `for..in` 循环有时会产生出人意料的结果，因为这种枚举不仅会包含所有数值索引，还会包含所有可枚举属性。最好只在对象上应用 `for..in` 循环，如果要遍历数组就使用传统的 `for` 循环来遍历数值索引。
+
+```js
+var myObject = { };
+
+Object.defineProperty(
+  myObject,
+  "a",
+  // 让a像普通属性一样可以枚举
+  { enumerable: true, value: 2 }
+);
+
+Object.defineProperty(
+  myObject,
+  "b",
+  // 让b不可枚举
+  { enumerable: false, value: 3 }
+);
+
+myObject.b; // 3
+("b" in myObject); // true
+myObject.hasOwnProperty( "b" ); // true
+
+
+for (var k in myObject) {
+  console.log( k, myObject[k] );
+}
+// "a" 2
+```
+
+也可以通过另一种方式来区分属性是否可枚举：
+
+```js
+var myObject = { };
+
+Object.defineProperty(
+  myObject,
+  "a",
+  // 让a像普通属性一样可以枚举
+  { enumerable: true, value: 2 }
+);
+
+Object.defineProperty(
+  myObject,
+  "b",
+  // 让b不可枚举
+  { enumerable: false, value: 3 }
+);
+
+myObject.propertyIsEnumerable( "a" ); // true
+myObject.propertyIsEnumerable( "b" ); // false
+
+Object.keys( myObject ); // ["a"]
+Object.getOwnPropertyNames( myObject ); // ["a", "b"]
+```
+
+`propertyIsEnumerable(..)` 会检查给定的属性名是否直接存在于对象中（而不是在原型链上）并且满足 `enumerable:true`。
+
+`Object.keys(..)` 会返回一个数组，包含所有可枚举属性，`Object.getOwnPropertyNames(..)`会返回一个数组，包含所有属性，无论它们是否可枚举。
+
+`in` 和 `hasOwnProperty(..)` 的区别在于是否查找 `[[Prototype]]` 链，然而，`Object.keys(..)` 和 `Object.getOwnPropertyNames(..)` 都只会查找对象直接包含的属性。
+
+（目前）并没有内置的方法可以获取 `in` 操作符使用的属性列表（对象本身的属性以及 `[[Prototype]]` 链中的所有属性）。不过你可以递归遍历某个对象的整条 `[[Prototype]]` 链并保存每一层中使用 `Object.keys(..)` 得到的属性列表——只包含可枚举属性。
+
+#### 3.3.遍历
+
+`for..in` 循环可以用来遍历对象的可枚举属性列表（包括 `[[Prototype]]` 链）。但是如何遍历属性的值呢？
+
+对于数值索引的数组来说，可以使用标准的 `for` 循环来遍历值：
+
+```js
+var myArray = [1, 2, 3];
+
+for (var i = 0; i < myArray.length; i++) {
+ console.log( myArray[i] );
+}
+// 1 2 3
+```
+
+这实际上并不是在遍历值，而是遍历下标来指向值，如 `myArray[i]`。
+
+ES5 中增加了一些数组的辅助迭代器，包括 `forEach(..)`、`every(..)` 和 `some(..)`。每种辅助迭代器都可以接受一个回调函数并把它应用到数组的每个元素上，唯一的区别就是它们对于回调函数返回值的处理方式不同。
+
+> `forEach(..)` 会遍历数组中的所有值并忽略回调函数的返回值。`every(..)` 会一直运行直到回调函数返回 `false`（或者“假”值），`some(..)` 会一直运行直到回调函数返回true（或者“真”值）。`every(..)` 和 `some(..)` 中特殊的返回值和普通 `for` 循环中的 `break` 语句类似，它们会提前终止遍历。
+
+使用 `for..in` 遍历对象是无法直接获取属性值的，因为它实际上遍历的是对象中的所有可枚举属性，你需要手动获取属性值。
+
+> 遍历数组下标时采用的是数字顺序（`for` 循环或者其他迭代器），但是遍历对象属性时的顺序是不确定的，在不同的 JavaScript 引擎中可能不一样。因此，在不同的环境中需要保证一致性时，一定不要相信任何观察到的顺序，它们是不可靠的。
+
+那么如何直接遍历值而不是数组下标（或者对象属性）呢？幸好，ES6 增加了一种用来遍历数组的 `for..of` 循环语法（如果对象本身定义了迭代器的话也可以遍历对象）：
+
+```js
+var myArray = [ 1, 2, 3 ];
+
+for (var v of myArray) {
+  console.log( v );
+}
+// 1
+// 2
+// 3
+```
+
+`for..of` 循环首先会向被访问对象请求一个迭代器对象，然后通过调用迭代器对象的 `next()` 方法来遍历所有返回值。
+
+数组有内置的 `@@iterator`，因此 `for..of` 可以直接应用在数组上。我们使用内置的 `@@iterator` 来手动遍历数组，看看它是怎么工作的：
+
+```js
+var myArray = [ 1, 2, 3 ];
+var it = myArray[Symbol.iterator]();
+
+it.next(); // { value:1, done:false }
+it.next(); // { value:2, done:false }
+it.next(); // { value:3, done:false }
+it.next(); // { done:true }
+```
+
+> 我们使用 ES6 中的符号 `Symbol.iterator` 来获取对象的 `@@iterator` 内部属性。之前我们简单介绍过符号，跟这里的原理是相同的。引用类似iterator的特殊属性时要使用符号名，而不是符号包含的值。此外，虽然看起来很像一个对象，但是 `@@iterator` 本身并不是一个迭代器对象，而是一个返回迭代器对象的函数——这点非常精妙并且非常重要。
+
+和数组不同，普通的对象没有内置的 `@@iterator`，所以无法自动完成 `for..of` 遍历。之所以要这样做，有许多非常复杂的原因，不过简单来说，这样做是为了避免影响未来的对象类型。
+
 ### 4.混合对象“类”
 
 ### 5.原型
