@@ -2727,5 +2727,5 @@ b2.speak();
 
 首先，类风格代码的思维模型强调实体以及实体间的关系：
 
-![ydkjsprototype001](http://richyu.gitee.io/pb_images/documentImg/ydkjsprototype001.png)
+![ydkjsprototype001](https://richyu.gitee.io/pb_images/documentImg/ydkjsprototype001.png)
 
