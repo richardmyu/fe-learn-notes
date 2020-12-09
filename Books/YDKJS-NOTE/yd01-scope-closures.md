@@ -27,6 +27,18 @@ JavaScript 是一门“解释型”语言，但在执行代码前，会有“编
 
 比起那些编译过程只有三步的语言的编译器，JavaScript 引擎要复杂。在语法分析和代码生成阶段，会有特定的步骤来对运行性能进行优化，包括对冗余元素进行优化等。JavaScript 引擎为此引入了 JIT 来保障性能。
 
+> **JIT**
+>
+> A JIT compiler runs after the program has started and compiles the code (usually bytecode or some kind of VM instructions) on the fly (or just-in-time, as it's called) into a form that's usually faster, typically the host CPU's native instruction set. A JIT has access to dynamic runtime information whereas a standard compiler doesn't and can make better optimizations like inlining functions that are used frequently.
+>
+> This is in contrast to a traditional compiler that compiles all the code to machine language before the program is first run.
+>
+> To paraphrase, conventional compilers build the whole program as an EXE file BEFORE the first time you run it. For newer style programs, an assembly is generated with pseudocode (p-code). Only AFTER you execute the program on the OS (e.g., by double-clicking on its icon) will the (JIT) compiler kick in and generate machine code (m-code) that the Intel-based processor or whatever will understand.
+>
+> 更多阅读：
+> [Hello, JIT World: The Joy of Simple JITs](https://blog.reverberate.org/2012/12/hello-jit-world-joy-of-simple-jits.html)
+> [深入浅出 JIT 编译器](https://developer.ibm.com/zh/articles/j-lo-just-in-time/)
+
 - **例子**
 
 ```js
@@ -39,7 +51,7 @@ var a = 2;
     - 是：忽略该声明，继续编译（查询操作终止）；
     - 否：“让”【作用域】在 **当前作用域的集合** 中声明一个新变量，并命名为 `a`（查询操作终止）；
 
-2. （【编译器】生成【引擎】运行时所需代码后）引擎运行时，先查询【作用域】，在当前作用域集合中是否存在该名称的变量：
+2. （在【编译器】生成【引擎】运行时所需代码后）引擎运行时，先查询【作用域】，在当前作用域集合中是否存在该名称的变量：
     - 是：直接使用该变量，并将其赋值为 2（查询操作终止）；
     - 否：继续向上一级作用域查询，如果最终找到了，就进行赋值，否则抛出一个异常。
       > 其实也不一定就是异常，具体细节根查询策略以及是否“严格模式”有关，只是这四种（RHS-严格模式、RHS-非严格模式、LHS-严格模式、LHS-非严格模式）情况下只有一种（LHS-非严格模式）情况不会抛出异常。
@@ -72,7 +84,7 @@ console.log(a, window.a); // 2 2
 
 #### 1.4.作用域嵌套
 
-作用域的嵌套，会形成一条“链”，也叫“作用域链”。引擎也是通过这条作用域链，来（LHS 和 RHS）查询变量的。注意，作用域的嵌套，是严格包含的。
+作用域的嵌套，会形成一条“链”，也叫“作用域链”。引擎也是通过这条作用域链，来（LHS 和 RHS）查询变量的。注意，作用域的嵌套，是【严格包含】的。
 
 ```js
 function foo(a){
@@ -82,15 +94,15 @@ function foo(a){
 foo(2);
 ```
 
-函数 `foo` 被赋予实参后执行时，为了给形参 `a`（隐式）分配值，需要一次 LHS 查询。
+还要注意：函数 `foo` 被赋予实参后执行时，为了给形参 `a`（隐式）分配值，需要进行一次 LHS 查询。
 
 ### 2.词法作用域
 
 作用域共有两种主要的工作模型。第一种是最为普遍的，被大多数编程语言所采用的**词法作用域**；另外一种叫作**动态作用域**，仍有一些编程语言在使用（比如 Bash 脚本、Perl 中的一些模式等）。
 
-> 动态作用域并不关心函数和作用域是如何声明以及在何处声明的，只关心它们从何处调用。换句话说，作用域链是基于调用栈的，而不是代码中的作用域嵌套。
+> 动态作用域并不关心函数和作用域是如何声明以及在何处声明的，只关心它们从何处调用。换句话说，**动态作用域链是基于调用栈的**，而不是代码中的作用域嵌套。
 >
-> 需要明确的是，事实上 JavaScript 并不具有动态作用域。它只有词法作用域，简单明了。但是 `this` 机制某种程度上很像动态作用域。
+> 需要明确的是，事实上 JavaScript 并不具有动态作用域。它只有词法作用域，简单明了。但是 `this` 机制某种程度上 *很像* 动态作用域。
 
 简单讲，**词法作用域** 就是定义在【词法阶段】的作用域，即由编写代码时的位置决定，因而词法分析器处理代码时会保持作用域不变。
 
@@ -99,7 +111,7 @@ foo(2);
 
 #### 2.1.欺骗词法
 
-指在运行时“修改”词法作用域。但是欺骗词法作用域会导致性能下降。
+所谓欺骗词法是指在运行时“修改”词法作用域。但是注意，欺骗词法作用域可能会导致性能下降。
 
 ##### 2.1.1.eval
 
@@ -116,7 +128,8 @@ var b = 2;
 foo('var b = 3;', 1); // 1, 3
 ```
 
-非严格模式下，如果 `eval` 所执行的代码包含一个或多个声明，就会对 `eval` 所在的此法作用域进行修改。而在严格模式下， `eval` 在运行时会有自己的词法作用域，而不会影响到其所处的词法作用域。
+> 非严格模式下，如果 `eval` 所执行的代码包含一个或多个声明，就会对 `eval` 所在的此法作用域进行修改。
+> 严格模式下， `eval` 在运行时会有自己的词法作用域，而不会影响到其所处的词法作用域。
 
 JavaScript 中还有其他一些功能效果和 `eval` 类似。`setTimeout` 和 `setInterval` 的第一个参数可以是字符串，字符串的内容可以被解释为一段动态生成的函数代码。这些功能已过时且不被提倡。
 
@@ -163,7 +176,7 @@ console.log(a); // 2 -- a 被泄露到全局了
 
 可以看到 `a = 2` 赋值操作创建了一个全局变量。
 
-`with` 可以将一个没有或者由多个属性的对象处理为一个完全隔离的词法作用域，因此这个对象的属性也会被处理为定义在这个作用域中的词法标识符。
+`with` 可以将一个没有或者由多个属性的对象处理为一个 *完全隔离* 的词法作用域，因此这个对象的属性也会被处理为定义在这个作用域中的词法标识符。
 
 > `with` 内部正常的 `var` 声明并不会被局限在 `with` 的作用域中，而是被添加到 `with` 所处的作用域中 。
 > 与 `eval` 修改词法作用域不同，`with` 是创建了一个全新的词法作用域。
@@ -216,7 +229,7 @@ JavaScript 具有基于函数的作用域，意味着每声明一个函数都会
 匿名函数表达式的缺点：
 
 - 在栈追踪中不会显示有意义的函数名，调试很难；
-- 引用自身时只能使用 **过期** 的 `arguments.callee`；
+- 引用自身时只能使用 *过期* 的 `arguments.callee`；
 - 缺乏可读性/可理解性；
 
 > 始终给函数表达式命名是一个最佳实践。
