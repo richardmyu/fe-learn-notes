@@ -49,7 +49,7 @@ identify(you); // READER
 speak(me); //Hello, I'm KYLE
 ```
 
-然而，`this` 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计得更加简洁并且易于复用。
+然而，**`this` 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计得更加简洁并且易于复用**。
 
 随着你的使用模式越来越复杂，显式传递上下文对象会让代码变得越来越混乱，使用 `this` 则不会这样。当我们介绍对象和原型时，你就会明白函数可以自动引用合适的上下文对象有多重要。
 
@@ -99,7 +99,7 @@ console.log(foo.count); // 0 -- 什么？！
 
 #### 1.3.this 到底是什么
 
-`this` 是在运行时进行绑定的，并不是在编写时绑定，它的上下文取决于函数调用时的各种条件。`this` 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。
+**`this` 是在运行时进行绑定的**，并不是在编写时绑定，它的上下文取决于函数调用时的各种条件。`this` 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。
 
 当一个函数被调用时，会创建一个活动记录（有时候也称为 **执行上下文**）。这个记录会包含函数在哪里被调用（调用栈）、函数的调用方式、传入的参数等信息。`this` 就是这个记录的一个属性，会在函数执行的过程中用到。
 
@@ -140,13 +140,13 @@ baz(); // <-- baz 的调用位置
 
 #### 2.2.绑定规则
 
-我们来看看在函数的执行过程中调用位置如何决定this的绑定对象。
+我们来看看在函数的执行过程中调用位置如何决定 `this` 的绑定对象。
 
 ##### 2.2.1.默认绑定
 
 首先要介绍的是最常用的函数调用类型：独立函数调用。直接使用不带任何修饰的函数引用进行调用的，因此只能使用默认绑定，无法应用其他规则。也可以把这条规则看作是无法应用其他规则时的默认规则。
 
-默认绑定时，`this` 指向全局对象（严格模式下，不能将全局对象用于默认绑定，因此 `this` 会绑定到 `undefined`）。
+默认绑定时，`this` 指向 【全局对象】（严格模式下，不能将全局对象用于默认绑定，因此 `this` 会绑定到 `undefined`）。
 
 ```js
 function foo() {
@@ -234,7 +234,7 @@ function foo() {
 }
 
 function doFoo(fn) {
-  // fn其实引用的是foo
+  // fn 其实引用的是 foo
 
   fn(); // <-- 调用位置！
 }
@@ -244,7 +244,7 @@ var obj = {
   foo: foo
 };
 
-var a = "oops, global"; // a是全局对象的属性
+var a = "oops, global"; // a 是全局对象的属性
 
 doFoo(obj.foo); // "oops, global"
 ```
@@ -263,7 +263,9 @@ doFoo(obj.foo); // "oops, global"
 
 那么如果我们不想在对象内部包含函数引用，而想在某个对象上强制调用函数，该怎么做呢？
 
-JavaScript 中的“所有”函数都有一些有用的特性（这和它们的 `[[Prototype]]` 有关），可以用来解决这个问题。具体点说，可以使用函数的 `call(..)` 和 `apply(..)` 方法。严格来说，JavaScript 的宿主环境有时会提供一些非常特殊的函数，它们并没有这两个方法。但是这样的函数非常罕见，JavaScript 提供的绝大多数函数以及自定义的所有函数都可以使用 `call(..)` 和 `apply(..)` 方法。
+JavaScript 中的“所有”函数都有一些有用的特性（这和它们的 `[[Prototype]]` 有关），可以用来解决这个问题。具体点说，可以使用函数的 `call()` 和 `apply()` 方法。
+
+> 严格来说，JavaScript 的宿主环境有时会提供一些非常特殊的函数，它们并没有这两个方法。但是这样的函数非常罕见，JavaScript 提供的绝大多数函数以及自定义的所有函数都可以使用 `call()` 和 `apply()` 方法。
 
 这两个方法是如何工作的呢？它们的第一个参数是一个对象，是给 `this` 准备的，接着在调用函数时将其绑定到 `this`。因为你可以直接指定 `this` 的绑定对象，因此我们称之为**显式绑定**。
 
@@ -279,7 +281,7 @@ var obj = {
 foo.call(obj); // 2
 ```
 
-如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作 `this` 的绑定对象，这个原始值会被转换成它的对象形式（也就是 `new String(..)`、`new Boolean(..)` 或者 `new Number(..)`）。这通常被称为“包装”。
+如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作 `this` 的绑定对象，这个原始值会被转换成它的对象形式（也就是 `new String()`、`new Boolean()` 或者 `new Number()`）。这通常被称为“**包装**”。
 
 可惜，显式绑定仍然无法解决我们之前提出的丢失绑定问题。
 
@@ -354,11 +356,11 @@ var b = bar(3); // 2 3
 console.log(b); // 5
 ```
 
-由于硬绑定是一种非常常用的模式，所以 ES5 提供了内置的方法 `Function.prototype.bind`。`bind(..)` 会返回一个硬绑定的新函数，它会把你指定的参数设置为 `this` 的上下文并调用原始函数。
+由于硬绑定是一种非常常用的模式，所以 ES5 提供了内置的方法 `Function.prototype.bind`。`bind()` 会返回一个硬绑定的新函数，它会把你指定的参数设置为 `this` 的上下文并调用原始函数。
 
 - **API调用的“上下文”**
 
-第三方库的许多函数，以及 JavaScript 语言和宿主环境中许多新的内置函数，都提供了一个可选的参数，通常被称为“上下文”（context），其作用和 `bind(..)` 一样，确保你的回调函数使用指定的 `this`。
+第三方库的许多函数，以及 JavaScript 语言和宿主环境中许多新的内置函数，都提供了一个可选的参数，通常被称为“**上下文**”（context），其作用和 `bind()` 一样，确保你的回调函数使用指定的 `this`。
 
 ```js
 function foo(el) {
@@ -369,7 +371,7 @@ var obj = {
   id: "awesome"
 };
 
-// 调用 foo(..) 时把 this 绑定到 obj
+// 调用 foo() 时把 this 绑定到 obj
 [1, 2, 3].forEach( foo, obj );
 // 1 awesome 2 awesome 3 awesome
 ```
@@ -379,20 +381,20 @@ var obj = {
 在传统的面向类的语言中，“构造函数”是类中的一些特殊方法，使用 `new` 初始化类时会（自动）调用类中的构造函数。通常的形式是这样的：
 
 ```js
-something = new MyClass(..);
+something = new MyClass();
 ```
 
-JavaScript 也有一个 `new` 操作符，使用方法看起来也和那些面向类的语言一样，绝大多数开发者都认为 JavaScript 中 `new` 的机制也和那些语言一样。然而，JavaScript 中 `new` 的机制实际上和面向类的语言完全不同。
+> JavaScript 也有一个 `new` 操作符，使用方法看起来也和那些面向类的语言一样，绝大多数开发者都认为 JavaScript 中 `new` 的机制也和那些语言一样。然而，JavaScript 中 `new` 的机制实际上和面向类的语言完全不同。
 
 首先我们重新定义一下 JavaScript 中的“构造函数”。JavaScript 中的构造函数只是一些使用 `new` 操作符时被调用的函数，它们并不会属于某个类，也不会实例化一个类。实际上，它们甚至都不能说是一种特殊的函数类型，它们只是被 `new` 操作符调用的普通函数而已。
 
-举例来说，思考一下 `Number(..)` 作为构造函数时的行为，ES5.1 中这样描述它：
+举例来说，思考一下 `Number()` 作为构造函数时的行为，ES5.1 中这样描述它：
 
 > 15.7.2 Number 构造函数
 >
 > 当 Number 在 `new` 表达式中被调用时，它是一个构造函数：它会初始化新创建的对象。
 
-所以，包括内置对象函数（比如 `Number(..)`）在内的所有函数都可以用 `new` 来调用，这种函数调用被称为 **构造函数调用**。这里有一个重要但是非常细微的区别：实际上并不存在所谓的“构造函数”，只有对于函数的“**构造调用**”。
+所以，包括内置对象函数（比如 `Number()`）在内的所有函数都可以用 `new` 来调用，这种函数调用被称为 **构造函数调用**。这里有一个重要但是非常细微的区别：实际上并不存在所谓的“构造函数”，只有对于函数的“**构造调用**”。
 
 使用 `new` 来调用函数，或者说发生“构造调用”时，会自动执行下面的操作。
 
@@ -414,7 +416,7 @@ var bar = new foo(2);
 console.log( bar.a ); // 2
 ```
 
-使用 `new` 来调用 `foo(..)` 时，我们会构造一个新对象并把它绑定到 `foo(..)` 调用中的 `this` 上。`new` 是最后一种可以影响函数调用时 `this` 绑定行为的方法，我们称之为 **`new` 绑定**。
+使用 `new` 来调用 `foo()` 时，我们会构造一个新对象并把它绑定到 `foo()` 调用中的 `this` 上。`new` 是最后一种可以影响函数调用时 `this` 绑定行为的方法，我们称之为 **`new` 绑定**。
 
 #### 2.3.优先级
 
@@ -470,7 +472,7 @@ console.log(bar.a); // 4
 
 > `new` 和 `call/apply` 无法一起使用，使用了 `call/apply` 之后的函数不是函数，不是函数就不能使用 `new`。
 
-实际上，ES5 中内置的 `Function.prototype.bind(..)` 更加复杂。下面是 MDN 提供的一种 `bind(..)` 实现：
+实际上，ES5 中内置的 `Function.prototype.bind()` 更加复杂。下面是 MDN 提供的一种 `bind()` 实现：
 
 ```js
 //  Yes, it does work with `new (funcA.bind(thisArg, args))`
@@ -504,7 +506,7 @@ if (!Function.prototype.bind) (function(){
 })();
 ```
 
-> 这种 `bind(..)` 是一种 polyfill 代码（polyfill 就是我们常说的刮墙用的腻子，polyfill 代码主要用于旧浏览器的兼容，比如说在旧的浏览器中并没有内置 `bind` 函数，因此可以使用 polyfill 代码在旧浏览器中实现新的功能），对于 `new` 使用的硬绑定函数来说，这段 polyfill 代码和 ES5 内置的 `bind(..)` 函数并不完全相同。由于 polyfill 并不是内置函数，所以无法创建一个不包含 `.prototype` 的函数，因此会具有一些副作用。如果你要在 `new` 中使用硬绑定函数并且依赖 polyfill 代码的话，一定要非常小心。
+> 这种 `bind()` 是一种 polyfill 代码（polyfill 就是我们常说的刮墙用的腻子，polyfill 代码主要用于旧浏览器的兼容，比如说在旧的浏览器中并没有内置 `bind` 函数，因此可以使用 polyfill 代码在旧浏览器中实现新的功能），对于 `new` 使用的硬绑定函数来说，这段 polyfill 代码和 ES5 内置的 `bind()` 函数并不完全相同。由于 polyfill 并不是内置函数，所以无法创建一个不包含 `.prototype` 的函数，因此会具有一些副作用。如果你要在 `new` 中使用硬绑定函数并且依赖 polyfill 代码的话，一定要非常小心。
 
 下面是 `new` 修改 `this` 的相关代码：
 
@@ -520,7 +522,7 @@ fBound.prototype = new fNOP();
 
 那么，为什么要在 `new` 中使用硬绑定函数呢？直接使用普通函数不是更简单吗？
 
-之所以要在 `new` 中使用硬绑定函数，主要目的是预先设置函数的一些参数，这样在使用 `new` 进行初始化时就可以只传入其余的参数。`bind(..)` 的功能之一就是可以把除了第一个参数（第一个参数用于绑定 `this`）之外的其他参数都传给下层的函数（这种技术称为“部分应用”，是“柯里化”的一种）。
+之所以要在 `new` 中使用硬绑定函数，主要目的是预先设置函数的一些参数，这样在使用 `new` 进行初始化时就可以只传入其余的参数。`bind()` 的功能之一就是可以把除了第一个参数（第一个参数用于绑定 `this`）之外的其他参数都传给下层的函数（这种技术称为“部分应用”，是“柯里化”的一种）。
 
 ```js
 function foo(p1,p2) {
@@ -573,7 +575,7 @@ foo.call( null ); // 2
 
 那么什么情况下你会传入 `null` 呢？
 
-一种非常常见的做法是使用 `apply(..)` 来“展开”一个数组，并当作参数传入一个函数。类似地，`bind(..)` 可以对参数进行柯里化（预先设置一些参数），这种方法有时非常有用：
+一种非常常见的做法是使用 `apply()` 来“展开”一个数组，并当作参数传入一个函数。类似地，`bind()` 可以对参数进行柯里化（预先设置一些参数），这种方法有时非常有用：
 
 ```js
 function foo(a,b) {
@@ -590,11 +592,11 @@ bar( 3 ); // a:2, b:3
 
 这些方法都需要传入一个参数当作 `this` 的绑定对象。如果函数并不关心 `this` 的话，你仍然需要传入一个占位值，这时 `null` 可能是一个不错的选择。
 
-> 在ES6中，可以用 `...` 操作符代替 `apply(..)` 来“展开”数组，这样可以避免不必要的 `this` 绑定。可惜，在 ES6 中没有柯里化的相关语法，因此还是需要使用 `bind(..)`。
+> 在ES6中，可以用 `...` 操作符代替 `apply()` 来“展开”数组，这样可以避免不必要的 `this` 绑定。可惜，在 ES6 中没有柯里化的相关语法，因此还是需要使用 `bind()`。
 
 然而，总是使用 `null` 来忽略 `this` 绑定可能产生一些副作用。如果某个函数确实使用了 `this`（比如第三方库中的一个函数），那默认绑定规则会把 `this` 绑定到全局对象（在浏览器中这个对象是 window），这将导致不可预计的后果（比如修改全局对象）。显而易见，这种方式可能会导致许多难以分析和追踪的 bug。
 
-- **更安全的this**
+- **更安全的 this**
 
 一种“更安全”的做法是传入一个特殊的对象，比如可以创建一个“DMZ”（demilitarized zone，非军事区）对象——它就是一个空的非委托的对象。
 
@@ -678,7 +680,7 @@ var bar = foo.call( obj1 );
 bar.call( obj2 ); // 2, 不是3！
 ```
 
-箭头函数可以像 `bind(..)` 一样确保函数的 `this` 被绑定到指定对象，此外，其重要性还体现在它用更常见的词法作用域取代了传统的 `this` 机制。实际上，在 ES6 之前我们就已经在使用一种几乎和箭头函数完全一样的模式。
+箭头函数可以像 `bind()` 一样确保函数的 `this` 被绑定到指定对象，此外，其重要性还体现在它用更常见的词法作用域取代了传统的 `this` 机制。实际上，在 ES6 之前我们就已经在使用一种几乎和箭头函数完全一样的模式。
 
 ```js
 function foo() {
@@ -695,12 +697,12 @@ var obj = {
 foo.call( obj ); // 2
 ```
 
-虽然 `self = this` 和箭头函数看起来都可以取代 `bind(..)`，但是从本质上来说，它们想替代的是 `this` 机制。
+虽然 `self = this` 和箭头函数看起来都可以取代 `bind()`，但是从本质上来说，它们想替代的是 `this` 机制。
 
 如果你经常编写 `this` 风格的代码，但是绝大部分时候都会使用 `self = this` 或者箭头函数来否定 `this` 机制，那你或许应当：
 
 1. 只使用词法作用域并完全抛弃错误 `this` 风格的代码；
-2. 完全采用 `this` 风格，在必要时使用 `bind(..)`，尽量避免使用 `self = this` 和箭头函数。
+2. 完全采用 `this` 风格，在必要时使用 `bind()`，尽量避免使用 `self = this` 和箭头函数。
 
 当然，包含这两种代码风格的程序可以正常运行，但是在同一个函数或者同一个程序中混合使用这两种风格通常会使代码更难维护，并且可能也会更难编写。
 
@@ -710,7 +712,7 @@ foo.call( obj ); // 2
 
 `null` 有时会被当作一种对象类型，但是这其实只是语言本身的一个 bug，即对 `null` 执行 `typeof null` 时会返回字符串"object"。实际上，`null` 本身是基本类型。
 
-> 原理是这样的，不同的对象在底层都表示为二进制，在 JavaScript 中二进制前三位都为 0 的话会被判断为 `object` 类型， `null` 的二进制表示是全 0，自然前三位也是 0，所以执行 typeof 时会返回“object”。
+> 原理是这样的，不同的对象在底层都表示为二进制，在 JavaScript 中二进制前三位都为 0 的话会被判断为 `object` 类型，`null` 的二进制表示是全 0，自然前三位也是 0，所以执行 typeof 时会返回“object”。
 
 有一种常见的错误说法是“JavaScript 中万物皆是对象”，这显然是错误的。
 
@@ -746,7 +748,7 @@ JavaScript中还有一些对象子类型，通常被称为内置对象。有些�
 
 对于 `Objec`t、`Array`、`Function` 和 `RegExp`（正则表达式）来说，无论使用文字形式还是构造形式，它们都是对象，不是字面量。在某些情况下，相比用文字形式创建对象，构造形式可以提供一些额外选项。由于这两种形式都可以创建对象，所以我们首选更简单的文字形式。建议只在需要那些额外选项时使用构造形式。
 
-`Error` 对象很少在代码中显式创建，一般是在抛出异常时被自动创建。也可以使用 `new Error(..)` 这种构造形式来创建，不过一般来说用不着。
+`Error` 对象很少在代码中显式创建，一般是在抛出异常时被自动创建。也可以使用 `new Error()` 这种构造形式来创建，不过一般来说用不着。
 
 #### 3.2.内容
 
@@ -880,9 +882,9 @@ var newObj = JSON.parse( JSON.stringify( someObj ) );
 
 当然，这种方法需要保证对象是 `JSON` 安全的，所以只适用于部分情况。
 
-相比深复制，浅复制非常易懂并且问题要少得多，所以 ES6 定义了 `Object.assign(..)` 方法来实现浅复制。
+相比深复制，浅复制非常易懂并且问题要少得多，所以 ES6 定义了 `Object.assign()` 方法来实现浅复制。
 
-`Object.assign(..)` 方法的第一个参数是目标对象，之后还可以跟一个或多个源对象。它会遍历一个或多个源对象的所有可枚举（enumerable）的私有属性（owned key）并把它们复制（使用 `=` 操作符赋值）到目标对象，最后返回目标对象，就像这样：
+`Object.assign()` 方法的第一个参数是目标对象，之后还可以跟一个或多个源对象。它会遍历一个或多个源对象的所有可枚举（enumerable）的私有属性（owned key）并把它们复制（使用 `=` 操作符赋值）到目标对象，最后返回目标对象，就像这样：
 
 ```js
 var newObj = Object.assign( {}, myObject );
@@ -893,7 +895,7 @@ newObj.c === anotherArray; // true
 newObj.d === anotherFunction; // true
 ```
 
-> 但是需要注意的一点是，由于 `Object.assign(..)` 就是使用 `=` 操作符来赋值，所以源对象属性的一些特性（比如 `writable`）不会被复制到目标对象。
+> 但是需要注意的一点是，由于 `Object.assign()` 就是使用 `=` 操作符来赋值，所以源对象属性的一些特性（比如 `writable`）不会被复制到目标对象。
 
 ##### 3.2.5.属性描述符
 
@@ -914,7 +916,7 @@ Object.getOwnPropertyDescriptor( myObject, "a" );
 // }
 ```
 
-在创建普通属性时属性描述符会使用默认值，我们也可以使用 `Object.defineProperty(..)` 来添加一个新属性或者修改一个已有属性（如果它是 `configurable`）并对特性进行设置。
+在创建普通属性时属性描述符会使用默认值，我们也可以使用 `Object.defineProperty()` 来添加一个新属性或者修改一个已有属性（如果它是 `configurable`）并对特性进行设置。
 
 ```js
 var myObject = {};
@@ -939,7 +941,7 @@ myObject.a; // 2
 
 2.**Configurable**
 
-只要属性是可配置的，就可以使用 `defineProperty(..)` 方法来修改属性描述符。
+只要属性是可配置的，就可以使用 `defineProperty()` 方法来修改属性描述符。
 
 不管是不是处于严格模式，尝试修改一个不可配置的属性描述符都会产生一个 `TypeError` 错误。注意：如把 `configurable` 修改成 `false` 是单向操作，无法撤销！
 
@@ -1266,11 +1268,11 @@ myObject.hasOwnProperty( "a" ); // true
 myObject.hasOwnProperty( "b" ); // false
 ```
 
-`in` 操作符会检查属性是否在对象及其 `[[Prototype]]` 原型链中（参见第5章）。相比之下，`hasOwnProperty(..)` 只会检查属性是否在 `myObject` 对象中，不会检查 `[[Prototype]]` 链。
+`in` 操作符会检查属性是否在对象及其 `[[Prototype]]` 原型链中（参见第5章）。相比之下，`hasOwnProperty()` 只会检查属性是否在 `myObject` 对象中，不会检查 `[[Prototype]]` 链。
 
-所有的普通对象都可以通过对于 `Object.prototype` 的委托来访问 `hasOwnProperty(..)`，但是有的对象可能没有连接到 `Object.prototype`（通过 `Object.create(null)`来创建）。在这种情况下，形如 `myObejct.hasOwnProperty(..)` 就会失败。
+所有的普通对象都可以通过对于 `Object.prototype` 的委托来访问 `hasOwnProperty()`，但是有的对象可能没有连接到 `Object.prototype`（通过 `Object.create(null)`来创建）。在这种情况下，形如 `myObejct.hasOwnProperty()` 就会失败。
 
-这时可以使用一种更加强硬的方法来进行判断：`Object.prototype.hasOwnProperty.call(myObject,"a")`，它借用基础的 `hasOwnProperty(..)` 方法并把它显式绑定到 `myObject` 上。
+这时可以使用一种更加强硬的方法来进行判断：`Object.prototype.hasOwnProperty.call(myObject,"a")`，它借用基础的 `hasOwnProperty()` 方法并把它显式绑定到 `myObject` 上。
 
 看起来 `in` 操作符可以检查容器内是否有某个值，但是它实际上检查的是某个属性名是否存在。对于数组来说这个区别非常重要，`4 in [2, 4, 6]` 的结果并不是你期待的 `True`，因为 `[2, 4, 6]` 这个数组中包含的属性名是 0、1、2，没有 4。
 
@@ -1334,13 +1336,13 @@ Object.keys( myObject ); // ["a"]
 Object.getOwnPropertyNames( myObject ); // ["a", "b"]
 ```
 
-`propertyIsEnumerable(..)` 会检查给定的属性名是否直接存在于对象中（而不是在原型链上）并且满足 `enumerable:true`。
+`propertyIsEnumerable()` 会检查给定的属性名是否直接存在于对象中（而不是在原型链上）并且满足 `enumerable:true`。
 
-`Object.keys(..)` 会返回一个数组，包含所有可枚举属性，`Object.getOwnPropertyNames(..)`会返回一个数组，包含所有属性，无论它们是否可枚举。
+`Object.keys()` 会返回一个数组，包含所有可枚举属性，`Object.getOwnPropertyNames()`会返回一个数组，包含所有属性，无论它们是否可枚举。
 
-`in` 和 `hasOwnProperty(..)` 的区别在于是否查找 `[[Prototype]]` 链，然而，`Object.keys(..)` 和 `Object.getOwnPropertyNames(..)` 都只会查找对象直接包含的属性。
+`in` 和 `hasOwnProperty()` 的区别在于是否查找 `[[Prototype]]` 链，然而，`Object.keys()` 和 `Object.getOwnPropertyNames()` 都只会查找对象直接包含的属性。
 
-（目前）并没有内置的方法可以获取 `in` 操作符使用的属性列表（对象本身的属性以及 `[[Prototype]]` 链中的所有属性）。不过你可以递归遍历某个对象的整条 `[[Prototype]]` 链并保存每一层中使用 `Object.keys(..)` 得到的属性列表——只包含可枚举属性。
+（目前）并没有内置的方法可以获取 `in` 操作符使用的属性列表（对象本身的属性以及 `[[Prototype]]` 链中的所有属性）。不过你可以递归遍历某个对象的整条 `[[Prototype]]` 链并保存每一层中使用 `Object.keys()` 得到的属性列表——只包含可枚举属性。
 
 #### 3.3.遍历
 
@@ -1359,9 +1361,9 @@ for (var i = 0; i < myArray.length; i++) {
 
 这实际上并不是在遍历值，而是遍历下标来指向值，如 `myArray[i]`。
 
-ES5 中增加了一些数组的辅助迭代器，包括 `forEach(..)`、`every(..)` 和 `some(..)`。每种辅助迭代器都可以接受一个回调函数并把它应用到数组的每个元素上，唯一的区别就是它们对于回调函数返回值的处理方式不同。
+ES5 中增加了一些数组的辅助迭代器，包括 `forEach()`、`every()` 和 `some()`。每种辅助迭代器都可以接受一个回调函数并把它应用到数组的每个元素上，唯一的区别就是它们对于回调函数返回值的处理方式不同。
 
-> `forEach(..)` 会遍历数组中的所有值并忽略回调函数的返回值。`every(..)` 会一直运行直到回调函数返回 `false`（或者“假”值），`some(..)` 会一直运行直到回调函数返回true（或者“真”值）。`every(..)` 和 `some(..)` 中特殊的返回值和普通 `for` 循环中的 `break` 语句类似，它们会提前终止遍历。
+> `forEach()` 会遍历数组中的所有值并忽略回调函数的返回值。`every()` 会一直运行直到回调函数返回 `false`（或者“假”值），`some()` 会一直运行直到回调函数返回true（或者“真”值）。`every()` 和 `some()` 中特殊的返回值和普通 `for` 循环中的 `break` 语句类似，它们会提前终止遍历。
 
 使用 `for..in` 遍历对象是无法直接获取属性值的，因为它实际上遍历的是对象中的所有可枚举属性，你需要手动获取属性值。
 
@@ -1607,10 +1609,10 @@ class SpeedBoat inherits Vehicle {
 
 ##### 4.4.1.显式混入
 
-首先我们来回顾一下之前提到的 `Vehicle` 和 `Car`。由于 JavaScript 不会自动实现 `Vehicle` 到 `Car` 的复制行为，所以我们需要手动实现复制功能。这个功能在许多库和框架中被称为 `extend(..)`，但是为了方便理解我们称之为 `mixin(..)`。
+首先我们来回顾一下之前提到的 `Vehicle` 和 `Car`。由于 JavaScript 不会自动实现 `Vehicle` 到 `Car` 的复制行为，所以我们需要手动实现复制功能。这个功能在许多库和框架中被称为 `extend()`，但是为了方便理解我们称之为 `mixin()`。
 
 ```js
-// 非常简单的mixin(..)例子:
+// 非常简单的mixin()例子:
 function mixin( sourceObj, targetObj ) {
     for (var key in sourceObj) {
         // 只会在不存在的情况下复制
@@ -1659,7 +1661,7 @@ var Car = mixin( Vehicle, {
 
 JavaScript（在 ES6 之前）并没有相对多态的机制。所以，由于 `Car` 和 `Vehicle` 中都有 `drive()` 函数，为了指明调用对象，我们必须使用绝对（而不是相对）引用。我们通过名称显式指定 `Vehicle` 对象并调用它的 `drive()` 函数。
 
-> 如果函数 `Car.drive()` 的名称标识符并没有和 `Vehicle.drive()` 重叠的话，我们就不需要实现方法多态，因为调用 `mixin(..)` 时会把函数 `Vehicle.drive()` 的引用复制到 `Car` 中，因此我们可以直接访问 `this.drive()`。正是由于存在标识符重叠，所以必须使用更加复杂的显式伪多态方法。
+> 如果函数 `Car.drive()` 的名称标识符并没有和 `Vehicle.drive()` 重叠的话，我们就不需要实现方法多态，因为调用 `mixin()` 时会把函数 `Vehicle.drive()` 的引用复制到 `Car` 中，因此我们可以直接访问 `this.drive()`。正是由于存在标识符重叠，所以必须使用更加复杂的显式伪多态方法。
 
 在支持相对多态的面向类的语言中，`Car` 和 `Vehicle` 之间的联系只在类定义的开头被创建，从而只需要在这一个地方维护两个类的联系。
 
@@ -1670,7 +1672,7 @@ JavaScript（在 ES6 之前）并没有相对多态的机制。所以，由于 `
 2.**混合复制**
 
 ```js
-// 非常简单的mixin(..)例子:
+// 非常简单的mixin()例子:
 function mixin( sourceObj, targetObj ) {
     for (var key in sourceObj) {
         // 只会在不存在的情况下复制
@@ -1683,7 +1685,7 @@ function mixin( sourceObj, targetObj ) {
 }
 ```
 
-现在我们来分析一下 `mixin(..)` 的工作原理。它会遍历 `sourceObj`（本例中是 `Vehicle`）的属性，如果在 `targetObj`（本例中是 `Car`）没有这个属性就会进行复制。由于我们是在目标对象初始化之后才进行复制，因此一定要小心不要覆盖目标对象的原有属性。
+现在我们来分析一下 `mixin()` 的工作原理。它会遍历 `sourceObj`（本例中是 `Vehicle`）的属性，如果在 `targetObj`（本例中是 `Car`）没有这个属性就会进行复制。由于我们是在目标对象初始化之后才进行复制，因此一定要小心不要覆盖目标对象的原有属性。
 
 如果我们是先进行复制然后对 `Car` 进行特殊化的话，就可以跳过存在性检查。不过这种方法并不好用并且效率更低，所以不如第一种方法常用：
 
@@ -1907,9 +1909,9 @@ myObject.foo = "bar";
 
 大多数开发者都认为如果向 `[[Prototype]]` 链上层已经存在的属性（`[[Put]]`）赋值，就一定会触发屏蔽，但是如你所见，三种情况中只有一种（第一种）是这样的。
 
-如果你希望在第二种和第三种情况下也屏蔽 `foo`，那就不能使用 `=` 操作符来赋值，而是使用 `Object.defineProperty(..)` 来向 `myObject` 添加 `foo`。
+如果你希望在第二种和第三种情况下也屏蔽 `foo`，那就不能使用 `=` 操作符来赋值，而是使用 `Object.defineProperty()` 来向 `myObject` 添加 `foo`。
 
-> 第二种情况可能是最令人意外的，只读属性会阻止 `[[Prototype]]` 链下层隐式创建（屏蔽）同名属性。这样做主要是为了模拟类属性的继承。你可以把原型链上层的 `foo` 看作是父类中的属性，它会被 `myObject` 继承（复制），这样一来 `myObject` 中的 `foo` 属性也是只读，所以无法创建。但是一定要注意，实际上并不会发生类似的继承复制。这看起来有点奇怪，`myObject`对象竟然会因为其他对象中有一个只读 `foo` 就不能包含 `foo` 属性。更奇怪的是，这个限制只存在于 `=` 赋值中，使用 `Object.defineProperty(..)` 并不会受到影响。
+> 第二种情况可能是最令人意外的，只读属性会阻止 `[[Prototype]]` 链下层隐式创建（屏蔽）同名属性。这样做主要是为了模拟类属性的继承。你可以把原型链上层的 `foo` 看作是父类中的属性，它会被 `myObject` 继承（复制），这样一来 `myObject` 中的 `foo` 属性也是只读，所以无法创建。但是一定要注意，实际上并不会发生类似的继承复制。这看起来有点奇怪，`myObject`对象竟然会因为其他对象中有一个只读 `foo` 就不能包含 `foo` 属性。更奇怪的是，这个限制只存在于 `=` 赋值中，使用 `Object.defineProperty()` 并不会受到影响。
 
 如果需要对屏蔽方法进行委托的话就不得不使用丑陋的显式伪多态。通常来说，使用屏蔽得不偿失，所以应当尽量避免使用。有些情况下会隐式产生屏蔽，一定要当心。思考下面的代码：
 
@@ -2000,7 +2002,7 @@ Object.getPrototypeOf( a ) === Foo.prototype; // true
 
 实际上，绝大多数 JavaScript 开发者不知道的秘密是，`new Foo()` 这个函数调用实际上并没有直接创建关联，这个关联只是一个意外的副作用。`new Foo()` 只是间接完成了我们的目标：一个关联到其他对象的新对象。
 
-那么有没有更直接的方法来做到这一点呢？当然！功臣就是 `Object.create(..)`。
+那么有没有更直接的方法来做到这一点呢？当然！功臣就是 `Object.create()`。
 
 **关于名称**
 
@@ -2145,9 +2147,9 @@ a1.constructor === Foo; // false!
 a1.constructor === Object; // true!
 ```
 
-`Object(..)` 并没有“构造” `a1`，对吧？看起来应该是 `Foo()` “构造”了它。大部分开发者都认为是 `Foo()` 执行了构造工作，但是问题在于，如果你认为“`constructor`”表示“由......构造”的话，`a1.constructor` 应该是 `Foo`，但是它并不是 `Foo`！
+`Object()` 并没有“构造” `a1`，对吧？看起来应该是 `Foo()` “构造”了它。大部分开发者都认为是 `Foo()` 执行了构造工作，但是问题在于，如果你认为“`constructor`”表示“由......构造”的话，`a1.constructor` 应该是 `Foo`，但是它并不是 `Foo`！
 
-到底怎么回事？`a1` 并没有 `.constructor` 属性，所以它会委托 `[[Prototype]]` 链上的 `Foo.prototype`。但是这个对象也没有 `.constructor` 属性（不过默认的 `Foo.prototype` 对象有这个属性！），所以它会继续委托，这次会委托给委托链顶端的 `Object.prototype`。这个对象有 `.constructor` 属性，指向内置的 `Object(..)` 函数。
+到底怎么回事？`a1` 并没有 `.constructor` 属性，所以它会委托 `[[Prototype]]` 链上的 `Foo.prototype`。但是这个对象也没有 `.constructor` 属性（不过默认的 `Foo.prototype` 对象有这个属性！），所以它会继续委托，这次会委托给委托链顶端的 `Object.prototype`。这个对象有 `.constructor` 属性，指向内置的 `Object()` 函数。
 
 错误观点已被摧毁。
 
@@ -2225,7 +2227,7 @@ a.myName(); // "a"
 a.myLabel(); // "obj a"
 ```
 
-这段代码的核心部分就是语句 `Bar.prototype = Object.create( Foo.prototype )`。调用 `Object.create(..)` 会凭空创建一个“新”对象并把新对象内部的 `[[Prototype]]` 关联到你指定的对象（本例中是 `Foo.prototype`）。换句话说，这条语句的意思是：“创建一个新的 `Bar.prototype` 对象并把它关联到 `Foo.prototype`”。
+这段代码的核心部分就是语句 `Bar.prototype = Object.create( Foo.prototype )`。调用 `Object.create()` 会凭空创建一个“新”对象并把新对象内部的 `[[Prototype]]` 关联到你指定的对象（本例中是 `Foo.prototype`）。换句话说，这条语句的意思是：“创建一个新的 `Bar.prototype` 对象并把它关联到 `Foo.prototype`”。
 
 声明 `function Bar() { .. }` 时，和其他函数一样，`Bar` 会有一个 `.prototype` 关联到默认的对象，但是这个对象并没有像我们想要的那样关联到 `Foo.prototype`。因此我们创建了一个新对象并把它关联到我们希望的对象上，直接把原始的关联对象抛弃掉。
 
@@ -2241,11 +2243,11 @@ Bar.prototype = new Foo();
 
 `Bar.prototype = Foo.prototype` 并不会创建一个关联到 `Bar.prototype` 的新对象，它只是让 `Bar.prototype` 直接引用 `Foo.prototype` 对象。因此当你执行类似 `Bar.prototype.myLabel = ...` 的赋值语句时会直接修改 `Foo.prototype` 对象本身。显然这不是你想要的结果，否则你根本不需要 `Bar` 对象，直接使用 `Foo` 就可以了，这样代码也会更简单一些。
 
-`Bar.prototype = new Foo()` 的确会创建一个关联到 `Foo.prototype` 的新对象。但是它使用了 `Foo(..)` 的“构造函数调用”，如果函数 `Foo` 有一些副作用（比如写日志、修改状态、注册到其他对象、给 `this` 添加数据属性，等等）的话，就会影响到 `Bar()` 的“后代”，后果不堪设想。
+`Bar.prototype = new Foo()` 的确会创建一个关联到 `Foo.prototype` 的新对象。但是它使用了 `Foo()` 的“构造函数调用”，如果函数 `Foo` 有一些副作用（比如写日志、修改状态、注册到其他对象、给 `this` 添加数据属性，等等）的话，就会影响到 `Bar()` 的“后代”，后果不堪设想。
 
-因此，要创建一个合适的关联对象，我们必须使用 `Object.create(..)` 而不是使用具有副作用的 `Foo(..)`。这样做唯一的缺点就是需要创建一个新对象然后把旧对象抛弃掉，不能直接修改已有的默认对象。
+因此，要创建一个合适的关联对象，我们必须使用 `Object.create()` 而不是使用具有副作用的 `Foo()`。这样做唯一的缺点就是需要创建一个新对象然后把旧对象抛弃掉，不能直接修改已有的默认对象。
 
-如果能有一个标准并且可靠的方法来修改对象的 `[[Prototype]]` 关联就好了。在 ES6 之前，我们只能通过设置 `.__proto__` 属性来实现，但是这个方法并不是标准并且无法兼容所有浏览器。ES6 添加了辅助函数 `Object.setPrototypeOf(..)`，可以用标准并且可靠的方法来修改关联。
+如果能有一个标准并且可靠的方法来修改对象的 `[[Prototype]]` 关联就好了。在 ES6 之前，我们只能通过设置 `.__proto__` 属性来实现，但是这个方法并不是标准并且无法兼容所有浏览器。ES6 添加了辅助函数 `Object.setPrototypeOf()`，可以用标准并且可靠的方法来修改关联。
 
 我们来对比一下两种把 `Bar.prototype` 关联到 `Foo.prototype` 的方法：
 
@@ -2257,7 +2259,7 @@ Bar.ptototype = Object.create( Foo.prototype );
 Object.setPrototypeOf( Bar.prototype, Foo.prototype );
 ```
 
-如果忽略掉 `Object.create(..)` 方法带来的轻微性能损失（抛弃的对象需要进行垃圾回收），它实际上比 ES6 及其之后的方法更短而且可读性更高。不过无论如何，这是两种完全不同的语法。
+如果忽略掉 `Object.create()` 方法带来的轻微性能损失（抛弃的对象需要进行垃圾回收），它实际上比 ES6 及其之后的方法更短而且可读性更高。不过无论如何，这是两种完全不同的语法。
 
 **检查“类”关系**
 
@@ -2283,7 +2285,7 @@ a instanceof Foo; // true
 
 可惜，这个方法只能处理对象（`a`）和函数（带 `.prototype` 引用的 `Foo`）之间的关系。如果你想判断两个对象（比如 `a` 和 `b`）之间是否通过 `[[Prototype]]` 链关联，只用 `instanceof` 无法实现。
 
-> 如果使用内置的 `.bind(..)` 函数来生成一个硬绑定函数的话，该函数是没有 `.prototype` 属性的。在这样的函数上使用 `instanceof` 的话，目标函数的 `.prototype` 会代替硬绑定函数的 `.prototype`。
+> 如果使用内置的 `.bind()` 函数来生成一个硬绑定函数的话，该函数是没有 `.prototype` 属性的。在这样的函数上使用 `instanceof` 的话，目标函数的 `.prototype` 会代替硬绑定函数的 `.prototype`。
 >
 > 通常我们不会在“构造函数调用”中使用硬绑定函数，不过如果你这么做的话，实际上相当于直接调用目标函数。同理，在硬绑定函数上使用 `instanceof` 也相当于直接在目标函数上使用 `instanceof`。
 
@@ -2303,7 +2305,7 @@ var b = Object.create( a );
 isRelatedTo( b, a ); // true
 ```
 
-在 `isRelatedTo(..)` 内部我们声明了一个一次性函数F，把它的 `.prototype` 重新赋值并指向对象 `o2`，然后判断 `o1` 是否是F的一个“实例”。显而易见，`o1` 实际上并没有继承F也不是由F构造，所以这种方法非常愚蠢并且容易造成误解。问题的关键在于思考的角度，强行在 JavaScript 中应用类的语义（在本例中就是使用 `instanceof`）就会造成这种尴尬的局面。
+在 `isRelatedTo()` 内部我们声明了一个一次性函数F，把它的 `.prototype` 重新赋值并指向对象 `o2`，然后判断 `o1` 是否是F的一个“实例”。显而易见，`o1` 实际上并没有继承F也不是由F构造，所以这种方法非常愚蠢并且容易造成误解。问题的关键在于思考的角度，强行在 JavaScript 中应用类的语义（在本例中就是使用 `instanceof`）就会造成这种尴尬的局面。
 
 下面是第二种判断 `[[Prototype]]` 反射的方法，它更加简洁：
 
@@ -2311,7 +2313,7 @@ isRelatedTo( b, a ); // true
 Foo.prototype.isPrototypeOf( a ); // true
 ```
 
-注意，在本例中，我们实际上并不关心（甚至不需要）`Foo`，我们只需要一个可以用来判断的对象（本例中是 `Foo.prototype`）就行。`isPrototypeOf(..)` 回答的问题是：在 `a` 的整条 `[[Prototype]]` 链中是否出现过 `Foo.prototype`？
+注意，在本例中，我们实际上并不关心（甚至不需要）`Foo`，我们只需要一个可以用来判断的对象（本例中是 `Foo.prototype`）就行。`isPrototypeOf()` 回答的问题是：在 `a` 的整条 `[[Prototype]]` 链中是否出现过 `Foo.prototype`？
 
 同样的问题，同样的答案，但是在第二种方法中并不需要间接引用函数（Foo），它的 `.prototype` 属性会被自动访问。
 
@@ -2322,7 +2324,7 @@ Foo.prototype.isPrototypeOf( a ); // true
 b.isPrototypeOf( c );
 ```
 
-注意，这个方法并不需要使用函数（“类”），它直接使用 `b` 和 `c` 之间的对象引用来判断它们的关系。换句话说，语言内置的 `isPrototypeOf(..)` 函数就是我们的 `isRelatedTo(..)` 函数。
+注意，这个方法并不需要使用函数（“类”），它直接使用 `b` 和 `c` 之间的对象引用来判断它们的关系。换句话说，语言内置的 `isPrototypeOf()` 函数就是我们的 `isRelatedTo()` 函数。
 
 我们也可以直接获取一个对象的 `[[Prototype]]` 链。在 ES5 中，标准的方法是：
 
@@ -2344,7 +2346,7 @@ a.__proto__ === Foo.prototype; // true
 
 这个奇怪的 `.__proto__`（在 ES6 之前并不是标准！）属性“神奇地”引用了内部的 `[[Prototype]]` 对象，如果你想直接查找（甚至可以通过 `.__proto__.__ptoto__...` 来遍历）原型链的话，这个方法非常有用。
 
-和我们之前说过的 `.constructor` 一样，`.__proto__` 实际上并不存在于你正在使用的对象中（本例中是 `a`）。实际上，它和其他的常用函数（`.toString()`、`.isPrototypeOf(..)`，等等）一样，存在于内置的 `Object.prototype` 中。（它们是不可枚举的）
+和我们之前说过的 `.constructor` 一样，`.__proto__` 实际上并不存在于你正在使用的对象中（本例中是 `a`）。实际上，它和其他的常用函数（`.toString()`、`.isPrototypeOf()`，等等）一样，存在于内置的 `Object.prototype` 中。（它们是不可枚举的）
 
 此外，`.__proto__` 看起来很像一个属性，但是实际上它更像一个 `getter/setter`。
 
@@ -2356,7 +2358,7 @@ Object.defineProperty( Object.prototype, "__proto__", {
         return Object.getPrototypeOf( this );
     },
     set: function(o) {
-        // ES6 中的 setPrototypeOf(..)
+        // ES6 中的 setPrototypeOf()
         Object.setPrototypeOf( this, o );
         return o;
     }
@@ -2365,7 +2367,7 @@ Object.defineProperty( Object.prototype, "__proto__", {
 
 因此，访问（获取值）`a.__proto__` 时，实际上是调用了 `a.__proto__()`（调用 `getter` 函数）。虽然 `getter` 函数存在于 `Object.prototype` 对象中，但是它的 `this` 指向对象 `a`，所以和 `Object.getPrototypeOf( a )` 结果相同。
 
-`.__proto__` 是可设置属性，之前的代码中使用 ES6 的 `Object.setPrototypeOf(..)` 进行设置。然而，通常来说你不需要修改已有对象的 `[[Prototype]]`。
+`.__proto__` 是可设置属性，之前的代码中使用 ES6 的 `Object.setPrototypeOf()` 进行设置。然而，通常来说你不需要修改已有对象的 `[[Prototype]]`。
 
 一些框架会使用非常复杂和高端的技术来实现“子类”机制，但是通常来说，我们不推荐这种用法，因为这会极大地增加代码的阅读难度和维护难度。
 
@@ -2385,7 +2387,7 @@ JavaScript 社区中对于双下划线有一个非官方的称呼，他们会把
 
 我们已经明白了为什么 JavaScript 的 `[[Prototype]]` 机制和类不一样，也明白了它如何建立对象间的关联。那 `[[Prototype]]` 机制的意义是什么呢？为什么 JavaScript 开发者费这么大的力气（模拟类）在代码中创建这些关联呢？
 
-前面曾经说过 `Object.create(..)` 是一个大英雄，现在是时候来弄明白为什么了：
+前面曾经说过 `Object.create()` 是一个大英雄，现在是时候来弄明白为什么了：
 
 ```js
 var foo = {
@@ -2399,11 +2401,11 @@ var bar = Object.create( foo );
 bar.something(); // Tell me something good...
 ```
 
-`Object.create(..)` 会创建一个新对象（`bar`）并把它关联到我们指定的对象（`foo`），这样我们就可以充分发挥 `[[Prototype]]` 机制的威力（委托）并且避免不必要的麻烦（比如使用 `new` 的构造函数调用会生成 `.prototype` 和 `.constructor` 引用）。
+`Object.create()` 会创建一个新对象（`bar`）并把它关联到我们指定的对象（`foo`），这样我们就可以充分发挥 `[[Prototype]]` 机制的威力（委托）并且避免不必要的麻烦（比如使用 `new` 的构造函数调用会生成 `.prototype` 和 `.constructor` 引用）。
 
 > `Object.create(null)` 会创建一个拥有空（或者说 `null`）`[[Prototype]]` 链接的对象，这个对象无法进行委托。由于这个对象没有原型链，所以 `instanceof` 操作符（之前解释过）无法进行判断，因此总是会返回 `false`。这些特殊的空 `[[Prototype]]` 对象通常被称作“字典”，它们完全不会受到原型链的干扰，因此非常适合用来存储数据。
 
-`Object.create(..)` 是在 ES5 中新增的函数，所以在 ES5 之前的环境中（比如旧 IE）如果要支持这个功能的话就需要使用一段简单的 polyfill 代码，它部分实现了 `Object.create(..)` 的功能：
+`Object.create()` 是在 ES5 中新增的函数，所以在 ES5 之前的环境中（比如旧 IE）如果要支持这个功能的话就需要使用一段简单的 polyfill 代码，它部分实现了 `Object.create()` 的功能：
 
 ```js
 if (!Object.create) {
@@ -2417,7 +2419,7 @@ if (!Object.create) {
 
 这段 polyfill 代码使用了一个一次性函数F，我们通过改写它的 `.prototype` 属性使其指向想要关联的对象，然后再使用 `new F()` 来构造一个新对象进行关联。
 
-由于 `Object.create(..)` 可以被模拟，因此这个函数被应用得非常广泛。标准 ES5 中内置的 `Object.create(..)` 函数还提供了一系列附加功能，但是 ES5 之前的版本不支持这些功能。通常来说，这些功能的应用范围要小得多，但是出于完整性考虑，我们还是介绍一下：
+由于 `Object.create()` 可以被模拟，因此这个函数被应用得非常广泛。标准 ES5 中内置的 `Object.create()` 函数还提供了一系列附加功能，但是 ES5 之前的版本不支持这些功能。通常来说，这些功能的应用范围要小得多，但是出于完整性考虑，我们还是介绍一下：
 
 ```js
 var anotherObject = {
@@ -2448,9 +2450,9 @@ myObject.b; // 3
 myObject.c; // 4
 ```
 
-`Object.create(..)` 的第二个参数指定了需要添加到新对象中的属性名以及这些属性的属性描述符。因为 ES5 之前的版本无法模拟属性操作符，所以 polyfill 代码无法实现这个附加功能。通常来说并不会使用 `Object.create(..)` 的附加功能，所以对于大多数开发者来说，上面那段 polyfill 代码就足够了。
+`Object.create()` 的第二个参数指定了需要添加到新对象中的属性名以及这些属性的属性描述符。因为 ES5 之前的版本无法模拟属性操作符，所以 polyfill 代码无法实现这个附加功能。通常来说并不会使用 `Object.create()` 的附加功能，所以对于大多数开发者来说，上面那段 polyfill 代码就足够了。
 
-有些开发者更加严谨，他们认为只有能被完全模拟的函数才应该使用 polyfill 代码。由于 `Object.create(..)` 是只能部分模拟的函数之一，所以这些狭隘的人认为如果你需要在 ES5 之前的环境中使用 `Object.create(..)` 的特性，那不要使用 polyfill 代码，而是使用一个自定义函数并且名字不能是 `Object.create`。你可以把你自己的函数定义成这样：
+有些开发者更加严谨，他们认为只有能被完全模拟的函数才应该使用 polyfill 代码。由于 `Object.create()` 是只能部分模拟的函数之一，所以这些狭隘的人认为如果你需要在 ES5 之前的环境中使用 `Object.create()` 的特性，那不要使用 polyfill 代码，而是使用一个自定义函数并且名字不能是 `Object.create`。你可以把你自己的函数定义成这样：
 
 ```js
 function createAndLinkObject(o) {
@@ -2559,7 +2561,7 @@ XYZ.outputTaskDetails = function() {
 // ABC ... = ...
 ```
 
-在这段代码中，`Task` 和 `XYZ` 并不是类（或者函数），它们是对象。`XYZ` 通过 `Object.create(..)` 创建，它的 `[[Prototype]]` 委托了 `Task` 对象。
+在这段代码中，`Task` 和 `XYZ` 并不是类（或者函数），它们是对象。`XYZ` 通过 `Object.create()` 创建，它的 `[[Prototype]]` 委托了 `Task` 对象。
 
 相比于面向类（或者说面向对象），我会把这种编码风格称为“对象关联”（OLOO，objects linked to other objects）。我们真正关心的只是 `XYZ` 对象（和 `ABC` 对象）委托了 `Task` 对象。
 
@@ -2573,7 +2575,7 @@ XYZ.outputTaskDetails = function() {
 
 > 这个设计模式要求尽量少使用容易被重写的通用方法名，提倡使用更有描述性的方法名，尤其是要写清相应对象行为的类型。这样做实际上可以创建出更容易理解和维护的代码，因为方法名（不仅在定义的位置，而是贯穿整个代码）更加清晰（自文档）。
 
-1. `this.setID(ID);` `XYZ` 中的方法首先会寻找 `XYZ` 自身是否有 `setID(..)`，但是 `XYZ` 中并没有这个方法名，因此会通过 `[[Prototype]]` 委托关联到 `Task` 继续寻找，这时就可以找到 `setID(..)` 方法。此外，由于调用位置触发了 `this` 的隐式绑定规则，因此虽然 `setID(..)` 方法在 `Task` 中，运行时 `this` 仍然会绑定到 `XYZ`，这正是我们想要的。在之后的代码中我们还会看到 `this.outputID()`，原理相同。
+1. `this.setID(ID);` `XYZ` 中的方法首先会寻找 `XYZ` 自身是否有 `setID()`，但是 `XYZ` 中并没有这个方法名，因此会通过 `[[Prototype]]` 委托关联到 `Task` 继续寻找，这时就可以找到 `setID()` 方法。此外，由于调用位置触发了 `this` 的隐式绑定规则，因此虽然 `setID()` 方法在 `Task` 中，运行时 `this` 仍然会绑定到 `XYZ`，这正是我们想要的。在之后的代码中我们还会看到 `this.outputID()`，原理相同。
 
 换句话说，我们和 `XYZ` 进行交互时可以使用 `Task` 中的通用方法，因为 `XYZ` 委托了 `Task`。
 
@@ -2581,7 +2583,7 @@ XYZ.outputTaskDetails = function() {
 
 这是一种极其强大的设计模式，和父类、子类、继承、多态等概念完全不同。在你的脑海中对象并不是按照父类到子类的关系垂直组织的，而是通过任意方向的委托关联并排组织的。
 
-> 在 API 接口的设计中，委托最好在内部实现，不要直接暴露出去。在之前的例子中我们并没有让开发者通过 API 直接调用 `XYZ.setID()`。（当然，可以这么做！）相反，我们把委托隐藏在了 API 的内部，`XYZ.prepareTask(..)` 会委托 `Task.setID(..)`。
+> 在 API 接口的设计中，委托最好在内部实现，不要直接暴露出去。在之前的例子中我们并没有让开发者通过 API 直接调用 `XYZ.setID()`。（当然，可以这么做！）相反，我们把委托隐藏在了 API 的内部，`XYZ.prepareTask()` 会委托 `Task.setID()`。
 
 1.**互相委托（禁止）**
 
