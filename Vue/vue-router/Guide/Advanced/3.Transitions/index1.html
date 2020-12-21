@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>基于路由的动态过渡</title>
+  <style lang=""></style>
+</head>
+
+<body>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+  <div id="app">
+    <transition : name="transitionName">
+      <router-view></router-view>
+    </transition>
+  </div>
+
+  <script>
+    // 还可以基于当前路由与目标路由的变化关系，动态设置过渡效果：
+        
+    // 接着在父组件内
+    // watch $route 决定使用哪种过渡
+    
+    /* 
+    
+    watch: {
+      '$route'(to, from) {
+        const toDepth = to.path.split('/').length
+        const fromDepth = from.path.split('/').length
+        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+      }
+    } 
+    
+    */
+
+    const router = new VueRouter({
+      routes: {}
+    });
+
+    const app = new Vue({
+      router
+    }).$mount("#app");
+  </script>
+</body>
+
+</html>

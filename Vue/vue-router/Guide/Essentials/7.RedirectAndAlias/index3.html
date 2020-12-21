@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>别名--高级用法</title>
+    <style lang="">
+      li {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <div id="app">
+      <h1>Route Alias</h1>
+      <ul>
+        <li>
+          <router-link to="/root-alias">
+            /root-alias (renders /root)
+          </router-link>
+        </li>
+        <li><router-link to="/foo"> /foo (renders /home/foo) </router-link></li>
+        <li>
+          <router-link to="/home/bar-alias">
+            /home/bar-alias (renders /home/bar)
+          </router-link>
+        </li>
+        <li><router-link to="/baz"> /baz (renders /home/baz) </router-link></li>
+        <li>
+          <router-link to="/home/baz-alias">
+            /home/baz-alias (renders /home/baz)
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/home"> /home (renders /home/default) </router-link>
+        </li>
+        <li>
+          <router-link to="/home/nested-alias/foo">
+            /home/nested-alias/foo (renders /home/nested/foo)
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/home/nested">
+            /home/nested (renders /home/nested-alias/foo)
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/home/nested/foo">
+            /home/nested/foo (renders /home/nested-alias/foo)
+          </router-link>
+        </li>
+      </ul>
+      <router-view class="view"></router-view>
+    </div>
+
+    <script>
+      const Root = { template: "<div>root</div>" };
+      const Home = {
+        template: "<div><h1>Home</h1><router-view></router-view></div>"
+      };
+      const Foo = { template: "<div>foo</div>" };
+      const Bar = { template: "<div>bar</div>" };
+      const Baz = { template: "<div>baz</div>" };
+      const Default = { template: "<div>default</div>" };
+      const Nested = { template: "<router-view/>" };
+      const NestedFoo = { template: "<div>nested foo</div>" };
+
+      const router = new VueRouter({
+        routes: [
+          { path: "/root", component: Root, alias: "/root-alias" },
+          {
+            path: "/home",
+            component: Home,
+            children: [
+              // 绝对别名
+              // absolute alias
+              { path: "foo", component: Foo, alias: "/foo" },
+
+              // 相对别名
+              // relative alias (alias to /home/bar-alias)
+              { path: "bar", component: Bar, alias: "bar-alias" },
+
+              // 多个别名
+              // multiple aliases
+              { path: "baz", component: Baz, alias: ["/baz", "baz-alias"] },
+
+              // 如果子路由用空字符串作别名，意味着父路由会被定向到该子路由
+              // 即在下面例子中。访问 /home 会被定向到 /home/default
+              // default child route with empty string as alias.
+              { path: "default", component: Default, alias: "" },
+
+              // 嵌套别名
+              // nested alias
+              {
+                path: "nested",
+                component: Nested,
+                alias: "nested-alias",
+                children: [
+                  { path: "", component: NestedFoo },
+                  { path: "foo", component: NestedFoo },
+                  ]
+              }
+            ]
+          }
+        ]
+      });
+
+      const app = new Vue({
+        router
+      }).$mount("#app");
+    </script>
+  </body>
+</html>
