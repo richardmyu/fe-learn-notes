@@ -8,42 +8,23 @@
 
 #### 1.1.为什么要用 this
 
+如果不使用 `this` ，那就需要给 `identify()` 和 `speak()` 显式传入一个上下文对象。随着模式越来越复杂，显式传递上下文对象会让代码变得越来越混乱。
+
 ```js
-function identify() {
-  return this.name.toUpperCase();
-}
-
-function speak() {
-  var greeting = "Hello, I'm " + identify.call(this);
-  console.log(greeting);
-}
-
-var me = {
+const me = {
   name: "Kyle"
 };
 
-var you = {
+const you = {
   name: "Reader"
 };
 
-identify.call(me); // KYLE
-identify.call(you); // READER
-
-speak.call(me); // Hello, I'm KYLE
-speak.call(you); // Hello, I'm READER
-```
-
-这段代码可以在不同的上下文对象（`me` 和 `you`）中重复使用函数 `identify()` 和 `speak()`，不用针对每个对象编写不同版本的函数。
-
-如果不使用 `this` ，那就需要给 `identify()` 和 `speak()` 显式传入一个上下文对象。
-
-```js
 function identify(context) {
   return context.name.toUpperCase();
 }
 
 function speak(context) {
-  var greeting = "Hello, I'm " + identify(context);
+  const greeting = "Hello, I'm " + identify(context);
   console.log(greeting);
 }
 
@@ -53,11 +34,24 @@ speak(me); //Hello, I'm KYLE
 
 然而，**`this` 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计得更加简洁并且易于复用**。
 
-> 随着模式越来越复杂，显式传递上下文对象会让代码变得越来越混乱，使用 `this` 则不会这样。
+```js
+function identify() {
+  return this.name.toUpperCase();
+}
+
+function speak() {
+  const greeting = "Hello, I'm " + identify.call(this);
+  console.log(greeting);
+}
+
+identify.call(me); // KYLE
+identify.call(you); // READER
+
+speak.call(me); // Hello, I'm KYLE
+speak.call(you); // Hello, I'm READER
+```
 
 #### 1.2.误解
-
-太拘泥于“this”的字面意思就会产生一些误解。有两种常见的对于 `this` 的解释，但是它们都是错误的。
 
 ##### 1.2.1.指向自身
 
@@ -73,7 +67,7 @@ function foo(num) {
 
 foo.count = 0;
 
-var i;
+const i;
 
 for (i = 0; i < 10; i++) {
   if (i > 5) {
@@ -99,27 +93,22 @@ console.log(foo.count); // 0
 
 需要明确的是，`this` 在任何情况下都不指向函数的词法作用域。在 JavaScript 内部，作用域确实和对象类似，可见的标识符都是它的属性。但是作用域“对象”无法通过 JavaScript 代码访问，它存在于【JavaScript 引擎】内部。
 
-> 每当你想要把 `this` 和词法作用域的查找混合使用时，一定要提醒自己，这是无法实现的（使用 `this` 不可能在词法作用域中查到什么。）。
-
 #### 1.3.this 到底是什么
 
-**`this` 是在运行时进行绑定的**，并不是在编写时绑定，它的上下文取决于函数调用时的各种条件。`this` 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。
+当一个函数被调用时，会创建一个【活动记录】（有时候也称为 **执行上下文**）。这个记录会包含函数在哪里被调用（调用栈）、函数的调用方式、传入的参数等信息。`this` 就是这个记录的一个属性，会在函数执行的过程中用到。
 
-当一个函数被调用时，会创建一个活动记录（有时候也称为 **执行上下文**）。这个记录会包含函数在哪里被调用（调用栈）、函数的调用方式、传入的参数等信息。`this` 就是这个记录的一个属性，会在函数执行的过程中用到。
+**`this` 是在运行时进行绑定的**，并不是在编写时绑定，它的上下文取决于函数调用时的各种条件。`this` 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。
 
 ### 2.this 全面解析
 
 #### 2.1.调用位置
 
-在理解 `this` 的绑定过程之前，首先要理解调用位置：调用位置就是函数在代码中被调用的位置（而不是声明的位置）。只有仔细分析调用位置才能回答这个问题：这个 `this` 到底引用的是什么？
-
-最重要的是要分析 **调用栈**（就是为了到达当前执行位置所调用的所有函数）。我们关心的 **调用位置就在当前正在执行的函数的前一个调用中**。
+调用位置就是函数在代码中被调用的位置（而不是声明的位置）。只有仔细分析调用位置才能回答这个问题：这个 `this` 到底引用的是什么？最重要的是要分析 **调用栈**（就是为了到达当前执行位置所调用的所有函数）。我们关心的 **调用位置就在当前正在执行的函数的前一个调用中**。
 
 ```js
 function baz() {
   // 当前调用栈是：baz
   // 因此，当前调用位置是全局作用域
-
   console.log("baz");
   bar(); // <-- bar 的调用位置
 }
@@ -127,7 +116,6 @@ function baz() {
 function bar() {
   // 当前调用栈是：baz -> bar
   // 因此，当前调用位置在 baz 中
-
   console.log("bar");
   foo(); // <-- foo 的调用位置
 }
@@ -135,7 +123,6 @@ function bar() {
 function foo() {
   // 当前调用栈是：baz -> bar -> foo
   // 因此，当前调用位置在 bar 中
-
   console.log("foo");
 }
 
@@ -143,8 +130,6 @@ baz(); // <-- baz 的调用位置
 ```
 
 #### 2.2.绑定规则
-
-我们来看看在函数的执行过程中调用位置如何决定 `this` 的绑定对象。
 
 ##### 2.2.1.默认绑定
 
@@ -162,7 +147,7 @@ function bar() {
   console.log(this.a);
 }
 
-var a = 2;
+const a = 2;
 
 foo(); // 2
 bar(); // TypeError
@@ -170,14 +155,14 @@ bar(); // TypeError
 
 ##### 2.2.2.隐式绑定
 
-当函数引用有上下文对象时，隐式绑定规则会把函数调用中的 `this` 绑定到这个上下文对象。
+当函数引用有【上下文对象】时，隐式绑定规则会把函数调用中的 `this` 绑定到这个上下文对象。
 
 ```js
 function foo() {
   console.log( this.a );
 }
 
-var obj = {
+const obj = {
   a: 2,
   foo: foo,
   bar: function () {
@@ -196,12 +181,12 @@ function foo() {
   console.log( this.a );
 }
 
-var obj2 = {
+const obj2 = {
   a: 42,
   foo: foo
 };
 
-var obj1 = {
+const obj1 = {
   a: 2,
   obj2: obj2
 };
@@ -218,14 +203,14 @@ function foo() {
   console.log(this.a);
 }
 
-var obj = {
+const obj = {
   a: 2,
   foo: foo
 };
 
-var bar = obj.foo; // 函数别名！虽然 bar 是 obj.foo 的一个引用，但是实际上，它引用的是 foo 函数本身
+const bar = obj.foo; // 函数别名！虽然 bar 是 obj.foo 的一个引用，但是实际上，它引用的是 foo 函数本身
 
-var a = "oops, global"; // a是全局对象的属性
+const a = "oops, global"; // a 是全局对象的属性
 
 bar(); // "oops, global"
 ```
@@ -239,16 +224,15 @@ function foo() {
 
 function doFoo(fn) {
   // fn 其实引用的是 foo
-
   fn(); // <-- 调用位置！
 }
 
-var obj = {
+const obj = {
   a: 2,
   foo: foo
 };
 
-var a = "oops, global"; // a 是全局对象的属性
+const a = "oops, global"; // a 是全局对象的属性
 
 doFoo(obj.foo); // "oops, global"
 ```
@@ -263,9 +247,7 @@ doFoo(obj.foo); // "oops, global"
 
 ##### 2.2.3.显式绑定
 
-在分析隐式绑定时，我们必须在一个对象内部包含一个指向函数的属性，并通过这个属性间接引用函数，从而把 `this` 间接（隐式）绑定到这个对象上。
-
-那么如果我们不想在对象内部包含函数引用，而想在某个对象上强制调用函数，该怎么做呢？
+在分析隐式绑定时，我们必须在一个对象内部包含一个指向函数的属性，并通过这个属性间接引用函数，从而把 `this` 间接（隐式）绑定到这个对象上。那么如果我们不想在对象内部包含函数引用，而想在某个对象上强制调用函数，该怎么做呢？
 
 JavaScript 中的“所有”函数都有一些有用的特性（这和它们的 `[[Prototype]]` 有关），可以用来解决这个问题。具体点说，可以使用函数的 `call()` 和 `apply()` 方法。
 
@@ -278,31 +260,29 @@ function foo() {
   console.log(this.a);
 }
 
-var obj = {
+const obj = {
   a: 2
 };
 
 foo.call(obj); // 2
 ```
 
-如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作 `this` 的绑定对象，这个原始值会被转换成它的对象形式（也就是 `new String()`、`new Boolean()` 或者 `new Number()`）。这通常被称为“**包装**”。
-
-可惜，显式绑定仍然无法解决我们之前提出的丢失绑定问题。
+> 如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作 `this` 的绑定对象，这个原始值会被转换成它的对象形式（也就是 `new String()`、`new Boolean()` 或者 `new Number()`）。这通常被称为“**包装**”。
 
 - **硬绑定**
 
-但是显式绑定的一个变种可以解决这个问题。
+可惜，显式绑定仍然无法解决我们之前提出的丢失绑定问题，但是显式绑定的一个变种可以解决这个问题。
 
 ```js
 function foo() {
   console.log(this.a);
 }
 
-var obj = {
+const obj = {
   a: 2
 };
 
-var bar = function () {
+const bar = function () {
   foo.call(obj);
 };
 
@@ -323,15 +303,17 @@ function foo(something) {
   return this.a + something;
 }
 
-var obj = {
+const obj = {
   a: 2
 };
 
-var bar = function () {
+// 包裹函数
+const bar = function () {
+  // 执行一个显示绑定的函数
   return foo.apply(obj, arguments);
 };
 
-var b = bar(3); // 2 3
+const b = bar(3); // 2 3
 console.log(b); // 5
 ```
 
@@ -350,17 +332,17 @@ function Bind(fn, obj) {
   };
 }
 
-var obj = {
+const obj = {
   a: 2
 };
 
-var bar = Bind(foo, obj);
+const bar = Bind(foo, obj);
 
-var b = bar(3); // 2 3
+const b = bar(3); // 2 3
 console.log(b); // 5
 ```
 
-由于硬绑定是一种非常常用的模式，所以 ES5 提供了内置的方法 `Function.prototype.bind`。`bind()` 会返回一个硬绑定的新函数，它会把你指定的参数设置为 `this` 的上下文并调用原始函数。
+> 由于硬绑定是一种非常常用的模式，所以 ES5 提供了内置的方法 `Function.prototype.bind`。`bind()` 会返回一个硬绑定的新函数，它会把你指定的参数设置为 `this` 的上下文并调用原始函数。
 
 - **API调用的“上下文”**
 
@@ -371,7 +353,7 @@ function foo(el) {
   console.log( el, this.id );
 }
 
-var obj = {
+const obj = {
   id: "awesome"
 };
 
@@ -415,7 +397,7 @@ function foo(a) {
  this.a = a;
 }
 
-var bar = new foo(2);
+const bar = new foo(2);
 
 console.log( bar.a ); // 2
 ```
@@ -431,12 +413,12 @@ function foo() {
   console.log(this.a);
 }
 
-var obj1 = {
+const obj1 = {
   a: 2,
   foo: foo
 };
 
-var obj2 = {
+const obj2 = {
   a: 3,
   foo: foo
 };
@@ -455,11 +437,11 @@ function foo(something) {
   this.a = something;
 }
 
-var obj1 = {
+const obj1 = {
   foo: foo
 };
 
-var obj2 = {};
+const obj2 = {};
 
 obj1.foo(2);
 console.log(obj1.a); // 2
@@ -467,7 +449,7 @@ console.log(obj1.a); // 2
 obj1.foo.call(obj2, 3);
 console.log(obj2.a); // 3
 
-var bar = new obj1.foo(4);
+const bar = new obj1.foo(4);
 console.log(obj1.a); // 2
 console.log(bar.a); // 4
 ```
@@ -481,7 +463,7 @@ console.log(bar.a); // 4
 ```js
 //  Yes, it does work with `new (funcA.bind(thisArg, args))`
 if (!Function.prototype.bind) (function(){
-  var ArrayPrototypeSlice = Array.prototype.slice;
+  const ArrayPrototypeSlice = Array.prototype.slice;
   Function.prototype.bind = function(otherThis) {
     if (typeof this !== 'function') {
       // closest thing possible to the ECMAScript 5
@@ -489,7 +471,7 @@ if (!Function.prototype.bind) (function(){
       throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
     }
 
-    var baseArgs= ArrayPrototypeSlice.call(arguments, 1),
+    const baseArgs= ArrayPrototypeSlice.call(arguments, 1),
         baseArgsLength = baseArgs.length,
         fToBind = this,
         fNOP    = function() {},
@@ -535,9 +517,9 @@ function foo(p1,p2) {
 
 // 之所以使用null是因为在本例中我们并不关心硬绑定的this是什么
 // 反正使用new时this会被修改
-var bar = foo.bind( null, "p1" );
+const bar = foo.bind( null, "p1" );
 
-var baz = new bar( "p2" );
+const baz = new bar( "p2" );
 
 baz.val; // p1p2
 ```
@@ -572,7 +554,7 @@ function foo() {
   console.log( this.a );
 }
 
-var a = 2;
+const a = 2;
 
 foo.call( null ); // 2
 ```
@@ -590,7 +572,7 @@ function foo(a,b) {
 foo.apply( null, [2, 3] ); // a:2, b:3
 
 // 使用 bind 进行柯里化
-var bar = foo.bind( null, 2 );
+const bar = foo.bind( null, 2 );
 bar( 3 ); // a:2, b:3
 ```
 
@@ -619,9 +601,9 @@ function foo() {
   console.log( this.a );
 }
 
-var a = 2;
-var o = { a: 3, foo: foo };
-var p = { a: 4 };
+const a = 2;
+const o = { a: 3, foo: foo };
+const p = { a: 4 };
 
 o.foo(); // 3
 (p.foo = o.foo)(); // 2
@@ -638,10 +620,10 @@ o.foo(); // 3
 ```js
 if (!Function.prototype.softBind) {
   Function.prototype.softBind = function(obj) {
-      var fn = this;
+      const fn = this;
       // 捕获所有 curried 参数
-      var curried = [].slice.call( arguments, 1 );
-      var bound = function() {
+      const curried = [].slice.call( arguments, 1 );
+      const bound = function() {
           return fn.apply(
               (!this || this === (window || global)) ?obj : this,
               curried.concat.apply( curried, arguments )
@@ -672,15 +654,15 @@ function foo() {
   };
 }
 
-var obj1 = {
+const obj1 = {
   a:2
 };
 
-var obj2 = {
+const obj2 = {
   a:3
 };
 
-var bar = foo.call( obj1 );
+const bar = foo.call( obj1 );
 bar.call( obj2 ); // 2, 不是3！
 ```
 
@@ -688,13 +670,13 @@ bar.call( obj2 ); // 2, 不是3！
 
 ```js
 function foo() {
-  var self = this; // lexical capture of this
+  const self = this; // lexical capture of this
   setTimeout( function(){
       console.log( self.a );
   }, 100 );
 }
 
-var obj = {
+const obj = {
   a: 2
 };
 
@@ -761,7 +743,7 @@ JavaScript中还有一些对象子类型，通常被称为内置对象。有些�
 需要强调的一点是，在引擎内部，这些值的存储方式是多种多样的，一般并不会存在对象容器内部。存储在对象容器内部的是这些属性的名称，它们就像指针（从技术角度来说就是引用）一样，指向这些值真正的存储位置。
 
 ```js
-var myObject = {
+const myObject = {
   a: 2
 };
 
@@ -781,9 +763,9 @@ myObject["a"]; // 2
 如果需要通过表达式来计算属性名，那么 `[]` 这种属性访问语法就可以派上用场了。ES6 增加了可计算属性名，可以在文字形式中使用 `[]` 包裹一个表达式来当作属性名：
 
 ```js
-var prefix = "foo";
+const prefix = "foo";
 
-var myObject = {
+const myObject = {
   [prefix + "bar"]: "hello",
   [prefix + "baz"]: "world"
 };
@@ -795,7 +777,7 @@ myObject["foobaz"]; // world
 可计算属性名最常用的场景可能是 ES6 的符号（Symbol），一般来说你不会用到符号的实际值（因为理论上来说在不同的 JavaScript 引擎中值是不同的），所以通常你接触到的是符号的名称：
 
 ```js
-var myObject = {
+const myObject = {
   [Symbol('Something')]: "hello world"
 }
 
@@ -821,7 +803,7 @@ console.log(myObject); // Symbol(Something): "hello world"
 数组也支持 `[]` 访问形式，数组有一套更加结构化的值存储机制（不过仍然不限制值的类型）。数组期望的是数值下标，也就是说值存储的位置（通常被称为索引）是非负整数。数组也是对象，所以虽然每个下标都是整数，你仍然可以给数组添加属性：
 
 ```js
-var myArray = [ "foo", 42, "bar" ];
+const myArray = [ "foo", 42, "bar" ];
 
 myArray.baz = "baz";
 myArray.length; // 3
@@ -848,13 +830,13 @@ JavaScript 最常见的问题之一就是如何复制一个对象。看起来应
 ```js
 function anotherFunction() { /*..*/ }
 
-var anotherObject = {
+const anotherObject = {
   c: true
 };
 
-var anotherArray = [];
+const anotherArray = [];
 
-var myObject = {
+const myObject = {
   a: 2,
   b: anotherObject, // 引用，不是复本！
   c: anotherArray, // 另一个引用！
@@ -881,7 +863,7 @@ anotherArray.push( anotherObject, myObject );
 对于 JSON 安全（也就是说可以被序列化为一个 JSON 字符串并且可以根据这个字符串解析出一个结构和值完全一样的对象）的对象来说，有一种巧妙的复制方法：
 
 ```js
-var newObj = JSON.parse( JSON.stringify( someObj ) );
+const newObj = JSON.parse( JSON.stringify( someObj ) );
 ```
 
 当然，这种方法需要保证对象是 `JSON` 安全的，所以只适用于部分情况。
@@ -891,7 +873,7 @@ var newObj = JSON.parse( JSON.stringify( someObj ) );
 `Object.assign()` 方法的第一个参数是目标对象，之后还可以跟一个或多个源对象。它会遍历一个或多个源对象的所有可枚举（enumerable）的私有属性（owned key）并把它们复制（使用 `=` 操作符赋值）到目标对象，最后返回目标对象，就像这样：
 
 ```js
-var newObj = Object.assign( {}, myObject );
+const newObj = Object.assign( {}, myObject );
 
 newObj.a; // 2
 newObj.b === anotherObject; // true
@@ -906,7 +888,7 @@ newObj.d === anotherFunction; // true
 在 ES5 之前，JavaScript 语言本身并没有提供可以直接检测属性特性的方法，比如判断属性是否是只读。但是从 ES5 开始，所有的属性都具备了属性描述符。
 
 ```js
-var myObject = {
+const myObject = {
   a:2
 };
 
@@ -923,7 +905,7 @@ Object.getOwnPropertyDescriptor( myObject, "a" );
 在创建普通属性时属性描述符会使用默认值，我们也可以使用 `Object.defineProperty()` 来添加一个新属性或者修改一个已有属性（如果它是 `configurable`）并对特性进行设置。
 
 ```js
-var myObject = {};
+const myObject = {};
 
 Object.defineProperty( myObject, "a", {
   value: 2,
@@ -980,7 +962,7 @@ myImmutableObject.foo; // [1,2,3,4]
 结合 `writable:false` 和 `configurable:false` 就可以创建一个真正的常量属性（不可修改、重定义或者删除）：
 
 ```js
-var myObject = {};
+const myObject = {};
 
 Object.defineProperty( myObject, "FAVORITE_NUMBER", {
   value: 42,
@@ -1001,12 +983,12 @@ Object.defineProperty( myObject, "FAVORITE_NUMBER", {
 
 ```js
 // Object.preventExtensions 将原对象变的不可扩展,并且返回原对象.
-var obj = {};
-var obj2 = Object.preventExtensions(obj);
+const obj = {};
+const obj2 = Object.preventExtensions(obj);
 obj === obj2;  // true
 
 // 字面量方式定义的对象默认是可扩展的.
-var empty = {};
+const empty = {};
 Object.isExtensible(empty) //=== true
 
 // ...但可以改变.
@@ -1014,7 +996,7 @@ Object.preventExtensions(empty);
 Object.isExtensible(empty) //=== false
 
 // 使用 Object.defineProperty 方法为一个不可扩展的对象添加新属性会抛出异常.
-var nonExtensible = { removable: true };
+const nonExtensible = { removable: true };
 Object.preventExtensions(nonExtensible);
 Object.defineProperty(nonExtensible, "new", { value: 8675309 }); // TypeError
 
@@ -1027,7 +1009,7 @@ function fail()
 fail();
 
 // 不可扩展对象的原型是不可变的
-var fixed = Object.preventExtensions({});
+const fixed = Object.preventExtensions({});
 // TypeError
 fixed.__proto__ = { oh: 'hai' };
 ```
@@ -1053,7 +1035,7 @@ Object.preventExtensions(1);
 > `Object.seal()` 会创建一个“密封”的对象，这个方法实际上会在一个现有对象上调用 `Object.preventExtensions()` 并把所有现有属性标记为 `configurable:false`。
 
 ```js
-var obj = {
+const obj = {
   prop: function () { },
   foo: 'bar'
 };
@@ -1064,7 +1046,7 @@ obj.foo = 'baz';
 obj.lumpy = 'woof';
 delete obj.prop;
 
-var o = Object.seal(obj);
+const o = Object.seal(obj);
 
 o === obj; // true
 Object.isSealed(obj); // === true
@@ -1127,7 +1109,7 @@ Object.seal(1);
 > `Object.freeze()` 会创建一个冻结对象，这个方法实际上会在一个现有对象上调用 `Object.seal()` 并把所有“数据访问”属性标记为 `writable:false`，这样就无法修改它们的值。
 
 ```js
-var obj = {
+const obj = {
   prop: function() {},
   foo: 'bar'
 };
@@ -1140,7 +1122,7 @@ delete obj.prop;
 
 // 作为参数传递的对象与返回的对象都被冻结
 // 所以不必保存返回的对象（因为两个对象全等）
-var o = Object.freeze(obj);
+const o = Object.freeze(obj);
 
 o === obj; // true
 Object.isFrozen(obj); // === true
@@ -1174,7 +1156,7 @@ obj.__proto__ = { x: 20 }
 ##### 3.2.7.`[[Get]]`
 
 ```js
-var myObject = {
+const myObject = {
   a: 2
 };
 
@@ -1190,7 +1172,7 @@ myObject.a; // 2
 如果无论如何都没有找到名称相同的属性，那 `[[Get]]` 操作会返回值 `undefined`：
 
 ```js
-var myObject = {
+const myObject = {
   a:2
 };
 
@@ -1200,7 +1182,7 @@ myObject.b; // undefined
 注意，这种方法和访问变量时是不一样的。如果你引用了一个当前词法作用域中不存在的变量，并不会像对象属性一样返回 `undefined`，而是会抛出一个 `ReferenceError` 异常：
 
 ```js
-var myObject = {
+const myObject = {
   a: undefined
 };
 
@@ -1240,7 +1222,7 @@ myObject.b; // undefined
 当你给一个属性定义 `getter`、`setter` 或者两者都有时，这个属性会被定义为“**访问描述符**”（和“**数据描述符**”相对）。对于【访问描述符】来说，JavaScript 会忽略它们的 `value` 和 `writable` 特性，取而代之的是关心 `set` 和 `get`（还有 `configurable` 和 `enumerable`）特性。
 
 ```js
-var myObject = {
+const myObject = {
   // 给 a 定义一个getter
   get a() {
     return 2;
@@ -1261,7 +1243,7 @@ myObject.a; // 2
 `myObject.a` 的属性访问返回值可能是 `undefined`，但是这个值有可能是属性中存储的 `undefined`，也可能是因为属性不存在所以返回 `undefined`。那么如何区分这两种情况呢？
 
 ```js
-var myObject = {
+const myObject = {
   a:2
 };
 
@@ -1287,7 +1269,7 @@ myObject.hasOwnProperty( "b" ); // false
 > 在数组上应用 `for..in` 循环有时会产生出人意料的结果，因为这种枚举不仅会包含所有数值索引，还会包含所有可枚举属性。最好只在对象上应用 `for..in` 循环，如果要遍历数组就使用传统的 `for` 循环来遍历数值索引。
 
 ```js
-var myObject = { };
+const myObject = { };
 
 Object.defineProperty(
   myObject,
@@ -1308,7 +1290,7 @@ myObject.b; // 3
 myObject.hasOwnProperty( "b" ); // true
 
 
-for (var k in myObject) {
+for (const k in myObject) {
   console.log( k, myObject[k] );
 }
 // "a" 2
@@ -1317,7 +1299,7 @@ for (var k in myObject) {
 也可以通过另一种方式来区分属性是否可枚举：
 
 ```js
-var myObject = { };
+const myObject = { };
 
 Object.defineProperty(
   myObject,
@@ -1355,9 +1337,9 @@ Object.getOwnPropertyNames( myObject ); // ["a", "b"]
 对于数值索引的数组来说，可以使用标准的 `for` 循环来遍历值：
 
 ```js
-var myArray = [1, 2, 3];
+const myArray = [1, 2, 3];
 
-for (var i = 0; i < myArray.length; i++) {
+for (const i = 0; i < myArray.length; i++) {
  console.log( myArray[i] );
 }
 // 1 2 3
@@ -1376,9 +1358,9 @@ ES5 中增加了一些数组的辅助迭代器，包括 `forEach()`、`every()` 
 那么如何直接遍历值而不是数组下标（或者对象属性）呢？幸好，ES6 增加了一种用来遍历数组的 `for..of` 循环语法（如果对象本身定义了迭代器的话也可以遍历对象）：
 
 ```js
-var myArray = [ 1, 2, 3 ];
+const myArray = [ 1, 2, 3 ];
 
-for (var v of myArray) {
+for (const v of myArray) {
   console.log( v );
 }
 // 1
@@ -1391,8 +1373,8 @@ for (var v of myArray) {
 数组有内置的 `@@iterator`，因此 `for..of` 可以直接应用在数组上。我们使用内置的 `@@iterator` 来手动遍历数组，看看它是怎么工作的：
 
 ```js
-var myArray = [ 1, 2, 3 ];
-var it = myArray[Symbol.iterator]();
+const myArray = [ 1, 2, 3 ];
+const it = myArray[Symbol.iterator]();
 
 it.next(); // { value:1, done:false }
 it.next(); // { value:2, done:false }
@@ -1618,7 +1600,7 @@ class SpeedBoat inherits Vehicle {
 ```js
 // 非常简单的mixin()例子:
 function mixin( sourceObj, targetObj ) {
-    for (var key in sourceObj) {
+    for (const key in sourceObj) {
         // 只会在不存在的情况下复制
         if (!(key in targetObj)) {
             targetObj[key] = sourceObj[key];
@@ -1628,7 +1610,7 @@ function mixin( sourceObj, targetObj ) {
     return targetObj;
 }
 
-var Vehicle = {
+const Vehicle = {
     engines: 1,
 
     ignition: function() {
@@ -1641,7 +1623,7 @@ var Vehicle = {
     }
 };
 
-var Car = mixin( Vehicle, {
+const Car = mixin( Vehicle, {
     wheels: 4,
 
     drive: function() {
@@ -1678,7 +1660,7 @@ JavaScript（在 ES6 之前）并没有相对多态的机制。所以，由于 `
 ```js
 // 非常简单的mixin()例子:
 function mixin( sourceObj, targetObj ) {
-    for (var key in sourceObj) {
+    for (const key in sourceObj) {
         // 只会在不存在的情况下复制
         if (!(key in targetObj)) {
             targetObj[key] = sourceObj[key];
@@ -1696,19 +1678,19 @@ function mixin( sourceObj, targetObj ) {
 ```js
 // 另一种混入函数，可能有重写风险
 function mixin( sourceObj, targetObj ) {
-    for (var key in sourceObj) {
+    for (const key in sourceObj) {
         targetObj[key] = sourceObj[key];
     }
 
     return targetObj;
 }
 
-var Vehicle = {
+const Vehicle = {
     // ...
 };
 
 // 首先创建一个空对象并把 Vehicle 的内容复制进去
-var Car = mixin( Vehicle, { } );
+const Car = mixin( Vehicle, { } );
 
 // 然后把新内容复制到Car中
 mixin( {
@@ -1756,13 +1738,13 @@ Vehicle.prototype.drive = function() {
 // “寄生类” Car
 function Car() {
     // 首先，car 是一个 Vehicle
-    var car = new Vehicle();
+    const car = new Vehicle();
 
     // 接着我们对 car 进行定制
     car.wheels = 4;
 
     // 保存到 Vehicle::drive() 的特殊引用
-    var vehDrive = car.drive;
+    const vehDrive = car.drive;
 
     // 重写 Vehicle::drive()
     car.drive = function() {
@@ -1774,7 +1756,7 @@ function Car() {
     return car;
 }
 
-var myCar = new Car();
+const myCar = new Car();
 
 myCar.drive();
 // Turning on my engine.
@@ -1793,7 +1775,7 @@ myCar.drive();
 思考下面的代码：
 
 ```js
-var Something = {
+const Something = {
     cool: function() {
         this.greeting = "Hello World";
         this.count = this.count ? this.count + 1 : 1;
@@ -1804,7 +1786,7 @@ Something.cool();
 Something.greeting; // "Hello World"
 Something.count; // 1
 
-var Another = {
+const Another = {
     cool: function() {
         // 隐式把Something混入Another
         Something.cool.call( this );
@@ -1833,7 +1815,7 @@ JavaScript 中的对象有一个特殊的 `[[Prototype]]` 内置属性，其实�
 思考下面的代码：
 
 ```js
-var myObject = {
+const myObject = {
     a:2
 };
 
@@ -1849,12 +1831,12 @@ myObject.a; // 2
 对于默认的 `[[Get]]` 操作来说，如果无法在对象本身找到需要的属性，就会继续访问对象的 `[[Prototype]]` 链：
 
 ```js
-var anotherObject = {
+const anotherObject = {
     a:2
 };
 
 // 创建一个关联到 anotherObject 的对象
-var myObject = Object.create( anotherObject );
+const myObject = Object.create( anotherObject );
 
 myObject.a; // 2
 ```
@@ -1866,14 +1848,14 @@ myObject.a; // 2
 使用 `for..in` 遍历对象时原理和查找 `[[Prototype]]` 链类似，任何可以通过原型链访问到（并且是 `enumerable`）的属性都会被枚举。使用 `in` 操作符来检查属性在对象中是否存在时，同样会查找对象的整条原型链（无论属性是否可枚举）：
 
 ```js
-var anotherObject = {
+const anotherObject = {
     a:2
 };
 
 // 创建一个关联到anotherObject的对象
-var myObject = Object.create( anotherObject );
+const myObject = Object.create( anotherObject );
 
-for (var k in myObject) {
+for (const k in myObject) {
     console.log("found: " + k);
 }
 // found: a
@@ -1920,8 +1902,8 @@ myObject.foo = "bar";
 如果需要对屏蔽方法进行委托的话就不得不使用丑陋的显式伪多态。通常来说，使用屏蔽得不偿失，所以应当尽量避免使用。有些情况下会隐式产生屏蔽，一定要当心。思考下面的代码：
 
 ```js
-var anotherObject = {};
-// var _a_ = 2;
+const anotherObject = {};
+// const _a_ = 2;
 
 Object.defineProperty(anotherObject, 'a', {
   value: 2,
@@ -1934,7 +1916,7 @@ Object.defineProperty(anotherObject, 'a', {
   // }
 })
 
-var myObject = Object.create( anotherObject );
+const myObject = Object.create( anotherObject );
 
 anotherObject.a; // 2
 myObject.a; // 2
@@ -1989,7 +1971,7 @@ function Foo() {
     // ...
 }
 
-var a = new Foo();
+const a = new Foo();
 
 Object.getPrototypeOf( a ) === Foo.prototype; // true
 ```
@@ -2050,7 +2032,7 @@ function Foo() {
     // ...
 }
 
-var a = new Foo();
+const a = new Foo();
 ```
 
 到底是什么让我们认为 `Foo` 是一个“类”呢？
@@ -2066,7 +2048,7 @@ function Foo() {
 
 Foo.prototype.constructor === Foo; // true
 
-var a = new Foo();
+const a = new Foo();
 a.constructor === Foo; // true
 ```
 
@@ -2089,7 +2071,7 @@ function NothingSpecial() {
     console.log( "Don't mind me!" );
 }
 
-var a = new NothingSpecial();
+const a = new NothingSpecial();
 // "Don't mind me!"
 
 a; // {}
@@ -2114,8 +2096,8 @@ Foo.prototype.myName = function() {
     return this.name;
 };
 
-var a = new Foo( "a" );
-var b = new Foo( "b" );
+const a = new Foo( "a" );
+const b = new Foo( "b" );
 
 a.myName(); // "a"
 b.myName(); // "b"
@@ -2146,7 +2128,7 @@ function Foo() { /* .. */ }
 
 Foo.prototype = { /* .. */ }; // 创建一个新原型对象
 
-var a1 = new Foo();
+const a1 = new Foo();
 a1.constructor === Foo; // false!
 a1.constructor === Object; // true!
 ```
@@ -2225,7 +2207,7 @@ Bar.prototype.myLabel = function() {
   return this.label;
 };
 
-var a = new Bar( "a", "obj a" );
+const a = new Bar( "a", "obj a" );
 
 a.myName(); // "a"
 a.myLabel(); // "obj a"
@@ -2276,7 +2258,7 @@ function Foo() {
 
 Foo.prototype.blah = ...;
 
-var a = new Foo();
+const a = new Foo();
 ```
 
 我们如何通过内省找出 `a` 的“祖先”（委托关联）呢？第一种方法是站在“类”的角度来判断：
@@ -2303,8 +2285,8 @@ function isRelatedTo(o1, o2) {
     return o1 instanceof F;
 }
 
-var a = {};
-var b = Object.create( a );
+const a = {};
+const b = Object.create( a );
 
 isRelatedTo( b, a ); // true
 ```
@@ -2394,13 +2376,13 @@ JavaScript 社区中对于双下划线有一个非官方的称呼，他们会把
 前面曾经说过 `Object.create()` 是一个大英雄，现在是时候来弄明白为什么了：
 
 ```js
-var foo = {
+const foo = {
   something: function() {
     console.log( "Tell me something good..." );
   }
 };
 
-var bar = Object.create( foo );
+const bar = Object.create( foo );
 
 bar.something(); // Tell me something good...
 ```
@@ -2426,11 +2408,11 @@ if (!Object.create) {
 由于 `Object.create()` 可以被模拟，因此这个函数被应用得非常广泛。标准 ES5 中内置的 `Object.create()` 函数还提供了一系列附加功能，但是 ES5 之前的版本不支持这些功能。通常来说，这些功能的应用范围要小得多，但是出于完整性考虑，我们还是介绍一下：
 
 ```js
-var anotherObject = {
+const anotherObject = {
   a:2
 };
 
-var myObject = Object.create( anotherObject, {
+const myObject = Object.create( anotherObject, {
   b: {
     enumerable: false,
     writable: true,
@@ -2465,11 +2447,11 @@ function createAndLinkObject(o) {
   return new F();
 }
 
-var anotherObject = {
+const anotherObject = {
   a:2
 };
 
-var myObject = createAndLinkObject( anotherObject );
+const myObject = createAndLinkObject( anotherObject );
 
 myObject.a; // 2
 ```
@@ -2481,13 +2463,13 @@ myObject.a; // 2
 思考下面的代码：
 
 ```js
-var anotherObject = {
+const anotherObject = {
   cool: function() {
     console.log( "cool!" );
   }
 };
 
-var myObject = Object.create( anotherObject );
+const myObject = Object.create( anotherObject );
 
 myObject.cool(); // "cool!"
 ```
@@ -2503,13 +2485,13 @@ myObject.cool(); // "cool!"
 但是你可以让你的 API 设计不那么“神奇”，同时仍然能发挥 `[[Prototype]]` 关联的威力：
 
 ```js
-var anotherObject = {
+const anotherObject = {
   cool: function() {
     console.log( "cool!" );
   }
 };
 
-var myObject = Object.create( anotherObject );
+const myObject = Object.create( anotherObject );
 
 myObject.doCool = function() {
   this.cool(); // 内部委托！
@@ -2606,7 +2588,7 @@ XYZ.outputTaskDetails = function() {
 ```js
 function Foo() {}
 
-var a1 = new Foo();
+const a1 = new Foo();
 
 a1; // Foo {}
 ```
@@ -2620,7 +2602,7 @@ Chrome 实际上想说的是“ `{}` 是一个空对象，由名为 `Foo` 的函
 ```js
 function Foo() {}
 
-var a1 = new Foo();
+const a1 = new Foo();
 
 a1.constructor; // Foo(){}
 a1.constructor.name; // "Foo"
@@ -2631,7 +2613,7 @@ Chrome 是不是直接输出了对象的 `.constructor.name` 呢？令人迷惑�
 ```js
 function Foo() {}
 
-var a1 = new Foo();
+const a1 = new Foo();
 
 Foo.prototype.constructor = function Gotcha(){};
 
@@ -2647,9 +2629,9 @@ a1; // Foo {}
 
 
 ```js
-var Foo = {};
+const Foo = {};
 
-var a1 = Object.create( Foo );
+const a1 = Object.create( Foo );
 
 a1; // Object {}
 
@@ -2690,8 +2672,8 @@ Bar.prototype.speak = function() {
   alert( "Hello, " + this.identify() + "." );
 };
 
-var b1 = new Bar( "b1" );
-var b2 = new Bar( "b2" );
+const b1 = new Bar( "b1" );
+const b2 = new Bar( "b2" );
 
 b1.speak();
 b2.speak();
@@ -2716,9 +2698,9 @@ Bar.speak = function() {
   alert( "Hello, " + this.identify() + "." );
 };
 
-var b1 = Object.create( Bar );
+const b1 = Object.create( Bar );
 b1.init( "b1" );
-var b2 = Object.create( Bar );
+const b2 = Object.create( Bar );
 b2.init( "b2" );
 
 b1.speak();
