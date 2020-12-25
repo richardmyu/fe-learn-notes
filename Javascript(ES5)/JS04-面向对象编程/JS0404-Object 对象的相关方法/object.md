@@ -1,5 +1,7 @@
 ### 2.Object 对象的相关方法
 
+[TOC]
+
 #### 2.1.Object.getPrototypeOf()
 
 `Object.getPrototypeOf` 方法返回参数对象的原型（内部 `[[Prototype]]` 属性的值）。这是获取原型对象的标准方法。如果没有继承属性，则返回 `null`。在 ES5 中，如果参数不是一个对象类型，将抛出一个 `TypeError` 异常。在 ES6 中，参数会被强制转换为一个 Object。
@@ -261,6 +263,8 @@ Object.prototype.isPrototypeOf(Object.create(null)); // false
 
 **实例对象的 `__proto__` 属性，返回该对象的原型**。该属性可读写。
 
+> 请注意，`__proto__` 与内部的 `[[Prototype]]` 不一样。`__proto__` 是 `[[Prototype]]` 的 `getter/setter`。
+
 ```javascript
 var obj = {};
 var p = {};
@@ -269,7 +273,9 @@ obj.__proto__ = p;
 Object.getPrototypeOf(obj) === p; // true
 ```
 
-根据语言标准，`__proto__` 属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用 `Object.getPrototypeOf()` 和 `Object.setPrototypeOf()`，进行原型对象的读写操作。
+根据语言标准，`__proto__` 属性只有浏览器才需要部署，其他环境可以没有这个属性。但实际上，包括服务端在内的所有环境都支持它。
+
+它前后的两根下划线，表明它本质是一个内部属性，它的存在是出于历史的原因，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用 `Object.getPrototypeOf()` 和 `Object.setPrototypeOf()`，进行原型对象的读写操作。
 
 原型链可以用 `__proto__` 很直观地表示。
 

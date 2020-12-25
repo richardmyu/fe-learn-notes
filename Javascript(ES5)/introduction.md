@@ -2,24 +2,6 @@
 
 笔记是参考其他诸多网站，教材经过整理而成。
 
-### MENU
-
-```
-|
-|----01 简介
-|        |
-|        |----001Javascript 语言
-|        |
-|        |----
-|        |
-|
-|
-|
-|
-|
-|
-```
-
 ### 参考
 
 1.《JavaScript 高级程序设计》（第三版） Nicholas C.Zakas
@@ -33,4 +15,8 @@
 5.[JavaScript（MDN）](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
 6.[JavaScript 教程（W3C）](https://www.w3school.com.cn/js/index.asp)
+
+7.[JavaScript 教程](https://www.runoob.com/js/js-tutorial.html)
+
+8.[现代 JavaScript 教程](https://zh.javascript.info/)
 

@@ -1526,15 +1526,15 @@ graph TB
 ```js
 // 伪代码
 class CoolGuy {
- specialTrick = nothing
+    specialTrick = nothing
 
- CoolGuy(trick) {
-  specialTrick = trick
- }
+    CoolGuy(trick) {
+        specialTrick = trick
+    }
 
- showOff() {
-  output("Here's my trick: ", specialTrick)
- }
+    showOff() {
+        output("Here's my trick: ", specialTrick)
+    }
 }
 ```
 
@@ -1573,7 +1573,7 @@ class Vehicle {
     }
 
     drive() {
-        ignition();
+        ignition()
         output("Steering and moving forward!")
     }
 }
@@ -1629,7 +1629,7 @@ class SpeedBoat inherits Vehicle {
 
 在子类（而不是它们创建的实例对象！）中也可以相对引用它继承的父类，这种相对引用通常被称为 `super`。
 
-需要注意，子类得到的仅仅是继承自父类行为的一份副本。子类对继承到的一个方法进行“重写”，不会影响父类中的方法，这两个方法互不影响，因此才能使用相对多态引用访问父类中的方法（如果重写会影响父类的方法，那重写之后父类中的原始方法就不存在了，自然也无法引用）。
+需要注意，子类得到的仅仅是继承自父类行为的一份【副本】。子类对继承到的一个方法进行“重写”，不会影响父类中的方法，这两个方法互不影响，因此才能使用相对多态引用访问父类中的方法（如果重写会影响父类的方法，那重写之后父类中的原始方法就不存在了，自然也无法引用）。
 
 多态并不表示子类和父类有关联，子类得到的只是父类的一份副本。**类的继承其实就是复制**。
 
@@ -1649,7 +1649,7 @@ class SpeedBoat inherits Vehicle {
 
 #### 4.4.混入
 
-**在继承或者实例化时，JavaScript 的对象机制并不会自动执行复制行为**。简单来说，JavaScript 中只有对象，并不存在可以被实例化的“类”。一个对象并不会被复制到其他对象，它们会被关联起来。
+**在继承或者实例化时，JavaScript 的对象机制并不会自动执行复制行为**。简单来说，**JavaScript 中只有对象，并不存在可以被实例化的“类”**。一个对象并不会被复制到其他对象，它们会被关联起来。
 
 由于在其他语言中类表现出来的都是复制行为，因此 JavaScript 开发者也想出了一个方法来【模拟类的复制行为】，这个方法就是 **混入**。接下来我们会看到两种类型的混入：显式和隐式。
 
@@ -1658,40 +1658,40 @@ class SpeedBoat inherits Vehicle {
 首先我们来回顾一下之前提到的 `Vehicle` 和 `Car`。由于 JavaScript 不会自动实现 `Vehicle` 到 `Car` 的复制行为，所以我们需要手动实现复制功能。这个功能在许多库和框架中被称为 `extend`，但是为了方便理解我们称之为 `mixin`。
 
 ```js
-// 非常简单的mixin()例子:
+// 非常简单的 mixin() 例子:
 function mixin(sourceObj, targetObj) {
-    for (const key in sourceObj) {
-        // 只会在不存在的情况下复制
-        if (!(key in targetObj)) {
-            targetObj[key] = sourceObj[key];
-        }
+  for (const key in sourceObj) {
+    // 只会在不存在的情况下复制
+    if (!(key in targetObj)) {
+      targetObj[key] = sourceObj[key];
     }
+  }
 
-    return targetObj;
+  return targetObj;
 }
 
 const Vehicle = {
-    engines: 1,
+  engines: 1,
 
-    ignition: function() {
-        console.log("Turning on my engine.");
-    },
+  ignition: function() {
+    console.log("Turning on my engine.");
+  },
 
-    drive: function() {
-        this.ignition();
-        console.log("Steering and moving forward!");
-    }
+  drive: function() {
+    this.ignition();
+    console.log("Steering and moving forward!");
+  }
 };
 
 const Car = mixin(Vehicle, {
-    wheels: 4,
+  wheels: 4,
 
-    drive: function() {
-        Vehicle.drive.call(this);
-        console.log(
-           "Rolling on all " + this.wheels + " wheels!"
-       );
-    }
+  drive: function() {
+    Vehicle.drive.call(this);
+    console.log(
+      "Rolling on all " + this.wheels + " wheels!"
+    );
+  }
 });
 ```
 
@@ -1718,16 +1718,16 @@ JavaScript（在 ES6 之前）并没有相对多态的机制。所以，由于 `
 2.**混合复制**
 
 ```js
-// 非常简单的mixin()例子:
+// 非常简单的 mixin() 例子:
 function mixin(sourceObj, targetObj) {
-    for (const key in sourceObj) {
-        // 只会在不存在的情况下复制
-        if (!(key in targetObj)) {
-            targetObj[key] = sourceObj[key];
-        }
+  for (const key in sourceObj) {
+    // 只会在不存在的情况下复制
+    if (!(key in targetObj)) {
+      targetObj[key] = sourceObj[key];
     }
+  }
 
-    return targetObj;
+  return targetObj;
 }
 ```
 
@@ -1738,15 +1738,15 @@ function mixin(sourceObj, targetObj) {
 ```js
 // 另一种混入函数，可能有重写风险
 function mixin(sourceObj, targetObj) {
-    for (const key in sourceObj) {
-        targetObj[key] = sourceObj[key];
-    }
+  for (const key in sourceObj) {
+    targetObj[key] = sourceObj[key];
+  }
 
-    return targetObj;
+  return targetObj;
 }
 
 const Vehicle = {
-    // ...
+  // ...
 };
 
 // 首先创建一个空对象并把 Vehicle 的内容复制进去
@@ -1754,11 +1754,11 @@ const Car = mixin(Vehicle, { });
 
 // 然后把新内容复制到Car中
 mixin({
-    wheels: 4,
+  wheels: 4,
 
-    drive: function() {
-        // ...
-    }
+  drive: function() {
+    // ...
+  }
 }, Car);
 ```
 
@@ -1768,7 +1768,7 @@ mixin({
 
 由于两个对象引用的是同一个函数，因此这种复制（或者说混入）实际上并不能完全模拟面向类的语言中的复制。
 
-JavaScript 中的函数无法（用标准、可靠的方法）真正地复制，所以你只能复制对共享函数对象的引用。如果你修改了共享的函数对象（比如 `ignition`），比如添加了一个属性，那 `Vehicle` 和 `Car` 都会受到影响。
+**JavaScript 中的函数无法（用标准、可靠的方法）真正地复制，所以你只能复制对共享函数对象的引用**。如果你修改了共享的函数对象（比如 `ignition`），比如添加了一个属性，那 `Vehicle` 和 `Car` 都会受到影响。
 
 显式混入是 JavaScript 中一个很棒的机制，不过它的功能也没有看起来那么强大。虽然它可以把一个对象的属性复制到另一个对象中，但是这其实并不能带来太多的好处，无非就是少几条定义语句，而且还会带来我们刚才提到的函数对象引用问题。
 
@@ -1785,35 +1785,37 @@ JavaScript 中的函数无法（用标准、可靠的方法）真正地复制，
 ```js
 // “传统的 JS 类” Vehicle
 function Vehicle() {
-    this.engines = 1;
+  this.engines = 1;
 }
+
 Vehicle.prototype.ignition = function() {
-    console.log("Turning on my engine.");
+  console.log("Turning on my engine.");
 };
+
 Vehicle.prototype.drive = function() {
-    this.ignition();
-    console.log("Steering and moving forward!");
+  this.ignition();
+  console.log("Steering and moving forward!");
 };
 
 // “寄生类” Car
 function Car() {
-    // 首先，car 是一个 Vehicle
-    const car = new Vehicle();
+  // 首先，car 是一个 Vehicle
+  const car = new Vehicle();
 
-    // 接着我们对 car 进行定制
-    car.wheels = 4;
+  // 接着我们对 car 进行定制
+  car.wheels = 4;
 
-    // 保存到 Vehicle::drive() 的特殊引用
-    const vehDrive = car.drive;
+  // 保存到 Vehicle::drive() 的特殊引用
+  const vehDrive = car.drive;
 
-    // 重写 Vehicle::drive()
-    car.drive = function() {
-        vehDrive.call(this);
-        console.log(
-            "Rolling on all " + this.wheels + " wheels!"
-       );
-    }
-    return car;
+  // 重写 Vehicle::drive()
+  car.drive = function() {
+    vehDrive.call(this);
+    console.log(
+      "Rolling on all " + this.wheels + " wheels!"
+    );
+  }
+  return car;
 }
 
 const myCar = new Car();
