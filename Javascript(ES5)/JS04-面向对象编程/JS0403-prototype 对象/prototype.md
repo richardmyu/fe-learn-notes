@@ -22,23 +22,21 @@ JavaScript 的原型链和 Java 的 `Class` 区别就在，它没有“Class”�
 
 `prototype` 对象有一个 `constructor` 属性，默认指向 `prototype` 对象所在的构造函数。
 
-```javascript
-function P() {}
-P.prototype.constructor === P; // true
-```
+![prototype-001](https://richyu.gitee.io/imgbed/docImg/es5-prototype-001.png)
 
 由于 `constructor` 属性定义在 `prototype` 对象上面，意味着可以被所有实例对象继承。
 
 ```javascript
-function P() {}
-var p = new P();
+function Foo() {}
+var foo = new Foo();
 
-p.constructor === P; // true
-p.constructor === P.prototype.constructor; // true
-p.hasOwnProperty("constructor"); // false
+foo.constructor === Foo; // true
+foo.constructor === Foo.prototype.constructor; // true
+Foo.prototype.constructor === Foo ; // true
+foo.hasOwnProperty("constructor"); // false
 ```
 
-p 是构造函数 P 的实例对象，但是 p 自身没有 `constructor` 属性，该属性其实是读取原型链上面的 `P.prototype.constructor` 属性。
+`foo` 是构造函数 `Foo` 的实例对象，但是 **`foo` 自身没有 `constructor` 属性**，该属性其实是读取原型链上面的 `P.prototype.constructor` 属性。
 
 `constructor` 属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
 
