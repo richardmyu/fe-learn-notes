@@ -22,8 +22,6 @@ JavaScript 的原型链和 Java 的 `Class` 区别就在，它没有“Class”�
 
 `prototype` 对象有一个 `constructor` 属性，默认指向 `prototype` 对象所在的构造函数。
 
-![prototype-001](https://richyu.gitee.io/imgbed/docImg/es5-prototype-001.png)
-
 由于 `constructor` 属性定义在 `prototype` 对象上面，意味着可以被所有实例对象继承。
 
 ```javascript
@@ -86,7 +84,9 @@ Person.prototype.constructor === Person; // false
 Person.prototype.constructor === Object; // true
 ```
 
-上面代码中，构造函数 Person 的原型对象改掉了，但是没有修改 `constructor` 属性，导致这个属性不再指向 Person。由于 Person 的新原型是一个普通对象，而普通对象的 `contructor` 属性指向 Object 构造函数，导致 `Person.prototype.constructor` 变成了 `Object`。
+上面代码中，构造函数 `Person` 的原型对象改掉了，<s>但是没有修改 `constructor` 属性，导致这个属性不再指向 `Person`</s> 自然就丢失了原来的 `constructore` 的指向，从而被新原型的 `constructore` 指向所替代。
+
+由于 Person 的新原型是一个普通对象，而普通对象的 `contructor` 属性指向 Object 构造函数，导致 `Person.prototype.constructor` 变成了 `Object`。
 
 > 内置类的原型默认无法修改；只有浏览器默认开辟的堆内存才有 `constructor` 属性，若要修改地址（批量添加属性或方法），可以添加 `constructor：类`，引回原地址；
 
@@ -106,7 +106,7 @@ C.prototype = {
   // ...
 };
 
-// 更好的写法
+// 更好的写法（不改变原型）
 C.prototype.method1 = function (...) { ... };
 ```
 
@@ -137,7 +137,7 @@ cat.name; // '大毛'
 cat.color; // '白色'
 ```
 
-通过构造函数为实例对象定义属性，虽然很方便，但是有一个缺点。同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费。
+通过构造函数为实例对象定义属性，虽然很方便，但是有一个缺点。**同一个构造函数的多个实例之间，无法共享属性**，从而造成对系统资源的浪费。
 
 ```javascript
 function Cat(name, color) {
@@ -155,15 +155,15 @@ cat1.meow === cat2.meow;
 // false
 ```
 
-由于 meow 方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个 meow 方法。这既没有必要，又浪费系统资源，因为所有 meow 方法都是同样的行为，完全应该共享。
+由于 `meow` 方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个 `meow` 方法。这既没有必要，又浪费系统资源，因为所有 `meow` 方法都是同样的行为，完全应该共享。
 
-构造函数方法很好用，但是存在一个浪费内存的问题 -- 即没有共享属性和方法，每次生成的实例的属性和方法都是私有的，这样就引入 Prototype 模式。
+构造函数方法很好用，但是存在一个浪费内存的问题 -- 即没有共享属性和方法，每次生成的实例的属性和方法都是私有的，这样就引入 `Prototype` 模式。
 
 ##### 3.1.3 prototype
 
 **JavaScript 继承机制的设计思想就是，原型对象的所有属性和方法，都能被实例对象共享**。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
 
-Javascript 规定，**每一个函数都有一个 `prototype` 属性**，指向另一个对象(即 `constructor`)。这个对象的所有属性和方法，都会被构造函数的实例继承。这意味着，我们可以把那些不变的属性和方法，直接定义在 `prototype` 对象上。
+**Javascript 规定，每一个函数都有一个 `prototype` 属性**，指向另一个对象(即 `constructor`)。这个对象的所有属性和方法，都会被构造函数的实例继承。这意味着，我们可以把那些不变的属性和方法，直接定义在 `prototype` 对象上。
 
 ```javascript
 function f() {}
@@ -229,15 +229,28 @@ JavaScript 中任意对象都有一个内置属性 `[[prototype]]`，在 ES5 之
 `__proto__` 的设置器(setter)允许对象的 `[[Prototype]]` 被变更。前提是这个对象必须通过 `Object.isExtensible()` 判断为是可扩展的，如果不可扩展，则会抛出一个 `TypeError` 错误。要变更的值必须是一个 `object` 或 `null`，提供其它值将不起任何作用。
 
 ```js
-Object.prototype.__proto__ === null; //true
+foo.__proto__ === Foo.prototype; //true
+Foo.__proto__ === Function.prototype; //true
 
-// 内置对象(也是函数)的 __proto__ 都指向 Function.prototype
+// 内置对象(也是函数，除了 Math)的 __proto__ 都指向 Function.prototype
 Object.__proto__ === Function.prototype; //true
 Function.__proto__ === Function.prototype; //true
 
+Symbol.__proto__ === Function.prototype; //true
+Date.__proto__ === Function.prototype; //true
+// typeof Math === 'object'
+Math.__proto__ === Function.prototype; //false
+Math.__proto__ === Object.prototype; //true
+
 // 函数的 prototype 的 __proto__ 都指向 Object.prototype
 Function.prototype.__proto__ === Object.prototype; //true
+Foo.prototype.__proto__ === Object.prototype; //true
+
+// Object 的 prototype 的 __proto__ 指向 null
+Object.prototype.__proto__ === null; //true
 ```
+
+![prototype-001](https://richyu.gitee.io/imgbed/docImg/js-prototype-001.png)
 
 ##### 3.1.5 原型链
 
@@ -276,7 +289,7 @@ SubType.prototype.getSubValue = function() {
 
 let instance = new SubType();
 
-console.log(instance.getSubValue()); //undefined2
+instance.getSubValue()); //undefined2
 ```
 
 读取对象的某个属性时，JavaScript 引擎先寻找对象本身的属性，如果找不到，则通过 `__proto__` 到它的原型去找，如果还是找不到，就到原型的原型去找。如果直到最顶层的 `Object.prototype` 还是找不到，则返回 `undefined`。如果对象自身和它的原型，都定义了一个同名属性，那么优先读取对象自身的属性，这叫做**覆盖（overriding）**。
