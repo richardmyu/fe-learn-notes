@@ -8,7 +8,7 @@
 
 2.《JavaScript 权威指南》David Flanagan
 
-3.[JavaScript 教程（阮一峰）](https://wangdoc.com/javascript/index.html)
+3.[JavaScript 教程（阮一峰）] [old version](https://javascript.ruanyifeng.com/) / [new version](https://wangdoc.com/javascript/index.html)
 
 4.[JavaScript 教程（廖雪峰）](https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000)
 

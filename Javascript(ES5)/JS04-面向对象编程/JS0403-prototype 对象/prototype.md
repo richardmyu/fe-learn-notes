@@ -4,6 +4,8 @@
 
 JavaScript 常被描述为一种基于原型的语言 (prototype-based language)——**每个对象拥有一个原型对象，对象以其原型为模板、从原型继承方法和属性**。
 
+> 在 ES2015/ES6 中引入了 class 关键字，但那只是语法糖，JavaScript 仍然是基于原型的。
+
 原型对象也可能拥有原型，并从中继承方法和属性，一层一层、以此类推。这种关系常被称为**原型链 (prototype chain)**，它解释了为何一个对象会拥有定义在其他对象中的属性和方法。
 
 > 准确地说，这些属性和方法定义在 Object 的 **构造函数(constructor functions)** 之上的 `prototype` 属性上，而非对象实例本身。
@@ -11,6 +13,8 @@ JavaScript 常被描述为一种基于原型的语言 (prototype-based language)
 JavaScript 的原型链和 Java 的 `Class` 区别就在，它没有“Class”的概念，所有对象都是实例，所谓继承关系不过是把一个对象的原型指向另一个对象而已。
 
 在传统的 OOP 中，首先定义“类”，此后创建对象实例时，类中定义的所有属性和方法都被复制到实例中。在 JavaScript 中并不如此复制——而是在对象实例和它的构造器之间建立一个链接（它是 `__proto__` 属性，是从构造函数的 `prototype` 属性派生的），之后通过上溯原型链，在构造器中找到这些属性和方法。
+
+尽管这种原型继承通常被认为是 JavaScript 的弱点之一，但是原型继承模型本身实际上比经典模型更强大。例如，在原型模型的基础上构建经典模型相当简单。
 
 #### 3.1.原型对象概述
 
@@ -672,6 +676,7 @@ s.world; // 'world'
 这种模式又称为 **Mixin（混入）**。
 
 ![prototype-002](https://richyu.gitee.io/imgbed/docImg/js-prototype-002.png)
+
 #### 3.4.模块
 
 随着网站逐渐变成”互联网应用程序”，嵌入网页的 JavaScript 代码越来越庞大，越来越复杂。网页越来越像桌面程序，需要一个团队分工协作、进度管理、单元测试等等……开发者不得不使用软件工程的方法，管理网页的业务逻辑。
@@ -700,7 +705,7 @@ function m2() {
 为了解决上面的缺点，可以把模块写成一个对象，所有的模块成员都放到这个对象里面。
 
 ```javascript
-var module1 = new Object({
+var module = new Object({
   _count: 0,
   m1: function() {
     //...
@@ -731,7 +736,9 @@ function StringBuilder() {
 }
 ```
 
-这种方法将私有变量封装在构造函数中，违反了构造函数与实例对象相分离的原则。并且，非常耗费内存。
+一旦生成实例对象，外部是无法直接访问 `buffer` 的。
+
+但是，这种方法将私有变量封装在构造函数中，导致构造函数与实例对象是一体的，总是存在于内存之中，无法在使用完成后清除。这意味着，构造函数有双重作用，既用来塑造实例对象，又用来保存实例对象的数据，违背了构造函数与实例对象在数据上相分离的原则（即实例对象的数据，不应该保存在实例对象以外）。同时，非常耗费内存。
 
 ```javascript
 function StringBuilder() {
@@ -756,7 +763,7 @@ StringBuilder.prototype = {
 使用“立即执行函数”（Immediately-Invoked Function Expression，IIFE），将相关的属性和方法封装在一个函数作用域里面，可以达到不暴露私有成员的目的。
 
 ```javascript
-var module1 = (function() {
+var module = (function() {
   var _count = 0;
   var m1 = function() {
     //...
@@ -773,7 +780,9 @@ var module1 = (function() {
 
 使用上面的写法，外部代码无法读取内部的 `_count` 变量。
 
-`console.info(module1._count); //undefined`
+```js
+console.info(module._count); //undefined
+```
 
 这种模式就是 JavaScript 模块的基本写法。
 
@@ -782,21 +791,21 @@ var module1 = (function() {
 如果一个模块很大，必须分成几个部分，或者一个模块需要继承另一个模块，这时就有必要采用**放大模式（augmentation）**。
 
 ```javascript
-var module1 = (function(mod) {
+var module = (function(mod) {
   mod.m3 = function() {
     //...
   };
   return mod;
-})(module1);
+})(module);
 ```
 
 在浏览器环境中，模块的各个部分通常都是从网上获取的，有时无法知道哪个部分会先加载。如果采用上面的写法，第一个执行的部分有可能加载一个不存在空对象，这时就要采用**宽放大模式（Loose augmentation）**。
 
 ```javascript
-var module1 = (function(mod) {
+var module = (function(mod) {
   //...
   return mod;
-})(window.module1 || {});
+})(window.module || {});
 ```
 
 与”放大模式”相比，“宽放大模式”就是“立即执行函数”的参数可以是空对象。
@@ -805,15 +814,13 @@ var module1 = (function(mod) {
 
 独立性是模块的重要特点，模块内部最好不与程序的其他部分直接交互。
 
-为了在模块内部调用全局变量，必须显式地将其他变量输入模块。
+为了在模块内部调用全局变量，必须显式地将其他变量输入模块。这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显。
 
 ```javascript
-var module1 = (function($, YAHOO) {
+var module = (function($, YAHOO) {
   //...
 })(jQuery, YAHOO);
 ```
-
-上面模块需要使用 jQuery 库和 YUI 库，就把这两个库（其实是两个模块）当作参数输入。这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显。
 
 立即执行函数还可以起到命名空间的作用。
 
@@ -835,57 +842,47 @@ var module1 = (function($, YAHOO) {
 })(jQuery, window, document);
 ```
 
-上面代码中，finalCarousel 对象输出到全局，对外暴露 init 和 destroy 接口，内部方法 go、handleEvents、initialize、dieCarouselDie 都是外部无法调用的。
+上面代码中，`finalCarousel` 对象输出到全局，对外暴露 `init` 和 `destroy` 接口，内部方法 `go`、`handleEvents`、`initialize`、`dieCarouselDie` 都是外部无法调用的。
 
 #### 3.5.拷贝
 
+如果要拷贝一个对象，需要做到下面两件事情。
+
+- 确保拷贝后的对象，与原对象具有同样的原型。
+- 确保拷贝后的对象，与原对象具有同样的实例属性。
+
 ##### 3.5.1.浅拷贝
 
-除了使用"prototype 链"以外，还有另一种思路：把父对象的属性，全部拷贝给子对象，也能实现继承。
+创建一个新对象，新对象的属性和原来对象完全相同，对于非基本类型属性，仍指向原有属性所指向的对象的内存地址。
 
-下面这个函数，就是在做拷贝：
+```js
+function copyObject(orig) {
+  var copy = Object.create(Object.getPrototypeOf(orig));
+  copyOwnPropertiesFrom(copy, orig);
+  return copy;
+}
 
-```javascript
-function extendCopy(p) {
-  var c = {};
-  for (var i in p) {
-    c[i] = p[i];
-  }
-  c.uber = p; //???
-  return c;
+function copyOwnPropertiesFrom(target, source) {
+  Object
+    .getOwnPropertyNames(source)
+    .forEach(function (propKey) {
+      var desc = Object.getOwnPropertyDescriptor(source, propKey);
+      Object.defineProperty(target, propKey, desc);
+    });
+  return target;
 }
 ```
 
-使用的时候，这样写：
+另一种更简单的写法，是利用 ES2017 才引入标准的 `Object.getOwnPropertyDescriptors` 方法。
 
-```javascript
-var Doctor = extendCopy(Chinese);
-Doctor.career = "医生";
-alert(Doctor.nation); // 中国
+```js
+function copyObject(orig) {
+  return Object.create(
+    Object.getPrototypeOf(orig),
+    Object.getOwnPropertyDescriptors(orig)
+  );
+}
 ```
-
-但是，这样的拷贝有一个问题。那就是，如果父对象的属性等于数组或另一个对象，那么实际上，子对象获得的只是一个内存地址，而不是真正拷贝，因此存在父对象被篡改的可能。
-
-请看，现在给 Chinese 添加一个"出生地"属性，它的值是一个数组。
-
-`Chinese.birthPlaces = ['北京','上海','香港'];`
-
-通过 `extendCopy()` 函数，Doctor 继承了 Chinese。
-
-`var Doctor = extendCopy(Chinese);`
-
-然后，我们为 Doctor 的"出生地"添加一个城市：
-
-`Doctor.birthPlaces.push('厦门');`
-
-发生了什么事？Chinese 的"出生地"也被改掉了！
-
-```javascript
-alert(Doctor.birthPlaces); //北京, 上海, 香港, 厦门
-alert(Chinese.birthPlaces); //北京, 上海, 香港, 厦门
-```
-
-所以，`extendCopy()` 只是拷贝基本类型的数据，我们把这种拷贝叫做"浅拷贝"。这是早期 jQuery 实现继承的方式。
 
 ##### 3.5.2.深拷贝
 
@@ -896,7 +893,6 @@ function deepCopy(p, c) {
   var c = c || {};
   for (var i in p) {
     if (typeof p[i] === "object") {
-      // ??? 为什么用的是 constructor
       c[i] = p[i].constructor === Array ? [] : {};
       deepCopy(p[i], c[i]);
     } else {
@@ -909,7 +905,9 @@ function deepCopy(p, c) {
 
 使用的时候这样写：
 
-`var Doctor = deepCopy(Chinese);`
+```js
+var Doctor = deepCopy(Chinese);
+```
 
 现在，给父对象加一个属性，值为数组。然后，在子对象上修改这个属性：
 

@@ -209,7 +209,7 @@ b instanceof A; // true
 
 **例外**
 
-~~如果 propertiesObject 参数是 `null` 或非原始包装对象，则抛出一个 `TypeError` 异常。~~如果 propertiesObject 参数是 `null` 或非原始包装对象，则抛出一个 `TypeError` 异常。
+<s>如果 propertiesObject 参数是 `null` 或非原始包装对象，则抛出一个 `TypeError` 异常。</s> 如果 propertiesObject 参数是 `null` 或非原始包装对象，则抛出一个 `TypeError` 异常。
 
 ```js
 // 2019-07-14 Google Chrome  75.0.3770.100（正式版本） （64 位）
