@@ -2204,7 +2204,7 @@ graph TB
 
 因此我认为这个容易混淆的组合术语“原型继承”（以及使用其他面向类的术语比如“类”、“构造函数”、“实例”、“多态”，等等）严重影响了大家对于 JavaScript 机制真实原理的理解。
 
-**继承意味着复制操作**，JavaScript（默认）并不会复制对象属性。相反，JavaScript 会在两个对象之间创建一个关联，这样一个对象就可以通过委托访问另一个对象的属性和函数。【委托】这个术语可以更加准确地描述 JavaScript 中对象的关联机制。
+**继承意味着复制操作，JavaScript（默认）并不会复制对象属性。相反，JavaScript 会在两个对象之间创建一个关联，这样一个对象就可以通过委托访问另一个对象的属性和函数**。【委托】这个术语可以更加准确地描述 JavaScript 中对象的关联机制。
 
 还有个偶尔会用到的 JavaScript 术语 **差异继承**。基本原则是在描述对象行为时，使用其不同于普遍描述的特质。举例来说，描述汽车时你会说汽车是有四个轮子的一种交通工具，但是你不会重复描述交通工具具备的通用特性（比如引擎）。
 
@@ -2270,7 +2270,7 @@ a; // {}
 
 `NothingSpecial` 只是一个普通的函数，但是使用 `new` 调用时，它就会构造一个对象并赋值给 `a`，这看起来像是 `new` 的一个副作用（无论如何都会构造一个对象）。这个调用是一个构造函数调用，但是 `NothingSpecial` 本身并不是一个构造函数。
 
-换句话说，**在 JavaScript 中对于“构造函数”最准确的解释是，所有带 `new` 的函数调用**。
+换句话说，**在 JavaScript 中对于“构造函数”最准确的解释是，所有带 `new` 的函数调用**。（没有构造函数，只有构造调用）
 
 函数不是构造函数，但是当且仅当使用 `new` 时，函数调用会变成“构造函数调用”。
 
@@ -2296,7 +2296,7 @@ b.myName(); // "b"
 
 这段代码展示了另外两种“面向类”的技巧：
 
-1. `this.name = name` 给每个对象（也就是a和b）都添加了 `.name` 属性，有点像类实例封装的数据值。
+1. `this.name = name` 给每个对象（也就是 `a` 和 `b`）都添加了 `.name` 属性，有点像类实例封装的数据值；
 
 2. `Foo.prototype.myName = ...` 可能是个更有趣的技巧，它会给 `Foo.prototype` 对象添加一个属性（函数）。现在，`a.myName` 可以正常工作，但是你可能会觉得很惊讶，这是什么原理呢？
 
@@ -2304,7 +2304,7 @@ b.myName(); // "b"
 
 因此，在创建的过程中，`a` 和 `b` 的内部 `[[Prototype]]` 都会关联到 `Foo.prototype` 上。当 `a`  和 `b` 中无法找到 `myName` 时，它会（通过委托）在 `Foo.prototype` 上找到。
 
-**回顾“构造函数”**
+- **回顾“构造函数”**
 
 之前讨论 `.constructor` 属性时我们说过，看起来 `a.constructor === Foo` 为真意味着 `a` 确实有一个指向 `Foo` 的 `.constructor` 属性，但是事实不是这样。
 
@@ -2319,14 +2319,14 @@ function Foo() { /* .. */ }
 
 Foo.prototype = { /* .. */ }; // 创建一个新原型对象
 
-const a1 = new Foo();
-a1.constructor === Foo; // false!
-a1.constructor === Object; // true!
+const a = new Foo();
+a.constructor === Foo; // false!
+a.constructor === Object; // true!
 ```
 
-`Object` 并没有“构造” `a1`，对吧？看起来应该是 `Foo` “构造”了它。大部分开发者都认为是 `Foo` 执行了构造工作，但是问题在于，如果你认为“`constructor`”表示“由......构造”的话，`a1.constructor` 应该是 `Foo`，但是它并不是 `Foo`！
+`Object` 并没有“构造” `a`，对吧？看起来应该是 `Foo` “构造”了它。大部分开发者都认为是 `Foo` 执行了构造工作，但是问题在于，如果你认为“`constructor`”表示“由......构造”的话，`a.constructor` 应该是 `Foo`，但是它并不是 `Foo`！
 
-到底怎么回事？`a1` 并没有 `.constructor` 属性，所以它会委托 `[[Prototype]]` 链上的 `Foo.prototype`。但是这个对象也没有 `.constructor` 属性（不过默认的 `Foo.prototype` 对象有这个属性！），所以它会继续委托，这次会委托给委托链顶端的 `Object.prototype`。这个对象有 `.constructor` 属性，指向内置的 `Object` 函数。
+到底怎么回事？`a` 并没有 `.constructor` 属性，所以它会委托 `[[Prototype]]` 链上的 `Foo.prototype`。但是这个对象也没有 `.constructor` 属性（不过默认的 `Foo.prototype` 对象有这个属性！），所以它会继续委托，这次会委托给委托链顶端的 `Object.prototype`。这个对象有 `.constructor` 属性，指向内置的 `Object` 函数。
 
 错误观点已被摧毁。
 
@@ -2347,15 +2347,17 @@ Object.defineProperty(Foo.prototype, "constructor" , {
 });
 ```
 
-修复 `.constructor` 需要很多手动操作。所有这些工作都是源于把“`constructor`”错误地理解为“由...构造”，这个误解的代价实在太高了。实际上，对象的 `.constructor` 属性默认指向一个函数，而这个函数也有一个叫作 `.prototype` 的引用来指向这个对象。“构造函数”和“原型”这两个词默认只有松散的定义，实际的值可能适用也可能不适用。最好的办法是记住 “`constructor` 并不表示（对象）被（它）构造”。
+修复 `.constructor` 需要很多手动操作。所有这些工作都是源于把“`constructor`”错误地理解为“由...构造”，这个误解的代价实在太高了。
+
+实际上，对象的 `.constructor` 属性默认指向一个函数，而这个函数也有一个叫作 `.prototype` 的引用来指向这个对象。“构造函数”和“原型”这两个词默认只有松散的定义，实际的值可能适用也可能不适用。最好的办法是记住 “`constructor` 并不表示（对象）被（它）构造”。
 
 `.constructor` 并不是一个不可变属性。它是不可枚举的，但是它的值是可写的（可以被修改）。此外，你可以给任意 `[[Prototype]]` 链中的任意对象添加一个名为 `constructor` 的属性或者对其进行修改，你可以任意对其赋值。
 
 和 `[[Get]]` 算法查找 `[[Prototype]]` 链的机制一样，`.constructor` 属性引用的目标可能和你想的完全不同。
 
-现在你应该明白这个属性多么随意了吧？
+现在你应该明白这个属性多么随意了吧？（是的，真是坑坑）
 
-结论？一些随意的对象属性引用，比如 `a1.constructor`，实际上是不被信任的，它们不一定会指向默认的函数引用。此外，很快我们就会看到，稍不留神 `a1.constructor` 就可能会指向你意想不到的地方。`a1.constructor` 是一个非常不可靠并且不安全的引用。通常来说要尽量避免使用这些引用。
+结论？一些随意的对象属性引用，比如 `a.constructor`，实际上是不被信任的，它们不一定会指向默认的函数引用。此外，很快我们就会看到，稍不留神 `a.constructor` 就可能会指向你意想不到的地方。`a.constructor` 是一个非常不可靠并且不安全的引用。通常来说要尽量避免使用这些引用。
 
 #### 5.3.（原型）继承
 
@@ -2420,7 +2422,7 @@ Bar.prototype = new Foo();
 
 `Bar.prototype = Foo.prototype` 并不会创建一个关联到 `Bar.prototype` 的新对象，它只是让 `Bar.prototype` 直接引用 `Foo.prototype` 对象。因此当你执行类似 `Bar.prototype.myLabel = ...` 的赋值语句时会直接修改 `Foo.prototype` 对象本身。显然这不是你想要的结果，否则你根本不需要 `Bar` 对象，直接使用 `Foo` 就可以了，这样代码也会更简单一些。
 
-`Bar.prototype = new Foo` 的确会创建一个关联到 `Foo.prototype` 的新对象。但是它使用了 `Foo` 的“构造函数调用”，如果函数 `Foo` 有一些副作用（比如写日志、修改状态、注册到其他对象、给 `this` 添加数据属性，等等）的话，就会影响到 `Bar` 的“后代”，后果不堪设想。
+`Bar.prototype = new Foo()` 的确会创建一个关联到 `Foo.prototype` 的新对象。但是它使用了 `Foo` 的“构造函数调用”，如果函数 `Foo` 有一些副作用（比如写日志、修改状态、注册到其他对象、给 `this` 添加数据属性，等等）的话，就会影响到 `Bar` 的“后代”，后果不堪设想。
 
 因此，要创建一个合适的关联对象，我们必须使用 `Object.create` 而不是使用具有副作用的 `Foo`。这样做唯一的缺点就是需要创建一个新对象然后把旧对象抛弃掉，不能直接修改已有的默认对象。
 
@@ -2429,10 +2431,10 @@ Bar.prototype = new Foo();
 我们来对比一下两种把 `Bar.prototype` 关联到 `Foo.prototype` 的方法：
 
 ```js
-// ES6之前需要抛弃默认的Bar.prototype
+// ES6 之前需要抛弃默认的 Bar.prototype
 Bar.ptototype = Object.create(Foo.prototype);
 
-// ES6开始可以直接修改现有的Bar.prototype
+// ES6 开始可以直接修改现有的 Bar.prototype
 Object.setPrototypeOf(Bar.prototype, Foo.prototype);
 ```
 
@@ -2552,11 +2554,11 @@ Object.defineProperty(Object.prototype, "__proto__", {
 
 我们只有在一些特殊情况下（我们前面讨论过）需要设置函数默认 `.prototype` 对象的 `[[Prototype]]`，让它引用其他对象（除了 `Object.prototype`）。这样可以避免使用全新的对象替换默认对象。此外，最好把 `[[Prototype]]` 对象关联看作是只读特性，从而增加代码的可读性。
 
-JavaScript 社区中对于双下划线有一个非官方的称呼，他们会把类似 `__proto__` 的属性称为“笨蛋（dunder）”。所以，JavaScript 潮人会把 `__proto__` 叫作“笨蛋p roto”。
+JavaScript 社区中对于双下划线有一个非官方的称呼，他们会把类似 `__proto__` 的属性称为“笨蛋（dunder）”。所以，JavaScript 潮人会把 `__proto__` 叫作“笨蛋 proto”。
 
 #### 5.4.对象关联
 
-现在我们知道了，`[[Prototype]]` 机制就是存在于对象中的一个内部链接，它会引用其他对象。
+现在我们知道了，`[[Prototype]]` 机制就是存在于对象中的一个【内部链接】，它会引用其他对象。
 
 通常来说，这个链接的作用是：如果在对象上没有找到需要的属性或者方法引用，引擎就会继续在 `[[Prototype]]` 关联的对象上进行查找。同理，如果在后者中也没有找到需要的引用就会继续查找它的 `[[Prototype]]`，以此类推。这一系列对象的链接被称为“原型链”。
 
@@ -2594,7 +2596,7 @@ if (!Object.create) {
 }
 ```
 
-这段 polyfill 代码使用了一个一次性函数F，我们通过改写它的 `.prototype` 属性使其指向想要关联的对象，然后再使用 `new F` 来构造一个新对象进行关联。
+这段 polyfill 代码使用了一个一次性函数 `F`，我们通过改写它的 `.prototype` 属性使其指向想要关联的对象，然后再使用 `new F()` 来构造一个新对象进行关联。
 
 由于 `Object.create` 可以被模拟，因此这个函数被应用得非常广泛。标准 ES5 中内置的 `Object.create` 函数还提供了一系列附加功能，但是 ES5 之前的版本不支持这些功能。通常来说，这些功能的应用范围要小得多，但是出于完整性考虑，我们还是介绍一下：
 
@@ -2684,8 +2686,9 @@ const anotherObject = {
 
 const myObject = Object.create(anotherObject);
 
+// 内部委托！
 myObject.doCool = function() {
-  this.cool(); // 内部委托！
+  this.cool();
 };
 
 myObject.doCool(); // "cool!"
@@ -2693,9 +2696,15 @@ myObject.doCool(); // "cool!"
 
 这里我们调用的 `myObject.doCool` 是实际存在于 `myObject` 中的，这可以让我们的 API 设计更加清晰（不那么“神奇”）。从内部来说，我们的实现遵循的是 **委托设计模式**，通过 `[[Prototype]]` 委托到 `anotherObject.cool`。换句话说，内部委托比起直接委托可以让 API 接口设计更加清晰。
 
+- **小结**
+
+虽然这些 JavaScript 机制和传统面向类语言中的“类初始化”和“类继承”很相似，但是 JavaScript 中的机制有一个核心区别，那就是不会进行复制，对象之间是通过内部的 `[[Prototype]]` 链关联的。
+
+出于各种原因，以“继承”结尾的术语（包括“原型继承”）和其他面向对象的术语都无法帮助你理解 JavaScript 的真实机制（不仅仅是限制我们的思维模式）。相比之下，“委托”是一个更合适的术语，因为对象之间的关系不是复制而是委托。
+
 ### 6.行为委托
 
-`[[Prototype]]` 机制就是指对象中的一个内部链接引用另一个对象。如果在第一个对象上没有找到需要的属性或者方法引用，引擎就会继续在 `[[Prototype]]` 关联的对象上进行查找。同理，如果在后者中也没有找到需要的引用就会继续查找它的 `[[Prototype]]`，以此类推。这一系列对象的链接被称为“原型链”。换句话说，JavaScript 中这个机制的 **本质就是对象之间的关联关系**。
+**`[[Prototype]]` 机制就是指对象中的一个内部链接引用另一个对象**。如果在第一个对象上没有找到需要的属性或者方法引用，引擎就会继续在 `[[Prototype]]` 关联的对象上进行查找。同理，如果在后者中也没有找到需要的引用就会继续查找它的 `[[Prototype]]`，以此类推。这一系列对象的链接被称为“原型链”。换句话说，JavaScript 中这个机制的 **本质就是对象之间的关联关系**。
 
 #### 6.1.面向委托的设计
 
@@ -2717,8 +2726,12 @@ myObject.doCool(); // "cool!"
 
 ```js
 Task = {
-  setID: function(ID) { this.id = ID; },
-  outputID: function() { console.log(this.id); }
+  setID: function(ID) {
+    this.id = ID;
+  },
+  outputID: function() {
+    console.log(this.id);
+  }
 };
 
 // 让 XYZ 委托 Task
@@ -2752,7 +2765,7 @@ XYZ.outputTaskDetails = function() {
 
 > 这个设计模式要求尽量少使用容易被重写的通用方法名，提倡使用更有描述性的方法名，尤其是要写清相应对象行为的类型。这样做实际上可以创建出更容易理解和维护的代码，因为方法名（不仅在定义的位置，而是贯穿整个代码）更加清晰（自文档）。
 
-1. `this.setID(ID);` `XYZ` 中的方法首先会寻找 `XYZ` 自身是否有 `setID`，但是 `XYZ` 中并没有这个方法名，因此会通过 `[[Prototype]]` 委托关联到 `Task` 继续寻找，这时就可以找到 `setID` 方法。此外，由于调用位置触发了 `this` 的隐式绑定规则，因此虽然 `setID` 方法在 `Task` 中，运行时 `this` 仍然会绑定到 `XYZ`，这正是我们想要的。在之后的代码中我们还会看到 `this.outputID`，原理相同。
+3. `this.setID(ID);` `XYZ` 中的方法首先会寻找 `XYZ` 自身是否有 `setID`，但是 `XYZ` 中并没有这个方法名，因此会通过 `[[Prototype]]` 委托关联到 `Task` 继续寻找，这时就可以找到 `setID` 方法。此外，由于调用位置触发了 `this` 的隐式绑定规则，因此虽然 `setID` 方法在 `Task` 中，运行时 `this` 仍然会绑定到 `XYZ`，这正是我们想要的。在之后的代码中我们还会看到 `this.outputID`，原理相同。
 
 换句话说，我们和 `XYZ` 进行交互时可以使用 `Task` 中的通用方法，因为 `XYZ` 委托了 `Task`。
 
@@ -2764,7 +2777,7 @@ XYZ.outputTaskDetails = function() {
 
 1.**互相委托（禁止）**
 
-你无法在两个或两个以上互相（双向）委托的对象之间创建循环委托。如果你把 `B` 关联到 `A`  然后试着把 `A` 关联到 `B`，就会出错。
+你无法在两个或两个以上互相（双向）委托的对象之间创建【循环委托】。如果你把 `B` 关联到 `A`  然后试着把 `A` 关联到 `B`，就会出错。
 
 很遗憾（并不是非常出乎意料，但是有点烦人）这种方法是被禁止的。如果你引用了一个两边都不存在的属性或者方法，那就会在 `[[Prototype]]` 链上产生一个无限递归的循环。但是如果所有的引用都被严格限制的话，`B` 是可以委托 `A` 的，反之亦然。因此，互相委托理论上是可以正常工作的，在某些情况下这是非常有用的。
 
@@ -2850,6 +2863,7 @@ a1; // Gotcha {}
 function Foo(who) {
   this.me = who;
 }
+
 Foo.prototype.identify = function() {
   return "I am " + this.me;
 };
@@ -2857,10 +2871,11 @@ Foo.prototype.identify = function() {
 function Bar(who) {
   Foo.call(this, who);
 }
+
 Bar.prototype = Object.create(Foo.prototype);
 
 Bar.prototype.speak = function() {
-  alert("Hello, " + this.identify() + ".");
+  console.log("Hello, " + this.identify() + ".");
 };
 
 const b1 = new Bar("b1");
@@ -2883,14 +2898,16 @@ Foo = {
     return "I am " + this.me;
   }
 };
+
 Bar = Object.create(Foo);
 
 Bar.speak = function() {
-  alert("Hello, " + this.identify() + ".");
+  console.log("Hello, " + this.identify() + ".");
 };
 
 const b1 = Object.create(Bar);
 b1.init("b1");
+
 const b2 = Object.create(Bar);
 b2.init("b2");
 
@@ -2906,5 +2923,5 @@ b2.speak();
 
 首先，类风格代码的思维模型强调实体以及实体间的关系：
 
-![ydkjsprototype001](https://richyu.gitee.io/pb_images/documentImg/ydkjsprototype001.png)
+![ydkjsprototype001](https://richyu.gitee.io/imgBed/docImg/ydkjsprototype001.png)
 
