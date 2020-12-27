@@ -1635,13 +1635,11 @@ class SpeedBoat inherits Vehicle {
 
 ##### 4.3.2.多重继承
 
-还记得我们之前关于父类、子类和 DNA 的讨论吗？当时我们说这个比喻不太恰当，因为在现实中绝大多数后代是由双亲产生的。如果类可以继承两个类，那看起来就更符合现实的比喻了。
-
 有些面向类的语言允许你继承多个“父类”。多重继承意味着所有父类的定义都会被复制到子类中。
 
 从表面上来，对于类来说这似乎是一个非常有用的功能，可以把许多功能组合在一起。然而，这个机制同时也会带来很多复杂的问题。如果两个父类中都定义了 `drive` 方法的话，子类引用的是哪个呢？难道每次都需要手动指定具体父类的 `drive` 方法吗？这样多态继承的很多优点就不存在了。
 
-除此之外，还有一种被称为钻石问题的变种。在钻石问题中，子类 `D` 继承自两个父类（ `B` 和 `C`），这两个父类都继承自 `A`。如果 `A` 中有 `drive` 方法并且 `B` 和 `C` 都重写了这个方法（多态），那当 `D` 引用 `drive` 时应当选择哪个版本呢（`B:drive` 还是 `C:drive`）？
+除此之外，还有一种被称为【钻石问题】的变种。在钻石问题中，子类 `D` 继承自两个父类（ `B` 和 `C`），这两个父类都继承自 `A`。如果 `A` 中有 `drive` 方法并且 `B` 和 `C` 都重写了这个方法（多态），那当 `D` 引用 `drive` 时应当选择哪个版本呢（`B:drive` 还是 `C:drive`）？
 
 这些问题远比看上去要复杂得多。之所以要介绍这些问题，主要是为了和 JavaScript 的机制进行对比。
 
@@ -1850,7 +1848,7 @@ Something.count; // 1
 
 const Another = {
     cool: function() {
-        // 隐式把Something混入Another
+        // 隐式把 Something 混入 Another
         Something.cool.call(this);
     }
 };
@@ -1865,6 +1863,20 @@ Another.count; // 1 （count不是共享状态）
 因此，我们把 `Something` 的行为“混入”到了 `Another` 中。
 
 虽然这类技术利用了 `this` 的重新绑定功能，但是 `Something.cool.call(this)` 仍然无法变成相对（而且更灵活的）引用，所以使用时千万要小心。通常来说，尽量避免使用这样的结构，以保证代码的整洁和可维护性。
+
+- **小结**
+
+类是一种设计模式。许多语言提供了对于面向类软件设计的原生语法。JavaScript 也有类似的语法，但是和其他语言中的类完全不同。
+
+类意味着复制。传统的类被实例化时，它的行为会被复制到实例中。类被继承时，行为也会被复制到子类中。
+
+多态（在继承链的不同层次名称相同但是功能不同的函数）看起来似乎是从子类引用父类，但是本质上引用的其实是复制的结果。
+
+JavaScript 并不会（像类那样）自动创建对象的副本。
+
+混入模式（无论显式还是隐式）可以用来模拟类的复制行为，但是通常会产生丑陋并且脆弱的语法，比如显式伪多态（`OtherObj.methodName.call(this, ...)`），这会让代码更加难懂并且难以维护。
+
+总地来说，在 JavaScript 中模拟类是得不偿失的，虽然能解决当前的问题，但是可能会埋下更多的隐患。
 
 ### 5.原型
 
@@ -1941,25 +1953,141 @@ for (const k in myObject) {
 myObject.foo = "bar";
 ```
 
-如果 `myObject` 对象中包含名为 `foo` 的普通数据访问属性，这条赋值语句只会修改已有的属性值。
+如果 `myObject` 对象中包含名为 `foo` 的普通数据访问属性，这条赋值语句只会修改已有的属性值；
 
-如果 `foo` 不是直接存在于 `myObject` 中，`[[Prototype]]` 链就会被遍历，类似 `[[Get]]` 操作。如果原型链上找不到 `foo`，`foo` 就会被直接添加到 `myObject`上。然而，如果 `foo` 存在于原型链上层，赋值语句 `myObject.foo = "bar"` 的行为就会有些不同（而且可能很出人意料）。
+如果 `foo` 不是直接存在于 `myObject` 中，`[[Prototype]]` 链就会被遍历，类似 `[[Get]]` 操作。如果原型链上找不到 `foo`，`foo` 就会被直接添加到 `myObject`上。然而，如果 `foo` 存在于原型链上层，赋值语句 `myObject.foo = "bar"` 的行为就会有些不同（而且可能很出人意料）；
 
 如果属性名 `foo` 既出现在 `myObject` 中也出现在 `myObject` 的 `[[Prototype]]` 链上层，那么就会发生屏蔽。`myObject` 中包含的 `foo` 属性会屏蔽原型链上层的所有 `foo` 属性，因为 `myObject.foo` 总是会选择原型链中最底层的 `foo` 属性。
 
 屏蔽比我们想象中更加复杂。下面我们分析一下如果 `foo` 不直接存在于 `myObject` 中而是存在于原型链上层时 `myObject.foo = "bar"` 会出现的三种情况。
 
-1. 如果在 `[[Prototype]]` 链上层存在 `foo` 的普通数据访问属性并且没有被标记为只读（`writable:false`），那就会直接在 `myObject` 中添加一个名为 `foo` 的新属性，它是屏蔽属性。
+```js
+'use strict';
+
+function Super() { }
+
+// 使用 `=` 赋值操作定义的变量，不会有下述影响
+Super.prototype.name = '张三';
+
+Super.prototype.getName = function () {
+  return this.name;
+};
+
+const sub = new Super();
+
+sub.getName(); //张三
+sub.hasOwnProperty('name'); //false
+
+sub.name = '李四';
+sub.hasOwnProperty('name'); //true
+sub.getName(); //李四
+```
+
+---
+
+1. 如果在 `[[Prototype]]` 链上层存在 `foo` 的普通数据访问属性，并且没有被标记为只读（`writable:false`），那就会直接在 `myObject` 中添加一个名为 `foo` 的新属性，它是屏蔽属性；
+
+```js
+function Super() { }
+
+Object.defineProperty(Super.prototype, 'name', {
+  value: '张三',
+  writable: true,
+  configurable: true
+})
+
+Super.prototype.getName = function () {
+  return this.name;
+};
+
+const sub = new Super();
+
+sub.getName(); // 张三
+sub.hasOwnProperty('name'); // false
+
+sub.name = '李四';
+
+sub.getName(); // 李四
+sub.hasOwnProperty('name'); // true
+```
+
+---
 
 2. 如果在 `[[Prototype]]` 链上层存在 `foo`，但是它被标记为只读（`writable:false`），那么无法修改已有属性或者在 `myObject` 上创建屏蔽属性。如果运行在严格模式下，代码会抛出一个错误。否则，这条赋值语句会被忽略。总之，不会发生屏蔽。
 
+```js
+function Super() { }
+
+Object.defineProperty(Super.prototype, 'name', {
+  value: '张三',
+  writable: false,
+  configurable: true
+})
+
+Super.prototype.getName = function () {
+  return this.name;
+};
+
+const sub = new Super();
+
+sub.getName(); // 张三
+sub.hasOwnProperty('name'); // false
+
+// 'use strict' model
+// Cannot assign to read only property 'name' of object
+sub.name = '李四';
+
+sub.getName(); // 张三
+sub.hasOwnProperty('name'); // false
+```
+
+---
+
 3. 如果在 `[[Prototype]]` 链上层存在 `foo` 并且它是一个 `setter`，那就一定会调用这个 `setter`（即 `[[prototype]]` 链上 `foo` 被修改值）。`foo` 不会被添加到（或者说屏蔽于）`myObject`，也不会重新定义 `foo` 这个 `setter`。
+
+```js
+let name = '张三';
+
+function Super() { }
+
+Object.defineProperty(Super.prototype, 'name', {
+  configurable: true,
+  get() {
+    return name
+  },
+  set(val) {
+    console.log('set name');
+    name = val;
+  }
+})
+
+Super.prototype.getName = function () {
+  return this.name;
+};
+
+const sub = new Super();
+
+sub.getName(); // 张三
+sub.hasOwnProperty('name'); // false
+
+sub.name = '李四';
+
+sub.hasOwnProperty('name'); // false
+sub.getName(); // 李四
+```
 
 大多数开发者都认为如果向 `[[Prototype]]` 链上层已经存在的属性（`[[Put]]`）赋值，就一定会触发屏蔽，但是如你所见，三种情况中只有一种（第一种）是这样的。
 
 如果你希望在第二种和第三种情况下也屏蔽 `foo`，那就不能使用 `=` 操作符来赋值，而是使用 `Object.defineProperty` 来向 `myObject` 添加 `foo`。
 
-> 第二种情况可能是最令人意外的，只读属性会阻止 `[[Prototype]]` 链下层隐式创建（屏蔽）同名属性。这样做主要是为了模拟类属性的继承。你可以把原型链上层的 `foo` 看作是父类中的属性，它会被 `myObject` 继承（复制），这样一来 `myObject` 中的 `foo` 属性也是只读，所以无法创建。但是一定要注意，实际上并不会发生类似的继承复制。这看起来有点奇怪，`myObject`对象竟然会因为其他对象中有一个只读 `foo` 就不能包含 `foo` 属性。更奇怪的是，这个限制只存在于 `=` 赋值中，使用 `Object.defineProperty` 并不会受到影响。
+```js
+// sub.name = '李四';
+Object.defineProperty(sub, 'name', {
+  value: '李四'
+})
+```
+
+> 第二种情况可能是最令人意外的，【只读属性】会阻止 `[[Prototype]]` 链下层隐式创建（屏蔽）同名属性。这样做主要是为了模拟类属性的继承。你可以把原型链上层的 `foo` 看作是父类中的属性，它会被 `myObject` 继承（复制），这样一来 `myObject` 中的 `foo` 属性也是只读，所以无法创建。但是一定要注意，实际上并不会发生类似的继承复制。这看起来有点奇怪，`myObject`对象竟然会因为其他对象中有一个只读 `foo` 就不能包含 `foo` 属性。更奇怪的是，这个限制只存在于 `=` 赋值中，使用 `Object.defineProperty` 并不会受到影响。
 
 如果需要对屏蔽方法进行委托的话就不得不使用丑陋的显式伪多态。通常来说，使用屏蔽得不偿失，所以应当尽量避免使用。有些情况下会隐式产生屏蔽，一定要当心。思考下面的代码：
 
@@ -1986,6 +2114,7 @@ myObject.a; // 2
 anotherObject.hasOwnProperty("a"); // true
 myObject.hasOwnProperty("a"); // false
 
+// 自动创建新属性
 myObject.a++; // 隐式屏蔽！
 
 anotherObject.a; // 2
@@ -1998,7 +2127,7 @@ myObject.hasOwnProperty("a"); // true
 
 修改委托属性时一定要小心。如果想让 `anotherObject.a` 的值增加，唯一的办法是 `anotherObject.a++`。
 
-#### 5.2.类”
+#### 5.2.类
 
 现在你可能会很好奇：为什么一个对象需要关联到另一个对象？这样做有什么好处？这个问题非常好，但是在回答之前我们首先要理解 `[[Prototype]]` “不是”什么。JavaScript 和面向类的语言不同，它并没有类来作为对象的抽象模式或者说蓝图。JavaScript 中只有对象。
 
@@ -2008,7 +2137,7 @@ myObject.hasOwnProperty("a"); // true
 
 ##### 5.2.1.“类”函数
 
-多年以来，JavaScript 中有一种奇怪的行为一直在被无耻地滥用，那就是模仿类。我们会仔细分析这种方法。
+多年以来，JavaScript 中有一种奇怪的行为一直在被“无耻”地滥用，那就是模仿类。我们会仔细分析这种方法。
 
 这种奇怪的“类似类”的行为利用了函数的一种特殊特性：所有的函数默认都会拥有一个名为 `prototype` 的公有并且不可枚举的属性，它会指向另一个对象：
 
@@ -2044,7 +2173,7 @@ Object.getPrototypeOf(a) === Foo.prototype; // true
 
 在面向类的语言中，类可以被 **复制**（或者说实例化）多次，就像用模具制作东西一样。之所以会这样是因为实例化（或者继承）一个类就意味着“把类的行为复制到物理对象中”，对于每一个新实例来说都会重复这个过程。【但是在 JavaScript 中，并没有类似的复制机制】。你不能创建一个类的多个实例，只能创建多个对象，它们 `[[Prototype]]` 关联的是同一个对象。但是在默认情况下并不会进行复制，因此这些对象之间并不会完全失去联系，它们是互相关联的。
 
-`new Foo` 会生成一个新对象（我们称之为 `a`），这个新对象的内部链接 `[[Prototype]]` 关联的是 `Foo.prototype` 对象。
+`new Foo` 会生成一个新对象（我们称之为实例 `a`），这个新对象的内部链接 `[[Prototype]]` 关联的是 `Foo.prototype` 对象。
 
 最后我们得到了两个对象，它们之间互相关联，就是这样。我们并没有初始化一个类，实际上我们并没有从“类”中复制任何行为到一个对象中，只是让两个对象互相关联。
 
@@ -2052,7 +2181,7 @@ Object.getPrototypeOf(a) === Foo.prototype; // true
 
 那么有没有更直接的方法来做到这一点呢？当然！功臣就是 `Object.create`。
 
-**关于名称**
+- **关于名称**
 
 在 JavaScript 中，我们并不会将一个对象（“类”）复制到另一个对象（“实例”），只是将它们关联起来。从视觉角度来说，`[[Prototype]]` 机制如下图所示，箭头从右到左，从下到上：
 
@@ -2065,7 +2194,7 @@ graph TB
   b2 --> Bar.prototype;
 ```
 
-这个机制通常被称为**原型继承**（稍后我们会分析具体代码），它常常被视为动态语言版本的类继承。这个名称主要是为了对应面向类的世界中“继承”的意义，但是违背（写作违背，读作推翻）了动态脚本中对应的语义。
+这个机制通常被称为**原型继承**（稍后我们会分析具体代码），它常常被视为动态语言版本的类继承。这个名称主要是为了对应面向类的世界中“继承”的意义，但是违背了动态脚本中对应的语义。
 
 “继承”这个词会让人产生非常强的心理预期。仅仅在前面加上“原型”并不能区分出 JavaScript 中和类继承几乎完全相反的行为，因此在过去 20 年中造成了极大的误解。
 
@@ -2091,7 +2220,7 @@ graph TB
 
 ```js
 function Foo() {
-    // ...
+  // ...
 }
 
 const a = new Foo();
@@ -2105,7 +2234,7 @@ const a = new Foo();
 
 ```js
 function Foo() {
-    // ...
+  // ...
 }
 
 Foo.prototype.constructor === Foo; // true
@@ -2116,7 +2245,7 @@ a.constructor === Foo; // true
 
 `Foo.prototype` 默认（在代码中第一行声明时！）有一个公有并且不可枚举的属性 `.constructor`，这个属性引用的是对象关联的函数（本例中是 `Foo`）。此外，我们可以看到通过“构造函数”调用 `new Foo` 创建的对象也有一个 `.constructor` 属性，指向“创建这个对象的函数”。
 
-> 实际上 `a` 本身并没有 `.constructor` 属性。而且，虽然 `a.constructor` 确实指向 `Foo` 函数，但是这个属性并不是表示 `a` 由 `Foo` “构造”。
+> 实际上 `a` 本身并没有 `.constructor` 属性。而且，虽然 `a.constructor` 确实指向 `Foo` 函数，但是这个属性并不是表示 `a` 由 `Foo` “构造”。(而是“继承”的，更确切的说是通过原型链，从 `Foo.prototype` 上读取的)
 
 哦耶，好吧……按照 JavaScript 世界的惯例，“类”名首字母要大写，所以名字写 `Foo` 而非 `foo` 似乎也提示它是一个“类”。显而易见，是吧?!
 
@@ -2130,7 +2259,7 @@ a.constructor === Foo; // true
 
 ```js
 function NothingSpecial() {
-    console.log("Don't mind me!");
+  console.log("Don't mind me!");
 }
 
 const a = new NothingSpecial();
