@@ -49,4 +49,4 @@ exports.dealSrc = dealNestSrc;
 
 exports.dealNestDest = dealNestDest;
 
-// exports.default = parallel(sayHello, sayBye);
+exports.default = parallel(sayHello, sayBye);

@@ -19,3 +19,191 @@ gulp-cli
 gulp
 # local version 4.0.2
 ```
+
+## 快速入门
+
+如果你先前将 `gulp` 安装到全局环境中了，请执行 `npm rm --global gulp` 将 `gulp` 删除再继续以下操作。
+
+```shell
+npm install -g gulp-cli
+# create project
+# ..
+npm install -D gulp
+```
+
+#### 1.注册任务
+
+在以前的 gulp 版本中，`task()` 方法用来将函数注册为任务（task）。虽然这个 API 依旧是可以使用的，但是 **导出（export）** 将会是主要的注册机制，除非遇到 `export` 不起作用的情况。
+
+```js
+// 旧版本
+gulp.task('sayHello', function(){
+  console.log('Hello);
+});
+
+
+// 新版本
+function sayHello(){
+  console.log('Hello');
+}
+
+exports.sayHello = sayHello;
+// or
+exports.default = sayHello;
+```
+
+
+#### 2.组合任务
+
+如果需要让任务（task）按顺序执行，请使用 `series()` 方法。
+
+```js
+const { series, parallel } = require("gulp");
+
+function sayHello() {
+  console.log('Hello world');
+}
+
+function sayBye() {
+  console.log('bye bye');
+}
+
+exports.order = series(sayHello, sayBye);
+```
+
+结果：
+
+```js
+[20:00:34] Using gulpfile D:\xx\xx\my-project\gulpfile.js
+[20:00:34] Starting 'order'...
+[20:00:34] Starting 'sayHello'...
+Hello world
+[20:00:34] The following tasks did not complete: order, sayHello
+```
+
+可以看到只执行了两个任务，预期应该是执行三个任务的。让微妙稍作修改：
+
+```js
+const { series, parallel } = require("gulp");
+
+function sayHello(cb) {
+  console.log('Hello world');
+  cb();
+}
+
+function sayBye(cb) {
+  console.log('bye bye');
+  cb();
+}
+
+exports.order = series(sayHello, sayBye);
+```
+
+再看结果：
+
+```js
+[20:03:15] Using gulpfile D:\xx\xx\my-project\gulpfile.js
+[20:03:15] Starting 'order'...
+[20:03:15] Starting 'sayHello'...
+Hello world
+[20:03:15] Finished 'sayHello' after 1.57 ms
+[20:03:15] Starting 'sayBye'...
+bye bye
+[20:03:15] Finished 'sayBye' after 955 μs
+[20:03:15] Finished 'order' after 5.45 ms
+```
+
+若要让顺序（`series`）执行任务，则需要在任务中执行对应的回调函数。
+
+> 如果任务（task）不返回任何内容，则必须使用 callback 来指示任务已完成。[使用 callback](https://www.gulpjs.com.cn/docs/getting-started/async-completion/#%E4%BD%BF%E7%94%A8-callback)
+
+
+而若使用并发（`parallel`）组合任务，则没有问题。
+
+```js
+const { series, parallel } = require("gulp");
+
+function sayHello(cb) {
+  console.log('Hello world');
+  // cb();
+}
+
+function sayBye(cb) {
+  console.log('bye bye');
+  // cb();
+}
+
+exports.concu = parallel(sayHello, sayBye);
+
+// console
+[20:05:55] Using gulpfile D:\xx\xx\my-project\gulpfile.js
+[20:05:55] Starting 'concu'...
+[20:05:55] Starting 'sayHello'...
+[20:05:55] Starting 'sayBye'...
+Hello world
+[20:05:55] Finished 'sayHello' after 2.14 ms
+bye bye
+[20:05:55] Finished 'sayBye' after 2.87 ms
+[20:05:55] Finished 'concu' after 5.86 ms
+```
+
+#### 3.异步执行
+
+Node 库以多种方式处理异步功能。最常见的模式是 `error-first callbacks`，但是你还可能会遇到 `streams`、`promises`、`event emitters`、`child processes`, 或 `observables`。gulp 任务（task）规范化了所有这些类型的异步功能。
+
+当从任务（task）中返回 `stream`、`promise`、`event emitter`、`child process` 或 `observable` 时，成功或错误值将通知 gulp 是否继续执行或结束。如果任务（task）出错，gulp 将立即结束执行并显示该错误。
+
+> [Error-first callbacks](https://nodejs.org/api/errors.html#errors_error_first_callbacks)
+> > Node.js 核心 API 公开的大多数异步方法都遵循惯用模式，称为**错误优先回调**。通过这种模式，回调函数作为参数传递给方法。当操作完成或引发错误时，将以 `Error` 对象（如果有）作为第一个参数传递来调用回调函数。如果未引发错误，则第一个参数将作为 `null` 传递。
+
+```js
+const fs = require('fs');
+
+function errorFirstCallback(err, data) {
+  if (err) {
+    console.error('There was an error', err);
+    return;
+  }
+  console.log(data);
+}
+
+fs.readFile('/some/file/that/does-not-exist', errorFirstCallback);
+fs.readFile('/some/file/that/does-exist', errorFirstCallback);
+```
+
+> [Stream](https://nodejs.org/api/stream.html#stream_stream)
+> > 流是用于在 Node.js 中处理流数据的抽象接口。流模块提供用于实现流接口的API。流可以是可读的，可写的，或两者均可。所有流都是 `EventEmitter` 的实例。
+>
+> [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
+> > Promise 是一个对象，它代表了一个异步操作的最终完成或者失败。本质上 Promise 是一个函数返回的对象，我们可以在它上面绑定回调函数，这样我们就不需要在一开始把回调函数作为参数传入这个函数了。
+>
+> [event emitter](https://nodejs.org/api/events.html#events_events)
+> > 所有发出事件的对象都是 `EventEmitter` 类的实例。这些对象公开了`eventEmitter.on（）` 函数，该函数允许将一个或多个函数附加到该对象发出的命名事件。当 `EventEmitter` 对象发出一个事件时，该特定事件附带的所有函数都会被同步调用，被调用的侦听器返回的任何值都将被忽略并丢弃。
+>
+> [Child process](https://nodejs.org/api/child_process.html#child_process_child_process)
+>
+> [observable](https://github.com/tc39/proposal-observable/blob/master/README.md)
+
+当使用 `series()` 组合多个任务（task）时，任何一个任务（task）的错误将导致整个任务组合结束，并且不会进一步执行其他任务。
+
+当使用 `parallel()` 组合多个任务（task）时，一个任务的错误将结束整个任务组合的结束，但是其他并行的任务（task）可能会执行完，也可能没有执行完。
+
+#### 4.模式
+
+`src()` 可以工作在三种模式下：缓冲（buffering）、流动（streaming）和空（empty）模式。这些模式可以通过对 `src()` 的 `buffer` 和 `read` 参数 进行设置。
+
+- **缓冲（Buffering）** 模式是默认模式，将文件内容加载内存中。插件通常运行在缓冲（buffering）模式下，并且许多插件不支持流动（streaming）模式。
+- **流动（Streaming）** 模式的存在主要用于操作无法放入内存中的大文件，例如巨幅图像或电影。文件内容从文件系统中以小块的方式流式传输，而不是一次性全部加载。如果需要流动（streaming）模式，请查找支持此模式的插件或自己编写。
+- **空（Empty）** 模式不包含任何内容，仅在处理文件元数据时有用。
+
+#### 5.Glob 详解
+
+**字符串片段（segment）** 是指两个分隔符之间的所有字符组成的字符串。在 `glob` 中，分隔符永远是 `/` 字符 - 不区分操作系统 - 即便是在采用 `\\` 作为分隔符的 Windows 操作系统中。在 `glob` 中，`\\` 字符被保留作为转义符使用。
+
+> 避免使用 Node 的 `path` 类方法来创建 `glob`，例如 `path.join`。在 Windows 中，由于 Node 使用 `\\` 作为路径分隔符，因此将会产生一个无效的 `glob`。还要避免使用 `__dirname` 和 `__filename` 全局变量，由于同样的原因，`process.cwd()` 方法也要避免使用。
+
+#### 5.插件
+
+Gulp **插件** 实质上是 Node 转换流（Transform Streams），它封装了通过管道（pipeline）转换文件的常见功能，通常是使用 `.pipe()` 方法并放在 `src()` 和 `dest()` 之间。他们可以更改经过流（stream）的每个文件的文件名、元数据或文件内容。
+
+
