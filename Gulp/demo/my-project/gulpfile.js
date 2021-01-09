@@ -1,6 +1,7 @@
 const { src, dest, series, parallel } = require("gulp");
 const babel = require('gulp-babel');
 const uglifyes = require('gulp-uglify-es').default;
+const rename = require('gulp-rename');
 
 function sayHello(cb) {
   console.log('Hello world');
@@ -8,6 +9,7 @@ function sayHello(cb) {
   cb();
 }
 
+// async await 方案
 async function sayBye(cb) {
   console.log('bye bye');
   // cb();
@@ -30,23 +32,43 @@ function dealNestSrc() {
     .pipe(dest('output/'));
 }
 
-function dealNestDest() {
+// 分段输出
+function segmentOutput() {
   return src('src/index.js')
     .pipe(babel())
-    .pipe(src('src/test.js'))
     .pipe(dest('output/'))
     .pipe(uglifyes())
-    .pipe(dest('output'));
+    .pipe(rename({ extname: '.min.js' }))
+    .pipe(dest('output/'));
 }
 
-exports.order = series(sayHello, sayBye);
+// 取反
+function negateGlob() {
+  return src(['src/**/*.js', '!src/vendor/*.js', 'src/vendor/index.js'])
+    .pipe(babel())
+    .pipe(uglifyes())
+    .pipe(dest('output/'));
+}
 
-exports.concu = parallel(sayHello, sayBye);
+function negateGlobTwo() {
+  return src(['**/*.js', '!node_modules/**/*.js'])
+    .pipe(babel())
+    .pipe(uglifyes())
+    .pipe(dest('output/'));
+}
+
+exports.seriesFn = series(sayHello, sayBye);
+
+exports.parallelFn = parallel(sayHello, sayBye);
 
 exports.deal = dealJs;
 
 exports.dealSrc = dealNestSrc;
 
-exports.dealNestDest = dealNestDest;
+exports.segmentOutput = segmentOutput;
+
+exports.negateGlob = negateGlob;
+
+exports.negateGlobTwo = negateGlobTwo;
 
 exports.default = parallel(sayHello, sayBye);

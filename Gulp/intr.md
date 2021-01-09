@@ -1,6 +1,7 @@
-## gulp
+## Gulp
 
-[gulp](https://www.gulpjs.com.cn/docs/getting-started/quick-start/)
+[Gulp（中文）](https://www.gulpjs.com.cn/docs/getting-started/quick-start/)
+[Gulp（English）](https://gulpjs.com/)
 
 ```shell
 # config
@@ -22,7 +23,7 @@ gulp
 
 ## 快速入门
 
-如果你先前将 `gulp` 安装到全局环境中了，请执行 `npm rm --global gulp` 将 `gulp` 删除再继续以下操作。
+> 如果你先前将 `gulp` 安装到全局环境中了，请执行 `npm rm --global gulp` 将 `gulp` 删除再继续以下操作。
 
 ```shell
 npm install -g gulp-cli
@@ -33,7 +34,9 @@ npm install -D gulp
 
 #### 1.注册任务
 
-在以前的 gulp 版本中，`task()` 方法用来将函数注册为任务（task）。虽然这个 API 依旧是可以使用的，但是 **导出（export）** 将会是主要的注册机制，除非遇到 `export` 不起作用的情况。
+每个 gulp 任务（task）都是一个异步的 JavaScript 函数，此函数是一个可以接收 `callback` 作为参数的函数，或者是一个返回 `stream`、`promise`、`event emitter`、`child process` 或 `observable` 类型值的函数。
+
+> 在以前的 gulp 版本中，`task()` 方法用来将函数注册为任务（task）。虽然这个 API 依旧是可以使用的，但是 **导出（export）** 将会是主要的【注册机制】，除非遇到 `export` 不起作用的情况。
 
 ```js
 // 旧版本
@@ -52,8 +55,12 @@ exports.sayHello = sayHello;
 exports.default = sayHello;
 ```
 
-
 #### 2.组合任务
+
+Gulp 提供了两个强大的组合方法： `series()` 和 `parallel()`，允许将多个独立的任务组合为一个更大的操作。这两个方法都可以：
+
+- 接受任意数目的任务（task）函数或已经组合的操作；
+- 互相嵌套至任意深度；
 
 如果需要让任务（task）按顺序执行，请使用 `series()` 方法。
 
@@ -118,7 +125,7 @@ bye bye
 > 如果任务（task）不返回任何内容，则必须使用 callback 来指示任务已完成。[使用 callback](https://www.gulpjs.com.cn/docs/getting-started/async-completion/#%E4%BD%BF%E7%94%A8-callback)
 
 
-而若使用并发（`parallel`）组合任务，则没有问题。
+但是使用 **并发（`parallel`）** 组合任务，则没有问题。
 
 ```js
 const { series, parallel } = require("gulp");
@@ -154,7 +161,7 @@ Node 库以多种方式处理异步功能。最常见的模式是 `error-first c
 当从任务（task）中返回 `stream`、`promise`、`event emitter`、`child process` 或 `observable` 时，成功或错误值将通知 gulp 是否继续执行或结束。如果任务（task）出错，gulp 将立即结束执行并显示该错误。
 
 > [Error-first callbacks](https://nodejs.org/api/errors.html#errors_error_first_callbacks)
-> > Node.js 核心 API 公开的大多数异步方法都遵循惯用模式，称为**错误优先回调**。通过这种模式，回调函数作为参数传递给方法。当操作完成或引发错误时，将以 `Error` 对象（如果有）作为第一个参数传递来调用回调函数。如果未引发错误，则第一个参数将作为 `null` 传递。
+> > Node.js 核心 API 公开的大多数异步方法都遵循惯用模式，称为 **错误优先回调**。通过这种模式，回调函数作为参数传递给方法。当操作完成或引发错误时，将以 `Error` 对象（如果有）作为第一个参数传递来调用回调函数。如果未引发错误，则第一个参数将作为 `null` 传递。
 
 ```js
 const fs = require('fs');
@@ -174,7 +181,7 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 > [Stream](https://nodejs.org/api/stream.html#stream_stream)
 > > 流是用于在 Node.js 中处理流数据的抽象接口。流模块提供用于实现流接口的API。流可以是可读的，可写的，或两者均可。所有流都是 `EventEmitter` 的实例。
 >
-> [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
+> [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
 > > Promise 是一个对象，它代表了一个异步操作的最终完成或者失败。本质上 Promise 是一个函数返回的对象，我们可以在它上面绑定回调函数，这样我们就不需要在一开始把回调函数作为参数传入这个函数了。
 >
 > [event emitter](https://nodejs.org/api/events.html#events_events)
@@ -201,6 +208,22 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 **字符串片段（segment）** 是指两个分隔符之间的所有字符组成的字符串。在 `glob` 中，分隔符永远是 `/` 字符 - 不区分操作系统 - 即便是在采用 `\\` 作为分隔符的 Windows 操作系统中。在 `glob` 中，`\\` 字符被保留作为转义符使用。
 
 > 避免使用 Node 的 `path` 类方法来创建 `glob`，例如 `path.join`。在 Windows 中，由于 Node 使用 `\\` 作为路径分隔符，因此将会产生一个无效的 `glob`。还要避免使用 `__dirname` 和 `__filename` 全局变量，由于同样的原因，`process.cwd()` 方法也要避免使用。
+
+由于 `glob` 匹配时是按照每个 `glob` 在数组中的位置依次进行匹配操作的，所以 `glob` 数组中的取反（negative）`glob` 必须跟在一个非取反（non-negative）的 `glob` 后面。第一个 `glob` 匹配到一组匹配项，然后后面的取反 `glob` 删除这些匹配项中的一部分。
+
+```js
+// 官网例子 1
+['script/**/*.js', '!scripts/vendor/']
+
+// 实际
+['script/**/*.js', '!scripts/vendor/*.js']
+
+// 官网例子 2
+['**/*.js', '!node_modules/']
+
+// 实际
+['**/*.js', '!node_modules/**/*.js']
+```
 
 #### 5.插件
 

@@ -1,1 +1,1 @@
-const fn=()=>{console.log("hello, fn")};
+const ab="vendor";
