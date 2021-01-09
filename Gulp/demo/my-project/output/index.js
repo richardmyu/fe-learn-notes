@@ -1,1 +1,1 @@
-const fn=()=>{console.log("hello, fn")};
+const fn=()=>(console.log("hello, fn"),"hi"),gg="klkljkdskjfhj",ggggg="lasdd暗杀计s划的skdj";

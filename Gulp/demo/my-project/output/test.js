@@ -1,1 +1,1 @@
-const jn=()=>()=>{console.log("jnnnn")};
+const jn=()=>()=>{console.log("jndfdfgfgn")};

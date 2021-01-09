@@ -229,4 +229,49 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 
 Gulp **插件** 实质上是 Node 转换流（Transform Streams），它封装了通过管道（pipeline）转换文件的常见功能，通常是使用 `.pipe()` 方法并放在 `src()` 和 `dest()` 之间。他们可以更改经过流（stream）的每个文件的文件名、元数据或文件内容。
 
+- 每个插件应当只完成必要的工作，因此你可以把它们像构建块一样连接在一起；
+- 插件应当总是用来转换文件的。其他操作都应该使用（非插件的） Node 模块或库来实现；
+
+#### 6.文件监控
+
+对匹配 `glob` 的文件进行监控，如果有文件被修改了就执行关联的任务（task）。如果被执行的任务（task）没有触发 异步完成 信号，它将永远不会再次运行了。
+
+> 避免同步任务
+
+- **可监控事件**
+
+- `add`
+- `addDir`
+- `change`
+- `unlink`
+- `unlinkDir`
+- `ready`
+- `error`
+- `all`：除了 `ready` 和 `error` 之外所有的事情；
+
+- **初次执行**
+
+```js
+// 触发事件后才执行
+watch('src/**.js', inlineStream);
+// or
+watch('src/**.js', { ignoreInitial: true }, inlineStream);
+
+// 自动执行一次
+watch('src/**.js', { ignoreInitial: false }, inlineStream);
+```
+
+- **队列**
+
+> 保证当前执行的任务（task）不会再次并发执行。
+
+```js
+// 顺序执行
+watch('src/**.js', inlineStream);
+// or
+watch('src/**.js', { queue: true }, inlineStream);
+
+// 非顺序执行（有可能并发执行）
+watch('src/**.js', { queue: false }, inlineStream);
+```
 

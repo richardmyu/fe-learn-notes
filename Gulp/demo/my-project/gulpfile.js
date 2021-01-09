@@ -1,4 +1,4 @@
-const { src, dest, series, parallel } = require("gulp");
+const { src, dest, series, parallel, watch } = require("gulp");
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
@@ -93,6 +93,25 @@ function inlineStream() {
     .pipe(dest('output/'));
 }
 
+// 不报错，无法执行
+function setT() {
+  setTimeout(function () {
+    return src('src/*.js')
+      .pipe(uglify())
+      .pipe(dest('output/'));
+  }, 300)
+}
+
+// 文件监测
+//   初始次执行
+// watch('src/**.js', { ignoreInitial: true }, inlineStream);
+// watch('src/**.js', { ignoreInitial: false }, inlineStream);
+
+//   队列
+// watch('src/**.js', { queue: true }, inlineStream);
+// watch('src/**.js', { queue: false }, setT);
+
+
 exports.seriesFn = series(sayHello, sayBye);
 
 exports.parallelFn = parallel(sayHello, sayBye);
@@ -111,4 +130,4 @@ exports.pluginCondition = pluginCondition;
 
 exports.inlineStream = inlineStream;
 
-exports.default = parallel(sayHello, sayBye);
+exports.default = sayHello;
