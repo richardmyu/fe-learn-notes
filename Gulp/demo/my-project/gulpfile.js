@@ -1,4 +1,4 @@
-const { src, dest, series, parallel, watch } = require("gulp");
+const { src, dest, series, parallel, watch, registry } = require("gulp");
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
@@ -108,9 +108,11 @@ function setT() {
 // watch('src/**.js', { ignoreInitial: false }, inlineStream);
 
 //   队列
-// watch('src/**.js', { queue: true }, inlineStream);
+watch('src/**.js', { queue: true }, inlineStream);
 // watch('src/**.js', { queue: false }, setT);
 
+
+// exports
 
 exports.seriesFn = series(sayHello, sayBye);
 

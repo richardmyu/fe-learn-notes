@@ -21,7 +21,7 @@ gulp
 # local version 4.0.2
 ```
 
-## 快速入门
+### 快速入门
 
 > 如果你先前将 `gulp` 安装到全局环境中了，请执行 `npm rm --global gulp` 将 `gulp` 删除再继续以下操作。
 
@@ -274,4 +274,88 @@ watch('src/**.js', { queue: true }, inlineStream);
 // 非顺序执行（有可能并发执行）
 watch('src/**.js', { queue: false }, inlineStream);
 ```
+
+使用 `setInterval` 或 `setTimeout` 不会报错，但始终无法进入执行状态。
+
+### 自定义注册
+
+允许将自定义注册表插入任务系统，该系统可以提供共享任务或增强功能。
+
+#### 1.结构
+
+自定义注册表必须遵循特定的格式。如果传递给 `registry` 的注册表实例没有所有四个方法，则将引发错误。
+
+```js
+// as a function
+function TestRegistry() {}
+TestRegistry.prototype.init = function (gulpInst) {}
+TestRegistry.prototype.get = function (name) {}
+TestRegistry.prototype.set = function (name, fn) {}
+TestRegistry.prototype.tasks = function () {}
+
+// or as a class
+class TestRegistry {
+  init(gulpInst) { }
+  get(name) { }
+  set(name) { }
+  tasks() { }
+}
+```
+
+#### 2.注册
+
+```js
+const { registry } = require('gulp');
+
+// ... TestRegistry setup code
+
+// good!
+registry(new TestRegistry())
+
+// bad!
+registry(TestRegistry())
+// This will trigger an error: 'Custom registries must be instantiated, but it looks like you passed a constructor'
+```
+
+#### 3.方法
+
+- **init(gulpInst)**
+
+在 `Registry` 函数中，注册表的 `init` 方法会被最后调用。作为唯一参数（gulpInst）传递的 `gulp` 实例，可用于使用 `gulpInst.task(taskName，fn)` 预定义任务。
+
+| parameter | type   | note             |
+| --------- | ------ | ---------------- |
+| gulpInst  | object | Instance of gulp |
+
+- **get(name)**
+
+`get` 方法接收供自定义注册表解析和返回的任务名称，如果不存在具有该名称的任务，则返回 `undefined`。
+
+| parameter | type   | note                             |
+| --------- | ------ | -------------------------------- |
+| name      | string | Name of the task to be retrieved |
+
+- **set(name,fn)**
+
+`set` 方法接收任务名称和 `fn`。由 `task` 在内部调用，以将用户注册的任务提供给自定义注册表。
+
+| parameter | type     | note                       |
+| --------- | -------- | -------------------------- |
+| name      | string   | Name of the task to be set |
+| fn        | function | Task function to be set    |
+
+- **tasks()**
+
+必须返回一个列出注册表中所有任务的对象。
+
+#### 4.例子
+
+```js
+
+```
+
+
+
+
+
 

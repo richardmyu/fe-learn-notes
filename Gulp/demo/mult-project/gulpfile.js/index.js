@@ -1,6 +1,9 @@
-const { parallel } = require('gulp');
+const { registry, series, task } = require('gulp');
+const CommonRegistry = require('./commonRegistry');
 
-const copyRight = require('./footer.js').default;
-const initLogo = require('./header.js').default;
+registry(new CommonRegistry({ buildDir: '../dist' }));
 
-exports.default = parallel(copyRight, initLogo);
+task('build', series('clean', function test(cb) {
+  console.log('do something');
+  cb();
+}));
