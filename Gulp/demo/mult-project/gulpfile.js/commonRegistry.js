@@ -20,9 +20,9 @@ CommonRegistry.prototype.init = function (gulpInst) {
   const buildDir = this.buildDir;
   const exists = fs.existsSync(buildDir);
 
-  if (!exists) {
-    throw new Error('Directory exists.');
-  }
+  // if (!exists) {
+  //   throw new Error('Directory exists.');
+  // }
 
   gulpInst.task('clean', function () {
     return del([buildDir]);

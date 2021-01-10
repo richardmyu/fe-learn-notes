@@ -351,7 +351,51 @@ registry(TestRegistry())
 #### 4.例子
 
 ```js
+// define
+// https://github.com/gulpjs/undertaker-registry/blob/master/index.js
+class InitRegistry {
+  constructor() {
+    this._tasks = {};
+  }
 
+  init(gulpInst) { }
+
+  get(name) {
+    return this._tasks[name];
+  }
+
+  set(name, fn) {
+    return this._tasks[name] = fn;
+  }
+
+  tasks() {
+    var self = this;
+    return Object.keys(this._tasks).reduce(function (tasks, name) {
+      tasks[name] = self.get(name);
+      return tasks;
+    }, {});
+  }
+}
+
+// use
+class MyRegistry extends InitRegistry {
+  constructor() {
+    super();
+  }
+  init(gulpInst) {
+    gulpInst.task('sayHello', async function () {
+      console.log('will say hello');
+      await Promise.resolve();
+    })
+  }
+}
+
+registry(new MyRegistry());
+
+task('my', series('sayHello', function (cb) {
+  console.log('oh, my');
+  cb();
+}));
 ```
 
 
