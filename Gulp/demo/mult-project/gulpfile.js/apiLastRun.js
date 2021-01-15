@@ -1,4 +1,4 @@
-const { src, dest, lastRun, watch } = require('gulp');
+const { src, dest, lastRun } = require('gulp');
 const uglify = require('gulp-uglify');
 
 function lastR() {

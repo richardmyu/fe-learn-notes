@@ -8,9 +8,7 @@
   'use strict';
   var Big,
 
-
     /************************************** EDITABLE DEFAULTS *****************************************/
-
 
     // The default values below must be integers within the stated ranges.
 
