@@ -254,7 +254,7 @@ Foo.prototype.__proto__ === Object.prototype; //true
 Object.prototype.__proto__ === null; //true
 ```
 
-![prototype-001](https://richyu.gitee.io/imgbed/docImg/js-prototype-001.png)
+![prototype-001](https://richyu.gitee.io/imgbed/docImg/es5/js-prototype-001.png)
 
 ##### 3.1.5 原型链
 
@@ -675,7 +675,7 @@ s.world; // 'world'
 
 这种模式又称为 **Mixin（混入）**。
 
-![prototype-002](https://richyu.gitee.io/imgbed/docImg/js-prototype-002.png)
+![prototype-002](https://richyu.gitee.io/imgbed/docImg/es5/js-prototype-002.png)
 
 #### 3.4.模块
 
