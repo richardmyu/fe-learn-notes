@@ -110,7 +110,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 重点在于最后，单元测试的目的显而易见，用来确定是否适合使用。而测试的方法则包括控制数据，使用和操作过程。那么以我的理解，每个单元测试就是一段用于测试一个模块或接口是否能达到预期结果的代码。开发人员需要使用代码来定义一个可用的衡量标准，并且可以快速检验。<sub>[[6]](#data6)</sub>
 
-很快我发现有一个误区，许多人认为单元测试必须是一个 runner 集中运行所有单元的测试，并一目了然。不，这仅仅是一种自动化单元测试的最佳实践，在一些小型项目中单元测试可能仅仅是一组去除其他特性的接口调用。<sub>[[6]](#data6)</sub>
+很快我发现有一个误区，许多人认为单元测试必须是一个 runner 集中运行所有单元的测试，并一目了然。不，这仅仅是一种自动化单元测试的 *最佳实践*，在一些小型项目中单元测试可能仅仅是一组去除其他特性的接口调用。<sub>[[6]](#data6)</sub>
 
 单元测试是指对程序中最小可测试单元进行的测试，一般而言是指对函数进行的测试。如果某个测试依赖于一些外部资源，比如网络或者数据库，那它就不是单元测试。
 
@@ -201,7 +201,9 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
   >
   - `AVA` -- 和上面的测试框架最大的区别在于多线程，运行速度更快。
   >
-  - 其他 -- 还有一些其他的前端测试框架，但是相似度比较高，无非是对断言和测试桩等工具的集成度不同，如果考虑稳定以及成熟度建议选择 `Mocha`，对测试运行速度有非常高的要求可以考虑 `jest` 和 `AVA`
+  - 其他 -- 还有一些其他的前端测试框架，但是相似度比较高，无非是对断言和测试桩等工具的集成度不同
+
+> 如果考虑稳定以及成熟度建议选择 `Mocha`，对测试运行速度有非常高的要求可以考虑 `jest` 和 `AVA`
 
 ---
 
@@ -475,7 +477,7 @@ test
 
 - 行覆盖率（**line coverage**）：是否每一行都执行了
 
-可执行语句的每一行是否都被执行了，不包括注释，空白行 行覆盖常常被人指责为“最弱的覆盖”，为什么这么说呢，举一个例子
+可执行语句的每一行是否都被执行了，不包括注释，空白行；行覆盖常常被人指责为“最弱的覆盖”，为什么这么说呢，举一个例子
 
 ```javascript
 function foo(a, b) {
@@ -494,7 +496,10 @@ TestCase: (a = 10), (b = 5);
 
 4 个指标当中，分支覆盖率是最重要的，它包括： `!`, `&&`, `||`, `? : ;` ,`if` 和 `else-if`, `else` ,`switch - case` 等等各种包含分支的情况
 
-> 1.覆盖率数据只能代表你测试过哪些代码，不能代表你是否测试好这些代码。（比如上面第一个除零 Bug） 2.不要过于相信覆盖率数据。 3.分支覆盖率 > 函数覆盖 > 语句覆盖 4.测试人员不能盲目追求代码覆盖率，而应该想办法设计更多更好的案例，哪怕多设计出来的案例对覆盖率一点影响也没有。
+> 1.覆盖率数据只能代表你测试过哪些代码，不能代表你是否测试好这些代码（比如上面第一个除零 Bug）；
+> 2.不要过于相信覆盖率数据；
+> 3.分支覆盖率 > 函数覆盖 > 语句覆盖；
+> 4.测试人员不能盲目追求代码覆盖率，而应该想办法设计更多更好的案例，哪怕多设计出来的案例对覆盖率一点影响也没有。
 
 ## 四.选择单元测试框架 <sub>[[3]](#data3)</sub>
 
@@ -529,7 +534,7 @@ TestCase: (a = 10), (b = 5);
 
 ### 1.node 环境
 
-推荐测试框架 `jest`
+推荐测试框架 `jest`。
 
 `jest` 是 FB 的杰作之一，方便各种场景的 js 代码测试，这里选择 `jest` 是因为确实方便。
 
@@ -553,7 +558,7 @@ TestCase: (a = 10), (b = 5);
 
 #### 2.1.unit 测试
 
-推荐神器：`vue-test-utils`
+推荐神器：`vue-test-utils`。
 
 README 给了多个测试库配置的例子，这里还是推荐使用 `jest`，给个例子
 
@@ -591,17 +596,17 @@ test("props value", () => {
 
 #### 2.2.e2e 测试
 
-也是推荐尤大基于最新脚手架的 [@vue/cli-plugin-e2e-nightwatch](https://www.npmjs.com/package/@vue/cli-plugin-e2e-nightwatch)
+也是推荐尤大基于最新脚手架的 [@vue/cli-plugin-e2e-nightwatch](https://www.npmjs.com/package/@vue/cli-plugin-e2e-nightwatch)。
 
 `e2e` 测试的重点在于判断真实 DOM 是否满足预期要求，甚至很少出现 `mock` 场景，不可或缺的是一个浏览器运行环境，具体细节不赘述，可以看官方文档。
 
 ### 3.nuxt 服务端渲染环境
 
-`nuxt` 官方推荐 `ava`，顺势带出 `ava` 的方案
+`nuxt` 官方推荐 `ava`，顺势带出 `ava` 的方案。
 
 #### 3.1.unit 测试
 
-麻烦在配置上面，先给出需要安装的依赖
+麻烦在配置上面，先给出需要安装的依赖：
 
 ```javascript
 "@vue/test-utils",
@@ -613,7 +618,7 @@ test("props value", () => {
   "sinon";
 ```
 
-在 `package.json` 里加几行 `ava` 配置
+在 `package.json` 里加几行 `ava` 配置：
 
 ```javascript
 "ava": {
@@ -623,7 +628,7 @@ test("props value", () => {
 }
 ```
 
-下面来写 `./tests/helpers/setup.js`
+下面来写 `./tests/helpers/setup.js`：
 
 ```javascript
 const hooks = require("require-extension-hooks");
@@ -649,23 +654,23 @@ hooks(["vue", "js"])
 
 但是涉及到其它框架（express | koa）的时候就显得不够用了，很有可能在自定义 `server` 入口是加入了大量中间件，这对于官网给出的例子是个巨大考验，不可能在每个测试文件里实现一遍 `new Nuxt`，所以需要更高层的封装，也就是忽略 `server` 启动流程的差异性，直接在浏览器中抓取页面。
 
-推荐：[nuxt-jest-puppeteer](https://github.com/alidcastano/nuxt-jest-puppeteer)
+推荐：[nuxt-jest-puppeteer](https://github.com/alidcastano/nuxt-jest-puppeteer)。
 
 ### 4.react 环境
 
 #### 4.1.unit 测试
 
-这一波没得可选，`jest` 完胜，人家官网就有 React，RN 的支持文档
+这一波没得可选，`jest` 完胜，人家官网就有 React，RN 的支持文档。
 
 #### 4.2.e2e 测试
 
-其实上面讲了两个 `e2e` 的方案选择，大同小异，需要一个能在 `node` 跑的无头浏览器，官方没有推荐，这里站 vue 一票，选择 [Nightwatch.js](http://nightwatchjs.org/)
+其实上面讲了两个 `e2e` 的方案选择，大同小异，需要一个能在 `node` 跑的无头浏览器，官方没有推荐，这里站 vue 一票，选择 [Nightwatch.js](http://nightwatchjs.org/)。
 
 ### 5.next 服务端渲染环境
 
 #### 5.1.unit 测试
 
-主要讲一下如何配置，先是依赖包
+主要讲一下如何配置，先是依赖包：
 
 ```javascript
 "babel-core",
@@ -677,7 +682,7 @@ hooks(["vue", "js"])
   "react-test-renderer";
 ```
 
-在 `package.json` 里面加 `script "test": "NODE_ENV=test jest"`，在根路径下加 `jest.config.js`
+在 `package.json` 里面加 `script "test": "NODE_ENV=test jest"`，在根路径下加 `jest.config.js`：
 
 ```javascript
 module.exports = {
@@ -686,7 +691,7 @@ module.exports = {
 };
 ```
 
-在根路径下加 `jest.setup.js`
+在根路径下加 `jest.setup.js`：
 
 ```javascript
 import { configure } from "enzyme";
@@ -701,9 +706,9 @@ configure({
 
 angular 作为框架本身就是全面的，cli 新建的项目自身就带有 `unit` 测试和 `e2e` 测试。
 
-`unit` 测试默认是 [karma](https://karma-runner.github.io/2.0/index.html) + [jasmine](https://jasmine.github.io/)
+`unit` 测试默认是 [karma](https://karma-runner.github.io/2.0/index.html) + [jasmine](https://jasmine.github.io/)；
 
-`e2e` 测试默认是 [protractor](https://www.protractortest.org/#/)
+`e2e` 测试默认是 [protractor](https://www.protractortest.org/#/)。
 
 ## 六.测试框架风格 <sub>[[5]](#data5)</sub>
 
@@ -858,7 +863,7 @@ foo.should.have.lengthOf(3);
 beverages.should.have.property("tea").with.lengthOf(3);
 ```
 
-> 建议使用 `expect`，`should` 不兼容 IE
+> 建议使用 `expect`，`should` 不兼容 IE。
 
 #### 1.3.expect 断言语法
 
