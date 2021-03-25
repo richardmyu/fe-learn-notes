@@ -15,6 +15,8 @@ test('object assignment', () => {
   expect(data).toEqual({ one: 1, two: 2 })
 });
 
+// truthiness
+
 test('test null', () => {
   const n = null;
   // 只匹配 null
@@ -37,6 +39,8 @@ test('test zero', () => {
   expect(z).toBeFalsy();
 })
 
+// number
+
 test('number', () => {
   const val = 2 + 2;
   // >
@@ -54,3 +58,26 @@ test('number-float', () => {
   expect(val).not.toBe(0.3);
   expect(val).toBeCloseTo(0.3);
 });
+
+// string
+test('there is no i in team', () => {
+  expect('team').not.toMatch(/I/);
+});
+test('but there is a "stop" in Christoph', () => {
+  expect('Christoph').toMatch(/stop/);
+})
+
+// array and iterables
+const shoppingList = [
+  'diapers',
+  'kleenex',
+  'trash bags',
+  'paper towels',
+  'milk'
+];
+
+test('the shopping list has milk on it', () => {
+  expect(shoppingList).toContain('milk');
+  expect(new Set(shoppingList)).toContain('milk');
+});
+
