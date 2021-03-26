@@ -81,3 +81,19 @@ test('the shopping list has milk on it', () => {
   expect(new Set(shoppingList)).toContain('milk');
 });
 
+// function
+function compileCode() {
+  throw new Error('you are using the wrong JDK');
+}
+
+test('compiling goes as expected', () => {
+  expect(() => compileCode()).toThrow();
+  expect(() => compileCode()).toThrow(Error);
+
+  //
+  expect(() => compileCode()).toThrow('you are using the wrong JDK');
+  expect(() => compileCode()).toThrow(/JDK/);
+
+})
+
+// https://jestjs.io/zh-Hans/docs/using-matchers
