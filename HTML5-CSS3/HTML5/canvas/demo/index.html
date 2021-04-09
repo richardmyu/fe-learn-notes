@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas</title>
+  <style>
+    .canvas {
+      /* background: #000; */
+      border: 1px solid #666666;
+    }
+
+    .canvas-three {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 设置 canvas width*height -->
+  <canvas id="canvas-first" class="canvas"></canvas>
+  <hr />
+  <canvas id="canvas-two" class="canvas" width="150" height="150"></canvas>
+  <hr />
+  <canvas id="canvas-three" class="canvas canvas-three"></canvas>
+  <hr />
+  <canvas id="canvas-four" class="canvas canvas-four" style="width:300px;height:300px;"></canvas>
+
+  <script>
+    var canvas = document.getElementById('canvas-first');
+    var ctx = null;
+
+    if (canvas.getContext) {
+      var ctx = canvas.getContext('2d');
+      // drawing code here
+      ctx.fillStyle = "rgb(200,0,0)";
+      ctx.fillRect(10, 10, 55, 50);
+
+      ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+      ctx.fillRect(30, 30, 55, 50);
+    } else {
+      // canvas-unsupported code here
+    }
+  </script>
+  <script>
+    var canvas = document.getElementById('canvas-two');
+    var ctx = null;
+
+    if (canvas.getContext) {
+      var ctx = canvas.getContext('2d');
+      // drawing code here
+      ctx.fillStyle = "yellow";
+      ctx.fillRect(10, 10, 55, 50);
+
+      ctx.fillStyle = "blue";
+      ctx.fillRect(30, 30, 55, 50);
+    } else {
+      // canvas-unsupported code here
+    }
+  </script>
+</body>
+
+</html>
