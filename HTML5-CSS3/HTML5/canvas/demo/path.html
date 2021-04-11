@@ -72,18 +72,24 @@
       ctx.closePath();
 
       ctx.moveTo(235, 185);
-      ctx.arc(185, 185, 50, 0, Math.PI , true);
+      ctx.arc(185, 185, 50, 0, Math.PI, true);
       ctx.closePath();
 
       ctx.moveTo(345, 185);
-      ctx.arc(295, 185, 50, 0, Math.PI /2, true);
+      ctx.arc(295, 185, 50, 0, Math.PI / 2, true);
       ctx.closePath();
 
       ctx.moveTo(455, 185);
-      ctx.arc(405, 185, 50, 0, Math.PI /2, false);
+      ctx.arc(405, 185, 50, 0, Math.PI / 2, false);
       ctx.closePath();
-
       ctx.stroke();
+
+      //
+      ctx.beginPath();
+      ctx.moveTo(300, 100);
+      ctx.arcTo(300, 100, 100, 300, 40);
+      // ctx.closePath();
+      ctx.stroke()
     }
   </script>
 </body>
