@@ -1,0 +1,76 @@
+# 非零环绕原则与奇偶环绕规则
+
+识别简单对象如凸多边形(向量叉积)、圆或椭圆的内部通常是一件很容易的事。但有时识别有相边的复杂填充区，需要一些特殊的方法。奇偶规则和非零环绕规则是识别平面图形内部区域的两种常用方法。
+
+在图形学中判断一个点是否在多边形内，若多边形不是自相交的，那么可以简单的判断这个点在多边形内部还是外部；若多边形是自相交的，那么就需要根据非零环绕数规则和奇-偶规则判断。
+
+> 判断多边形是否是自相交的：多边形在平面内除顶点外还有其他公共点。
+
+### 自相交
+
+> 两线段相交的定义，如果一条线段的两端分别处在另一条线段的两端，则此两线段相交。
+
+不自相交
+![自相交](https://img-blog.csdnimg.cn/20200926110720205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NzE5MTg4,size_16,color_FFFFFF,t_70#pic_center)
+
+不自相交
+![自相交](https://img-blog.csdnimg.cn/20200926110720205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NzE5MTg4,size_16,color_FFFFFF,t_70#pic_center)
+
+自相交
+![自相交](https://img-blog.csdnimg.cn/20200926110915211.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0NzE5MTg4,size_16,color_FFFFFF,t_70#pic_center)
+
+
+### 奇偶环绕规则（Odd-even Rule）
+
+从任意位置 p 作一条射线（注意不要经过多边形的顶点），若与该射线相交的多边形边的数目为奇数，则 p 是多边形内部点，否则是外部点。
+
+> 奇 - 内，偶 - 外。
+
+### 非零环绕原则（Non-Zero Winding Number Rule）
+
+首先使多边形的边为矢量化（用一笔画完成连接）。将环绕数初始化为零。再从任意位置 p 作一条射线（注意不要经过多边形的顶点）。当从 p 点沿射线方向移动时，对在每个方向上穿过射线的边计数，每当多边形的边从右到左（指射线的左右）穿过射线时，环绕数加 1，从左到右时，环绕数减 1。处理完多边形的所有相关边之后，若环绕数为非零，则 p 为内部点，否则，p 是外部点。
+
+> 非零 - 内，0 - 外。
+
+![example](https://www.wenjiangs.com/wp-content/uploads/2019/09/edu21-2.jpg)
+
+首先，我们得给图形确定一条路径，只要“一笔画”并且“不走重复路线”就可以了。如图，标出的是其中的一种路径方向。我们先假定路径的正方向为 1，那么反方向就是其相反数 -1。
+
+然后，我们在子路径切割的几块区域内的任意一点各取一条方向任意的射线，这里我只取了三个区域的射线为例，来判断这三块区域是“里面”还是“外面”。
+
+接下来，我们就来判断了。S1 中引出的射线 L1，与 S1 的子路径的正方向相交，那么我们就给计数器 +1，结果为 +1，在外面。
+
+S2 中引出的射线 L2，与两条子路径的正方向相交，计数器 +2，结果为 +2，在外面。
+
+S3 中引出的射线 L3，与两条子路径相交，但是其中有一条的反方向，计数器 +1 -1，结果为 0，在里面。没错，只要结果不为 0，该射线所在的区域就在外面。
+
+### 矛盾
+
+对于多边形和圆等简单对象，非零环绕数规则和奇偶规则给出了相同的结果，但对于比较复杂的形状，两种方法可能会产生不同的内部和外部区域。
+
+![example](https://img-blog.csdn.net/20160808145807752)
+![example](https://img-blog.csdn.net/20160808145816612)
+
+### 特殊情况
+
+![example](https://img-blog.csdn.net/20160809105844562)
+
+参考：
+
+1.[非零环绕数规则和奇-偶规则（Non-Zero Winding Number Rule&&Odd-even Rule）](https://blog.csdn.net/freshforiphone/article/details/8273023)
+
+2.[非零环绕原则](https://www.wenjiangs.com/doc/55v7yake)
+
+3.[奇偶规则VS非零环绕规则](https://blog.csdn.net/wodownload2/article/details/52151714)
+
+4.[判断点是否在多边形内](https://blog.csdn.net/subo86/article/details/5537005)
+
+5.[判断点是否处于多边形内的三种方法](http://www.cppblog.com/w2001/archive/2007/09/06/31694.html)
+
+6.[内-外测试](https://www.cnblogs.com/clairvoyant/p/5549322.html)
+
+7.[计算机图形学（二）输出图元_10_多边形填充区_1_多边形分类和识别](https://blog.csdn.net/heyuchang666/article/details/51338861?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control)
+
+8.[计算机图形学（二）输出图元_10_多边形填充区_3_内-外测试](https://blog.csdn.net/heyuchang666/article/details/51383542?locationNum=5&fps=1)
+
+9.[多边形凹凸性的判断、自相交判断](https://blog.csdn.net/qq_34719188/article/details/108545342)

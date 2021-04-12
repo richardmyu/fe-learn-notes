@@ -16,17 +16,14 @@
 <body>
   <canvas id="canvas-first" class="canvas"></canvas>
   <script>
-    var canvas = document.getElementById('canvas-first');
-    var ctx = null;
+    let canvas = document.getElementById('canvas-first');
+    let ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = "rgb(200,0,0)";
+    ctx.fillRect(10, 10, 55, 50);
+    ctx.strokeRect(20, 20, 55, 50);
+    ctx.clearRect(30, 30, 55, 50);
 
-    if (canvas.getContext) {
-      var ctx = canvas.getContext('2d');
-      ctx.beginPath();
-      ctx.fillStyle = "rgb(200,0,0)";
-      ctx.fillRect(10, 10, 55, 50);
-      ctx.strokeRect(20, 20, 55, 50);
-      ctx.clearRect(30, 30, 55, 50);
-    }
   </script>
 </body>
 

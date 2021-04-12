@@ -30,36 +30,26 @@
   <canvas id="canvas-four" class="canvas canvas-four" style="width:300px;height:300px;"></canvas>
 
   <script>
-    var canvas = document.getElementById('canvas-first');
-    var ctx = null;
+    let canvas = document.getElementById('canvas-first');
+    let ctx = canvas.getContext('2d');
+    // drawing code here
+    ctx.fillStyle = "rgb(200,0,0)";
+    ctx.fillRect(10, 10, 55, 50);
 
-    if (canvas.getContext) {
-      var ctx = canvas.getContext('2d');
-      // drawing code here
-      ctx.fillStyle = "rgb(200,0,0)";
-      ctx.fillRect(10, 10, 55, 50);
+    ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+    ctx.fillRect(30, 30, 55, 50);
 
-      ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-      ctx.fillRect(30, 30, 55, 50);
-    } else {
-      // canvas-unsupported code here
-    }
   </script>
   <script>
-    var canvas = document.getElementById('canvas-two');
-    var ctx = null;
+    let canvas_two = document.getElementById('canvas-two');
+    let ctx_two = canvas_two.getContext('2d');
+    // drawing code here
+    ctx_two.fillStyle = "yellow";
+    ctx_two.fillRect(10, 10, 55, 50);
 
-    if (canvas.getContext) {
-      var ctx = canvas.getContext('2d');
-      // drawing code here
-      ctx.fillStyle = "yellow";
-      ctx.fillRect(10, 10, 55, 50);
+    ctx_two.fillStyle = "blue";
+    ctx_two.fillRect(30, 30, 55, 50);
 
-      ctx.fillStyle = "blue";
-      ctx.fillRect(30, 30, 55, 50);
-    } else {
-      // canvas-unsupported code here
-    }
   </script>
 </body>
 

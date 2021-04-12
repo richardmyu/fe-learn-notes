@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="canvas" style="border: 1px solid #666666;" width="600" height="500"></canvas>
+</body>
+<script>
+  //逆时针绘制矩形
+  // API提供的 rect() 方法绘制是顺时针矩形
+  function drawPathRect(cxt, x, y, w, h) {
+    /**
+     * 这里不能使用 beginPath 和 closePath，
+     * 不然就不属于子路径而是另一个全新的路径，
+     * 无法使用非零环绕原则
+     */
+    cxt.moveTo(x, y);
+    cxt.lineTo(x, y + h);
+    cxt.lineTo(x + w, y + h);
+    cxt.lineTo(x + w, y);
+    cxt.lineTo(x, y);
+  }
+
+  //逆时针绘制三角形
+  function drawPathTriangle(cxt, x1, y1, x2, y2, x3, y3) {
+    cxt.moveTo(x1, y1);
+    cxt.lineTo(x3, y3);
+    cxt.lineTo(x2, y2);
+    cxt.lineTo(x1, y1);
+  }
+
+  let canvas = document.getElementById('canvas');
+  let ctx = canvas.getContext('2d');
+  ctx.fillStyle = "#FFF";
+
+  ctx.beginPath();
+  ctx.rect(200, 100, 400, 400);
+  drawPathRect(ctx, 250, 150, 300, 150);
+  drawPathTriangle(ctx, 345, 350, 420, 450, 270, 450);
+  ctx.arc(500, 400, 50, 0, Math.PI * 2, true);
+  ctx.closePath();
+
+  ctx.fillStyle = "#058";
+  ctx.shadowColor = "gray";
+  ctx.shadowOffsetX = 10;
+  ctx.shadowOffsetY = 10;
+  ctx.shadowBlur = 10;
+  ctx.fill();
+</script>
+
+</html>

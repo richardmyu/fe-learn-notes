@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas-path</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="500"></canvas>
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(150, 20);
+    ctx.arcTo(150, 100, 50, 20, 30);
+    ctx.stroke();
+
+    ctx.fillStyle = 'blue';
+    // base point
+    ctx.fillRect(150, 20, 10, 10);
+
+    ctx.fillStyle = 'red';
+    // control point one
+    ctx.fillRect(150, 100, 10, 10);
+    // control point two
+    ctx.fillRect(50, 20, 10, 10);
+    //
+    ctx.setLineDash([5, 5]);
+    ctx.moveTo(150, 20);
+    ctx.lineTo(150, 100);
+    ctx.lineTo(50, 20);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(120, 38, 30, 0, 2 * Math.PI);
+    ctx.stroke();
+  </script>
+</body>
+
+</html>
