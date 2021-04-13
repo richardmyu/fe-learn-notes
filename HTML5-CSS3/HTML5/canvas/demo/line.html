@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas-path</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="600"></canvas>
+
+  <canvas id="canvas_miter" class="canvas" width="600" height="600"></canvas>
+
+  <canvas id="canvas_ant" class="canvas" width="600" height="600"></canvas>
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let lineCap = ['butt', 'round', 'square'];
+    let lineJoin = ['round', 'bevel', 'miter'];
+
+    // lineWidth
+    ctx.lineWidth = 15;
+    ctx.beginPath();
+    ctx.moveTo(20, 20);
+    ctx.lineTo(130, 130);
+    ctx.rect(40, 40, 70, 70);
+    ctx.stroke();
+
+    // lineCap
+    // Draw guides
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#09f';
+    ctx.beginPath();
+    ctx.moveTo(140, 10);
+    ctx.lineTo(280, 10);
+    ctx.moveTo(140, 140);
+    ctx.lineTo(280, 140);
+    ctx.stroke();
+
+    // Draw lines
+    ctx.strokeStyle = 'black';
+    for (var i = 0; i < lineCap.length; i++) {
+      ctx.lineWidth = 15;
+      ctx.lineCap = lineCap[i];
+      ctx.beginPath();
+      ctx.moveTo(140 + 25 + i * 50, 10);
+      ctx.lineTo(140 + 25 + i * 50, 140);
+      ctx.stroke();
+    }
+
+    ctx.lineWidth = 10;
+
+    // lineJoin
+    for (var i = 0; i < lineJoin.length; i++) {
+      ctx.lineJoin = lineJoin[i];
+      ctx.beginPath();
+      ctx.moveTo(300 + -5, 20 + 5 + i * 40);
+      ctx.lineTo(300 + 35, 20 + 45 + i * 40);
+      ctx.lineTo(300 + 75, 20 + 5 + i * 40);
+      ctx.lineTo(300 + 115, 20 + 45 + i * 40);
+      ctx.lineTo(300 + 155, 20 + 5 + i * 40);
+      ctx.stroke();
+    }
+
+    // setLineDash getLineDash
+    function drawDashedLine(pattern) {
+      ctx.beginPath();
+      ctx.setLineDash(pattern);
+      ctx.moveTo(0, y);
+      ctx.lineTo(300, y);
+      ctx.stroke();
+      y += 20;
+    }
+    let y = 200;
+    ctx.lineWidth = 1;
+    drawDashedLine([]);
+    console.log(ctx.getLineDash());
+    drawDashedLine([1, 1]);
+    console.log(ctx.getLineDash());
+    drawDashedLine([10, 10]);
+    console.log(ctx.getLineDash());
+    drawDashedLine([20, 5]);
+    console.log(ctx.getLineDash());
+    drawDashedLine([15, 3, 3, 3]);
+    console.log(ctx.getLineDash());
+    drawDashedLine([20, 3, 3, 3, 3, 3, 3, 3]);
+    console.log(ctx.getLineDash());
+    drawDashedLine([12, 3, 3]);  // Equals [12, 3, 3, 12, 3, 3]
+    console.log(ctx.getLineDash());
+
+    // lineDashOffset
+    ctx.setLineDash([4, 16]);
+    ctx.lineDashOffset = 2;
+
+    ctx.beginPath();
+    ctx.moveTo(0, 400);
+    ctx.lineTo(200, 400);
+    ctx.stroke();
+
+
+  </script>
+  <script>
+    let canvas_miter = document.getElementById('canvas_miter');
+    let ctx_miter = canvas_miter.getContext('2d');
+
+    ctx_miter.clearRect(0, 0, 150, 150);
+
+    // 绘制参考线
+    ctx_miter.strokeStyle = '#09f';
+    ctx_miter.lineWidth = 2;
+    ctx_miter.strokeRect(-5, 50, 160, 50);
+
+    // 设置线条样式
+    ctx_miter.strokeStyle = '#000';
+    ctx_miter.lineWidth = 10;
+
+    ctx_miter.miterLimit = 0.5;
+    // ctx_miter.miterLimit = 1.0;
+    // ctx_miter.miterLimit = 2.0;
+    // ctx_miter.miterLimit = 10.0;
+    // ctx_miter.miterLimit = 20.0;
+
+    // 绘制线条
+    ctx_miter.beginPath();
+    ctx_miter.moveTo(0, 100);
+    for (i = 0; i < 24; i++) {
+      var dy = i % 2 == 0 ? 25 : -25;
+      ctx_miter.lineTo(Math.pow(i, 1.5) * 2, 75 + dy);
+    }
+    ctx_miter.stroke();
+  </script>
+  <script>
+    let canvas_ant = document.getElementById('canvas_ant');
+    let ctx_ant = canvas_ant.getContext('2d');
+
+    // 蚂蚁线
+    let offset = 0;
+
+    function draw() {
+      ctx_ant.clearRect(0, 0, canvas.width, canvas.height);
+      ctx_ant.setLineDash([4, 2]);
+      ctx_ant.lineDashOffset = -offset;
+      ctx_ant.strokeRect(10, 10, 100, 100);
+    }
+
+    function march() {
+      offset++;
+      if (offset > 16) {
+        offset = 0;
+      }
+      draw();
+      setTimeout(march, 20);
+    }
+
+    march();
+  </script>
+</body>
+
+</html>

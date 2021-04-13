@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="900" height="1000"></canvas>
+  <script>
+    let ctx = document.getElementById('canvas').getContext('2d');
+    ctx.font = "48px serif";
+    ctx.fillText("Hello world", 10, 50);
+
+    ctx.font = "bold 48px serif";
+    ctx.strokeText("Hello world", 550, 50);
+
+    ctx.font = "48px serif";
+    // ctx.textAlign = "left";
+    ctx.textAlign = "center";
+    ctx.strokeText("Hello world", 450, 100);
+
+    ctx.textAlign = "start";
+    const baselines = ['top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom'];
+    ctx.font = '36px serif';
+    ctx.strokeStyle = 'red';
+    baselines.forEach(function (baseline, index) {
+      ctx.textBaseline = baseline;
+      let y = 175 + index * 75;
+      ctx.beginPath();
+      ctx.moveTo(0, y + 0.5);
+      ctx.lineTo(900, y + 0.5);
+      ctx.stroke();
+      ctx.fillText('Abgijklp 进程 (' + baseline + ')', 20, y);
+    });
+
+    ctx.font = '48px serif';
+    ctx.fillText('A B C D 天人合一！！！', 150, 650);
+    ctx.direction = 'rtl';
+    ctx.fillText('A B C D 天人合一！！！', 750, 730);
+
+    let text = ctx.measureText("Hello world"); // TextMetrics object
+    console.log(text.width); // 16;
+  </script>
+</body>
+
+</html>
