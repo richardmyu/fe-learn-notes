@@ -621,7 +621,125 @@ canvas 的 API 可以使用下面这些类型中的一种作为图片的源：
 
 这些源统一由 `CanvasImageSource` 类型来引用。
 
+#### 1.使用相同页面内的图片
 
+我们可以通过下列方法的一种来获得与canvas相同页面内的图片的引用：
+
+- `document.images` 集合（返回当前文档中所有 `image` 元素的集合）；
+- `document.getElementsByTagName()/document.getElementById()` 等方法；
+
+#### 2.使用其它域名下的图片
+
+在 HTMLImageElement 上使用 `crossOrigin` 属性，你可以请求加载其它域名上的图片。如果图片的服务器允许跨域访问这个图片，那么你可以使用这个图片而不污染 canvas，否则，使用这个图片将会污染 canvas。
+
+> 在HTML5中，一些 HTML 元素提供了对 CORS 的支持， 例如 `<audio>`、`<img>`、`<link>`、`<script>` 和 `<video>` 均有一个跨域属性 (crossOrigin property)，它允许你配置元素获取数据的 CORS 请求。
+
+#### 3.使用其它 canvas 元素
+
+和引用页面内的图片类似地，用 `document.getElementsByTagName` 或 `document.getElementById` 方法来获取其它 canvas 元素。但引入的应该是已经准备好的 canvas。
+
+> 一个常用的应用就是将第二个 canvas  作为另一个大的 canvas 的缩略图。
+
+#### 4.由零开始创建图像
+
+可以用脚本创建一个新的 HTMLImageElement 对象。要实现这个方法，我们可以使用很方便的 `Image()` 构造函数。
+
+```js
+var img = new Image();   // 创建一个 img 元素
+img.src = 'myImage.png'; // 设置图片源地址
+```
+
+当脚本执行后，图片开始装载。
+
+若调用 `drawImage` 时，图片没装载完，那什么都不会发生（在一些旧的浏览器中可能会抛出异常）。因此应该用 `load` 事件来保证不会在加载完毕之前使用这个图片：
+
+```js
+var img = new Image();   // 创建 img元 素
+img.onload = function(){
+  // 执行 drawImage 语句
+}
+img.src = 'myImage.png'; // 设置图片源地址
+```
+
+#### 5.通过 `data: url` 方式嵌入图像
+
+我们还可以通过 `data: url` 方式来引用图像。Data urls 允许用一串 Base64 编码的字符串的方式来定义一个图片。
+
+```js
+img.src = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw==';
+```
+
+其优点就是图片内容即时可用，无须再到服务器兜一圈。（还有一个优点是，可以将 CSS，JavaScript，HTML 和 图片全部封装在一起，迁移起来十分方便。）缺点就是图像没法缓存，图片大的话内嵌的 `url` 数据会相当的长。
+
+#### 6.使用视频帧
+
+还可以使用 `<video>` 中的视频帧（即便视频是不可见的）。
+
+```js
+function getMyVideo() {
+  var canvas = document.getElementById('canvas');
+  if (canvas.getContext) {
+    var ctx = canvas.getContext('2d');
+    return document.getElementById('myvideo');
+  }
+}
+```
+
+它将为这个视频返回 `HTMLVideoElement` 对象，正如前面提到的，它可以作为我们的 Canvas 图片源。
+
+### 二.绘制图片
+
+一旦获得了源图对象，我们就可以使用 `drawImage` 方法将它渲染到 canvas 里。
+
+#### 1.`drawImage(image, x, y)`
+
+其中 `image` 是 `image` 或者 `canvas` 对象，`x` 和 `y` 是其在目标 canvas 里的起始坐标。
+
+> SVG 图像必须在 `<svg>` 根指定元素的宽度和高度。
+
+`drawImage()` 方法在绘制时使用源元素的 CSS 大小。
+
+**抛出异常**
+
+- `INDEX_SIZE_ERR`
+  - 如果 canvas 或者图像矩形区域的宽度或高度为 0 。
+- `INVALID_STATE_ERR`
+  - 图像没有数据。
+- `TYPE_MISMATCH_ERR`
+  - 提供的原始元素不支持。
+- `NS_ERROR_NOT_AVAILABLE`
+  - 图像尚未加载。使用 `.complete === true` 和 `.onload` 确定何时准备就绪。
+
+#### 2.缩放 Scaling
+
+```js
+ctx.drawImage(image, x, y, width, height);
+```
+
+这个方法多了2个参数：`width` 和 `height`，这两个参数用来控制 当向 canvas 画入时应该缩放的大小。
+
+> 图像可能会因为大幅度的缩放而变得起杂点或者模糊。如果图像里面有文字，那么最好还是不要进行缩放，因为那样处理之后很可能图像里的文字就会变得无法辨认了。
+
+#### 3.切片 Slicing
+
+```js
+ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+```
+
+前 4 个是定义图像源的切片位置和大小，后 4 个则是定义切片的目标显示位置和大小。
+
+![slicing](https://developer.mozilla.org/@api/deki/files/79/=Canvas_drawimage.jpg)
+
+### 三.控制图像的缩放行为
+
+过度缩放图像可能会导致图像模糊或像素化。可以通过使用绘图环境的 `imageSmoothingEnabled` 属性来控制是否在缩放图像时使用平滑算法。默认值为 `true`，即启用平滑缩放。也可以像这样禁用此功能：
+
+```js
+ctx.mozImageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.msImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
+```
 
 ## 变形
 
