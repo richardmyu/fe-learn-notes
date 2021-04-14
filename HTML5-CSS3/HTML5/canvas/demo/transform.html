@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas-path</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="600"></canvas>
+  <canvas id="min_canvas" class="canvas" width="600" height="600"></canvas>
+  <script>
+    let ctx = document.getElementById('canvas').getContext('2d');
+
+    ctx.transform(1, 1, 0, 1, 1, 0);
+    ctx.fillRect(0, 0, 100, 100);
+
+    ctx.setTransform(1, 1, 3, 1, 1, 1);
+    ctx.fillRect(100, 0, 100, 100);
+
+    ctx.rotate(45 * Math.PI / 180);
+    ctx.fillRect(20, 20, 100, 30);
+
+    // reset current transformation matrix to the identity matrix
+    ctx.resetTransform();
+  </script>
+  <script>
+    let min_ctx = document.getElementById('min_canvas').getContext('2d');
+    let sin = Math.sin(Math.PI / 6);
+    let cos = Math.cos(Math.PI / 6);
+    min_ctx.translate(100, 100);
+    let c = 0;
+    for (let i = 0; i <= 12; i++) {
+      c = Math.floor(255 / 12 * i);
+      min_ctx.fillStyle = "rgb(" + c + "," + c + "," + c + ")";
+      min_ctx.fillRect(0, 0, 100, 10);
+      min_ctx.transform(cos, sin, -sin, cos, 0, 0);
+    }
+
+    min_ctx.setTransform(-1, 0, 0, 1, 100, 100);
+    min_ctx.fillStyle = "rgba(255, 128, 255, 0.5)";
+    min_ctx.fillRect(0, 50, 100, 100);
+  </script>
+
+</body>
+
+</html>
