@@ -740,20 +740,3 @@ ctx.webkitImageSmoothingEnabled = false;
 ctx.msImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 ```
-
-## 变形
-
-## 合成和剪辑
-
-
-## 基本动画
-
-## 高级动画
-
-## 像素处理
-
-## 点击区域和无障碍访问
-
-## 优化
-
-## 终曲

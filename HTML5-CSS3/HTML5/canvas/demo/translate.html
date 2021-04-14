@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas-path</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="600"></canvas>
+  <script>
+    let ctx = document.getElementById('canvas').getContext('2d');
+
+    ctx.translate(50, 50);
+    ctx.fillRect(0, 0, 100, 100);
+
+    // 2
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        ctx.save();
+        ctx.fillStyle = 'rgb(' + (51 * i) + ', ' + (255 - 51 * i) + ', 255)';
+        ctx.translate(10 + j * 50, 10 + i * 50);
+        ctx.fillRect(200, 0, 25, 25);
+        ctx.restore();
+      }
+    }
+  </script>
+
+</body>
+
+</html>
