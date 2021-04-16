@@ -132,8 +132,123 @@ ctx.resetTransform();
 
 ## 合成和剪辑
 
+### 一.组合 Compositing
+
+
+不仅可以在已有图形后面再画新图形，还可以用来遮盖指定区域，清除画布中的某些部分（清除区域不仅限于矩形，像 `clearRect()` 方法做的那样）以及更多其他操作。
+
+#### 1.`ctx.globalCompositeOperation`
+
+设定了在画新图形时采用的遮盖策略，其值是一个标识遮盖方式的字符串。
+
+```js
+ctx.globalCompositeOperation = type;
+```
+
+> [图](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation)
+
+- `source-over`
+  - 这是默认设置，并在现有画布上下文之上绘制新图形。
+- `source-in`
+  - 新图形只在新图形和目标画布重叠的地方绘制。其他的都是透明的。
+- `source-out`
+  - 在不与现有画布内容重叠的地方绘制新图形。
+- `source-atop`
+  - 新图形只在与现有画布内容重叠的地方绘制。
+- `destination-over`
+  - 在现有的画布内容后面绘制新的图形。
+- `destination-in`
+  - 现有的画布内容保持在新图形和现有画布内容重叠的位置。其他的都是透明的。
+- `destination-out`
+  - 现有内容保持在新图形不重叠的地方。
+- `destination-atop`
+  - 现有的画布只保留与新图形重叠的部分，新的图形是在画布内容后面绘制的。
+- `lighter`
+  - 两个重叠图形的颜色是通过颜色值相加来确定的。
+- `copy`
+  - 只显示新图形。
+- `xor`
+  - 图像中，那些重叠和正常绘制之外的其他地方是透明的。
+- `multiply`
+  - 将顶层像素与底层相应像素相乘，结果是一幅更黑暗的图片。
+- `screen`
+  - 像素被倒转，相乘，再倒转，结果是一幅更明亮的图片。
+- `overlay`
+  - `multiply` 和 `screen` 的结合，原本暗的地方更暗，原本亮的地方更亮。
+- `darken`
+  - 保留两个图层中最暗的像素。
+- `lighten`
+  - 保留两个图层中最亮的像素。
+- `color-dodge`
+  - 将底层除以顶层的反置。
+- `color-burn`
+  - 将反置的底层除以顶层，然后将结果反过来。
+- `hard-light`
+  - 屏幕相乘（A combination of multiply and screen）类似于叠加，但上下图层互换了。
+- `soft-light`
+  - 用顶层减去底层或者相反来得到一个正值。
+- `difference`
+  - 一个柔和版本的强光（hard-light）。纯黑或纯白不会导致纯黑或纯白。
+- `exclusion`
+  - 和 `difference` 相似，但对比度较低。
+- `hue`
+  - 保留了底层的亮度（luma）和色度（chroma），同时采用了顶层的色调（hue）。
+- `saturation`
+  - 保留底层的亮度（luma）和色调（hue），同时采用顶层的色度（chroma）。
+- `color`
+  - 保留了底层的亮度（luma），同时采用了顶层的色调(hue)和色度(chroma)。
+- `luminosity`
+  - 保持底层的色调（hue）和色度（chroma），同时采用顶层的亮度（luma）。
+
+### 二.裁切路径
+
+裁切路径和普通的 canvas 图形差不多，不同的是它的作用是遮罩，用来隐藏不需要的部分。
+
+和 `globalCompositeOperation` 比较，它可以实现与 `source-in` 和 `source-atop` 差不多的效果。最重要的区别是裁切路径不会在 canvas 上绘制东西，而且它永远不受新图形的影响。这些特性使得它在特定区域里绘制图形时相当好用。
+
+#### 1.`ctx.clip()`
+
+当前创建的路径设置为当前剪切路径。
+
+```js
+ctx.clip();
+ctx.clip(fillRule);
+ctx.clip(path, fillRule);
+```
 
 ## 基本动画
+
+可能最大的限制就是图像一旦绘制出来，它就是一直保持那样了。如果需要移动它，我们不得不对所有东西（包括之前的）进行重绘。重绘是相当费时的，而且性能很依赖于电脑的速度。
+
+### 一.动画的基本步骤
+
+可以通过以下的步骤来画出一帧:
+
+1. **清空 canvas**
+  除非接下来要画的内容会完全充满 canvas （例如背景图），否则就需要清空所有。最简单的做法就是用 `clearRect` 方法。
+2. **保存 canvas 状态**
+  如果要改变一些会改变 canvas 状态的设置（样式，变形之类的），又要在每画一帧之时都是原始状态的话，需要先保存一下。
+3. **绘制动画图形（animated shapes）**
+  这一步才是重绘动画帧。
+4. **恢复 canvas 状态**
+  如果已经保存了 canvas 的状态，可以先恢复它，然后重绘下一帧。
+
+### 二.操控动画
+
+为了实现动画，我们需要一些可以定时执行重绘的方法。有两种方法可以实现这样的动画操控。
+
+首先，可以用 `window.setInterval()`, `window.setTimeout()` 和 `window.requestAnimationFrame()` 来设定定期执行一个指定函数。
+
+```js
+// 当设定好间隔时间后，function 会定期执行。
+setInterval(function, delay);
+
+// 在设定好的时间之后执行函数
+setTimeout(function, delay);
+
+// 告诉浏览器执行一个动画，并在重绘之前，请求浏览器执行一个特定的函数来更新动画。
+window.requestAnimationFrame(callback);
+```
 
 ## 高级动画
 
