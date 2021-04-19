@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="300"></canvas>
+  <canvas id="canvas_color" class="canvas" width="600" height="300"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let raf;
+    let running = false;
+
+    var ball = {
+      x: 100,
+      y: 100,
+      vx: 5,
+      vy: 2,
+      radius: 25,
+      color: 'blue',
+      draw: function () {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    };
+
+    function clear() {
+      // 长尾效果
+      // ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function draw() {
+      clear();
+      ball.draw();
+
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      // 边界
+      if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+        ball.vy = -ball.vy;
+      }
+      if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+        ball.vx = -ball.vx;
+      }
+
+      raf = window.requestAnimationFrame(draw);
+    }
+
+    // 添加鼠标控制
+    canvas.addEventListener('mousemove', function (e) {
+      if (!running) {
+        clear();
+        ball.x = e.offsetX;
+        ball.y = e.offsetY;
+        ball.draw();
+      }
+    });
+
+    canvas.addEventListener('click', function (e) {
+      if (!running) {
+        raf = window.requestAnimationFrame(draw);
+        running = true;
+      }
+    });
+
+    canvas.addEventListener('mouseout', function (e) {
+      window.cancelAnimationFrame(raf);
+      running = false;
+    });
+
+    ball.draw();
+
+
+  </script>
+  <script>
+    const canvas_color = document.getElementById('canvas_color');
+    const ctx_c = canvas_color.getContext('2d');
+    const w = 120;
+    const h = 100;
+    ctx_c.fillStyle = 'blue';
+    ctx_c.fillRect(0, 0, canvas_color.width, canvas_color.height);
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 3; j++) {
+        ctx_c.fillStyle = 'rgba(255,255,255,' + 0.3 * (i + j) + ')';
+        ctx_c.fillRect(w * i, h * j, w, h);
+      }
+    }
+  </script>
+</body>
+
+</html>
