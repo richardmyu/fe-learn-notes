@@ -51,7 +51,7 @@
       ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
       // 轨道半径
       ctx.translate(105, 0);
-      // 轨道矩形（阴影）
+      // 地球阴影（1.遮蔽地球背阳面；2.遮蔽月球）
       ctx.fillRect(0, -12, 50, 24); // Shadow
       ctx.drawImage(earth, -12, -12);
 
@@ -59,6 +59,7 @@
       ctx.save();
       // v(moon)= 1/10 * v(earth)
       ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+      // 月轨半径
       ctx.translate(0, 28.5);
       ctx.drawImage(moon, -3.5, -3.5);
       ctx.restore();
@@ -66,6 +67,7 @@
       ctx.restore();
 
       ctx.beginPath();
+      // 地球轨道
       ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
       ctx.stroke();
 
