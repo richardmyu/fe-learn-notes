@@ -250,9 +250,58 @@ setTimeout(function, delay);
 window.requestAnimationFrame(callback);
 ```
 
-## 高级动画
-
 ## 像素处理
+
+### 一.ImageData 对象
+
+`ImageData` 对象中存储着 canvas 对象真实的像素数据，它包含以下几个只读属性：
+
+- `width`
+  - 图片宽度，单位是像素
+- `height`
+  - 图片高度，单位是像素
+- `data`
+  - `Uint8ClampedArray` 类型的一维数组，包含着 RGBA`格式的整型数据，范围在 0 至 255 之间（包括 255）。
+
+`Uint8ClampedArray`  包含 `高度 × 宽度 × 4 bytes` 数据，索引值从 0 到 `(高度×宽度×4)-1`。
+
+例如，要读取图片中位于第 50 行，第 200 列的像素的 R/G/B/A 值：
+
+```js
+blueComponent = imageData.data[((50 * (imageData.width * 4)) + (200 * 4)) + 0/1/2/3];
+```
+
+#### 1.创建一个 ImageData 对象
+
+```js
+// 创建一个新的，空白的 `ImageData` 对象
+var myImageData = ctx.createImageData(width, height);
+
+// 创建一个被 `anotherImageData` 对象指定的相同像素的 `ImageData` 对象
+var myImageData = ctx.createImageData(anotherImageData);
+```
+
+> 所有像素被预设为透明黑。
+
+#### 2.得到场景像素数据
+
+```js
+var myImageData = ctx.getImageData(left, top, width, height);
+```
+
+这个方法会返回一个 `ImageData` 对象，它代表了画布区域的对象数据，此画布的四个角落分别表示为 `(left, top)`, `(left + width, top)`, `(left, top + height)`, 以及 `(left + width, top + height)` 四个点。这些坐标点被设定为画布坐标空间元素。
+
+> 任何在画布以外的元素都会被返回成一个透明黑的 `ImageData` 对像。
+
+> [demo](../canvas/animate/imagedata.html)
+
+#### 3.在场景中写入像素数据
+
+```js
+ctx.putImageData(myImageData, dx, dy);
+```
+
+> [demo](../canvas/animate/imagedata_2.html)
 
 ## 点击区域和无障碍访问
 
