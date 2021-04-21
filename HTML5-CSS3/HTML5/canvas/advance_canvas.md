@@ -303,6 +303,8 @@ ctx.putImageData(myImageData, dx, dy);
 
 > [demo](../canvas/animate/imagedata_2.html)
 
+![gamma](<img src="https://latex.codecogs.com/svg.image?V_{out}=AV_{in}^{\gamma&space;}" title="V_{out}=AV_{in}^{\gamma }" />)
+
 ## 点击区域和无障碍访问
 
 ## 优化
