@@ -44,7 +44,6 @@
       <p>原图</p>
       <canvas id="canvas" class="canvas" width="300" height="200"></canvas>
     </li>
-    <hr />
     <li class="canvas_item">
       <p>Average 算法</p>
       <canvas id="canvas1" class="canvas" width="300" height="200"></canvas>
@@ -53,21 +52,17 @@
       <p>Lightness 算法</p>
       <canvas id="canvas2" class="canvas" width="300" height="200"></canvas>
     </li>
-    <li class="canvas_item">
-      <p>Luminosity 算法</p>
-      <canvas id="canvas3" class="canvas" width="300" height="200"></canvas>
-    </li>
     <hr />
     <li class="canvas_item">
-      <p>Min</p>
+      <p>Max</p>
       <canvas id="canvas4" class="canvas" width="300" height="200"></canvas>
     </li>
     <li class="canvas_item">
-      <p>Lightness=(Min+Max)/2</p>
+      <p>Lightness=(Max+Min)/2</p>
       <canvas id="canvas22" class="canvas" width="300" height="200"></canvas>
     </li>
     <li class="canvas_item">
-      <p>Max</p>
+      <p>Min</p>
       <canvas id="canvas5" class="canvas" width="300" height="200"></canvas>
     </li>
     <hr />
@@ -82,6 +77,41 @@
     <li class="canvas_item">
       <p>Blue</p>
       <canvas id="canvas8" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <hr />
+
+    <li class="canvas_item">
+      <p>R*0.299+G*0.587+B*0.114</p>
+      <canvas id="canvas3" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <li class="canvas_item">
+      <p>R*0.2126+G*0.7152+B*0.0722</p>
+      <canvas id="canvas17" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <li class="canvas_item">
+      <p>R*0.2627+G*0.6780+B*0.0593</p>
+      <canvas id="canvas18" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <hr />
+    <li class="canvas_item">
+      <p>简化 sRGB IEC61966-2.1 [gamma=2.20]</p>
+      <canvas id="canvas30" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <li class="canvas_item">
+      <p>Adobe RGB (1998) [gamma=2.20]</p>
+      <canvas id="canvas31" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <li class="canvas_item">
+      <p>Apple RGB [gamma=1.80]</p>
+      <canvas id="canvas32" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <li class="canvas_item">
+      <p>ColorMatch RGB [gamma=1.8]</p>
+      <canvas id="canvas33" class="canvas" width="300" height="200"></canvas>
+    </li>
+    <li class="canvas_item">
+      <p>简化 KODAK DC Series Digital Camera [gamma=2.2]</p>
+      <canvas id="canvas34" class="canvas" width="300" height="200"></canvas>
     </li>
     <hr />
     <li class="canvas_item">
@@ -131,6 +161,14 @@
       grayscaleAverage();
       grayscaleLightness();
       grayscaleLuminosity();
+      grayscaleLuminosity2();
+      grayscaleLuminosity3();
+      grayscaleGamma1();
+      grayscaleGamma2();
+      grayscaleGamma3();
+      grayscaleGamma4();
+      grayscaleGamma5();
+
       grayscaleMax();
       grayscaleMin();
       grayscaleRed();
@@ -193,7 +231,35 @@
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       for (let i = 0; i < data.length; i += 4) {
-        const avg = (data[i] * 0.30 + data[i + 1] * 0.59 + data[i + 2] * 0.11) / 3;
+        const avg = data[i] * 0.30 + data[i + 1] * 0.59 + data[i + 2] * 0.11;
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
+    const grayscaleLuminosity2 = function () {
+      let canvas = document.getElementById('canvas17');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 200);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = data[i] * 0.2126 + data[i + 1] * 0.7152 + data[i + 2] * 0.0722;
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
+    const grayscaleLuminosity3 = function () {
+      let canvas = document.getElementById('canvas18');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 200);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = data[i] * 0.2627 + data[i + 1] * 0.6780 + data[i + 2] * 0.0593;
         data[i] = avg;
         data[i + 1] = avg;
         data[i + 2] = avg;
@@ -275,6 +341,81 @@
       ctx.putImageData(imageData, 0, 0);
     };
 
+    // 简化 sRGB IEC61966 - 2.1[gamma = 2.20]
+    const grayscaleGamma1 = function () {
+      let canvas = document.getElementById('canvas30');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 200);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] ^ 2.2 * 0.2126 + data[i + 1] ^ 2.2 * 0.7152 + data[i + 2] ^ 2.2 * 0.0722) ^ (1 / 2.2);
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
+    // Adobe RGB(1998)[gamma = 2.20]
+    const grayscaleGamma2 = function () {
+      let canvas = document.getElementById('canvas31');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 200);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] ^ 2.2 * 0.2973 + data[i + 1] ^ 2.2 * 0.6274 + data[i + 2] ^ 2.2 * 0.0753) ^ (1 / 2.2);
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
+    // Apple RGB[gamma = 1.80]
+    const grayscaleGamma3 = function () {
+      let canvas = document.getElementById('canvas32');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 200);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] ^ 1.8 * 0.2446 + data[i + 1] ^ 1.8 * 0.6720 + data[i + 2] ^ 1.8 * 0.0833) ^ (1 / 1.8);
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
+    // ColorMatch RGB[gamma = 1.8]
+    const grayscaleGamma4 = function () {
+      let canvas = document.getElementById('canvas33');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 200);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] ^ 1.8 * 0.2750 + data[i + 1] ^ 1.8 * 0.6581 + data[i + 2] ^ 1.8 * 0.0670) ^ (1 / 1.8);
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
+    // 简化 KODAK DC Series Digital Camera[gamma = 2.2]
+    const grayscaleGamma5 = function () {
+      let canvas = document.getElementById('canvas34');
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 200);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] ^ 2.2 * 0.2229 + data[i + 1] ^ 2.2 * 0.7175 + data[i + 2] ^ 2.2 * 0.0595) ^ (1 / 2.2);
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
 
     // shades
     const grayscaleShades3 = function () {
@@ -284,7 +425,7 @@
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       for (let i = 0; i < data.length; i += 4) {
-        let ConversionFactor = 255 / (3 - 1);
+        let ConversionFactor = 255 / (300 - 1);
         let AverageValue = (data[i] + data[i + 1] + data[i + 2]) / 3;
         const avg = Math.round((AverageValue / ConversionFactor) + 0.5) * ConversionFactor;
         data[i] = avg;
