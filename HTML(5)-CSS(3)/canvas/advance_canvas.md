@@ -291,7 +291,7 @@ var myImageData = ctx.getImageData(left, top, width, height);
 
 任何在画布以外的元素都会被返回成一个透明黑的 `ImageData` 对像。
 
-> [demo](../canvas/animate/imagedata.html)
+> [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata.html)
 
 #### 3.在场景中写入像素数据
 
@@ -299,7 +299,7 @@ var myImageData = ctx.getImageData(left, top, width, height);
 ctx.putImageData(myImageData, dx, dy);
 ```
 
-> [demo](../canvas/animate/imagedata_2.html)
+> [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata_2.html)
 
 ### 二.保存图片
 

@@ -18,7 +18,7 @@ transition 的中文含义是**过渡**。过渡可以实现元素**不同状态
 
 转换再配合过渡和动画，可以取代大量早期只能靠 Flash 才可以实现的效果。
 
-在 CSS3 当中，通过 transform 转换来实现 2D 转换或者 3D 转换。
+在 CSS3 当中，通过 `transform` 转换来实现 2D 转换或者 3D 转换。
 
 - 2D 转换包括：缩放（scale）、移动（translate）、旋转（rotate）。
 
@@ -60,21 +60,21 @@ transition 的中文含义是**过渡**。过渡可以实现元素**不同状态
 
 - 1.补间动画/关键帧动画：
 
-常用于实现位移、颜色（透明度）、大小、旋转、倾斜等变化。一般有 Transitions 和 Keyframes animation 两种方法实现补间动画。
+常用于实现位移、颜色（透明度）、大小、旋转、倾斜等变化。一般有 `Transitions` 和 `Keyframes animation` 两种方法实现补间动画。
 
-Transitions：用于实现简单的动画，只有起始两帧过渡。多用于页面的交互操作，使交互效果更生动活泼。
+`Transitions`：用于实现简单的动画，只有起始两帧过渡。多用于页面的交互操作，使交互效果更生动活泼。
 
 > CSS 的 transition 允许 CSS 的属性值在一定的时间区间内平滑地过渡。
 > 这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变 CSS 的属性值。
 
-Keyframes animation：用于实现较为复杂的动画，一般关键帧较多。
+`Keyframes animation`：用于实现较为复杂的动画，一般关键帧较多。
 
 > 设置动画的关键帧规则。
 > animation 的 timing-function 设置为 ease、linear 或 cubic-bezier，它会在每个关键帧之间插入补间动画，产生具有连贯性的动画。
 
 - 2.逐帧动画
 
-逐帧动画可用于 loading 动画，但更多的用于 Sprite 精灵动画（人物运动）。精灵动画把所有帧都放在一起，通过 CSS3 的 animation 控制 `background-position`。
+逐帧动画可用于 loading 动画，但更多的用于 Sprite 精灵动画（人物运动）。精灵动画把所有帧都放在一起，通过 CSS3 的 `animation` 控制 `background-position`。
 
 > animation 的 timing-function 默认值为 ease，它会在每个关键帧之间插入补间动画，所以动画效果是连贯性的。
 > 除了 ease、linear、cubic-bezier 之类的过渡函数都会为其插入补间。
@@ -95,8 +95,9 @@ Keyframes animation：用于实现较为复杂的动画，一般关键帧较多�
 不同的动画无法实现同步
 多个动画彼此无法堆叠
 
-> 1.CSS3 transition 强制硬件加速会加大 GPU 消耗，高负荷情形下将导致运行不流畅。这种情况在移动设备上尤为明显。（特殊情况下，比如当数据在浏览器主线程和排版线程之间传递产生的瓶颈也会导致不流畅）。某些 CSS 属性，比如 transform 和 opacity，则不受这些瓶颈影响。Adobe 在这里精心总结了这些问题。详细请戳
-> 2.transition 的兼容性问题是个诟病，IE10+及现代浏览器，使用起来会造成很多不便。 3.由于 transition 并不是由 JavaScript 原生控制（而仅仅是由 JavaScript 触发），浏览器无法获知如何与控制这些 transition 的 JavaScript 代码同步地优化他们。
+> 1.CSS3 `transition` 强制硬件加速会加大 GPU 消耗，高负荷情形下将导致运行不流畅。这种情况在移动设备上尤为明显。（特殊情况下，比如当数据在浏览器主线程和排版线程之间传递产生的瓶颈也会导致不流畅）。某些 CSS 属性，比如 transform 和 opacity，则不受这些瓶颈影响。Adobe 在这里精心总结了这些问题。详细请戳
+> 2.`transition` 的兼容性问题是个诟病，IE10+及现代浏览器，使用起来会造成很多不便。
+> 3.由于 `transition` 并不是由 JavaScript 原生控制（而仅仅是由 JavaScript 触发），浏览器无法获知如何与控制这些 `transition` 的 JavaScript 代码同步地优化他们。
 > 4.keyframes animation 的动画曲线会应用到所有变化的属性上，而且手写比较复杂的动画，写起来就是噩梦。
 
 ### timing-function
@@ -119,14 +120,12 @@ CSS 支持两种定时函数：立方贝塞尔曲线的子集和阶梯函数。�
 
 CSS 中允许使用这些贝塞尔曲线:
 
----
-
+```js
 cubic-bezier(0.1, 0.7, 1.0, 0.1);
 cubic-bezier(0, 0, 1, 1);
 cubic-bezier(-0.2, 0.6, -0.1, 0);
 cubic-bezier(1.1, 0, 4, 0);
-
----
+```
 
 ##### steps 定时函数
 
@@ -142,12 +141,12 @@ cubic-bezier(1.1, 0, 4, 0);
 
 - 字母 (A - Z, a - z),
 - 十进制数 (0 - 9),
-- 连字符 (-),
-- 下划线 (\_),下划线
-- 转义字符 ( \),
-- Unicode 编码（格式：转义字符（\）后跟 1 到 6 位十六进制数）
+- 连字符 (`-`),
+- 下划线 (`\_`),下划线
+- 转义字符 ( `\`),
+- Unicode 编码（格式：转义字符（`\`）后跟 1 到 6 位十六进制数）
 
-> 注意：id1, Id1, iD1 和 ID1 都是不同标识符，因为标识符是区分大小写的。另一方面，因为可以解码，所有 toto\?和 toto\3F 是相同的。
+> 注意：id1, Id1, iD1 和 ID1 都是不同标识符，因为标识符是区分大小写的。另一方面，因为可以解码，所有 `toto\?` 和 `toto\3F` 是相同的。
 
 #### 禁用值
 

@@ -65,8 +65,7 @@ transform: matrix(1, tan(θy), tan(θx), 1, 0, 0);
 
 ![转换公式](http://image.zhangxinxu.com/image/blog/201206/css-transforms-matrix5.gif)
 
-> x、y 表示矩阵偏移元素的中心点的(x,y)
-
+> x、y 表示矩阵偏移元素的中心点的(x,y)；
 > 对于一般地交互应用，`transform` 属性默认提供的些方法是足够了，但是，一些其他的效果，如果 `transform` 属性没有提供接口方法就只能靠 `matrix` 矩阵了。
 
 ### 1.2.3d 转换

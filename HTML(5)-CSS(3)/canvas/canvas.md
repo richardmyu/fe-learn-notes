@@ -28,7 +28,7 @@ var canvas = document.getElementById('convas');
 var ctx = canvas.getContext('2d');
 ```
 
-> [简单例子](../canvas/demo/index.html)
+> [简单例子](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/index.html)
 
 ## 绘制图形
 
@@ -45,7 +45,7 @@ canvas提供了三种方法绘制矩形：
 - `clearRect(x, y, width, height)`
   - 清除指定矩形区域，让清除部分完全透明。
 
-> [demo](../canvas/demo/rect.html)
+> [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/rect.html)
 
 #### 1.`ctx.fillRect()`
 
