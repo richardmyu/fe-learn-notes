@@ -1,1 +1,0 @@
-const ab = 'vendor';
