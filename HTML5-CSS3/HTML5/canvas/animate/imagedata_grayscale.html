@@ -187,14 +187,14 @@
 
     const original = function () {
       let canvas = document.getElementById('canvas');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
     };
 
     // Average 算法
     const grayscaleAverage = function () {
       let canvas = document.getElementById('canvas1');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -209,8 +209,8 @@
     // Lightness 算法
     const grayscaleLightness = function () {
       let canvas = document.getElementById('canvas2');
-      let ctx22 = document.getElementById('canvas22').getContext('2d');
-      let ctx = canvas.getContext('2d');
+      let ctx22 = document.getElementById('canvas22').getContext('2d', { alpha: false });
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -226,7 +226,7 @@
     // Luminosity 算法
     const grayscaleLuminosity = function () {
       let canvas = document.getElementById('canvas3');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -240,7 +240,7 @@
     };
     const grayscaleLuminosity2 = function () {
       let canvas = document.getElementById('canvas17');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -254,7 +254,7 @@
     };
     const grayscaleLuminosity3 = function () {
       let canvas = document.getElementById('canvas18');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -270,7 +270,7 @@
     // MAX
     const grayscaleMax = function () {
       let canvas = document.getElementById('canvas4');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -285,7 +285,7 @@
     // MIN
     const grayscaleMin = function () {
       let canvas = document.getElementById('canvas5');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -301,7 +301,7 @@
     // Red
     const grayscaleRed = function () {
       let canvas = document.getElementById('canvas6');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -315,7 +315,7 @@
     // Green
     const grayscaleGreen = function () {
       let canvas = document.getElementById('canvas7');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -329,7 +329,7 @@
     // Blue
     const grayscaleBlue = function () {
       let canvas = document.getElementById('canvas8');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -344,7 +344,7 @@
     // 简化 sRGB IEC61966 - 2.1[gamma = 2.20]
     const grayscaleGamma1 = function () {
       let canvas = document.getElementById('canvas30');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -359,7 +359,7 @@
     // Adobe RGB(1998)[gamma = 2.20]
     const grayscaleGamma2 = function () {
       let canvas = document.getElementById('canvas31');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -374,7 +374,7 @@
     // Apple RGB[gamma = 1.80]
     const grayscaleGamma3 = function () {
       let canvas = document.getElementById('canvas32');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -389,7 +389,7 @@
     // ColorMatch RGB[gamma = 1.8]
     const grayscaleGamma4 = function () {
       let canvas = document.getElementById('canvas33');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -404,7 +404,7 @@
     // 简化 KODAK DC Series Digital Camera[gamma = 2.2]
     const grayscaleGamma5 = function () {
       let canvas = document.getElementById('canvas34');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -420,7 +420,7 @@
     // shades
     const grayscaleShades3 = function () {
       let canvas = document.getElementById('canvas9');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -436,7 +436,7 @@
     };
     const grayscaleShades4 = function () {
       let canvas = document.getElementById('canvas10');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -452,7 +452,7 @@
     };
     const grayscaleShades8 = function () {
       let canvas = document.getElementById('canvas11');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -468,7 +468,7 @@
     };
     const grayscaleShades16 = function () {
       let canvas = document.getElementById('canvas12');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -484,7 +484,7 @@
     };
     const grayscaleShades32 = function () {
       let canvas = document.getElementById('canvas13');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -500,7 +500,7 @@
     };
     const grayscaleShades64 = function () {
       let canvas = document.getElementById('canvas14');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -516,7 +516,7 @@
     };
     const grayscaleShades128 = function () {
       let canvas = document.getElementById('canvas15');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -532,7 +532,7 @@
     };
     const grayscaleShades256 = function () {
       let canvas = document.getElementById('canvas16');
-      let ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d', { alpha: false });
       ctx.drawImage(img, 0, 0, 300, 200);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;

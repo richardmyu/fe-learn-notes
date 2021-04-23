@@ -40,7 +40,7 @@
   <script>
     // 颜色选择器
     let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d', { alpha: false });
     var img = new Image();
     img.crossOrigin = 'anonymous';
     img.src = '../../../CSS3/filter/imgs/test-jpg-01.jpg';

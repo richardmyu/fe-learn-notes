@@ -285,7 +285,7 @@
     let t = new Date + "",
       d = void 0,
       cc = document.getElementsByTagName("canvas")[0],
-      c = cc.getContext("2d"),
+      c = cc.getContext("2d", { alpha: false }),
       key = {};
 
     key.keydown = function (t) {

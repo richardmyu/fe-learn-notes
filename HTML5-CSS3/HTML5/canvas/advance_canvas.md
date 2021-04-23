@@ -114,9 +114,7 @@ ctx.transform(a, b, c, d, e, f);
 
 使用 *单位矩阵* 重新设置（覆盖）当前的变换并调用变换，此变换由方法的变量进行描述。
 
-> 从根本上来说，该方法是取消了当前变形,然后设置为指定的变形,一步完成。
-
-> 这个方法不会覆盖当前的变换矩阵，会多次叠加变换。
+> 从根本上来说，该方法是取消了当前变形,然后设置为指定的变形,一步完成。这个方法不会覆盖当前的变换矩阵，会多次叠加变换。
 
 ```js
 ctx.setTransform(a, b, c, d, e, f);
@@ -291,7 +289,7 @@ var myImageData = ctx.getImageData(left, top, width, height);
 
 这个方法会返回一个 `ImageData` 对象，它代表了画布区域的对象数据，此画布的四个角落分别表示为 `(left, top)`, `(left + width, top)`, `(left, top + height)`, 以及 `(left + width, top + height)` 四个点。这些坐标点被设定为画布坐标空间元素。
 
-> 任何在画布以外的元素都会被返回成一个透明黑的 `ImageData` 对像。
+任何在画布以外的元素都会被返回成一个透明黑的 `ImageData` 对像。
 
 > [demo](../canvas/animate/imagedata.html)
 
@@ -303,9 +301,159 @@ ctx.putImageData(myImageData, dx, dy);
 
 > [demo](../canvas/animate/imagedata_2.html)
 
+### 二.保存图片
+
+#### 1.`canvas.toDataURL()`
+
+返回一个包含图片展示的 data URI 。可以使用 `type` 参数其类型，默认为 PNG 格式。图片的分辨率为 96dpi。
+
+- 如果画布的高度或宽度是 0，那么会返回字符串 “`data:,`”。
+- 如果传入的类型非 “`image/png`”，但是返回的值以 “`data:image/png`” 开头，那么该传入的类型是不支持的。
+- Chrome支持 “`image/webp`” 类型。
+
+```js
+canvas.toDataURL(type, encoderOptions);
+```
+
+- `type` 【可选】
+  - 图片格式，默认为 `image/png`；
+- `encoderOptions` 【可选】
+  - 在指定图片格式为 `image/jpeg` 或 `image/webp` 的情况下，可以从 0 到 1 的区间内选择图片的质量（1 表示最好品质，0 基本不被辨析但有比较小的文件大小）。如果超出取值范围，将会使用默认值 0.92。其他参数会被忽略。
+
+> 当你从画布中生成了一个数据链接，例如，你可以将它用于任何 `<image>` 元素，或者将它放在一个有 `download` 属性的超链接里用于保存到本地。`jpeg` 默认黑色背景。
+
+#### 2.`canvas.toBlob(callback, type, encoderOptions)`
+
+创造 `Blob` 对象，用以展示 canvas 上的图片；这个图片文件可以被缓存或保存到本地，由用户代理端自行决定。如不特别指明，图片的类型默认为 `image/png`，分辨率为 96dpi。
+
+```js
+canvas.toBlob(callback, type, encoderOptions);
+```
+
+- `callback`
+  - 回调函数，可获得一个单独的 `Blob` 对象参数。
+- `type` 【可选】
+  - `DOMString` 类型，指定图片格式，默认格式为 `image/png`。
+- `encoderOptions` 【可选】
+  - `Number` 类型，值在 0 与 1 之间，当请求图片格式为 `image/jpeg` 或者 `image/webp` 时用来指定图片展示质量。如果这个参数的值不在指定类型与范围之内，则使用默认值（0.92），其余参数将被忽略。
 
 ## 点击区域和无障碍访问
 
+### 一.内容兼容
+
+`<canvas>` 标签只是一个位图，它并不提供任何已经绘制在上面的对象的信息。 canvas 的内容不能像语义化的 HTML 一样暴露给一些协助工具。一般来说，应该避免在交互型的网站或者 App 上使用 canvas。
+
+### 二.ARIA 规则
+
+Accessible Rich Internet Applications (ARIA) 定义了让 Web 内容和 Web 应用更容易被有身体缺陷的人获取的办法。可以用 ARIA 属性来描述 canvas 元素的行为和存在目的。
+
+ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其适用于 HTML。`role` 属性定义了对象的通用类型（例如文章、警告，或幻灯片）。额外的 ARIA 属性提供了其他有用的特性，例如表单的描述或进度条的当前值。
+
+### 三.点击区域
+
+判断鼠标坐标是否在 canvas 上一个特定区域里一直是个有待解决的问题。 hit region API 让你可以在 canvas 上定义一个区域，这让无障碍工具获取 canvas 上的交互内容成为可能。它能让你更容易地进行点击检测并把事件转发到 DOM 元素去。这个 API 有以下三个方法：
+
+- `CanvasRenderingContext2D.addHitRegion()`
+  - 在 canvas 上添加一个点击区域。
+- `CanvasRenderingContext2D.removeHitRegion()`
+  - 从 canvas 上移除指定 id 的点击区域。
+- `CanvasRenderingContext2D.clearHitRegions()`
+  - 移除 canvas 上的所有点击区域。
+
+> 均已废弃。慎用！
+
+### 四.焦点圈
+
+当用键盘控制时，焦点圈是一个能帮我们在页面上快速导航的标记。要在 canvas 上绘制焦点圈，可以使用 `drawFocusIfNeeded` 属性。
+
+#### 1.`ctx.drawFocusIfNeeded()`
+
+（如果给定的元素获取了焦点）用来给当前路径或特定路径绘制焦点。
+
+```js
+ctx.drawFocusIfNeeded(element);
+ctx.drawFocusIfNeeded(path, element);
+```
+
+#### 2.`ctx.scrollPathIntoView()` :mag:Experimental
+
+把当前的路径或者一个给定的路径滚动到显示区域内。
+
+```js
+ctx.scrollPathIntoView();
+ctx.scrollPathIntoView(path);
+```
+
 ## 优化
 
-## 终曲
+`<canvas>` 元素是众多广泛使用的网络2D图像渲染标准之一。它被广泛用于游戏及复杂的图像可视化中。然而，随着网站和应用将 canvas 画布推至极限，性能开始成为问题。
+
+**1.在离屏 canvas 上预渲染相似的图形或重复的对象**
+
+如果发现自己在每个动画帧上重复了一些相同的绘制操作，请考虑将其分流到屏幕外的画布上。然后，可以根据需要频繁地将屏幕外图像渲染到主画布上，而不必首先重复生成该图像的步骤。
+
+**2.避免浮点数的坐标点，用整数取而代之**
+
+当画一个没有整数坐标点的对象时会发生子像素渲染。浏览器为了达到抗锯齿的效果会做额外的运算。为了避免这种情况，请保证在你调用 `drawImage()` 函数时，用 `Math.floor()` 函数对所有的坐标点取整。
+
+**3.不要在用 `drawImage` 时缩放图像**
+
+在离屏 canvas 中缓存图片的不同尺寸，而不要用 `drawImage()` 去缩放它们。
+
+**4.使用多层画布去画一个复杂的场景**
+
+在应用程序中，如果会发现某些对象需要经常移动或更改，而其他对象则保持相对静态。在这种情况下，可能的优化是使用多个 `<canvas>` 元素对项目进行分层。
+
+**5.用 CSS 设置大的背景图**
+
+如果像大多数游戏那样，有一张静态的背景图，用一个静态的 `<div>` 元素，结合 `background` 特性，以及将它置于画布元素之后。这么做可以避免在每一帧在画布上绘制大图。
+
+**6.用 CSS `transforms` 特性缩放画布**
+
+CSS `transforms` 使用 GPU，因此速度更快。 最好的情况是不直接缩放画布，或者具有较小的画布并按比例放大，而不是较大的画布并按比例缩小。
+
+**7.关闭透明度**
+
+如果游戏使用画布而且不需要透明，当使用 `HTMLCanvasElement.getContext()` 创建一个绘图上下文时把 `alpha` 选项设置为 `false` 。这个选项可以帮助浏览器进行内部优化。
+
+```js
+var ctx = canvas.getContext('2d', { alpha: false });
+```
+
+**8.将画布的函数调用集合到一起**
+
+例如，画一条折线，而不要画多条分开的直线。
+
+**9.避免不必要的画布状态改变**
+
+**10.渲染画布中的不同点，而非整个新状态**
+
+**11.尽可能避免 `shadowBlur` 特性**
+
+**12.尽可能避免 `text rendering`**
+
+**13.尝试不同的方法来清除画布**
+
+`clearRect()` vs. `fillRect()` vs. 调整 canvas 大小。
+
+**14.使用 `window.requestAnimationFrame()` 而非 `window.setInterval()`**
+
+**15.谨慎使用大型物理库**
+
+## 安全性和“被污染”的 canvas
+
+由于在 `<canvas>` 位图中的像素可能来自多种来源，包括从其他主机检索的图像或视频，因此不可避免的会出现安全问题。
+
+尽管不通过 CORS 就可以在 `<canvas>` 中使用其他来源的图片，但是这会污染画布，并且不再认为是安全的画布，这将可能在 `<canvas>` 检索数据过程中引发异常。
+
+如果从外部引入的 HTML `<img>` 或 SVG `<svg>` ，并且图像源不符合规则，将会被阻止从 `<canvas>` 中读取数据。
+
+在"被污染"的画布中调用以下方法将会抛出安全错误：
+
+- 在 `<canvas>` 的上下文上调用 `getImageData()`；
+- 在 `<canvas>` 上调用 `toBlob()`；
+- 在 `<canvas>` 上调用 `toDataURL()`。
+
+这种机制可以避免未经许可拉取远程网站信息而导致的用户隐私泄露。
+
+> [more](https://developer.mozilla.org/zh-CN/docs/Web/HTML/CORS_enabled_image)

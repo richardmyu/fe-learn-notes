@@ -18,7 +18,7 @@
 
   <script>
     const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false });
     let raf;
     let running = false;
 
