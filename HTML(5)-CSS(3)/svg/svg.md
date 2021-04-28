@@ -596,16 +596,35 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 如果没有给出焦点，将认为该点与中心点的位置一致。若焦点在渐变圆圈的外面，渐变将不能正确呈现。
 
-> [gradient_radial demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_radial.svg.svg)
-> [gradient_radial demo-2](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_radial_2.svg.svg)
+> [gradient_radial demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_radial.svg)
+> [gradient_radial demo-2](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_radial_2.svg)
 
-### spreadMethod
+### `spreadMethod`
 
+控制了当渐变到达终点的行为，但是此时该对象尚未被填充颜色。
 
+这个属性可以有三个值：
 
+- `pad` 【默认值】当渐变到达终点时，最终的偏移颜色被用于填充对象剩下的空间；(1,2,2,2...)
+- `reflect` 让渐变一直持续下去，不过它的效果是与渐变本身是相反的，以 100% 偏移位置的颜色开始，逐渐偏移到 0% 位置的颜色，然后再回到 100% 偏移位置的颜色；(1,2,2,1..)
+- `repeat` 也会让渐变继续，但是它不会像 `reflect` 那样反向渐变，而是跳回到最初的颜色然后继续渐变；(1,2,1,2...)
 
+> 对线性渐变似乎没有影响。
 
+> [gradient_spreadmethod demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_spreadmethod.svg)
 
+### `gradientUnits`
+
+两种渐变都有一个叫做 `gradientUnits`（渐变单元）的属性，它描述了用来描述渐变的大小和方向的单元系统。
+
+该属性有两个值：
+
+- `userSpaceOnUse`
+- `objectBoundingBox`【默认值】
+
+## 图案
+
+`patterns`（图案）是 SVG 中用到的最让人混淆的填充类型之一，它的功能非常强大。跟渐变一样，`<pattern>` 需要放在 SVG 文档的 `<defs>` 内部。
 
 
 ---
