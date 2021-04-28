@@ -387,8 +387,6 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 指明路径的转角处使用的形状或者绘制的基础形状。
 
-作为显示属性，该属性能被应用到任何元素，但只对这 9 种元素有效： `<altGlyph>`, `<path>`, `<polygon>`, `<polyline>`, `<rect>`, `<text>`, `<textPath>`, `<tref>`, `<tspan>`。
-
 - `miter`【默认值】表示用方形画笔在连接处形成尖角；
 - `round` 表示用圆角连接，实现平滑效果；
 - `bevel` 连接处会形成一个斜接；
@@ -403,6 +401,212 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 值是一个 `<length>` 和 `<percentage>` 数列，数与数之间用逗号或者空白隔开，指定短划线和缺口的长度。如果提供了奇数个值，则这个值的数列重复一次，从而变成偶数个值。因此，`5,3,2` 等同于 `5,3,2,5,3,2`。
 
 > [stroke-dasharray demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke_dasharray.svg)
+
+**`fill-rule`**
+
+是一个外观属性，它定义了用来确定一个多边形内部区域的算法。
+
+- `nonzero` 【默认值】
+- `evenodd`
+
+> [stroke-dasharray demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke_rule.svg)
+
+### 使用 CSS
+
+> [SVG 规范](https://www.w3.org/TR/SVG/propidx.html) 将属性区分成 `properties` 和其他 `attributes`，前者是可以用 CSS 设置的，后者不能。
+
+除了定义对象的属性外，也可以通过 CSS 来样式化填充和描边。语法和在 HTML 里使用 CSS 一样，只不过要把 `background-color`、`border` 改成 `fill` 和 `stroke`。
+
+注意，不是所有的属性都能用 CSS 来设置。上色和填充的部分一般是可以用 CSS 来设置的，比如 `fill`，`stroke`，`stroke-dasharray` 等，但是不包括渐变和图案等功能。另外，`width`、`height`，以及路径的命令等等，都不能用 CSS 设置。
+
+> 一些可以在 HTML 里使用的 CSS，在 svg 里可能无法正常工作，比如 `before` 和 `after` 伪类。
+
+也可以定义一个外部的样式表，但是要符合 [normal XML-stylesheet syntax] 的 CSS 规则:
+
+```xml
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type="text/css" href="style.css"?>
+
+<svg width="200" height="150" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <rect height="10" width="10" id="MyRect"/>
+</svg>
+```
+
+`style.css` 看起来就像这样：
+
+```css
+#MyRect {
+  fill: red;
+  stroke: black;
+}
+```
+
+> [use_css demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke_use_css.svg.svg)
+
+## 渐变
+
+有两种类型的渐变：线性渐变和径向渐变。你必须给渐变内容指定一个 `id` 属性，否则文档内的其他元素就不能引用它。为了让渐变能被重复使用，渐变内容需要定义在 `<defs>` 标签内部，而不是定义在形状上面。
+
+### 线性渐变
+
+线性渐变沿着直线改变颜色，要插入一个线性渐变，你需要在 SVG 文件的 `defs` 元素内部，创建一个 `<linearGradient>` 节点。
+
+```xml
+<svg width="120" height="240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+      <linearGradient id="Gradient1">
+        <stop class="stop1" offset="0%"/>
+        <stop class="stop2" offset="50%"/>
+        <stop class="stop3" offset="100%"/>
+      </linearGradient>
+      <linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="red"/>
+        <stop offset="50%" stop-color="black" stop-opacity="0"/>
+        <stop offset="100%" stop-color="blue"/>
+      </linearGradient>
+      <!-- style -->
+      <style type="text/css"><![CDATA[
+        #rect1 { fill: url(#Gradient1); }
+        .stop1 { stop-color: red; }
+        .stop2 { stop-color: black; stop-opacity: 0; }
+        .stop3 { stop-color: blue; }
+      ]]></style>
+  </defs>
+
+  <!-- id 引用 -->
+  <rect id="rect1" x="10" y="10" rx="15" ry="15" width="100" height="100"/>
+  <!-- fill 引用 -->
+  <rect x="10" y="120" rx="15" ry="15" width="100" height="100" fill="url(#Gradient2)"/>
+
+</svg>
+```
+
+线性渐变内部有几个 `<stop>` 结点，这些结点通过指定位置的 `offset`（偏移）属性和 `stop-color`（颜色中值）属性来说明在渐变的特定位置上应该是什么颜色；可以直接指定这两个属性值，也可以通过 CSS 来指定他们的值，该例子中混合使用了这两种方法。
+
+偏移量应该始终从 0% 开始（或者 0 也可以，百分号可以扔掉），到 100%（或 1）结束。如果 `stop` 设置的位置有重合，将使用 XML 树中较晚设置的值。而且，类似于填充和描边，你也可以指定属性 `stop-opacity` 来设置某个位置的半透明度（同样也可以设置 `rgba` 值）。
+
+```xml
+<stop offset="100%" stop-color="yellow" stop-opacity="0.5"/>
+```
+
+使用渐变时，我们需要在一个对象的属性 `fill` 或属性 `stroke` 中引用它。
+
+渐变的方向可以通过两个点来控制，它们分别是属性 `x1`、`x2`、`y1` 和 `y2`，这些属性定义了渐变路线走向。渐变色默认是水平方向的，但是通过修改这些属性，就可以旋转该方向。
+
+```xml
+<linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1">
+```
+
+也可以在渐变上使用 `xlink:href` 属性。如果使用了该属性时，一个渐变的属性和颜色中值（stop）可以被另一个渐变包含引用。
+
+```xml
+
+```
+<linearGradient id="Gradient1">
+  <stop class="stop1" offset="0%"/>
+  <stop class="stop2" offset="50%"/>
+  <stop class="stop3" offset="100%"/>
+</linearGradient>
+
+<linearGradient
+    id="Gradient3"
+    x1="0"
+    x2="1"
+    y1="0"
+    y2="1"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xlink:href="#Gradient1"
+  >
+  <!-- 可以直接使用 stopx -->
+  <stop class="stop1" offset="0%" />
+  <stop class="stop2" offset="50%" />
+  <stop class="stop3" offset="100%" />
+</linearGradient>
+
+<style type="text/css">
+  <![CDATA[
+    #rect1 { fill: url(#Gradient1); }
+    .stop1 { stop-color: red; }
+    .stop2 { stop-color: black; stop-opacity: 0; }
+    .stop3 { stop-color: blue; }
+  ]]>
+</style>
+
+> [gradient_linear demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_linear.svg.svg)
+
+### 径向渐变
+
+径向渐变与线性渐变相似，只是它是从一个点开始发散绘制渐变。创建径向渐变需要在文档的 `defs` 中添加一个 `<radialGradient>` 元素。
+
+```xml
+<?xml version="1.0" standalone="no"?>
+<svg width="120" height="240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+      <radialGradient id="RadialGradient1">
+        <stop offset="0%" stop-color="red"/>
+        <stop offset="100%" stop-color="blue"/>
+      </radialGradient>
+      <radialGradient id="RadialGradient2" cx="0.25" cy="0.25" r="0.25">
+        <stop offset="0%" stop-color="red"/>
+        <stop offset="100%" stop-color="blue"/>
+      </radialGradient>
+  </defs>
+
+  <rect x="10" y="10" rx="15" ry="15" width="100" height="100" fill="url(#RadialGradient1)"/>
+  <rect x="10" y="120" rx="15" ry="15" width="100" height="100" fill="url(#RadialGradient2)"/>
+
+</svg>
+```
+
+跟线性渐变一样，`<radialGradient>` 节点可以有多个属性来描述其位置和方向，但是它更加复杂。径向渐变也是通过两个点来定义其边缘位置：
+
+- 第一个点定义了渐变结束所围绕的圆环，描述了渐变边缘位置，需要一个中心点，由 `cx` 和 `cy` 属性及半径 `r` 来定义；
+- 第二个点被称为 **焦点**，描述了渐变的中心，由 `fx` 和 `fy` 属性定义。
+
+```XML
+<?xml version="1.0" standalone="no"?>
+
+<svg width="120" height="120" version="1.1"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+      <radialGradient id="Gradient"
+            cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+        <stop offset="0%" stop-color="red"/>
+        <stop offset="100%" stop-color="blue"/>
+      </radialGradient>
+  </defs>
+
+  <rect x="10" y="10" rx="15" ry="15" width="00" height="100"
+        fill="url(#Gradient)" stroke="black" stroke-width="2"/>
+
+  <circle cx="60" cy="60" r="50" fill="transparent" stroke="white" stroke-width="2"/>
+
+  <!-- cx = fx*width + x -->
+  <!-- cx = 100*0.25 + 10 = 35 -->
+  <circle cx="35" cy="35" r="2" fill="white" stroke="white"/>
+
+  <!-- cx = 100*0.5 + 10 = 60-->
+  <circle cx="60" cy="60" r="2" fill="white" stroke="white"/>
+
+  <text x="38" y="40" fill="white" font-family="sans-serif" font-size="10pt">(fx,fy)</text>
+  <text x="63" y="63" fill="white" font-family="sans-serif" font-size="10pt">(cx,cy)</text>
+
+</svg>
+```
+
+如果没有给出焦点，将认为该点与中心点的位置一致。若焦点在渐变圆圈的外面，渐变将不能正确呈现。
+
+> [gradient_radial demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_radial.svg.svg)
+> [gradient_radial demo-2](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_radial_2.svg.svg)
+
+### spreadMethod
+
+
+
+
+
+
+
 
 ---
 
