@@ -652,8 +652,11 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 关于 `pattern` 容易混淆的事是，`pattern` 定义了一个单元系统以及他们的大小。在 `pattern` 元素上定义 `width` 和 `height` 属性，可用于描述在重复下一个图案之前应该跨过多远。如果想要在绘制时偏移矩形的开始点，也可以使用 `x` 和 `y` 属性。
 
-> [patterns demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/patterns.svg)
+同样的 `pattern` 也有一个属性 `patternUnits` 用于描述我们使用的属性单元。这同之前使用的 `objectBoundingBox` 默认值一样，所以当一个值为 1 时，它被缩放到应用 `pattern` 对象的宽高值。
 
+与渐变不同，`pattern` 有第二个属性 `patternContentUnits`，它描述了 `pattern` 元素基于基本形状使用的单元系统，这个属性默认值为 `userSpaceOnUse`，与 `patternUnits` 属性相反，这意味着除非你至少指定其中一个属性值（`patternContentUnits` 或 `patternUnits`），否则在 `pattern` 中绘制的形状将与 `pattern` 元素使用的坐标系不同，当手写这部分时会容易混淆。
+
+> [patterns demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/patterns.svg)
 
 ---
 
