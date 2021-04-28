@@ -626,6 +626,34 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 `patterns`（图案）是 SVG 中用到的最让人混淆的填充类型之一，它的功能非常强大。跟渐变一样，`<pattern>` 需要放在 SVG 文档的 `<defs>` 内部。
 
+```xml
+<defs>
+  <linearGradient id="Gradient1">
+    <stop offset="5%" stop-color="white"/>
+    <stop offset="95%" stop-color="blue"/>
+  </linearGradient>
+  <linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="5%" stop-color="red"/>
+    <stop offset="95%" stop-color="orange"/>
+  </linearGradient>
+
+  <pattern id="Pattern" x="0" y="0" width=".25" height=".25">
+    <rect x="0" y="0" width="50" height="50" fill="skyblue"/>
+    <rect x="0" y="0" width="25" height="25" fill="url(#Gradient2)"/>
+    <circle cx="25" cy="25" r="20" fill="url(#Gradient1)" fill-opacity="0.5"/>
+  </pattern>
+
+</defs>
+
+<rect fill="url(#Pattern)" stroke="black" x="0" y="0" width="200" height="200"/>
+```
+
+在 `pattern` 元素内部可以包含任何之前包含过的其它基本形状，并且每个形状都可以使用任何（有效的）样式，包括渐变和半透明。
+
+关于 `pattern` 容易混淆的事是，`pattern` 定义了一个单元系统以及他们的大小。在 `pattern` 元素上定义 `width` 和 `height` 属性，可用于描述在重复下一个图案之前应该跨过多远。如果想要在绘制时偏移矩形的开始点，也可以使用 `x` 和 `y` 属性。
+
+> [patterns demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/patterns.svg)
+
 
 ---
 
