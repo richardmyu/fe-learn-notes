@@ -67,19 +67,89 @@ SVG 文件有两种形式。
 
 在没有进一步规范说明的情况下，1 个用户单位等同于 1 个屏幕单位。要明确改变这种设定，SVG 里有多种方法。
 
+### `viewBox`
+
+允许指定一个给定的一组图形伸展以适应特定的容器元素。
+
 ```xml
 <svg width="200" height="200" viewBox="0 0 100 100">
 ```
 
 这里定义的画布尺寸是 `200*200px`。但是，`viewBox` 属性定义了画布上可以显示的区域：从 `(0,0)` 点开始，`100宽*100高` 的区域。这个 `100*100` 的区域，会放到 `200*200` 的画布上显示。于是就形成了放大两倍的效果。
 
+`viewBox` 属性的值是一个包含 4 个参数的列表 `min-x`, `min-y`, `width` and `height`，以空格或者逗号分隔开，在用户空间中指定一个矩形区域映射到给定的元素。
+
+> `min-x/min-y` 实测是视图偏移量。正数往负方向偏移 `min-x/min-y*放缩倍数`；负数则往正方向偏移 `min-x/min-y*放缩倍数`。
+
+这个属性会受到 `preserveAspectRatio` 的影响。
+
+> `width` 或者 `height` 的值，小于或等于 0 的情况下，这个元素将不会被渲染出来。
+
 用户单位和屏幕单位的映射关系被称为用户坐标系统。除了缩放之外，坐标系统还可以旋转、倾斜、翻转。。在定义了具体尺寸单位的 SVG 中，比如单位是 “`cm`” 或 “`in`”，最终图形会以实际大小的1比1比例呈现。
 
 > [viewbox demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/viewbox.svg)
 
+### `preserveAspectRatio`
+
+通常我们使用 `viewBox` 属性时, 希望图形拉伸占据整个视口。在其他情况下，为了保持图形的长宽比，必须使用统一的缩放比例。`preserveAspectRatio` 属性表示是否强制进行统一缩放。
+
+对于支持该属性的所有元素，除了 `<image>` 元素之外，`preserveAspectRatio` 只适用于在同一元素上为 `viewBox` 提供的值。对于这些元素，如果没有提供属性 `viewBox` ，则忽略了 `preserveAspectRatio`。
+
+对于 `<image>` 元素, `preserveAspectRatio` 指示引用的图像应该如何与参考矩形进行匹配，以及是否应该相对于当前用户坐标系保留参考图像的长宽比。
+
+**`<align>`**
+
+`<align>` 属性值表示是否强制统一缩放，当 SVG 的 `viewbox` 属性与视图属性宽高比不一致时使用。
+
+> 注意：如果 `<align>` 的值是 `none` ，则 `<meetOrSlice>` 属性的值将会被忽略。
+
+`<align>` 属性的值一定是下列的值之一:
+
+- `none` 不会进行强制统一缩放；如果需要，会缩放指定元素的图形内容，使元素的边界完全匹配视图矩形。
+>
+- `xMinYMin` min-x = (View)min-X / min-y = (View)min-Y
+>
+- `xMidYMin` mid-x = (View)mid-X / min-y = (View)min-Y
+>
+- `xMaxYMin` min-x + (EL)width = (View)max-X / min-y = (View)min-Y
+>
+- `xMinYMid` min-x = (View)min-X / mid-y = (View)mid-Y
+>
+- `xMidYMid` mid-x = (View)mid-X / mid-y = (View)mid-Y 【默认值】
+>
+- `xMaxYMid` min-x + (EL)width = (View)max-X / mid-y = (View)mid-Y
+>
+- `xMinYMax` min-x = (View)min-X / min-y + (EL)height = (View)max-Y
+>
+- `xMidYMax` mid-x = (View)mid-X / min-y + (EL)height = (View)max-Y
+>
+- `xMaxYMax` mid-x + (EL)width = (View)max-X / min-y + (EL)height = (View)max-Y
+
+**`<meetOrSlice>`**
+
+`<meetOrSlice>` 是可选的，如果提供的话，与 `<align>` 间隔一个或多个的空格。
+
+参数所选值必须是以下值之一:
+
+- `meet` (默认值) - 图形将缩放到:
+  - 宽高比将会被保留
+  - 整个 SVG 的 `viewbox` 在视图范围内是可见的
+  - 尽可能的放大 SVG 的 `viewbox`，同时仍然满足其他的条件。
+
+在这种情况下，如果图形的宽高比和视图窗口不匹配，则某些视图将会超出 `viewbox` 范围（即 SVG 的 `viewbox` 视图将会比可视窗口小）。
+
+- `slice` - 图形将缩放到:
+  - 宽高比将会被保留
+  - 整个视图窗口将覆盖 `viewbox`
+  - SVG 的 `viewbox` 属性将会被尽可能的缩小，但是仍然符合其他标准。
+
+在这种情况下，如果 SVG 的 `viewbox` 宽高比与可视区域不匹配，则 `viewbox` 的某些区域将会延伸到视图窗口外部（即 SVG 的 `viewbox` 将会比可视窗口大）。
+
+> [preserveAspectRatio demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/viewbox_preserveAspectRatio.html)
+
 ## 基本形状
 
-要想插入一个形状，你可以在文档中创建一个元素。不同的元素对应着不同的形状，并且使用不同的属性来定义图形的大小和位置。有一些形状因为可以由其他的形状创建而略显冗余， 但是它们用起来方便，可让我们的 SVG 文档简洁易懂。
+要想插入一个形状，你可以在文档中创建一个元素。不同的元素对应着不同的形状，并且使用不同的属性来定义图形的大小和位置。有一些形状因为可以由其他的形状创建而略显冗余，但是它们用起来方便，可让我们的 SVG 文档简洁易懂。
 
 > 默认黑色(#000)。
 

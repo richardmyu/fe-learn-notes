@@ -79,10 +79,65 @@ tspan元素有以下的自定义属性：
 </g>
 ```
 
+### 平移
 
+`translate(<x> [<y>])` 变换函数通过 `x` 向量和 `y` 向量移动元素 (i.e. `xnew = xold + <x>`, `ynew = yold + <y>`)。如果 `y` 向量没有被提供，那么默认为 0。
 
+> [translate demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_translate.svg)
 
+### 旋转
 
+`rotate(<a> [<x> <y>])` 变换方法通过一个给定角度对一个指定的点进行旋转变换。如果 `x` 和 `y` 没有提供，那么默认为当前元素坐标系原点。否则，就以 `(x,y)` 为原点进行旋转。
 
+> [rotate demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_rotate.svg)
 
+### 斜切
 
+`skewX(<a>)` 变换函数指定了沿 `x` 轴倾斜 `a°` 的倾斜变换。
+`skewY(<a>)` 变换函数指定了沿 `y` 轴倾斜 `a°` 的倾斜变换。
+
+> [skewX demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_skewX.svg)
+> [skewY demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_skewY.svg)
+
+### 缩放
+
+`scale(<x> [<y>])` 变换函数通过 `x` 和 `y` 指定一个 **等比例放大缩小** 操作。如果 `y` 没有被提供，那么假定为等同于 `x`。
+
+> 等比例放大缩小：除了自身几何大小放大缩小，其坐标 `(x,y)` 也会等比放缩。
+
+> [scale demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_scale.svg)
+
+### `matrix`
+
+`matrix(<a> <b> <c> <d> <e> <f>)` 函数以六个值的变换矩阵形式指定一个  `transform`。
+
+```xml
+<rect x="10" y="10" width="30" height="20" fill="green" />
+  <!--
+  In the following example we are applying the matrix:
+  [a c e]    [3 -1 30]
+  [b d f] => [1  3 40]
+  [0 0 1]    [0  0  1]
+
+  which transform the rectangle as such:
+
+  top left corner: oldX=10 oldY=10
+  newX = a * oldX + c * oldY + e = 3 * 10 - 1 * 10 + 30 = 50
+  newY = b * oldX + d * oldY + f = 1 * 10 + 3 * 10 + 40 = 80
+
+  top right corner: oldX=40 oldY=10
+  newX = a * oldX + c * oldY + e = 3 * 40 - 1 * 10 + 30 = 140
+  newY = b * oldX + d * oldY + f = 1 * 40 + 3 * 10 + 40 = 110
+
+  bottom left corner: oldX=10 oldY=30
+  newX = a * oldX + c * oldY + e = 3 * 10 - 1 * 30 + 30 = 30
+  newY = b * oldX + d * oldY + f = 1 * 10 + 3 * 30 + 40 = 140
+
+  bottom right corner: oldX=40 oldY=30
+  newX = a * oldX + c * oldY + e = 3 * 40 - 1 * 30 + 30 = 120
+  newY = b * oldX + d * oldY + f = 1 * 40 + 3 * 30 + 40 = 170
+  -->
+
+  <!-- e,f 分别表示 x,y 方向的偏移量 -->
+<rect x="10" y="10" width="30" height="20" fill="red" transform="matrix(3 1 -1 3 30 40)" />
+```
