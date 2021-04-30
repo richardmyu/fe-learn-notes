@@ -141,3 +141,17 @@ tspan元素有以下的自定义属性：
   <!-- e,f 分别表示 x,y 方向的偏移量 -->
 <rect x="10" y="10" width="30" height="20" fill="red" transform="matrix(3 1 -1 3 30 40)" />
 ```
+
+> [matrix demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_matrix.svg)
+
+### 坐标系统上的效果
+
+如果使用了变形，你会在元素内部建立了一个新的坐标系统，应用了这些变形，你为该元素和它的子元素指定的单位可能不是 1:1 像素映射。但是依然会根据这个变形进行歪曲、斜切、转换、缩放操作。
+
+> [coordinate demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_coordinate.svg)
+
+### SVG嵌在SVG内部
+
+SVG 允许无缝嵌入别的 `svg` 元素。因此你可以利用内部 `svg` 元素的属性 `viewBox`、属性 `width` 和属性 `height` 简单创建一个新的坐标系统。
+
+> [embed demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_embed.svg)
