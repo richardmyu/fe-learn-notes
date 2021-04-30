@@ -232,3 +232,46 @@ Web 开发工具箱中有一个很有用的工具是 `display:none`。它虽然�
 
 ## 其它 SVG 内容
 
+### 嵌入光栅图像
+
+像在 HTML 中的 `img` 元素，SVG 有一个 `image` 元素，用于同样的目的。你可以利用它嵌入任意光栅（以及矢量）图像。
+
+**`<image>`**
+
+SVG 文档中的 SVG 元素包含图像信息。它表现为图像文件或者其他 SVG 文件。
+
+SVG 图像格式转换软件支持 JPEG、PNG 格式，是否支持动图 GIF 不明确。
+
+SVG 文件是这样的一种图像：不被当做外部资源加载，不可以用 `:visited` 样式，不能有交互。
+
+使用动态 SVG 元素，可以用 `<use>` 引入外部的 URL。使用 SVG 文件并添加 scripts 在里面，可以用 `<object>` 放在 `<foreignObject>`中。
+
+> 注意：HTML 规范中定义 `<image>` 和 `<img>` 在解析时是等效的。这种规范只适用于 SVG 文件或 SVG 区块内。
+
+嵌入的图像变成一个普通的 SVG 元素。这意味着，你可以在其内容上用剪切、遮罩、滤镜、旋转以及其它 SVG 工具：
+
+```xml
+<svg version="1.1"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="200" height="200">
+  <image x="90" y="-65" width="128" height="146" transform="rotate(45)"
+     xlink:href="https://developer.mozilla.org/static/img/favicon144.png"/>
+</svg>
+```
+
+> [image demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/image.svg)
+
+### 嵌入任意 XML
+
+因为 SVG 是一个 XML 应用，所以总是可以在 SVG 文档的任何位置嵌入任意 XML。但是没有必要定义周围的 SVG 需要怎样反作用于这个内容。实际上，在一个遵从的浏览者中，根本没有反作用的方法，数据将简单被忽略。
+
+因此特地在 SVG中 添加了 `<foreignObject>` 元素。它的唯一的目的是作为其它标记的容器和 SVG 样式属性的载体（更突出的 `width/height` 和 `x/y` 用来定义该对象占用的空间/位置）。
+
+`foreignObject` 元素允许包含来自不同的 XML 命名空间的元素。在浏览器的上下文中，很可能是 XHTML / HTML。
+
+> 注意：`foreignObject` 元素的内容是能被浏览器加工的。如果有更长的文本，该 HTML 布局比 SVG `text` 元素更适合。
+
+因为 `foreignObject` 是一个 SVG 元素，所以可以像用图像那样，使用任何 SVG 的精华，它将被应用到它的内容。
+
+> [foreignObject demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/foreignObject.svg)
+
