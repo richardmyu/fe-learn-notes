@@ -155,3 +155,80 @@ tspan元素有以下的自定义属性：
 SVG 允许无缝嵌入别的 `svg` 元素。因此你可以利用内部 `svg` 元素的属性 `viewBox`、属性 `width` 和属性 `height` 简单创建一个新的坐标系统。
 
 > [embed demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_embed.svg)
+
+## 剪切和遮罩
+
+### 剪切
+
+SVG 元素 `<clipPath>` 定义一条剪切路径，可作为其他元素的 `clip-path` 属性的值。
+
+```xml
+<defs>
+  <clipPath id="cut-off-bottom">
+    <rect x="0" y="0" width="200" height="100" />
+  </clipPath>
+</defs>
+
+<circle cx="100" cy="100" r="100" clip-path="url(#cut-off-bottom)" />
+```
+
+```xml
+/* 如果浏览器支持几何属性 r，可以加一点 css */
+
+@keyframes openYourHeart {from {r: 0} to {r: 60px}}
+
+#myClip circle {
+  animation: openYourHeart 15s infinite;
+}
+```
+
+属性 `clip-path` 引用了一个带单个 `rect` 元素的 `<clipPath>` 元素。它内部的这个矩形将把画布的上半部分涂黑。注意，`clipPath` 元素经常放在一个 `defs` 元素内。
+
+然而，该 `rect` 不会被绘制。它的象素数据将用来确定：圆形的哪些像素需要最终呈现出来。因为矩形只覆盖了圆形的上半部分，所以下半部分将消失了。
+
+对于这个剪切，`clipPath` 内部的每个路径都会被检查到、与它的描边属性一起被估值、变形。然后目标的位于 `clipPath` 内容的结果的透明度区域的每一块都不会呈现。颜色、不透明度都没有这种效果，因为它们不能让一部分彻底消失。
+
+从概念上讲，剪切路径等于给引用元素设置了一个自定义的可视区域。因此，它虽然会影响一个元素的绘制，但不会影响这个元素本身的几何形状，比如被剪切元素（通过 `clip-path` 属性引用了 `<clipPath>` 的元素及其子元素）的包围盒和没有被剪切时相同。
+
+默认情况下，`pointer-events` 不会在被剪切掉的区域（不可见的区域）内触发。举个例子，如果一个半径为 10 的圆形被剪切成半径为 5 的圆形，那么这个圆在半径为 5 以外的区域不会收到 “`click`” 事件。
+
+> [clipping demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/clipping.svg)
+
+### 遮罩
+
+在 SVG 中，可以指一个透明的遮罩层和当前对象合成，形成背景。透明遮罩层可以是任何其他图形对象或者 `<g>` 元素。`mask` 元素用于定义这样的遮罩元素。属性 `mask` 用来引用一个遮罩元素。
+
+```xml
+<defs>
+  <linearGradient id="Gradient">
+    <stop offset="0" stop-color="white" stop-opacity="0" />
+    <stop offset="1" stop-color="white" stop-opacity="1" />
+  </linearGradient>
+  <mask id="Mask">
+    <rect x="0" y="0" width="200" height="200" fill="url(#Gradient)"  />
+  </mask>
+</defs>
+
+<rect x="0" y="0" width="200" height="200" fill="green" />
+<rect x="0" y="0" width="200" height="200" fill="red" mask="url(#Mask)" />
+```
+
+> [mask demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/mask.svg)
+
+### 用 `opacity` 定义透明度
+
+有一个简单方法可以用来为整个元素设置透明度。它就是 `opacity` 属性：
+
+
+```xml
+<rect x="0" y="0" width="100" height="100" opacity=".5" />
+```
+
+填充和描边还有两个属性是 `fill-opacity` 和 `stroke-opacity`，分别用来控制填充和描边的不透明度。需要注意的是描边将绘制在填充的上面。因此，如果你在一个元素上设置了描边透明度，但它同时设有填充，则描边的一半应用填充色，另一半将应用背景色。
+
+Web 开发工具箱中有一个很有用的工具是 `display:none`。它虽然几无悬念，但是依然可以在 SVG 上使用该 CSS 属性，连同 CSS2 定义的 `visibility` 和 `clip` 属性。为了恢复以前设置的 `display:none`，知道这一点很重要：所有的 SVG 元素的初始 `display` 值都是 `inline`。
+
+> [opacity demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/opacity.svg)
+
+## 其它 SVG 内容
+
