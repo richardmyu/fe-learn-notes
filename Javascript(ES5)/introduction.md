@@ -8,15 +8,11 @@
 
 2.《JavaScript 权威指南》David Flanagan
 
-3.[JavaScript 教程（阮一峰）] [old version](https://javascript.ruanyifeng.com/) / [new version](https://wangdoc.com/javascript/index.html)
+3.[JavaScript 教程（阮一峰）](https://wangdoc.com/javascript/index.html)
 
 4.[JavaScript 教程（廖雪峰）](https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000)
 
 5.[JavaScript（MDN）](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
-6.[JavaScript 教程（W3C）](https://www.w3school.com.cn/js/index.asp)
-
-7.[JavaScript 教程](https://www.runoob.com/js/js-tutorial.html)
-
-8.[现代 JavaScript 教程](https://zh.javascript.info/)
+6.[现代 JavaScript 教程](https://zh.javascript.info/)
 

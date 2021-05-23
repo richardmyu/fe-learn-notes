@@ -1,5 +1,7 @@
 # 文件和二进制数据的操作
 
+[TOC]
+
 历史上，JavaScript 无法处理二进制数据。如果一定要处理的话，只能使用 `charCodeAt()` 方法，一个个字节地从文字编码转成二进制数据，还有一种办法是将二进制数据转成 Base64 编码，再进行处理。这两种方法不仅速度慢，而且容易出错。ECMAScript 5 引入了 Blob 对象，允许直接操作二进制数据。
 
 Blob 对象是一个代表二进制数据的基本对象，在它的基础上，又衍生出一系列相关的 API，用来操作文件。
@@ -13,7 +15,62 @@ Blob 对象是一个代表二进制数据的基本对象，在它的基础上，
 
 ---
 
-## 1.Blob 对象
+## 1.ArrayBuffer
+
+与其他语言相比，JavaScript 中的二进制数据是以非标准方式实现的。
+
+基本的二进制对象是 ArrayBuffer —— 对固定长度的连续内存空间的引用。
+
+```js
+let buffer = new ArrayBuffer(16); // 创建一个长度为 16 的 buffer
+alert(buffer.byteLength); // 16
+```
+
+它会分配一个 16 字节的连续内存空间，并用 0 进行预填充。
+
+> **ArrayBuffer 不是某种东西的数组**
+> ArrayBuffer 与 Array 没有任何共同之处：
+> 它的长度是固定的，我们无法增加或减少它的长度。
+> 它正好占用了内存中的那么多空间。
+> 要访问单个字节，需要另一个“视图”对象，而不是 `buffer[index]`。
+
+ArrayBuffer 是一个内存区域。它里面存储了什么？无从判断。只是一个原始的字节序列。
+
+如要操作 ArrayBuffer，我们需要使用“视图”对象。
+
+```js
+let buffer = new ArrayBuffer(16); // 创建一个长度为 16 的 buffer
+
+let view = new Uint32Array(buffer); // 将 buffer 视为一个 32 位整数的序列
+
+alert(Uint32Array.BYTES_PER_ELEMENT); // 每个整数 4 个字节
+
+alert(view.length); // 4，它存储了 4 个整数
+alert(view.byteLength); // 16，字节中的大小
+
+// 让我们写入一个值
+view[0] = 123456;
+
+// 遍历值
+for(let num of view) {
+  alert(num); // 123456，然后 0，0，0（一共 4 个值）
+}
+```
+
+视图对象本身并不存储任何东西。它是一副“眼镜”，透过它来解释存储在 ArrayBuffer 中的字节。
+
+例如：
+
+- `Uint8Array` —— 将 ArrayBuffer 中的每个字节视为 0 到 255 之间的单个数字（每个字节是 8 位，因此只能容纳那么多）。这称为 “8 位无符号整数”。
+- `Uint16Array` —— 将每 2 个字节视为一个 0 到 65535 之间的整数。这称为 “16 位无符号整数”。
+- `Uint32Array` —— 将每 4 个字节视为一个 0 到 4294967295 之间的整数。这称为 “32 位无符号整数”。
+- `Float64Array` —— 将每 8 个字节视为一个 5.0x10-324 到 1.8x10308 之间的浮点数。
+
+因此，一个 16 字节 ArrayBuffer 中的二进制数据可以解释为 16 个“小数字”，或 8 个更大的数字（每个数字 2 个字节），或 4 个更大的数字（每个数字 4 个字节），或 2 个高精度的浮点数（每个数字 8 个字节）。
+
+![](https://zh.javascript.info//article/arraybuffer-binary-arrays/arraybuffer-views.svg)
+
+## 2.Blob 对象
 
 **Blob**（Binary Large Object）对象代表了一段二进制数据，提供了一系列操作接口。其他操作二进制数据的 API（比如 File 对象），都是建立在 Blob 对象基础上的，继承了它的属性和方法。
 
@@ -82,7 +139,9 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 
 在 Ajax 操作中，如果 `xhr.responseType` 设为 `blob`，接收的就是二进制数据。
 
-## 2.FileList 对象
+## 3.TextDecoder 和 TextEncoder
+
+## 4.FileList 对象
 
 FileList 对象针对表单的 `file` 控件。当用户通过 `file` 控件选取文件后，这个控件的 `files` 属性值就是 FileList 对象。它在结构上类似于数组，包含用户选取的多个文件。
 
@@ -110,7 +169,7 @@ function handleFileSelect(evt) {
 
 上面代码的 `handleFileSelect` 是拖放事件的回调函数，它的参数 `evt` 是一个事件对象，该参数的 `dataTransfer.files` 属性就是一个 FileList 对象，里面包含了拖放的文件。
 
-## 3.File API
+## 5.File API
 
 File API 提供 File 对象，它是 FileList 对象的成员，包含了文件的一些元信息，比如文件名、上次改动时间、文件大小和文件类型。
 
@@ -145,7 +204,7 @@ $("#upload-file")[0].files[0];
 // }
 ```
 
-## 4.FileReader API
+## 6.FileReader API
 
 FileReader API 用于读取文件，即把文件内容读入内存。它的参数是 File 对象或 Blob 对象。
 
@@ -288,7 +347,7 @@ function updateProgress(evt) {
 
 读取大文件的时候，可以利用 `Blob` 对象的 `slice` 方法，将大文件分成小段，逐一读取，这样可以加快处理速度。
 
-## 5.综合实例：显示用户选取的本地图片
+## 7.综合实例：显示用户选取的本地图片
 
 假设有一个表单，用于用户选取图片。
 
@@ -350,7 +409,7 @@ document.onpaste = function(e) {
 };
 ```
 
-## 6.URL 对象
+## 8.URL 对象
 
 `URL` 对象用于生成指向 `File` 对象或 `Blob` 对象的 `URL`。
 
