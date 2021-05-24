@@ -70,6 +70,89 @@ for(let num of view) {
 
 ![](https://zh.javascript.info//article/arraybuffer-binary-arrays/arraybuffer-views.svg)
 
+#### 1.1.TypedArray
+
+所有这些视图（`Uint8Array`，`Uint32Array` 等）的通用术语是 TypedArray。它们都享有同一组方法和属性。
+
+> 注意，没有名为 TypedArray 的构造器，它只是表示 ArrayBuffer 上的视图之一的通用总称术语：`Int8Array`，`Uint8Array` 及其他。
+
+当看到 `new TypedArray` 之类的内容时，它表示 `new Int8Array`、`new Uint8Array` 及其他中之一。
+
+**类型化数组** 的行为类似于常规数组：具有索引，并且是可迭代的。
+
+一个类型化数组的构造器（无论是 `Int8Array` 或 `Float64Array`，都无关紧要），其行为各不相同，并且取决于参数类型。
+
+参数有 5 种变体：
+
+```js
+new TypedArray(buffer, [byteOffset], [length]);
+new TypedArray(object);
+new TypedArray(typedArray);
+new TypedArray(length);
+new TypedArray();
+```
+
+1. 如果给定的是 `ArrayBuffer` 参数，则会在其上创建视图。
+
+可选，可以给定起始位置 `byteOffset`（默认为 0）以及 `length`（默认至 buffer 的末尾），这样视图将仅涵盖 `buffer` 的一部分。
+
+2. 如果给定的是 `Array`，或任何类数组对象，则会创建一个相同长度的类型化数组，并复制其内容。
+
+可以使用它来预填充数组的数据：
+
+```js
+let arr = new Uint8Array([0, 1, 2, 3]);
+alert( arr.length ); // 4，创建了相同长度的二进制数组
+alert( arr[1] ); // 1，用给定值填充了 4 个字节（无符号 8 位整数）
+```
+
+3. 如果给定的是另一个 `TypedArray`，也是如此：创建一个相同长度的类型化数组，并复制其内容。如果需要的话，数据在此过程中会被转换为新的类型。
+
+```js
+let arr16 = new Uint16Array([1, 1000]);
+let arr8 = new Uint8Array(arr16);
+alert( arr8[0] ); // 1
+alert( arr8[1] ); // 232，试图复制 1000，但无法将 1000 放进 8 位字节中。
+```
+
+4. 对于数字参数 `length` —— 创建类型化数组以包含这么多元素。它的字节长度将是 `length` 乘以单个 `TypedArray.BYTES_PER_ELEMENT` 中的字节数：
+
+```js
+let arr = new Uint16Array(4); // 为 4 个整数创建类型化数组
+alert( Uint16Array.BYTES_PER_ELEMENT ); // 每个整数 2 个字节
+alert( arr.byteLength ); // 8（字节中的大小）
+```
+
+5. 不带参数的情况下，创建长度为零的类型化数组。
+
+可以直接创建一个 TypedArray，而无需提及 ArrayBuffer。但是，视图离不开底层的 ArrayBuffer，因此，除第一种情况（已提供 ArrayBuffer）外，其他所有情况都会自动创建 ArrayBuffer。
+
+如要访问 ArrayBuffer，可以用以下属性：
+
+- `arr.buffer` —— 引用 ArrayBuffer。
+- `arr.byteLength` —— ArrayBuffer 的长度。
+
+因此，总是可以从一个视图转到另一个视图：
+
+```js
+let arr8 = new Uint8Array([0, 1, 2, 3]);
+
+// 同一数据的另一个视图
+let arr16 = new Uint16Array(arr8.buffer);
+```
+
+下面是类型化数组的列表：
+
+- `Uint8Array`，`Uint16Array`，`Uint32Array` —— 用于 8、16 和 32 位的整数。
+  - `Uint8ClampedArray` —— 用于 8 位整数，在赋值时便“固定“其值。
+>
+- `Int8Array`，`Int16Array`，`Int32Array` —— 用于有符号整数（可以为负数）。
+- `Float32Array`，`Float64Array` —— 用于 32 位和 64 位的有符号浮点数。
+
+> 没有 `int8` 或类似的单值类型
+> 请注意，尽管有类似 `Int8Array` 这样的名称，但 JavaScript 中并没有像 `int`，或 `int8` 这样的单值类型。
+> 这是合乎逻辑的，因为 `Int8Array` 不是这些单值的数组，而是 ArrayBuffer 上的视图。
+
 ## 2.Blob 对象
 
 **Blob**（Binary Large Object）对象代表了一段二进制数据，提供了一系列操作接口。其他操作二进制数据的 API（比如 File 对象），都是建立在 Blob 对象基础上的，继承了它的属性和方法。
