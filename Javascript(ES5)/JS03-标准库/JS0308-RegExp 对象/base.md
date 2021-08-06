@@ -2,13 +2,13 @@
 
 #### 8.1.概述
 
-**正则表达式（regular expression）**是一种表达文本模式（即字符串结构）的方法，有点像字符串的模板，常常用来按照“给定模式”匹配文本。JavaScript 的正则表达式体系是参照 Perl 5 建立的。
+**正则表达式**（regular expression）是一种表达文本模式（即字符串结构）的方法，有点像字符串的模板，常常用来按照“给定模式”匹配文本。JavaScript 的正则表达式体系是参照 Perl 5 建立的。
 
 ECMAScript 通过 `RegExp` 类型来支持正则表达式。使用下面类似 Perl 的语法，就可以创建一个正则表达式。
 
 `var expression = /pattern/flags;`
 
-其中的**模式（pattern）**部分可以是任何简单或复杂的正则表达式，可以包括字符类。限定符、分组、先前查找以及反向引用。每个正则表达式都可以带有一个或多个**标志（flags）**，用以标明正则表达式的行为。
+其中的 **模式**（pattern）部分可以是任何简单或复杂的正则表达式，可以包括字符类。限定符、分组、先前查找以及反向引用。每个正则表达式都可以带有一个或多个 **标志**（flags），用以标明正则表达式的行为。
 
 `var reg = new RegExp('zxc','g');`
 
@@ -18,9 +18,9 @@ ECMAScript 通过 `RegExp` 类型来支持正则表达式。使用下面类似 P
 
 #### 8.2.常见元字符
 
-大部分字符在正则表达式中，就是字面的含义，比如 `/a/` 匹配 a，`/b/` 匹配 b。如果在正则表达式之中，某个字符只表示它字面的含义（就像前面的 a 和 b），那么它们就叫做**字面量字符（literal characters）**。
+大部分字符在正则表达式中，就是字面的含义，比如 `/a/` 匹配 a，`/b/` 匹配 b。如果在正则表达式之中，某个字符只表示它字面的含义（就像前面的 a 和 b），那么它们就叫做 **字面量字符**（literal characters）。
 
-还有一部分字符有特殊的含义，不代表字面的意思，称之为**元字符（metacharacters)**。一个元字符只能匹配一个字符。
+还有一部分字符有特殊的含义，不代表字面的意思，称之为 **元字符**（metacharacters）。一个元字符只能匹配一个字符。
 
 > 什么都不写是注释，有空格也算正则；
 
@@ -104,9 +104,9 @@ ECMAScript 通过 `RegExp` 类型来支持正则表达式。使用下面类似 P
 
 | 字符  | 作用                                                                                          |
 | :---: | --------------------------------------------------------------------------------------------- |
-|  `g`  | 表示**全局（global）**模式，即模式将被应用于所有字符串                                        |
-|  `i`  | 表示**不区分大小写（case-insensitive）**模式，即在确定匹配项时忽略模式与字符串的大小写        |
-|  `m`  | 表示**多行（multiline）**模式，即在达到一行文本末尾还会继续查找下一行中是否存在于模式匹配的项 |
+|  `g`  | 表示 **全局**（global）模式，即模式将被应用于所有字符串                                        |
+|  `i`  | 表示 **不区分大小写**（case-insensitive）模式，即在确定匹配项时忽略模式与字符串的大小写        |
+|  `m`  | 表示 **多行**（multiline）模式，即在达到一行文本末尾还会继续查找下一行中是否存在于模式匹配的项 |
 
 > 加上 m 修饰符以后，`^` 和 `$` 还会匹配行首和行尾，即 `^` 和 `$` 会识别换行符（`\n`）。
 
@@ -133,7 +133,7 @@ ECMAScript5 明确规定，使用正则表达式字面量必须像直接调用 `
 
 正则对象的实例属性分成两类。
 
-一类是修饰符相关，返回一个布尔值，表示对应的修饰符是否设置,这些属性是只读的。
+一类是修饰符相关，返回一个布尔值，表示对应的修饰符是否设置，这些属性是只读的。
 
 ---
 
@@ -155,11 +155,19 @@ ECMAScript5 明确规定，使用正则表达式字面量必须像直接调用 `
 
 ```javascript
 var pattern = /\[bc\]at/gi;
-console.log(pattern.global); //true
-console.log(pattern.ignoreCase); //true
-console.log(pattern.multiline); //false
-console.log(pattern.lastIndex); //0
-console.log(pattern.source); //\[bc\]at
+
+pattern.global //true
+pattern.ignoreCase //true
+pattern.multiline //false
+pattern.flags // 'gi'
+
+pattern.lastIndex //0
+pattern.source //\[bc\]at
+
+pattern.toString() // '/\[bc\]at/gi'
+pattern.toLocaleString() // '/\[bc\]at/gi'
+pattern.valueOf() // /\[bc\]at/gi
+Object.prototype.toString.call(pattern.valueOf()) // [object RegExp]
 ```
 
 > `RegExp` 实例继承的 `toLocaleString()` 和 `toString()` 方法都会返回正则表达式的字面量，与创建方式无关。`valueOf()` 方法返回正则表达式本身。
@@ -170,26 +178,32 @@ console.log(pattern.source); //\[bc\]at
 
 该方法是专门为捕获组而设计的。接收一个参数，即要应用模式的字符串，任何返回包含第一个匹配项信息的数组；或者在没有匹配项的情况下返回 `null`。
 
-返回的数组虽然是 `Array` 的实例，但是包含两个额外的属性：`index` 和 `input`。其中 `index` 表示匹配项在字符串中的位置，`input` 表示应用正则表达式的字符串。在数组中，第一项是与整个模式匹配的字符串，其他项是模式中捕获组匹配的字符串（若没有捕获组，则只有一项）。
+<s>返回的数组虽然是 `Array` 的实例，但是包含两个额外的属性：`index` 和 `input`。其中 `index` 表示匹配项在字符串中的位置，`input` 表示应用正则表达式的字符串。在数组中，第一项是与整个模式匹配的字符串，其他项是模式中捕获组匹配的字符串（若没有捕获组，则只有一项）。</s>
+
+返回的数组虽然是 `Array` 的实例，但是包含三个额外的属性：`index`、`input` 和 `groups`。其中 `index` 表示匹配项（首位）在字符串中的位置，`input` 表示应用正则表达式的字符串，`groups` 表示。在数组中，第一项是与整个模式匹配的字符串，其他项是模式中捕获组匹配的字符串（若没有捕获组，则只有一项）。
 
 对于 `exec()` 方法而言，即使在模式中设置了全局标志，但每次也只会返回一个匹配项（当前匹配），`lastIndex` 属性值会增加。在不设置全局标志的情况下，在同一个字符串上多次调用，始终只返回第一个匹配项的信息，`lastIndex` 属性值不会变化。
 
 > IE 在实现 `lastIndex` 属性上有偏差，即使在非全局模式下，也会变化。
 
 ```javascript
-var str = "name561age21";
+var str = "name561age21"
 var reg1 = /[a-z]+/g,
-  reg2 = /[a-z]+/,
-  reg3 = /([a-z])+/;
-console.log(reg1.exec(str));
-//["name", index: 0, input: "name561age21"]
+    reg2 = /[a-z]+/,
+    reg3 = /([a-z])+/
 
-console.log(reg2.exec(str));
-//["name", index: 0, input: "name561age21"]
+reg1.exec(str) //["name", index: 0, input: "name561age21"]
+reg1.lastIndex // 0
 
-console.log(reg3.exec(str));
-//["name", "e", index: 0, input: "name561age21"]
+reg1.exec(str) //["name", index: 0, input: "name561age21"]
+reg1.lastIndex // 0
+
+reg2.exec(str) //["name", index: 0, input: "name561age21"]
+reg2.lastIndex // 0
+
 //同一捕获组的匹配项，只返回之后一次的匹配项
+reg3.exec(str) //["name", "e", index: 0, input: "name561age21"]
+reg3.lastIndex // 0
 ```
 
 > 正则实例对象的 `lastIndex` 属性不仅可读，还可写。设置了 `g` 修饰符的时候，只要手动设置了 `lastIndex` 的值，就会从指定位置开始匹配。
@@ -246,9 +260,9 @@ s1 + ":" + s2 + ":" + s3; //2018:04:26
 ---
 
 - 1).匹配字符串开始和结尾的 `\A` 和 `\Z`（但支持以插入符号 `^` 和美元 `$` 符号来匹配字符串的开头和结尾）
-- 2).**向后查找（lookbehind）**（但完全支持**向前查找（lookhead）**）
+- 2).**向后查找**（lookbehind）（但完全支持 **向前查找**（lookhead））
 - 3).并集和交集类
-- 4).**原子组（atomic grouping）**
+- 4).**原子组**（atomic grouping）
 - 5).`Unicode` 支持（单个字符除外，如 `\uFFFF`）
 - 6).命名的捕获组（但支持编号的捕获组）
 - 7).`s`(single，单行)和 `x`(free-spacing,无间隔)匹配模式
@@ -318,7 +332,7 @@ console.log(reg.exec(str));
 //["s8s8", "8", "8", index: 0, input: "s8s8"]
 ```
 
-`\1` 代表第一个小分组匹配的内容（`\1` 指代的是（`\w`）的内容）。正则表达式内部，还可以用 `\n` 引用括号匹配的内容，n 是从 1 开始的自然数，表示对应顺序的括号，这种用法称之为**后向引用**；
+`\1` 代表第一个小分组匹配的内容（`\1` 指代的是（`\w`）的内容）。正则表达式内部，还可以用 `\n` 引用括号匹配的内容，n 是从 1 开始的自然数，表示对应顺序的括号，这种用法称之为 **后向引用**；
 
 注意，使用组匹配时，不宜同时使用 `g` 修饰符，否则 `match` 方法不会捕获分组的内容。必须加 `g`，这时使用正则表达式的 `exec` 方法，配合循环，才能读到每一轮匹配的组捕获。
 
@@ -335,7 +349,7 @@ console.log(reg.exec(str));
 
 ##### 8.11.4 非捕获
 
-`(?:)` 称为**非捕获组（Non-capturing group）**，表示不返回该组匹配的内容，即匹配的结果中不计入这个括号。
+`(?:)` 称为 **非捕获组**（Non-capturing group），表示不返回该组匹配的内容，即匹配的结果中不计入这个括号。
 
 ```javascript
 var reg = /\w{2}(\d{4})/;
@@ -517,7 +531,7 @@ JavaScript 中只支持零宽先行断言。零宽断言返回的是位置而不
 
 ##### 8.13.1 x(?=pattern)
 
-正向预查(正向**先行断言**)，要匹配的字符串，必须要满足 pattern 条件；
+正向预查(正向 **先行断言**)，要匹配的字符串，必须要满足 pattern 条件；
 
 ##### 8.13.2 x(?!pattern)
 
@@ -548,35 +562,10 @@ console.log(reg2.exec(str));
 
 > 字符具有高于替换运算符的优先级，使得'm|food' 匹配 'm' 或 'food'。若要匹配 'mood' 或 'food'，请使用括号创建子表达式，从而产生 '(m|f)ood'。
 
-#### 补充
+---
 
-**管道符**
+参考：
 
-> 管道符用 `|` 来表示，正则中管道符的前后没有空格的，有空格会被当成空格一起匹配；管道符只作为部分规则的时候，需要用圆括号包裹起来，比如：`/(m|g)ood/`，`/cat|dog/`。
-
-1. 管道符前可以匹配，管道符后就不会匹配了；管道符前不匹配，自然往后匹配（感觉说的是废话 :rofl::rofl::rofl:）。
-
-```js
-"24.24".match(/(^[+-.]?\d+|^[+-]?\d+[.]\d{0,})/);
-// ["24", "24", index: 0, input: "24.24", groups: undefined]
-"24.24".match(/(^[+-]?\d+[.]\d{0,}|^[+-.]?\d+)/);
-// ["24.24", "24.24", index: 0, input: "24.24", groups: undefined]
-
-"24.24".match(/(^[+-.]?\d{3}|^[+-]?\d+[.]\d{0,})/);
-// [ '24.24', '24.24', index: 0, input: '24.24', groups: undefined ]
-"24.24".match(/(^[+-]?\d+[.]\d{0,}|^[+-.]?\d{3})/);
-// [ '24.24', '24.24', index: 0, input: '24.24', groups: undefined ]
-```
-
-2. 匹配结果按字符顺序输出，而不是跟据匹配规则的先后输出；
-
-```js
-"123".match(/(1|2|3)/g);
-// [ '1', '2', '3' ]
-"123".match(/(1|3|2)/g);
-// [ '1', '2', '3' ]
-"123".match(/(3|2|1)/g);
-// [ '1', '2', '3' ]
-```
-
-至于为啥，暂时没找到答案。。。
+1.[RegExp 对象](https://wangdoc.com/javascript/stdlib/regexp.html)
+2.[正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
+3.[RegExp(正则表达式)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
