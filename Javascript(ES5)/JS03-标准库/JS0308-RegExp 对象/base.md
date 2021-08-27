@@ -569,3 +569,6 @@ console.log(reg2.exec(str));
 1.[RegExp 对象](https://wangdoc.com/javascript/stdlib/regexp.html)
 2.[正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
 3.[RegExp(正则表达式)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
+4.[正则表达式](https://zh.javascript.info/regular-expressions)
+5.[Regular Expressions](https://eloquentjavascript.net/1st_edition/chapter10.html)
+6.[RegExp Named Capture Groups](https://github.com/tc39/proposal-regexp-named-groups#:~:text=The%20groups%20object%20is%20only%20created%20for%20RegExps,value%20is%20undefined.%20Backwards%20compatibility%20of%20new%20syntax)
