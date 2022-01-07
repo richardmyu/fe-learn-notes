@@ -1,6 +1,6 @@
-## 我所理解的 RESTful Web API [设计篇]
+# 我所理解的 RESTful Web API [设计篇]
 
-### 1.为什么叫这个“奇怪”的名字？
+## 1.为什么叫这个“奇怪”的名字？
 
 2000 年，Roy Thomas Fielding 博士在他那篇著名的博士论文《Architectural Styles and the Design of Network-based Software Architectures》中提出了几种软件应用的架构风格，REST 作为其中的一种架构风格在这篇论文的第 5 章中进行了概括性的介绍。我个人建议本书的读者都能读读这篇论文，原文和中文译文都可以从网络上找到。
 
@@ -12,7 +12,7 @@ REST 是 “REpresentational State Transfer” 的缩写，可以翻译成“表
 
 REST 在我看来是一种很笼统的概念，它代表一种架构风格。对于多个 Web 应用采用的架构，我们只能说其中某一个比其它的更具有 REST 风格，而不能简单粗暴地说：“它采用了 REST 架构而其它的没有”。为了将 REST 真正地落地，Lenoard Rechardson & Sam Ruby 在《RESTful Web Services》一书中提出了一种名为“面向资源的架构（ROA： Resource Oriented Architecture）”。该书中介绍了一些采用 ROA 架构的 Web 服务应该具备的基本特征，它们可以指导我们如果构架具体的 RESTful Web API。
 
-### 2.采用 URI 标识资源
+## 2.采用 URI 标识资源
 
 SOAP Web API 采用 RPC 风格，它采用面向功能的架构，所以我们在设计 SOAP Web API 的时候首相考虑的是应高提供怎样的功能（或者操作）。RESTful Web API 采用面向资源的架构，所以在设计之初首先需要考虑的是有哪些资源可供操作。
 
@@ -20,7 +20,7 @@ SOAP Web API 采用 RPC 风格，它采用面向功能的架构，所以我们�
 
 一个资源必须具有一个或者多个标识，既然我们设计的 Web API，那么很自然地应该采用 URI 来作为资源的标识。作为资源标识的 URI 最好具有“可读性”，因为具有可读性的 URI 更容易被使用，使用者一看就知道被标识的是何种资源，比如如下一些 URI 就具有很好的可读性。
 
-```
+```js
 http://www.artech.com/employees/c001（编号C001的员工）
 http://www.artech.com/sales/2013/12/31（2013年12月31日的销售额）
 http://www.artech.com/orders/2013/q4（2013年第4季度签订的订单）
@@ -34,7 +34,7 @@ URI 除了可以标识某个独立的资源外（比如 “`http://www.artech.co
 
 在绝大多数情况下，资源并不会孤立地存在，必然与其它资源具有某种关联。既然我们推荐资源采用具有可寻址性的 URL 来标识，那么我们就可以利用它来将相关的资源关联起来。比如我们采用 XML 来表示一部电影的信息，那么我们采用如下的形式利用 URL 将相关的资源（导演、领衔主演、主演、编剧以及海报）关联在一起。实际上这可以视为一份超文本/超媒体文档。当用户得到这样一份文档的时候，可以利用自身的内容获得某部影片基本的信息，还可以利用相关的“链接”得到其它相关内容的详细信息。
 
-```
+```mk
    1: <movie>
    2:   <name>魔鬼代言人</name>
    3:   <genre>剧情|悬疑|惊悚</genre>
@@ -66,7 +66,7 @@ Fielding 在他的论文中将 REST 定位为“分布式超媒体应用”的�
 
 由于 REST 是面向资源的，所以一个 Web API 旨在实现针对单一资源的操作。我们在前面已经说个，针对资源的基本操作唯 CRUD 而已，这是使我们可以为 Web API 定义标准接口成可能。所谓的标准接口就是针对不同资源的 Web API 定义一致性的操作来操作它们，其接口可以采用类似于下面的模式。
 
-```
+```mk
    1: public class ResourceService
    2: {
    3:     public IEnumerable<Resource>[] Get();
@@ -80,7 +80,7 @@ Fielding 在他的论文中将 REST 定位为“分布式超媒体应用”的�
 
 以一个具体的场景为例。现在我们需要设计一个 Web API 来管理用于授权的角色，它只需要提供针对角色本身的 CRUD 的功能以及建立/解除与用户名之间的映射关系。如果我们将其定义成针对 SOAP 的 Web 服务，其服务接口具有类似于如下的结构。
 
-```
+```mk
    1: public class RoleService
    2: {
    3:     public IEnumerable<string> GetAllRoles();
@@ -94,7 +94,7 @@ Fielding 在他的论文中将 REST 定位为“分布式超媒体应用”的�
 
 如下我们需要将其定义成一个纯粹的 RESTful 的 Web API，只有前面三个方法在针对角色的 CRUD 操作范畴之内，但是后面两个方法却可以视为针对“角色委派（Role Assignment）”对象的添加和删除操作。所以这里实际上涉及到了两种资源，即角色和角色委派。为了使 Web API 具有统一的接口，我们需要定义如下两个 Web API。
 
-```
+```mk
    1: public class RolesService
    2: {
    3:     public IEnumerable<string> Get();
@@ -115,7 +115,7 @@ Fielding 在他的论文中将 REST 定位为“分布式超媒体应用”的�
 
 我们甚至可以直接使用 HTTP 方法名作为 Web API 接口的方法名称，那么这样的 Web API 接口就具有类似于如下的定义。对于 ASP.NET Web API 来说，由于它提供了 Action 方法名称和 HTTP 方法的自动映射，所以如果我们采用这样的命名规则，就无需再为具体的 Action 方法设定针对 HTTP 方法的约束了。
 
-```
+```mk
    1: public class ResourceService
    2: {
    3:     public IEnumerable<Resource>[] Get();
@@ -139,7 +139,7 @@ HEAD 和 OPTIONS 相对少见。从资源操作的语义来讲，一个针对某
 
 比如我们分别发送 PUT 和 POST 请求以添加一个员工，标识员工的 URI 由其员工 ID 来决定。如果员工 ID 由客户端来指定，我们可以发送 PUT 请求；如果员工 ID 由服务端生成，我们一般发送 POST 请求。具体的请求与下面提供的代码片断类似，可以看出它们的 URI 也是不一样的。
 
-```
+```mk
    1: PUT http://www.artech.com/employees/300357 HTTP/1.1
    2: ...
    3:
@@ -164,7 +164,7 @@ HEAD 和 OPTIONS 相对少见。从资源操作的语义来讲，一个针对某
 
 POST 和 PUT 请求一般将所加资源的内容置于请求的主体。但是对于 PUT 请求来说，如果添加资源的内容完全可以由其 URI 来提供，这样的请求可以不需要主体。比如我们通过请求添加一个用于控制权限的角色，标识添加角色的 URI 由其角色名称来决定，并且不需要指定除角色名称的其它信息，那么我们只要发送如下一个不含主体的 PUT 请求即可。
 
-```
+```mk
    1: PUT http://www.artech.com/roles/admin HTTP/1.1
    2:
    3: ...
@@ -236,7 +236,7 @@ Web API 只会定义根据具体页码的数据查询定义相关的操作，当
 
 [2] 《RESTful Web Services》, RESTful Web Services
 
-[3] 《A Brief Introduction to REST》，http://www.infoq.com/articles/rest-introduction
+[3] 《A Brief Introduction to REST》，<http://www.infoq.com/articles/rest-introduction>
 
 [4] 《TCP/IP Illustrated (Volumn 1: The Protocol)》, by W. Richard Stevens
 

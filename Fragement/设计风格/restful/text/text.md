@@ -1,18 +1,18 @@
-## RESTful 架构详解
+# RESTful 架构详解
 
-### 1.什么是 REST
+## 1.什么是 REST
 
 REST 全称是 Representational State Transfer，中文意思是表述（编者注：通常译为表征）性状态转移。 它首次出现在 2000 年 Roy Fielding 的博士论文中，Roy Fielding 是 HTTP 规范的主要编写者之一。 他在论文中提到："我这篇文章的写作目的，就是想在符合架构原理的前提下，理解和评估以网络为基础的应用软件的架构设计，得到一个功能强、性能好、适宜通信的架构。REST 指的是一组架构约束条件和原则。"如果一个架构符合 REST 的约束条件和原则，我们就称它为 RESTful 架构"。
 
 REST 本身并没有创造新的技术、组件或服务，而隐藏在 RESTful 背后的理念就是使用 Web 的现有特征和能力， 更好地使用现有 Web 标准中的一些准则和约束。虽然 REST 本身受 Web 技术的影响很深， 但是理论上 REST 架构风格并不是绑定在 HTTP 上，只不过目前 HTTP 是唯一与 REST 相关的实例。 所以我们这里描述的 REST 也是通过 HTTP 实现的 REST。
 
-### 2.理解 RESTful
+## 2.理解 RESTful
 
 要理解 RESTful 架构，需要理解 Representational State Transfer 这个词组到底是什么意思，它的每一个词都有些什么涵义。
 
 下面我们结合 REST 原则，围绕资源展开讨论，从资源的定义、获取、表述、关联、状态变迁等角度，列举一些关键概念并加以解释。
 
-#### 2.1 资源与 URI
+### 2.1 资源与 URI
 
 REST 全称是表述性状态转移，那究竟指的是什么的表述? 其实指的就是资源。任何事物，只要有被引用到的必要，它就是一个资源。资源可以是实体(例如手机号码)，也可以只是一个抽象概念(例如价值) 。
 
@@ -22,13 +22,13 @@ URI 既可以看成是资源的地址，也可以看成是资源的名称。如�
 
 ---
 
-- https://github.com/git
-- https://github.com/git/git
-- https://github.com/git/git/blob/master/block-sha1/sha1.h
-- https://github.com/git/git/commit/e3af72cdafab5993d18fae056f87e1d675913d08
-- https://github.com/git/git/pulls
-- https://github.com/git/git/pulls?state=closed
-- https://github.com/git/git/compare/master…next
+- `https://github.com/git`
+- `https://github.com/git/git`
+- `https://github.com/git/git/blob/master/block-sha1/sha1.h`
+- `https://github.com/git/git/commit/e3af72cdafab5993d18fae056f87e1d675913d08`
+- `https://github.com/git/git/pulls`
+- `https://github.com/git/git/pulls?state=closed`
+- `https://github.com/git/git/compare/master…next`
 
 ---
 
@@ -50,7 +50,7 @@ URI 既可以看成是资源的地址，也可以看成是资源的名称。如�
 
 有时候我们需要表示同级资源的关系时，可以使用 `,` 或 `;` 来进行分割。例如哪天 github 可以比较某个文件在随意两次提交记录之间的差异，或许可以使用 `/git/git /block-sha1/sha1.h/compare/e3af72cdafab5993d18fae056f87e1d675913d08;bd63e61bdf38e872d5215c07b264dcc16e4febca` 作为 URI。 不过，现在 github 是使用 `…` 来做这个事情的，例如 `/git/git/compare/master…next`。
 
-#### 2.2 统一资源接口
+### 2.2 统一资源接口
 
 RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限的预定义的操作，不论什么样的资源，都是通过使用相同的接口进行资源的访问。接口应该使用标准的 HTTP 方法如 GET，PUT 和 POST，并遵循这些方法的语义。
 
@@ -58,7 +58,7 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 
 下面列出了 GET，DELETE，PUT 和 POST 的典型用法:
 
-**GET**
+- **GET**
 
 ---
 
@@ -81,7 +81,7 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 
 ---
 
-**POST**
+- **POST**
 
 ---
 
@@ -109,7 +109,7 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 
 ---
 
-**PUT**
+- **PUT**
 
 ---
 
@@ -135,7 +135,7 @@ RESTful 架构应该遵循统一接口原则，统一接口包含了一组受限
 
 ---
 
-**DELETE**
+- **DELETE**
 
 ---
 
@@ -187,7 +187,7 @@ POST 和 PUT 在创建资源的区别在于，所创建的资源的名称(URI)�
 
 通俗来说，URI 不应该使用动作来描述。例如，下面是一些不符合统一接口要求的 URI:
 
-```
+```markdown
 GET /getUser/1
 POST /createUser
 PUT /updateUser/1
@@ -232,7 +232,7 @@ HTTP 的响应代码可用于应付不同场合，正确使用这些状态代码
 
 以 github 为例，请求某组织资源的 json 格式的表述形式:
 
-```
+```shell
 # Request
 GET https://api.github.com/orgs/github HTTP/1.1
 Accept: application/json
@@ -267,7 +267,7 @@ Content-Type: application/json; charset=utf-8
 
 有些 API 在 URI 里边带上版本号，例如:
 
-```
+```shell
 http://api.example.com/1.0/foo
 http://api.example.com/1.2/foo
 http://api.example.com/2.0/foo
@@ -277,7 +277,7 @@ http://api.example.com/2.0/foo
 
 对于 v3 版本的话，就是 `Accept: application/vnd.github.v3`。对于上面的例子，同理可以使用使用下面的头部:
 
-```
+```shell
 Accept: vnd.example-com.foo+json; version=1.0
 Accept: vnd.example-com.foo+json; version=1.2
 Accept: vnd.example-com.foo+json; version=2.0
@@ -291,7 +291,7 @@ Accept: vnd.example-com.foo+json; version=2.0
 
 当服务器不支持所请求的表述格式，那么应该怎么办？若服务器不支持，它应该返回一个 `HTTP 406` 响应，表示拒绝处理该请求。下面以 github 为例，展示了一个请求 XML 表述资源的结果：
 
-```
+```shell
 # Request
 GET https://api.github.com/orgs/github HTTP/1.1
 Accept: text/xml
@@ -303,7 +303,7 @@ Content-Type: application/json; charset=utf-8
 {"message":"Must ACCEPT application/json: [\"text/xml\"]"}
 ```
 
-#### 2.4 资源的链接
+### 2.4 资源的链接
 
 我们知道 REST 是使用标准的 HTTP 方法来操作资源的，但仅仅因此就理解成带 CURD 的 Web 数据库架构就太过于简单了。
 
@@ -315,7 +315,7 @@ Content-Type: application/json; charset=utf-8
 
 下面展示的是 github 获取某个组织下的项目列表的请求，可以看到在响应头里边增加 Link 头告诉客户端怎么访问下一页和最后一页的记录。 而在响应体里边，用 url 来链接项目所有者和项目地址。
 
-```
+```shell
 # Request
 GET https://api.github.com/orgs/github/repos HTTP/1.1
 Accept: application/json
@@ -350,7 +350,7 @@ Content-Type: application/json; charset=utf-8
 
 上面的例子展示了如何使用超媒体来增强资源的连通性。很多人在设计 RESTful 架构时，使用很多时间来寻找漂亮的 URI，而忽略了超媒体。所以，应该多花一些时间来给资源的表述提供链接，而不是专注于"资源的 CRUD"。
 
-#### 2.5 状态的转移
+### 2.5 状态的转移
 
 有了上面的铺垫，再讨论 REST 里边的状态转移就会很容易理解了。
 
@@ -358,7 +358,7 @@ Content-Type: application/json; charset=utf-8
 
 其实，这里说的无状态通信原则，并不是说客户端应用不能有状态，而是指服务端不应该保存客户端状态。
 
-##### 2.5.1 应用状态与资源状态
+#### 2.5.1 应用状态与资源状态
 
 实际上，状态应该区分应用状态和资源状态，客户端负责维护应用状态，而服务端维护资源状态。
 
@@ -376,7 +376,7 @@ Content-Type: application/json; charset=utf-8
 
 当然，如果 Cookie 保存的是一些服务器不依赖于会话状态即可验证的信息（比如认证令牌），这样的 Cookie 也是符合 REST 原则的。
 
-##### 2.5.2 应用状态的转移
+#### 2.5.2 应用状态的转移
 
 状态转移到这里已经很好理解了， "会话"状态不是作为资源状态保存在服务端的，而是被客户端作为应用状态进行跟踪的。客户端应用状态在服务端提供的超媒体的指引下发生变迁。服务端通过超媒体告诉客户端当前状态有哪些后续状态可以进入。
 

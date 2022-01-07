@@ -1,6 +1,6 @@
-## JavaScript DOM 简史
+# JavaScript DOM 简史
 
-### 1.DOM
+## 1.DOM
 
 DOM 是一套对【文档内容】进行【抽象】和【概念化】的方法。
 
@@ -11,8 +11,7 @@ DOM 是一种 API。
 
 W3C 对 DOM 的定义是：**一个与系统平台和编程平台无关的接口，程序和脚本可以通过这个接口动态地访问和修改文档的内容、结构和样式。**
 
-
-### 2.DHTML
+## 2.DHTML
 
 DHTML 是 “Dynamic HTML” 的简称。DHTML不是一项新技术，而是描述 HTML，CSS 和 JavaScript 技术组合的术语。DHTML 背后的含义是：
 
@@ -24,7 +23,7 @@ DHTML 是 “Dynamic HTML” 的简称。DHTML不是一项新技术，而是描�
 >
 > DHTML 曾被认为是 HTML/XHTML、CSS 和 JavaScript 相结合的产物，就像今天的 HTML5 那样，但把这些东西真正凝聚在一起的是 DOM。如果真的需要来描述这一过程的话，“DOM 脚本程序设计”更精确，它表示使用 W3C DOM 来处理文档和样式表。DHTML 只适用于 Web 文本，“DOM 脚本程序设计”则涵盖了使用任何一种支持 DOM API 的程序设计语言去处理任何一种标记文档的情况。具体到 Web 文档，JavaScript 的无所不在使它成为了 DOM 脚本程序设计的最佳选择。
 
-### 3.标准
+## 3.标准
 
 浏览器制造商以 DOM 为武器展开营销大战的同时，W3C 不事声张地结合大家的优点推出了一个标准化的 DOM。
 

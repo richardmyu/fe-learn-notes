@@ -1,12 +1,12 @@
-## 我所理解的 RESTful Web API [Web 标准篇]
+# 我所理解的 RESTful Web API [Web 标准篇]
 
 REST 不是一个标准，而是一种软件应用架构风格。基于 SOAP 的 Web 服务采用 RPC 架构，如果说 RPC 是一种面向操作的架构风格，而 REST 则是一种面向资源的架构风格。REST 是目前业界更为推崇的构建新一代 Web 服务（或者 Web API）的架构风格。由于 REST 仅仅是一种价格风格，所以它是与具体的技术平台无关的，也就是说采用 REST 架构的应用未必一定建立在 Web 之上，所以在正式介绍 REST 之前，我们先来简单认识一下 Web。
 
-如果要问大家这样一个问题：“在过去半个世纪中，哪种信息技术对人类的影响最为深远？”，我想很多人的答案是 Web（World Wide Web、WWW、W3 或者万维网），因为它改变了我们的生活方式和思维方式。如果各位阅读过 W3C 介绍 WWW 的官方文档（“http://www.w3.org/WWW/”），应该对它的第一句话记忆犹新—— “The World Wide Web (known as "WWW', "Web" or "W3") is the universe of network-accessible information, the embodiment of human knowledge”。如果将这句话翻译成简洁的中文，就是“ Web 是（网络）信息的来源，知识的化身”。
+如果要问大家这样一个问题：“在过去半个世纪中，哪种信息技术对人类的影响最为深远？”，我想很多人的答案是 Web（World Wide Web、WWW、W3 或者万维网），因为它改变了我们的生活方式和思维方式。如果各位阅读过 W3C 介绍 WWW 的官方文档（“<http://www.w3.org/WWW/>”），应该对它的第一句话记忆犹新—— “The World Wide Web (known as "WWW', "Web" or "W3") is the universe of network-accessible information, the embodiment of human knowledge”。如果将这句话翻译成简洁的中文，就是“ Web 是（网络）信息的来源，知识的化身”。
 
 Web 为我们提供了一种利用 HTTP 协议获取和操作网络资源的方式，这些将 Web 服务器作为宿主的资源不仅仅包含像文字和图片这些传统的信息载体，还包含音频和视频这些多媒体信息。Web 的核心主要体现在三个方面，即 HTTP、超文本（Hypertext）和超媒体（Hypermedia）[1]，超文本和超媒体规范了网络信息的表现形式，而 HTTP 则提供了网络访问的标准协议。接下来我们就以围绕着 HTTP 对 Web 作一下基本的介绍。
 
-### 1.TCP/IP 与 HTTP
+## 1.TCP/IP 与 HTTP
 
 TCP/IP 是以 IP 和 TCP 协议为核心的一整套网络协议的总称，所以有时候我们也称其为 TCP/IP 协议簇。毫不夸张地说，TCP/IP 支撑着整个互联网，因为它就是互联网采用的网络协议。TCP/IP 协议簇划分为如右图所示的 4 个层次[2]（应用层、传输层、网络层和链路层），构成整个协议簇的各个子协议处于相应层次中。
 
@@ -24,11 +24,11 @@ HTTP（Hypertext Transfer Protocol），全称为“超文本传输协议”，�
 
 IP 协议利用 IP 地址来定位数据报发送的目的地，而利用域名系统（DNS）可以实现域名与 IP 地址之间的转换。TCP 协议利用端口号标识应用程序，所以某个应用程序在使用 TCP 协议进行通信的时候必须指定目标应用的 IP 地址（或者域名）和端口号。HTTP 默认采用的端口号为 80，而 HTTPS（利用 TLS/SSL 为 HTTP 提供传输安全保障）的默认端口号则为 443，当然在网络可达的前提下，我们可以指定任意的端口。
 
-### 2.Web 资源
+## 2.Web 资源
 
 这里所说的资源是一个宽泛的概念，任何寄宿于 Web 服务器可以利用 HTTP 协议获取或者操作的“事物”均可以称为资源。这也是一个抽象的概念，不仅仅是寄宿于 Web 服务器的某个静态物理文件可以视为 Web 资源，通过 Web 应用根据请求动态生成的数据也是 Web 资源。
 
-#### 2.1 媒体类型
+### 2.1 媒体类型
 
 资源实际上是一种承载着某种信息的数据，相同的信息可以采用不同形态的数据来展现，数据的“形态”主要体现为展示数据所采用的格式，比如一个数据对象可以通过 XML 格式来表示，也可以通过 JSON 格式来表示。数据的处理必须依赖于一种已知的格式，所以将 Web 资源的形态以一种标准化的方式固定下来显得尤为重要，这就是我们接下来着重介绍的媒体媒体（Media Type）。
 
@@ -49,7 +49,7 @@ IP 协议利用 IP 地址来定位数据报发送的目的地，而利用域名�
 
 ---
 
-#### 2.2 URI、URL 和 URN
+### 2.2 URI、URL 和 URN
 
 可操作的 Web 资源应该具有一个 唯一的标识。虽然具有很多唯一性标志符的种类可供选择（比如 GUID），但是采用 URI 来标识 Web 资源已经成为了一种共识，实际上 URI 的全称为“统一资源标志符（Uniform Resource Identifier）”。
 
@@ -59,15 +59,15 @@ URL 不仅仅用于定位目标资源所在的位置，还指名了获取资源�
 
 除了 URL，URN 也是 URI 的一种表现形式，URN 全称“统一资源定位符（Uniform Resource Name）”。URN 与资源所在的位置无关，倘若采用 URN 来唯一标识某个资源，在位置发生改变的时候标志符依然可以保持不变。URN 一般也不会涉及到获取被标识资源采用的网络协议，所以不需要为利用不同协议访问的相同资源定义不同的标志符。
 
-### 3.HTTP 事务
+## 3.HTTP 事务
 
 虽然 TCP 是一种基于连接的传输层协议，并且保存双方针对同一个连接的多轮消息交换的会话状态，但是建立其上的 HTTP 则是一种无状态的网络协议。HTTP 采用简单的“请求/响应”消息交换模式，一次 HTTP 事务（Transaction）始于请求的发送，止于响应的接收。针对客户端和 Web 服务器的多次消息交换来说，每个 HTTP 事务均是相互独立的。
 
-#### 3.1 HTTP 方法
+### 3.1 HTTP 方法
 
 HTTP 采用简单的请求/响应模式的消息交换旨在实现针对某个 Web 资源的某种操作。至于针对资源的操作类型，不外乎 CRUD（Create、Retrieve、Update 和 Delete）而已。一个 HTTP 请求除了利用 URI 标志目标资源之外，还需要通过 HTTP 方法（HTTP Method 或者 HTTP Verb）指名针对资源的操作类型。我们常用的 HTTP 方法 包括 GET、POST、PUT、DELETE、HEAD、OPTIONS、TRACE、CONNECTION 和 PATCH 等，我们将在《设计篇》以 REST 的视角来对它们进行详细介绍。
 
-#### 3.2 响应状态码
+### 3.2 响应状态码
 
 针对客户端向 Web 服务器发送的任意一个 HTTP 请求，不论在何种情况下得到一个响应，每个响应均具有一个由 3 位数字表示的状态码和相应的描述文字。不同数值的状态码体现了不同类型的响应状态，W3C 对响应状态码的范围作了如下的规范。
 
@@ -81,7 +81,7 @@ HTTP 采用简单的请求/响应模式的消息交换旨在实现针对某个 W
 
 ---
 
-### 4.HTTP 报文
+## 4.HTTP 报文
 
 客户端和 Web 服务器在一次 HTTP 事务中交换的消息被称为 HTTP 报头，客户端发送给服务器的请求消息被称为请求报文，服务器返回给客户端的响应消息被称为响应报头。请求报文和响应报头采用纯文本编码，由一行行简单的字符串组成。一个完整的 HTTP 报文由如下三个部分构成。
 
@@ -101,7 +101,7 @@ HTTP 采用简单的请求/响应模式的消息交换旨在实现针对某个 W
 
 接下来我们看看一个具体 HTTP 报文具有怎样的结构。下面这个文本片段反映的是我们通过 Chrome 浏览器访问微软的官网（www.microsoft. com）对应的 HTTP 请求，起始行体现了 HTTP 请求的三个基本属性，即 HTTP 方法（GET）、目标资源（`http://www.microsoft.com/en-us/default.aspx`）和协议版本（HTTP/1.1）。
 
-```
+```markdown
    1: GET http://www.microsoft.com/en-us/default.aspx HTTP/1.1
    2: Host: www.microsoft.com
    3: Connection: keep-alive
@@ -118,7 +118,7 @@ HTTP 采用简单的请求/响应模式的消息交换旨在实现针对某个 W
 
 前面的 HTTP 请求通过浏览器发送给服务端之后会接收到具有如下结构的响应报文，我们可以此从它的起始行得到采用的 HTTP 版本（HTTP/1.1）和响应状态码（“200 OK”，表示请求被正常接收处理）。响应的内容被封装到响应报文的主体部分，其媒体类型的通过报头 “Content-Type” 表示。由于该响应报文的主体内容是一个 HTML 文档，所以 “Content-Type” 报头表示的媒体类型为 “text/html”。
 
-```
+```mk
    1: HTTP/1.1 200 OK
    2: Cache-Control: no-cache
    3: Pragma: no-cache
@@ -152,7 +152,7 @@ HTTP 采用简单的请求/响应模式的消息交换旨在实现针对某个 W
 
 [2] 《RESTful Web Services》, RESTful Web Services
 
-[3] 《A Brief Introduction to REST》，http://www.infoq.com/articles/rest-introduction
+[3] 《A Brief Introduction to REST》，<http://www.infoq.com/articles/rest-introduction>
 
 [4] 《TCP/IP Illustrated (Volumn 1: The Protocol)》, by W. Richard Stevens
 

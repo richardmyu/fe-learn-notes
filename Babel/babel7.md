@@ -1,6 +1,6 @@
 # Babel 7 教程
 
-### 1.babel/cli
+## 1.babel/cli
 
 ```js
 npm install --save-dev @babel/core @babel/cli
@@ -25,7 +25,7 @@ let fun = () => console.log('hello babel.js');
 
 这个调整则是在 babel 6 里发生的。Babel 6 做了大量模块化的工作，将原来集成一体的各种编译功能分离出去，独立成插件。这意味着，默认情况下，当下版本的 babel 不会编译代码。
 
-### 2.babel 插件
+## 2.babel 插件
 
 换句话说，我们要将上面的箭头函数编译成 ES5 函数，需要安装额外的 babel 插件。
 
@@ -46,7 +46,7 @@ let fun = function () {
 
 编译成功。
 
-### 3.配置文件 .babelrc
+## 3.配置文件 .babelrc
 
 随着各种新插件的加入，我们的命令行参数会越来越长。
 
@@ -69,7 +69,7 @@ let fun = function () {
 };
 ```
 
-### 4.babel 套餐
+## 4.babel 套餐
 
 我们有一个项目，页面要求支持 IE 10，但 IE 10 不支持箭头函数、`class` 及 `const`，可是你喜欢用这些新增的 JavaScript 语法，babel 有各种插件满足上述需求：
 
@@ -88,7 +88,7 @@ let fun = function () {
 首先在项目下安装：
 
 ```js
-$ npm install --save-dev @babel/preset-env
+npm install --save-dev @babel/preset-env
 ```
 
 然后修改 `.babelrc`：
@@ -127,7 +127,7 @@ $ npm install --save-dev @babel/preset-env
 
 最新版本的 Chrome 已经支持箭头函数、`class`、`const`，所以 babel 在编译过程中，不会编译它们。
 
-### 5.babel-polyfill
+## 5.babel-polyfill
 
 > Babel includes a polyfill that includes a custom regenerator runtime and core-js.
 
@@ -137,7 +137,7 @@ $ npm install --save-dev @babel/preset-env
 >
 > 另一种办法，是配合 `@babel/preset-env` 的 `useBuiltIns` 配置。
 
-### 6.babel-runtime
+## 6.babel-runtime
 
 `@babel/runtime` 是 babel 生态里最让人困惑的一个包。而在 babel 7 下，我们还多了一个 `@babel/runtime-corejs2`。
 
@@ -149,7 +149,7 @@ $ npm install --save-dev @babel/preset-env
 
 那么，`babel-runtime` 与 `babel-polyfill` 的区别究竟是什么？
 
-我们拿 `Object.assign` 为例，剖析下 `babel-polyfill `与 `babel-runtime` 的异同。
+我们拿 `Object.assign` 为例，剖析下 `babel-polyfill` 与 `babel-runtime` 的异同。
 
 我们知道，IE 11 不支持 `Object.assign`，此时，我们有俩种候选方案：
 
@@ -186,13 +186,13 @@ _extends({}, {});
 我们首先安装插件：
 
 ```js
-$ npm install --save-dev @babel/plugin-transform-runtime
+npm install --save-dev @babel/plugin-transform-runtime
 ```
 
 然后再安装 `babel-runtime`：
 
 ```js
-$ npm install @babel/runtime
+npm install @babel/runtime
 ```
 
 最后在 `.babelrc` 中配置：
@@ -214,7 +214,7 @@ $ npm install @babel/runtime
 
 这正是 `babel-polyfill` 与 `babel-runtime` 的一大区别，前者改造目标浏览器，让你的浏览器拥有本来不支持的特性；后者改造你的代码，让你的代码能在所有目标浏览器上运行，但不改造浏览器。
 
-### 7.babel-register
+## 7.babel-register
 
 经过 babel 的编译后，我们的源代码与运行在生产下的代码是不一样的。
 
@@ -223,7 +223,7 @@ $ npm install @babel/runtime
 我们先在项目下安装 `babel-register`：
 
 ```js
-$ npm install --save-dev @babel/register
+npm install --save-dev @babel/register
 ```
 
 然后在入口文件中 `require`：
@@ -237,13 +237,13 @@ require('./app')
 
 当然，坏处是动态编译，导致程序在速度、性能上有所损耗。
 
-### 8.babel-node
+## 8.babel-node
 
 我们上面说，`babel-register` 提供动态编译，能够让我们的源代码真正运行在生产环境下 - 但其实不然，我们仍需要做部分调整，比如新增一个入口文件，并在该文件中 `require('@babel/register')`。而 `babel-node` 能真正做到一行源代码都不需要调整：
 
 ```js
-$ npm install --save-dev @babel/core @babel/node
-$ npx babel-node app.js
+npm install --save-dev @babel/core @babel/node
+npx babel-node app.js
 ```
 
 只是，请不要在生产环境中使用 `babel-node`，因为它是动态编译源代码，应用启动速度非常慢。
