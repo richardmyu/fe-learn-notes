@@ -1,4 +1,6 @@
-## Gulp
+# Gulp
+
+[TOC]
 
 [Gulp（中文）](https://www.gulpjs.com.cn/docs/getting-started/quick-start/)
 [Gulp（English）](https://gulpjs.com/)
@@ -21,7 +23,7 @@ gulp
 # local version 4.0.2
 ```
 
-### 快速入门
+## 快速入门
 
 > 如果你先前将 `gulp` 安装到全局环境中了，请执行 `npm rm --global gulp` 将 `gulp` 删除再继续以下操作。
 
@@ -32,7 +34,7 @@ npm install -g gulp-cli
 npm install -D gulp
 ```
 
-#### 1.注册任务
+### 1.注册任务
 
 每个 gulp 任务（task）都是一个异步的 JavaScript 函数，此函数是一个可以接收 `callback` 作为参数的函数，或者是一个返回 `stream`、`promise`、`event emitter`、`child process` 或 `observable` 类型值的函数。
 
@@ -55,7 +57,7 @@ exports.sayHello = sayHello;
 exports.default = sayHello;
 ```
 
-#### 2.组合任务
+### 2.组合任务
 
 Gulp 提供了两个强大的组合方法： `series()` 和 `parallel()`，允许将多个独立的任务组合为一个更大的操作。这两个方法都可以：
 
@@ -124,7 +126,6 @@ bye bye
 
 > 如果任务（task）不返回任何内容，则必须使用 callback 来指示任务已完成。[使用 callback](https://www.gulpjs.com.cn/docs/getting-started/async-completion/#%E4%BD%BF%E7%94%A8-callback)
 
-
 但是使用 **并发（`parallel`）** 组合任务，则没有问题。
 
 ```js
@@ -154,7 +155,7 @@ bye bye
 [20:05:55] Finished 'concu' after 5.86 ms
 ```
 
-#### 3.异步执行
+### 3.异步执行
 
 Node 库以多种方式处理异步功能。最常见的模式是 `error-first callbacks`，但是你还可能会遇到 `streams`、`promises`、`event emitters`、`child processes`, 或 `observables`。gulp 任务（task）规范化了所有这些类型的异步功能。
 
@@ -195,7 +196,7 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 
 当使用 `parallel()` 组合多个任务（task）时，一个任务的错误将结束整个任务组合的结束，但是其他并行的任务（task）可能会执行完，也可能没有执行完。
 
-#### 4.模式
+### 4.模式
 
 `src()` 可以工作在三种模式下：缓冲（buffering）、流动（streaming）和空（empty）模式。这些模式可以通过对 `src()` 的 `buffer` 和 `read` 参数 进行设置。
 
@@ -203,7 +204,7 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 - **流动（Streaming）** 模式的存在主要用于操作无法放入内存中的大文件，例如巨幅图像或电影。文件内容从文件系统中以小块的方式流式传输，而不是一次性全部加载。如果需要流动（streaming）模式，请查找支持此模式的插件或自己编写。
 - **空（Empty）** 模式不包含任何内容，仅在处理文件元数据时有用。
 
-#### 5.Glob 详解
+### 5.Glob 详解
 
 **字符串片段（segment）** 是指两个分隔符之间的所有字符组成的字符串。在 `glob` 中，分隔符永远是 `/` 字符 - 不区分操作系统 - 即便是在采用 `\\` 作为分隔符的 Windows 操作系统中。在 `glob` 中，`\\` 字符被保留作为转义符使用。
 
@@ -225,14 +226,14 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 ['**/*.js', '!node_modules/**/*.js']
 ```
 
-#### 5.插件
+### 6.插件
 
 Gulp **插件** 实质上是 Node 转换流（Transform Streams），它封装了通过管道（pipeline）转换文件的常见功能，通常是使用 `.pipe()` 方法并放在 `src()` 和 `dest()` 之间。他们可以更改经过流（stream）的每个文件的文件名、元数据或文件内容。
 
 - 每个插件应当只完成必要的工作，因此你可以把它们像构建块一样连接在一起；
 - 插件应当总是用来转换文件的。其他操作都应该使用（非插件的） Node 模块或库来实现；
 
-#### 6.文件监控
+### 7.文件监控
 
 对匹配 `glob` 的文件进行监控，如果有文件被修改了就执行关联的任务（task）。如果被执行的任务（task）没有触发 异步完成 信号，它将永远不会再次运行了。
 

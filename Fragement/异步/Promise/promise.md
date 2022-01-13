@@ -4,7 +4,7 @@ Promise 是异步编程的一种解决方案，比传统的解决方案——回
 
 Promise 对象是一个代理对象（代理一个值），被代理的值在 Promise 对象创建时可能是未知的。它允许你为异步操作的成功和失败分别绑定相应的处理方法（handlers）。 这让异步方法可以像同步方法那样返回值，但并不是立即返回最终执行结果，而是一个能代表未来出现的结果的 promise 对象。
 
-### 1.初步了解和使用 Promise
+## 1.初步了解和使用 Promise
 
 Promise 是一个对象，它代表了一个异步操作的最终完成或者失败。本质上 Promise 是一个函数返回的对象，我们可以在它上面绑定回调函数，这样我们就不需要在一开始把回调函数作为参数传入这个函数了。
 
@@ -47,7 +47,7 @@ createImageFileAsync(imageSettings).then(successCallback, failureCallback);
 
 Promise 很棒的一点就是链式调用（chaining）。
 
-##### 1.1.链式调用
+### 1.1.链式调用
 
 连续执行两个或者多个异步操作是一个常见的需求，在上一个操作执行成功之后，开始下一个的操作，并带着上一步操作所返回的结果。我们可以通过创造一个 Promise 链来实现这种需求。
 
@@ -91,7 +91,7 @@ doSomething()
 
 注意：一定要有返回值，否则，`callback` 将无法获取上一个 Promise 的结果。
 
-### 2.详解 promise
+## 2.详解 promise
 
 Promise 对象是一个代理对象（代理一个值），被代理的值在 Promise 对象创建时可能是未知的。它允许你为异步操作的成功和失败分别绑定相应的处理方法（handlers）。 这让异步方法可以像同步方法那样返回值，但并不是立即返回最终执行结果，而是一个能代表未来出现的结果的 promise 对象
 
@@ -107,7 +107,7 @@ Promise 对象是一个代理对象（代理一个值），被代理的值在 Pr
 
 因为 `Promise.prototype.then` 和  `Promise.prototype.catch` 方法返回 promise 对象， 所以它们可以被链式调用。
 
-![](https://mdn.mozillademos.org/files/8633/promises.png)
+![https://mdn.mozillademos.org/files/8633/promises.png](https://mdn.mozillademos.org/files/8633/promises.png)
 
 > 不要和惰性求值混淆：有一些语言中有惰性求值和延时计算的特性，它们也被称为“promises”，例如 Scheme。 Javascript 中的 promise 代表一种已经发生的状态， 而且可以通过回调方法链在一起。 如果你想要的是表达式的延时计算，考虑无参数的"箭头方法":  `f = () =>表达式` 创建惰性求值的表达式，使用 `f()` 求值。
 >
@@ -129,7 +129,7 @@ Promise 也有一些缺点：
 
 > 如果某些事件不断地反复发生，一般来说，使用 Stream 模式是比部署 Promise 更好的选择。
 
-##### 2.1.语法
+### 2.1.语法
 
 ```js
 new Promise( function(resolve, reject) {...} /* executor */  );
@@ -208,7 +208,7 @@ Promise { "pending" }
 <prototype>: PromiseProto { … }
 ```
 
-##### 2.2.属性
+### 2.2.属性
 
 - `Promise.length`
 
@@ -236,9 +236,9 @@ Promise()
   [[Scopes]]: Scopes[0]
 ```
 
-### 3.promise 方法
+## 3.promise 方法
 
-##### 3.1.Promise.prototype.then(onFulfilled, onRejected)
+### 3.1.`Promise.prototype.then(onFulfilled, onRejected)`
 
 作用是为 Promise 实例添加状态改变时的回调函数。`then` 方法的第一个参数是 `resolved` 状态的回调函数，第二个参数（可选）是 `rejected` 状态的回调函数。
 
@@ -290,7 +290,7 @@ p2then.catch(err => {
 
 > 注意：如果忽略针对某个状态的回调函数参数，或者提供非函数 (nonfunction) 参数，那么 `then` 方法将会丢失关于该状态的回调函数信息，但是并不会产生错误。如果调用 `then` 的 Promise 的状态（`fulfillment` 或 `rejection`）发生改变，但是 `then` 中并没有关于这种状态的回调函数，那么 `then` 将创建一个没有经过回调函数处理的新 Promise 对象，这个新 Promise 只是简单地接受调用这个 `then` 的原 Promise 的终态作为它的终态。
 
-##### 3.2.Promise.prototype.catch()
+### 3.2.`Promise.prototype.catch()`
 
 添加一个拒绝(`rejection`) 回调到当前 promise，返回一个新的 promise。当这个回调函数被调用，新 promise 将以它的返回值来 `resolve`，否则如果当前 promise 进入 `fulfilled` 状态，则以当前 promise 的完成结果作为新 promise 的完成结果。
 
@@ -372,7 +372,7 @@ new Promise((res, rej) => {
 
 一般总是建议，Promise 对象后面要跟 `catch()` 方法，这样可以处理 Promise 内部发生的错误。`catch()` 方法返回的还是一个 Promise 对象，因此后面还可以接着调用 `then()` 方法。
 
-**catch 的后续链式操作**
+- **`catch` 的后续链式操作**
 
 有可能会在一个回调失败之后继续使用链式操作，即在使用一个 `catch` 后再次使用 `then`，这对于在链式操作中抛出一个失败之后，再次进行新的操作很有用。请阅读下面的例子：
 
@@ -413,7 +413,7 @@ new Promise((res, rej) => {
 
 > `catch`方法之中，还能再抛出错误。若没有下一个 `catch` 方法，这个错误也会被漏掉。
 
-##### 3.3.Promise.prototype.finally()
+### 3.3.`Promise.prototype.finally()`
 
 `finally()` 方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。该方法是 ES2018 引入标准的。
 
@@ -499,7 +499,7 @@ setTimeout(() => {
 }, 1000)
 ```
 
-##### 3.4.Promise.all()
+### 3.4.`Promise.all()`
 
 `Promise.all()` 方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。
 
@@ -572,7 +572,7 @@ foxfire:
 
 注意：p3 中没有添加 `then` 或 `catch`，如果添加了，会有不一样的情况。如果作为参数的 Promise 实例，自己定义了 `catch` 方法，那么它一旦被 `rejected`，并不会触发 `Promise.all()` 的 `catch` 方法。见 [demo](demo/part03/all.js)。
 
-##### 3.5.Promise.race()
+### 3.5.`Promise.race()`
 
 `Promise.race()` 方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。
 
@@ -620,7 +620,7 @@ p.then(res => {
 
 参数 promise 若没有 `catch` 处理，会被 `Promise.race` 的 `catch` 捕获。
 
-##### 3.6.Promise.allSettled()
+### 3.6.`Promise.allSettled()`
 
 `Promise.allSettled()` 方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果，不管是 `fulfilled` 还是`rejected`，包装实例才会结束。该方法由 ES2020 引入。
 
@@ -667,7 +667,7 @@ p.then(res => {
 
 有时候，我们不关心异步操作的结果，只关心这些操作有没有结束。这时，`Promise.allSettled()` 方法就很有用。如果没有这个方法，想要确保所有操作都结束，就很麻烦。`Promise.all()` 方法无法做到这一点。
 
-##### 3.7.Promise.any()
+### 3.7.`Promise.any()`
 
 > 注意！ `Promise.any()` 方法依然是实验性的，尚未被所有的浏览器完全支持。它当前处于 [TC39 第三阶段草案（Stage 3）](https://github.com/tc39/proposal-promise-any)。
 
@@ -677,7 +677,7 @@ p.then(res => {
 
 `Promise.any()` 抛出的错误，不是一个一般的错误，而是一个 `AggregateError` 实例。它相当于一个数组，每个成员对应一个被 `rejected` 的操作所抛出的错误。
 
-##### 3.8.Promise.resolve()
+### 3.8.`Promise.resolve()`
 
 有时需要将现有对象转为 Promise 对象，`Promise.resolve()` 方法就起到这个作用。
 
@@ -778,7 +778,7 @@ p9.then(res => {
 });
 ```
 
-##### 3.8.Promise.reject()
+### 3.8.`Promise.reject()`
 
 `Promise.reject()` 方法会返回一个**新**的 Promise 实例，该实例的状态为 `rejected`。`Promise.reject()` 方法的参数，会原封不动地作为 `reject` 的理由，变成后续方法的参数。这一点与 `Promise.resolve` 方法不一致。
 
@@ -801,7 +801,7 @@ p2.then(res => {
 });
 ```
 
-##### 3.10.Promise.try()
+### 3.10.`Promise.try()`
 
 > 草案
 
@@ -867,11 +867,11 @@ console.log('next');
 
 事实上，`Promise.try` 就是模拟 `try` 代码块，就像 `promise.catch` 模拟的是 `catch` 代码块。
 
-### 4.拒绝事件
+## 4.拒绝事件
 
 当 Promise 被拒绝时，会有下文所述的两个事件之一被派发到全局作用域（通常而言，就是 window；如果是在 web worker 中使用的话，就是 Worker 或者其他 worker-based 接口）。
 
-##### 4.1.异常传递
+### 4.1.异常传递
 
 通常，一遇到异常抛出，浏览器就会顺着 promise 链寻找下一个 `onRejected` 失败回调函数或者由 `.catch()` 指定的回调函数（若没有指定 `onRejected` 回调函数或者 `.catch()` 调用，见下节：【promise 拒绝事件】 ）。这和以下的同步代码的执行过程很相似。
 
@@ -1039,7 +1039,7 @@ promise3--res3:  1
 - 在调用过程出错的时候，程序沿着 promise 链寻找第一个 `onRejected` 回调（没有设置 `onRejected` 函数的时候，才会被 `.catch()` 捕获）；
 - 被捕获的异常不会继续被传递；但若 `onRejected` 回调有返回值，则在下一个 `then()` 可以获取到这个返回值，否则后续调用（若有）都将获取不到参数（都只会得到 `undefined`）；
 
-##### 4.2.PromiseRejectionEvent
+### 4.2.`PromiseRejectionEvent`
 
 `PromiseRejectionEvent` 接口表示出现在 JavaScript Promises 被 `rejecte` (拒绝) 时触发的事件。这些事件对遥测(远程测试)和调试特别的有用。
 
@@ -1074,7 +1074,7 @@ new PromiseRejectionEvent(type, {
 
   - 代表 promise 被 `rejected` 的原因的值或者对象 Object 。
 
-**属性：**
+- **属性：**
 
 也从它的父级Event继承属性。
 
@@ -1086,17 +1086,17 @@ new PromiseRejectionEvent(type, {
 
 - 一个值或 Object 表明为什么 promise 被 rejected，并传递给 `Promise.reject()`。
 
-**方法：**
+- **方法：**
 
 没有特定的方法; 从它的父级 Event继承方法。
 
-**事件：**
+- **事件：**
 
 `unhandledrejection`
 
 `rejectionhandled`
 
-##### 4.3.rejectionhandled
+### 4.3.`rejectionhandled`
 
 当 Promise 被 `rejected` 且有 `rejection` 处理器时会在全局触发 `rejectionhandled` 事件(通常是发生在 window 下，但是也可能发生在 Worker 中)。
 
@@ -1147,7 +1147,7 @@ PromiseRejectionEvent
   <prototype>: PromiseRejectionEventPrototype { promise: Getter, reason: Getter, … }
 ```
 
-##### 4.4.unhandledrejection
+### 4.4.`unhandledrejection`
 
 当 Promise 被 `reject` 且没有 `reject` 处理器的时候，会触发 `unhandledrejection` 事件；这可能发生在 window 下，但也可能发生在 Worker 中。
 
@@ -1198,7 +1198,7 @@ PromiseRejectionEvent
   <prototype>: PromiseRejectionEventPrototype { promise: Getter, reason: Getter, … }
 ```
 
-##### 4.5.实际测试
+### 4.5.实际测试
 
 > [浏览器环境](./demo/part04/test02.js)
 > [node 环境](./demo/part04/test03.js)
