@@ -1,8 +1,8 @@
-### 6.事件模型
+# 事件模型
 
 事件的本质是程序各个组成部分之间的一种通信方式，也是异步编程的一种实现。
 
-#### 6.1.EventTarget 接口
+## 1.`EventTarget` 接口
 
 DOM 的事件操作（监听和触发），都定义在 `EventTarget` 接口。所有节点对象都部署了这个接口，其他一些需要事件通信的浏览器内置对象（比如，`XMLHttpRequest`、`AudioNode`、`AudioContext`）也部署了这个接口。
 
@@ -16,7 +16,7 @@ DOM 的事件操作（监听和触发），都定义在 `EventTarget` 接口。�
 
 ---
 
-##### 6.1.1 EventTarget.addEventListener()
+### 1.1.`EventTarget.addEventListener()`
 
 `EventTarget.addEventListener()` 用于在当前节点或对象上，定义一个特定事件的监听函数。一旦这个事件发生，就会执行监听函数。该方法没有返回值。
 
@@ -112,7 +112,7 @@ para.addEventListener(
 );
 ```
 
-##### 6.1.2 EventTarget.removeEventListener()
+### 1.2.`EventTarget.removeEventListener()`
 
 `EventTarget.removeEventListener` 方法用来移除 `addEventListener` 方法添加的事件监听函数。该方法没有返回值。
 
@@ -139,7 +139,7 @@ element.removeEventListener("mousedown", handleMouseDown, false);
 
 上面代码中，`removeEventListener` 方法也是无效的，因为第三个参数不一样。
 
-##### 6.1.3 EventTarget.dispatchEvent()
+### 1.3.`EventTarget.dispatchEvent()`
 
 `EventTarget.dispatchEvent` 方法在当前节点上触发指定事件，从而触发监听函数的执行。该方法返回一个布尔值，只要有一个监听函数调用了 `Event.preventDefault()`，则返回值为 `false`，否则为 `true`。
 
@@ -166,13 +166,13 @@ if (canceled) {
 }
 ```
 
-#### 6.2.监听函数
+## 2.监听函数
 
 浏览器的事件模型，就是通过监听函数（listener）对事件做出反应。事件发生后，浏览器监听到了这个事件，就会执行对应的监听函数。这是**事件驱动编程模式**（event-driven）的主要编程方式。
 
 JavaScript 有三种方法，可以为事件绑定监听函数。
 
-##### 6.2.1 HTML 的 on- 属性
+### 2.1.HTML 的 `on-` 属性
 
 HTML 语言允许在元素的属性中，直接定义某些事件的监听代码。
 
@@ -215,7 +215,7 @@ el.setAttribute("onclick", "doSomething()");
 // <Element onclick="doSomething()">
 ```
 
-##### 6.2.2 元素节点的事件属性
+### 2.2.元素节点的事件属性
 
 元素节点对象的事件属性，同样可以指定监听函数。
 
@@ -231,13 +231,13 @@ div.onclick = function(event) {
 
 注意，这种方法与 HTML 的 `on-` 属性的差异是，它的值是函数名（`doSomething`），而不像后者，必须给出完整的监听代码（`doSomething()`）。
 
-##### 6.2.3 EventTarget.addEventListener()
+### 2.3.`EventTarget.addEventListener()`
 
 所有 DOM 节点实例都有 `addEventListener` 方法，用来为该节点定义事件的监听函数。
 
 `window.addEventListener('load', doSomething, false);`
 
-##### 6.2.4 小结
+### 2.4.小结
 
 上面三种方法，第一种“HTML 的 `on-` 属性”，违反了 HTML 与 JavaScript 代码相分离的原则，将两者写在一起，不利于代码分工，因此不推荐使用。
 
@@ -253,7 +253,7 @@ div.onclick = function(event) {
 
 ---
 
-#### 6.3.this 的指向
+## 3.`this` 的指向
 
 监听函数内部的 `this` 指向触发事件的那个元素节点。
 
@@ -285,7 +285,7 @@ btn.addEventListener(
 
 上面两种写法，点击按钮以后也是输出 `btn`。
 
-#### 6.4.事件的传播
+## 4.事件的传播
 
 一个事件发生后，会在子元素和父元素之间**传播**（propagation）。这种传播分成三个阶段。
 
@@ -351,7 +351,7 @@ function callback(event) {
 
 事件传播的最上层对象是 `window`，接着依次是 `document`，`html（document.documentElement）` 和 `body（document.body）`。也就是说，上例的事件传播顺序，在捕获阶段依次为 `window`、`document`、`html`、`body`、`div`、`p`，在冒泡阶段依次为 `p`、`div`、`body`、`html`、`document`、`window`。
 
-#### 6.5.事件代理/委托
+## 5.事件代理/委托
 
 由于事件会在冒泡阶段向上传播到父节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。这种方法叫做**事件代理/委托**（delegation）。
 
@@ -423,7 +423,7 @@ p.addEventListener("click", function(event) {
 
 上面代码中，`stopImmediatePropagation` 方法可以彻底阻止这个事件传播，使得后面绑定的所有 `click` 监听函数都不再触发。所以，只会输出 1，不会输出 2。
 
-#### 6.6.Event 对象概述
+## 6.`Event` 对象概述
 
 事件发生以后，会产生一个事件对象，作为参数传给监听函数。浏览器原生提供一个 `Event` 对象，所有的事件都是这个对象的实例，或者说继承了 `Event.prototype` 对象。
 
@@ -477,9 +477,9 @@ p.dispatchEvent(click);
 
 那么，不管 `div` 元素是在冒泡阶段监听，还是在捕获阶段监听，都会触发监听函数。因为这时 `div` 元素是事件的目标，不存在是否冒泡的问题，`div` 元素总是会接收到事件，因此导致监听函数生效。
 
-#### 6.7.Event 对象的实例属性
+## 7.Event 对象的实例属性
 
-##### 6.7.1 Event.bubbles，Event.eventPhase
+### 7.1.`Event.bubbles`，`Event.eventPhase`
 
 `Event.bubbles` 属性返回一个布尔值，表示当前事件是否会冒泡。该属性为只读属性，一般用来了解 `Event` 实例是否可以冒泡。前面说过，除非显式声明，`Event` 构造函数生成的事件，默认是不冒泡的。
 
@@ -498,7 +498,7 @@ p.dispatchEvent(click);
 
 ---
 
-##### 6.7.2 Event.cancelable，Event.cancelBubble，event.defaultPrevented
+### 7.2.`Event.cancelable`，`Event.cancelBubble`，`event.defaultPrevented`
 
 `Event.cancelable` 属性返回一个布尔值，表示事件是否可以取消。该属性为只读属性，一般用来了解 `Event` 实例的特性。
 
@@ -534,7 +534,7 @@ if (event.defaultPrevented) {
 }
 ```
 
-##### 6.7.3 Event.currentTarget，Event.target
+### 7.3.`Event.currentTarget`，`Event.target`
 
 `Event.currentTarget` 属性返回事件当前所在的节点，即正在执行的监听函数所绑定的那个节点。
 
@@ -554,7 +554,7 @@ para.addEventListener("click", hide, false);
 
 上面代码中，如果在 `para` 节点的 `<em>` 子节点上面点击，则 `e.target` 指向 `<em>` 子节点，导致 `<em>` 子节点（即 World 部分）会不可见。如果点击 Hello 部分，则整个 para 都将不可见。
 
-##### 6.7.4 Event.type
+### 7.4.`Event.type`
 
 `Event.type` 属性返回一个字符串，表示事件类型。事件的类型是在生成事件的时候。该属性只读。
 
@@ -563,7 +563,7 @@ var evt = new Event("foo");
 evt.type; // "foo"
 ```
 
-##### 6.7.5 Event.timeStamp
+### 7.5.`Event.timeStamp`
 
 `Event.timeStamp` 属性返回一个毫秒时间戳，表示事件发生的时间。它是相对于网页加载成功开始计算的。
 
@@ -601,7 +601,7 @@ window.addEventListener("mousemove", function(event) {
 });
 ```
 
-##### 6.7.6 Event.isTrusted
+### 7.6.`Event.isTrusted`
 
 `Event.isTrusted` 属性返回一个布尔值，表示该事件是否由真实的用户行为产生。比如，用户点击链接会产生一个 `click` 事件，该事件是用户产生的；`Event` 构造函数生成的事件，则是脚本产生的。
 
@@ -612,7 +612,7 @@ evt.isTrusted; // false
 
 上面代码中，`evt` 对象是脚本产生的，所以 `isTrusted` 属性返回 `false`。
 
-##### 6.7.7 Event.detail
+### 7.7.`Event.detail`
 
 `Event.detail` 属性只有浏览器的 UI （用户界面）事件才具有。该属性返回一个数值，表示事件的某种信息。具体含义与事件类型相关。比如，对于 `click` 和 `dbclick` 事件，`Event.detail` 是鼠标按下的次数（1 表示单击，2 表示双击，3 表示三击）；对于鼠标滚轮事件，`Event.detail` 是滚轮正向滚动的距离，负值就是负向滚动的距离，返回值总是 3 的倍数。
 
@@ -626,9 +626,9 @@ function giveDetails(e) {
 document.selectQuery('p') = giveDetails;
 ```
 
-#### 6.8.Event 对象的实例方法
+## 8.Event 对象的实例方法
 
-##### 6.8.1 Event.preventDefault()
+### 8.1.`Event.preventDefault()`
 
 `Event.preventDefault` 方法取消浏览器对当前事件的默认行为。比如点击链接后，浏览器默认会跳转到另一个页面，使用这个方法以后，就不会跳转了；再比如，按一下空格键，页面向下滚动一段距离，使用这个方法以后也不会滚动了。该方法生效的前提是，事件对象的 `cancelable` 属性为 `true`，如果为 `false`，调用该方法没有任何效果。
 
@@ -667,7 +667,7 @@ function checkName(e) {
 
 上面代码为文本框的 `keypress` 事件设定监听函数后，将只能输入小写字母，否则输入事件的默认行为（写入文本框）将被取消，导致不能向文本框输入内容。
 
-##### 6.8.2 Event.stopPropagation()
+### 8.2.`Event.stopPropagation()`
 
 `stopPropagation` 方法阻止事件在 DOM 中继续传播，防止再触发定义在别的节点上的监听函数，但是不包括在当前节点上其他的事件监听函数。
 
@@ -681,7 +681,7 @@ el.addEventListener("click", stopEvent, false);
 
 上面代码中，`click` 事件将不会进一步冒泡到 `el` 节点的父节点。
 
-##### 6.8.3 Event.stopImmediatePropagation()
+### 8.3.`Event.stopImmediatePropagation()`
 
 `Event.stopImmediatePropagation` 方法阻止同一个事件的其他监听函数被调用，不管监听函数定义在当前节点还是其他节点。也就是说，该方法阻止事件的传播，比 `Event.stopPropagation()` 更彻底。
 
@@ -702,7 +702,7 @@ el.addEventListener("click", l2, false);
 
 上面代码在 `el` 节点上，为 `click` 事件添加了两个监听函数 l1 和 l2。由于 l1 调用了 `event.stopImmediatePropagation` 方法，所以 l2 不会被调用。
 
-##### 6.8.4 Event.composedPath()
+### 8.4.`Event.composedPath()`
 
 `Event.composedPath()` 返回一个数组，成员是事件的最底层节点和依次冒泡经过的所有上层节点。
 
@@ -724,7 +724,7 @@ div.addEventListener(
 // [p, div, body, html, document, Window]
 ```
 
-#### 6.9.CustomEvent 接口
+## 9.`CustomEvent` 接口
 
 `CustomEvent` 接口用于生成自定义的事件实例。那些浏览器预定义的事件，虽然可以手动生成，但是往往不能在事件上绑定数据。如果需要在触发事件的同时，传入指定的数据，就可以使用 `CustomEvent` 接口生成的自定义事件对象。
 
