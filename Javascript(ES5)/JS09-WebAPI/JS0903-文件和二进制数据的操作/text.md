@@ -15,7 +15,7 @@ Blob 对象是一个代表二进制数据的基本对象，在它的基础上，
 
 ---
 
-## 1.ArrayBuffer
+## 1.`ArrayBuffer`
 
 与其他语言相比，JavaScript 中的二进制数据是以非标准方式实现的。
 
@@ -68,9 +68,9 @@ for(let num of view) {
 
 因此，一个 16 字节 ArrayBuffer 中的二进制数据可以解释为 16 个“小数字”，或 8 个更大的数字（每个数字 2 个字节），或 4 个更大的数字（每个数字 4 个字节），或 2 个高精度的浮点数（每个数字 8 个字节）。
 
-![](https://zh.javascript.info//article/arraybuffer-binary-arrays/arraybuffer-views.svg)
+![https://zh.javascript.info//article/arraybuffer-binary-arrays/arraybuffer-views.svg](https://zh.javascript.info//article/arraybuffer-binary-arrays/arraybuffer-views.svg)
 
-#### 1.1.TypedArray
+### 1.1.`TypedArray`
 
 所有这些视图（`Uint8Array`，`Uint32Array` 等）的通用术语是 TypedArray。它们都享有同一组方法和属性。
 
@@ -153,7 +153,7 @@ let arr16 = new Uint16Array(arr8.buffer);
 > 请注意，尽管有类似 `Int8Array` 这样的名称，但 JavaScript 中并没有像 `int`，或 `int8` 这样的单值类型。
 > 这是合乎逻辑的，因为 `Int8Array` 不是这些单值的数组，而是 ArrayBuffer 上的视图。
 
-## 2.Blob 对象
+## 2.`Blob` 对象
 
 **Blob**（Binary Large Object）对象代表了一段二进制数据，提供了一系列操作接口。其他操作二进制数据的 API（比如 File 对象），都是建立在 Blob 对象基础上的，继承了它的属性和方法。
 
@@ -222,9 +222,9 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 
 在 Ajax 操作中，如果 `xhr.responseType` 设为 `blob`，接收的就是二进制数据。
 
-## 3.TextDecoder 和 TextEncoder
+## 3.`TextDecoder` 和 `TextEncoder`
 
-## 4.FileList 对象
+## 4.`FileList` 对象
 
 FileList 对象针对表单的 `file` 控件。当用户通过 `file` 控件选取文件后，这个控件的 `files` 属性值就是 FileList 对象。它在结构上类似于数组，包含用户选取的多个文件。
 

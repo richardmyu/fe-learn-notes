@@ -44,7 +44,7 @@ function repeatOften() {
 requestAnimationFrame(repeatOften);
 ```
 
-## 2.cancelAnimationFrame 方法
+## 2.`cancelAnimationFrame` 方法
 
 `cancelAnimationFrame` 方法用于取消重绘。
 

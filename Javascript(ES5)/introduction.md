@@ -2,7 +2,7 @@
 
 笔记是参考其他诸多网站，教材经过整理而成。
 
-### 参考
+## 参考
 
 1.《JavaScript 高级程序设计》（第三版） Nicholas C.Zakas
 
@@ -15,4 +15,3 @@
 5.[JavaScript（MDN）](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
 6.[现代 JavaScript 教程](https://zh.javascript.info/)
-

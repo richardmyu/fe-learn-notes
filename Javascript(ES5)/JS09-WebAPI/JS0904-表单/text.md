@@ -4,7 +4,7 @@
 
 `input`、`textarea`、`password`、`select` 等元素都可以通过 `value` 属性取到它们的值。
 
-### 1.1 select
+### 1.1.`select`
 
 `select` 是下拉列表元素。
 
@@ -48,7 +48,7 @@ for (var i = 0, count = elem.options.length; i < count; i++) {
 }
 ```
 
-### 1.2 checkbox
+### 1.2.`checkbox`
 
 `checkbox` 是多选框控件，每个选择框只有选中和不选中两种状态。
 
@@ -70,7 +70,7 @@ if (which.checked) {
 }
 ```
 
-### 1.3 radio
+### 1.3.`radio`
 
 `radio` 是单选框控件，同一组选择框同时只能选中一个，选中元素的 `checked` 属性为 `true`。由于同一组选择框的 `name` 属性都相同，所以只有通过遍历，才能获得用户选中的那个选择框的 `value`。
 
@@ -96,7 +96,7 @@ if (selected) {
 
 ## 2.表单的验证
 
-### 2.1 HTML 5 表单验证
+### 2.1.HTML5 表单验证
 
 所谓“表单验证”，指的是检查用户提供的数据是否符合要求，比如 Email 地址的格式。
 
@@ -139,7 +139,7 @@ if (field.nodeName === "INPUT" && field.type !== field.getAttribute("type")) {
 }
 ```
 
-### 2.2 checkValidity()，setCustomValidity 方法，validity 对象
+### 2.2.`checkValidity()`，`setCustomValidity` 方法，`validity` 对象
 
 提交表单之前（即 `submit` 事件发生之前），浏览器会执行 `form.checkValidity()`，检查是否所有输入项都能通过验证。那些不能通过验证的输入项，会触发该输入项元素的 `invalid` 事件。因此，可以定义 `invalid` 事件的监听函数，一旦通不过验证，就显示报错提示。
 
