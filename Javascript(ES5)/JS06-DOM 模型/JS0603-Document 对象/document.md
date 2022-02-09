@@ -18,11 +18,11 @@
 
 ## 2.属性
 
-### 2.1 快捷方式属性
+### 2.1.快捷方式属性
 
 以下属性是指向文档内部的某个节点的快捷方式。
 
-#### 2.1.1.document.defaultView
+#### 2.1.1.`document.defaultView`
 
 `document.defaultView` 属性返回 `document` 对象所属的 `window` 对象。如果当前文档不属于 `window` 对象，该属性返回 `null`。
 
@@ -30,7 +30,7 @@
 document.defaultView === window // true
 ```
 
-#### 2.1.2.document.doctype
+#### 2.1.2.`document.doctype`
 
 对于 HTML 文档来说，`document` 对象一般有两个子节点。第一个子节点是 `document.doctype`，指向 `<DOCTYPE>` 节点，即文档类型（Document Type Declaration，简写 DTD）节点。HTML 的文档类型节点，一般写成 `<!DOCTYPE html>`。如果网页没有声明 DTD，该属性返回 `null`。
 
@@ -39,7 +39,7 @@ document.doctype // <!doctype html>
 document.doctype.name // html
 ```
 
-#### 2.1.3.document.documentElement
+#### 2.1.3.`document.documentElement`
 
 `document.documentElement` 属性返回当前文档的根元素。它通常是 `document` 节点的第二个子节点，紧跟在 `document.doctype` 节点后面。HTML 网页的该属性，一般是 `<html>` 节点。
 
@@ -57,7 +57,7 @@ document.documentElement.nodeName // HTML
 
 > 注意：`document.documentElement` 属性返回当前文档的根元素；`ownerDocument` 和 `ownerDocument` 返回当前文档的根节点，即后者包含前者。
 
-#### 2.1.4.document.head/body
+#### 2.1.4.`document.head/body`
 
 `document.head` 属性指向 `<head>` 节点，`document.body` 属性指向 `<body>` 节点。
 
@@ -71,7 +71,7 @@ document.body === document.documentElement.lastElementChild
 // true
 ```
 
-#### 2.1.5.document.scrollingElement
+#### 2.1.5.`document.scrollingElement`
 
 `document.scrollingElement` 属性返回文档的滚动元素。也就是说，当文档整体滚动时，到底是哪个元素在滚动。
 
@@ -82,7 +82,7 @@ document.body === document.documentElement.lastElementChild
 document.scrollingElement.scrollTop = 0
 ```
 
-#### 2.1.6.document.activeElement
+#### 2.1.6.`document.activeElement`
 
 `document.activeElement` 属性返回获得当前**焦点（focus）**的 DOM 元素。通常，这个属性返回的是 `<input>`、`<textarea>`、`<select>` 等表单元素，如果当前没有焦点元素，返回 `<body>` 元素或 `null`。
 
@@ -93,31 +93,31 @@ inp.addEventListener('click', function() {
 })
 ```
 
-#### 2.1.7.document.fullscreenElement
+#### 2.1.7.`document.fullscreenElement`
 
 `document.fullscreenElement` 属性返回当前以全屏状态展示的 DOM 元素。如果不是全屏状态，该属性返回 `null`。
 
-### 2.2 节点集合属性
+### 2.2.节点集合属性
 
 以下属性返回一个 `HTMLCollection` 实例，表示文档内部特定元素的集合。这些集合都是动态的，原节点有任何变化，立刻会反映在集合中。
 
-#### 2.2.1.document.links
+#### 2.2.1.`document.links`
 
 `document.links` 属性返回当前文档所有设定了 `href` 属性的 `<a>` 及 `<area>` 节点。
 
-#### 2.2.2.document.forms
+#### 2.2.2.`document.forms`
 
 `document.forms` 属性返回所有 `<form>` 表单节点。
 
-#### 2.2.3.document.images
+#### 2.2.3.`document.images`
 
 `document.images` 属性返回页面所有 `<img>` 图片节点。
 
-#### 2.2.4.document.embeds/plugins
+#### 2.2.4.`document.embeds/plugins`
 
 `document.embeds` 属性和 `document.plugins` 属性，都返回所有 `<embed>` 节点。
 
-#### 2.2.5.document.scripts
+#### 2.2.5.`document.scripts`
 
 `document.scripts` 属性返回所有 `<script>` 节点。
 
@@ -128,7 +128,7 @@ if (scripts.length !== 0) {
 }
 ```
 
-#### 2.2.6.document.styleSheets
+#### 2.2.6.`document.styleSheets`
 
 `document.styleSheets` 属性返回文档内嵌或引入的样式表集合。
 
@@ -145,11 +145,11 @@ document.scripts instanceof HTMLCollection // true
 document.styleSheets // StyleSheetList {length: 0}
 ```
 
-### 2.3 文档静态信息属性
+### 2.3.文档静态信息属性
 
 以下属性返回文档信息。
 
-#### 2.3.1.document.documentURI/URL
+#### 2.3.1.`document.documentURI/URL`
 
 `document.documentURI` 属性和 `document.URL` 属性都返回一个字符串，表示当前文档的网址。不同之处是它们继承自不同的接口，`documentURI` 继承自 `Document` 接口，可用于所有文档；URL 继承自 `HTMLDocument` 接口，只能用于 HTML 文档。
 
@@ -191,7 +191,7 @@ document.baseURI // file:xxx#inp
 window.location.href // file:xxx#inp
 ```
 
-#### 2.3.2.document.domain
+#### 2.3.2.`document.domain`
 
 `document.domain` 属性返回当前文档的域名，不包含协议和接口。比如，网页的网址是 `http://www.example.com:80/hello.html`，那么 `domain` 属性就等于 `www.example.com`。如果无法获取域名，该属性返回 `null`。
 
@@ -199,11 +199,11 @@ window.location.href // file:xxx#inp
 
 另外，设置 `document.domain` 会导致端口被改成 `null`。因此，如果通过设置 `document.domain` 来进行通信，双方网页都必须设置这个值，才能保证端口相同。
 
-#### 2.3.3.document.location
+#### 2.3.3.`document.location`
 
 `Location` 对象是浏览器提供的原生对象，提供 URL 相关的信息和操作方法。通过 `window.location和document.location` 属性，可以拿到这个对象。具体看后续章节。
 
-#### 2.3.4.document.lastModified
+#### 2.3.4.`document.lastModified`
 
 `document.lastModified` 属性返回一个字符串，表示当前文档最后修改的时间。不同浏览器的返回值，日期格式是不一样的。
 
@@ -232,7 +232,7 @@ if (Date.parse(document.lastModified) > lastVisitedDate) {
 
 如果页面上有 JavaScript 生成的内容，`document.lastModified` 属性返回的总是当前时间。
 
-#### 2.3.5.document.title
+#### 2.3.5.`document.title`
 
 `document.title` 属性返回当前文档的标题。默认情况下，返回 `<title>` 节点的值。但是该属性是可写的，一旦被修改，就返回修改后的值。
 
@@ -243,11 +243,11 @@ document.title = 'hhh'
 document.title // hhh
 ```
 
-#### 2.3.6.document.characterSet
+#### 2.3.6.`document.characterSet`
 
 `document.characterSet` 属性返回当前文档的编码，比如 `UTF-8`、`ISO-8859-1` 等等。
 
-#### 2.3.7.document.referrer
+#### 2.3.7.`document.referrer`
 
 `document.referrer` 属性返回一个字符串，跳转或打开到当前页面 的页面的 URI。
 
@@ -255,11 +255,11 @@ document.title // hhh
 
 `document.referrer` 的值，总是与 HTTP 头信息的 `Referer` 字段保持一致。但是，`document.referrer` 的拼写有两个 r，而头信息的 `Referer` 字段只有一个 r。
 
-#### 2.3.8.document.dir
+#### 2.3.8.`document.dir`
 
 `document.dir` 返回一个字符串，表示文字方向。它只有两个可能的值：`rtl` 表示文字从右到左，阿拉伯文是这种方式；`ltr` 表示文字从左到右，包括英语和汉语在内的大多数文字采用这种方式。
 
-#### 2.3.9.document.compatMode
+#### 2.3.9.`document.compatMode`
 
 `compatMode` 属性返回浏览器处理文档的模式，可能的值为 `BackCompat`（向后兼容模式）和 `CSS1Compat`（严格模式）。
 
@@ -267,13 +267,13 @@ document.title // hhh
 
 ### 2.4 文档状态属性
 
-#### 2.4.1.document.hidden
+#### 2.4.1.`document.hidden`
 
 `document.hidden` 属性返回一个布尔值，表示当前页面是否可见。如果窗口最小化、浏览器切换了 Tab，都会导致导致页面不可见，使得 `document.hidden` 返回 true。
 
 这个属性是 Page Visibility API 引入的，一般都是配合这个 API 使用。
 
-#### 2.4.2.document.visibilityState
+#### 2.4.2.`document.visibilityState`
 
 `document.visibilityState` 返回文档的可见状态。
 
@@ -293,7 +293,7 @@ document.title // hhh
 
 这个属性可以用在页面加载时，防止加载某些资源；或者页面不可见时，停掉一些页面功能。
 
-#### 2.4.3.document.readyState
+#### 2.4.3.`document.readyState`
 
 `document.readyState` 属性返回当前文档的状态，共有三种可能的值。
 
@@ -336,11 +336,11 @@ var interval = setInterval(function() {
 
 另外，每次状态变化都会触发一个 `readystatechange` 事件。
 
-### 2.5 document.cookie
+### 2.5.`document.cookie`
 
 `document.cookie` 属性用来操作浏览器 `Cookie`。
 
-### 2.6 document.designMode
+### 2.6.`document.designMode`
 
 `document.designMode` 属性控制当前文档是否可编辑，通常用在所见即所得编辑器。该属性只有两个值 `on` 和 `off`，默认值为 `off`。
 
@@ -353,7 +353,7 @@ var editor = document.getElementById('editor')
 editor.contentDocument.designMode = 'on'
 ```
 
-### 2.7 document.implementation
+### 2.7.`document.implementation`
 
 `document.implementation` 属性返回一个 `DOMImplementation` 对象。该对象有三个方法，主要用于创建独立于当前文档的新的 `Document` 对象。
 

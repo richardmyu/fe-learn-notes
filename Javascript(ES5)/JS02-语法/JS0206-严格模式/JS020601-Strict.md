@@ -1,10 +1,10 @@
-### 4.严格模式
+# 严格模式
 
 除了正常的运行模式，JavaScript 还有第二种运行模式：**严格模式**（strict mode）。顾名思义，这种模式采用更加严格的 JavaScript 语法。
 
 同样的代码，在正常模式和严格模式中，可能会有不一样的运行结果。一些在正常模式下可以运行的语句，在严格模式下将不能运行。
 
-#### 4.1.设计目的
+## 1.设计目的
 
 早期的 JavaScript 语言有很多设计不合理的地方，但是为了兼容以前的代码，又不能改变老的语法，只能不断添加新的语法，引导程序员使用新语法。
 
@@ -21,7 +21,7 @@
 
 总之，严格模式体现了 JavaScript 更合理、更安全、更严谨的发展方向。
 
-#### 4.2.启用方法
+## 2.启用方法
 
 进入严格模式的标志，是一行字符串 `use strict`。
 
@@ -84,11 +84,11 @@ function notStrict() {
 })();
 ```
 
-#### 4.3.显式报错
+## 3.显式报错
 
 严格模式使得 JavaScript 的语法变得更严格，更多的操作会显式报错。其中有些操作，在正常模式下只会默默地失败，不会报错。
 
-##### 4.3.1 只读属性不可写
+### 3.1.只读属性不可写
 
 严格模式下，设置字符串的 `length` 属性，会报错。
 
@@ -122,7 +122,7 @@ delete obj.p;
 // TypeError: Cannot delete property 'p' of #<Object>
 ```
 
-##### 4.3.2 只设置了取值器的属性不可写
+### 3.2.只设置了取值器的属性不可写
 
 严格模式下，对一个只有取值器、没有存值器的属性赋值，会报错。
 
@@ -137,7 +137,7 @@ obj.v = 2;
 // Uncaught TypeError: Cannot set property v of #<Object> which has only a getter
 ```
 
-##### 4.3.3 禁止扩展的对象不可扩展
+### 3.3.禁止扩展的对象不可扩展
 
 严格模式下，对禁止扩展的对象添加新属性，会报错。
 
@@ -149,7 +149,7 @@ obj.v = 1;
 // Uncaught TypeError: Cannot add property v, object is not extensible
 ```
 
-##### 4.3.4 eval、arguments 不可用作标识名
+### 3.4.`eval`、`arguments` 不可用作标识名
 
 严格模式下，使用 `eval` 或者 `arguments` 作为标识名，将会报错。下面的语句都会报错。
 
@@ -166,7 +166,7 @@ var f = new Function('arguments', "'use strict'; return 17;");
 // SyntaxError: Unexpected eval or arguments in strict mode
 ```
 
-##### 4.3.5 函数不能有重名的参数
+### 3.5.函数不能有重名的参数
 
 正常模式下，如果函数有多个重名的参数，可以用 `arguments[i]` 读取。严格模式下，这属于语法错误。
 
@@ -178,7 +178,7 @@ function f(a, a, b) {
 // Uncaught SyntaxError: Duplicate parameter name not allowed in this context
 ```
 
-##### 4.3.6 禁止八进制的前缀 0 表示法
+### 3.6.禁止八进制的前缀 `0` 表示法
 
 正常模式下，整数的第一位如果是 0，表示这是八进制数，比如 0100 等于十进制的 64。严格模式禁止这种表示法，整数第一位为 0，将报错。
 
@@ -188,11 +188,11 @@ var n = 0100;
 // Uncaught SyntaxError: Octal literals are not allowed in strict mode.
 ```
 
-#### 4.4.增强的安全措施
+## 4.增强的安全措施
 
 严格模式增强了安全保护，从语法上防止了一些不小心会出现的错误。
 
-##### 4.4.1 全局变量显式声明
+### 4.1.全局变量显式声明
 
 正常模式中，如果一个变量没有声明就赋值，默认是全局变量。严格模式禁止这种用法，全局变量必须显式声明。
 
@@ -214,7 +214,7 @@ f(); // 报错，未声明就创建一个全局变量
 
 因此，严格模式下，变量都必须先声明，然后再使用。
 
-##### 4.4.2 禁止 this 关键字指向全局对象
+### 4.2.禁止 `this` 关键字指向全局对象
 
 正常模式下，函数内部的 `this` 可能会指向全局对象，严格模式禁止这种用法，避免无意间创造全局变量。
 
@@ -271,7 +271,7 @@ fun.call(null); // null
 fun.call(undefined); // undefined
 ```
 
-##### 4.4.3 禁止使用 fn.callee、fn.caller
+### 4.3.禁止使用 `fn.callee`、`fn.caller`
 
 函数内部不得使用 `fn.callee`、`fn.caller`，否则会报错。这意味着不能在函数内部得到调用栈了。
 
@@ -285,11 +285,11 @@ function f1() {
 f1();
 ```
 
-##### 4.4.4 禁止使用 arguments.callee、arguments.caller
+### 4.4.禁止使用 `arguments.callee`、`arguments.caller`
 
 `arguments.callee` 和 `arguments.caller` 是两个历史遗留的变量，从来没有标准化过，现在已经取消了。正常模式下调用它们没有什么作用，但是不会报错。严格模式明确规定，函数内部使用 `arguments.callee`、`arguments.caller` 将会报错。
 
-##### 4.4.5 禁止删除变量
+### 4.5 禁止删除变量
 
 严格模式下无法删除变量，如果使用 `delete` 命令删除一个变量，会报错。只有对象的属性，且属性的描述对象的 `configurable` 属性设置为 true，才能被 `delete` 命令删除。
 
@@ -307,7 +307,7 @@ var obj = Object.create(null, {
 delete obj.x; // 删除成功
 ```
 
-#### 4.5.静态绑定
+## 5.静态绑定
 
 JavaScript 语言的一个特点，就是允许“动态绑定”，即某些属性和方法到底属于哪一个对象，不是在编译时确定的，而是在**运行时**（runtime）确定的。
 
@@ -315,7 +315,7 @@ JavaScript 语言的一个特点，就是允许“动态绑定”，即某些属
 
 具体来说，涉及以下几个方面。
 
-##### 4.5.1 禁止使用 with 语句
+### 5.1 禁止使用 `with` 语句
 
 严格模式下，使用 `with` 语句将报错。因为 `with` 语句无法在编译时就确定，某个属性到底归属哪个对象，从而影响了编译效果。
 
@@ -330,7 +330,7 @@ with (obj) {
 // Uncaught SyntaxError: Strict mode code may not include a with statement
 ```
 
-##### 4.5.2 创设 eval 作用域
+### 5.2.创设 `eval` 作用域
 
 正常模式下，JavaScript 语言有两种变量作用域：全局作用域和函数作用域。严格模式创设了第三种作用域：`eval` 作用域。
 
@@ -366,7 +366,7 @@ f2('"use strict";undeclared_variable = 1'); // 报错
 
 上面两种写法，`eval` 内部使用的都是严格模式。
 
-##### 4.5.3 arguments 不再追踪参数的变化
+### 5.3.`arguments` 不再追踪参数的变化
 
 变量 `arguments` 代表函数的参数。严格模式下，函数内部改变参数与 `arguments` 的联系被切断了，两者不再存在联动关系。
 
@@ -385,11 +385,11 @@ function f(a) {
 f(1); // 严格模式为[2, 1]
 ```
 
-#### 4.6.向下一个版本的 JavaScript 过渡
+## 6.向下一个版本的 JavaScript 过渡
 
 JavaScript 语言的下一个版本是 ECMAScript 6，为了平稳过渡，严格模式引入了一些 ES6 语法。
 
-##### 4.6.1 非函数代码块不得声明函数
+### 6.1.非函数代码块不得声明函数
 
 ES6 会引入块级作用域。为了与新版本接轨，ES5 的严格模式只允许在全局作用域或函数作用域声明函数。也就是说，不允许在非函数的代码块内声明函数。
 
@@ -406,6 +406,6 @@ for (var i = 0; i < 5; i++) {
 
 注意，如果是 ES6 环境，上面的代码不会报错，因为 ES6 允许在代码块之中声明函数。
 
-##### 4.6.2 保留字
+### 6.2.保留字
 
 为了向将来 JavaScript 的新版本过渡，严格模式新增了一些保留字（`implements、interface、let、package、private、protected、public、static、yield`等）。使用这些词作为变量名将会报错。

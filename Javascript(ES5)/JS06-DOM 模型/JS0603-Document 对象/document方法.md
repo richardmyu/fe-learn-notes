@@ -1,6 +1,6 @@
 # document 对象
 
-## 3.方法
+## 1.方法
 
 ### 3.1 document.open/close()
 

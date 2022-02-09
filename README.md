@@ -10,7 +10,3 @@
 
 纯粹文本记录库，若有提示 demo，均可在 [
 css-and-js-animate](https://github.com/richardmyu/css-and-js-animate) 中找到。
-
----
-
-test from ubuntu.

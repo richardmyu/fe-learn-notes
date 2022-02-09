@@ -1,4 +1,4 @@
-### 3.Element 对象
+# Element 对象
 
 `Element` 对象对应网页的 HTML 元素。每一个 HTML 元素，在 DOM 树上都会转化成一个 `Element` 节点对象（以下简称元素节点）。
 
@@ -12,9 +12,9 @@ p.nodeType; // 1
 
 `Element` 对象继承了 `Node` 接口，因此 `Node` 的属性和方法在 `Element` 对象都存在。此外，不同的 HTML 元素对应的元素节点是不一样的，浏览器使用不同的构造函数，生成不同的元素节点，比如 `<a>` 元素的节点对象由 `HTMLAnchorElement` 构造函数生成，`<button>` 元素的节点对象由 `HTMLButtonElement` 构造函数生成。因此，元素节点不是一种对象，而是一组对象，这些对象除了继承 `Element` 的属性和方法，还有各自构造函数的属性和方法。
 
-#### 3.1.实例属性
+## 1.实例属性
 
-##### 3.1.1 元素特性的相关属性
+### 1.1.元素特性的相关属性
 
 1).Element.id
 
@@ -81,7 +81,7 @@ document.documentElement.lang; // "en"
 
 `Element.title` 属性用来读写当前元素的 HTML 属性 `title`。该属性通常用来指定，鼠标悬浮时弹出的文字提示框。
 
-##### 3.1.2 元素状态的相关属性
+### 1.2.元素状态的相关属性
 
 1).Element.hidden
 
@@ -124,7 +124,7 @@ HTML 元素可以设置 `contentEditable` 属性，使得元素的内容可以�
 
 `Element.isContentEditable` 属性返回一个布尔值，同样表示是否设置了 `contenteditable` 属性。该属性只读。
 
-##### 3.1.3 Element.attributes
+### 1.3.`Element.attributes`
 
 `Element.attributes` 属性返回一个类似数组的对象，成员是当前元素节点的所有属性节点。
 
@@ -137,7 +137,7 @@ for (var i = attrs.length - 1; i >= 0; i--) {
 }
 ```
 
-##### 3.1.4 Element.className，Element.classList
+### 1.4.`Element.className`，`Element.classList`
 
 `className` 属性用来读写当前元素节点的 `class` 属性。它的值是一个字符串，每个 `class` 之间用空格分割。
 
@@ -213,7 +213,7 @@ if (boolValue) {
 }
 ```
 
-##### 3.1.5 Element.dataset
+### 1.5.`Element.dataset`
 
 网页元素可以自定义 `data-` 属性，用来添加数据。
 
@@ -260,7 +260,7 @@ mydiv.dataset.foo = "bar";
 mydiv.getAttribute("data-foo"); // "bar"
 ```
 
-##### 3.1.6 Element.innerHTML
+### 1.6.`Element.innerHTML`
 
 `Element.innerHTML` 属性返回一个字符串，等同于该元素包含的所有 HTML 代码。该属性可读写，常用来设置某个节点的内容。它能改写所有元素节点的内容，包括 `<HTML>` 和 `<body>` 元素。
 
@@ -294,7 +294,7 @@ el.innerHTML = name;
 
 上面代码中，`alert` 方法是会执行的。因此为了安全考虑，如果插入的是文本，最好用 `textContent` 属性代替 `innerHTML`。
 
-##### 3.1.7 Element.outerHTML
+### 1.7.`Element.outerHTML`
 
 `Element.outerHTML` 属性返回一个字符串，表示当前元素节点的所有 HTML 代码，包括该元素本身和所有子元素。
 
@@ -331,7 +331,7 @@ div.outerHTML = "<p>test</p>";
 // DOMException: This element has no parent node.
 ```
 
-##### 3.1.8 Element.clientHeight，Element.clientWidth
+### 1.8.`Element.clientHeight`，`Element.clientWidth`
 
 `Element.clientHeight` 属性返回一个整数值，表示元素节点的 CSS 高度（单位像素），只对块级元素生效，对于行内元素返回 0。如果块级元素没有设置 CSS 高度，则返回实际高度。
 
@@ -349,13 +349,13 @@ document.documentElement.clientHeight;
 document.body.clientHeight;
 ```
 
-##### 3.1.9 Element.clientLeft，Element.clientTop
+### 1.9.`Element.clientLeft`，`Element.clientTop`
 
 `Element.clientLeft` 属性等于元素节点左边框（left border）的宽度（单位像素），不包括左侧的 `padding` 和 `margin`。如果没有设置左边框，或者是行内元素（`display: inline`），该属性返回 0。该属性总是返回整数值，如果是小数，会四舍五入。
 
 `Element.clientTop` 属性等于网页元素顶部边框的宽度（单位像素），其他特点都与 `clientTop` 相同。
 
-##### 3.1.10 Element.scrollHeight，Element.scrollWidth
+### 1.10.`Element.scrollHeight`，`Element.scrollWidth`
 
 `Element.scrollHeight` 属性返回一个整数值（小数会四舍五入），表示当前元素的总高度（单位像素），包括溢出容器、当前不可见的部分。它包括 `padding`，但是不包括 `border`、`margin` 以及水平滚动条的高度（如果有水平滚动条的话），还包括伪元素（`::before` 或 `::after`）的高度。
 
@@ -379,7 +379,7 @@ document.getElementById("myDiv").scrollHeight; // 356
 
 上面代码中，即使 myDiv 元素的 CSS 高度只有 200 像素，且溢出部分不可见，但是 `scrollHeight` 仍然会返回该元素的原始高度。
 
-##### 3.1.11 Element.scrollLeft，Element.scrollTop
+### 1.11.`Element.scrollLeft`，`Element.scrollTop`
 
 `Element.scrollLeft` 属性表示当前元素的水平滚动条向右侧滚动的像素数量，`Element.scrollTop` 属性表示当前元素的垂直滚动条向下滚动的像素数量。对于那些没有滚动条的网页元素，这两个属性总是等于 0。
 
@@ -392,7 +392,7 @@ document.documentElement.scrollTop;
 
 这两个属性都可读写，设置该属性的值，会导致浏览器将当前元素自动滚动到相应的位置。
 
-##### 3.1.12 Element.offsetParent
+### 1.12.`Element.offsetParent`
 
 `Element.offsetParent` 属性返回最靠近当前元素的、并且 CSS 的 `position` 属性不等于 `static` 的上层元素。
 
@@ -422,7 +422,7 @@ document.documentElement.scrollTop;
 
 如果某个元素的所有上层节点的 `position` 属性都是 `static`，则 `Element.offsetParent` 属性指向 `<body>` 元素。
 
-##### 3.1.13 Element.offsetHeight，Element.offsetWidth
+### 1.13.`Element.offsetHeight`，`Element.offsetWidth`
 
 `Element.offsetHeight` 属性返回一个整数，表示元素的 CSS 垂直高度（单位像素），包括元素本身的高度、`padding` 和 `border`，以及垂直滚动条的高度（如果存在滚动条）。
 
@@ -430,7 +430,7 @@ document.documentElement.scrollTop;
 
 这两个属性都是只读属性，只比 `Element.clientHeight` 和 `Element.clientWidth` 多了边框的高度或宽度。如果元素的 CSS 设为不可见（比如 `display: none;`），则返回 0。
 
-##### 3.1.14 Element.offsetLeft，Element.offsetTop
+### 1.14.`Element.offsetLeft`，`Element.offsetTop`
 
 `Element.offsetLeft` 返回当前元素左上角相对于 `Element.offsetParent` 节点的水平位移，`Element.offsetTop` 返回垂直位移，单位为像素。通常，这两个值是指相对于父节点的位移。
 
@@ -449,11 +449,11 @@ function getElementPosition(e) {
 }
 ```
 
-##### 3.1.15 Element.style
+### 1.15.`Element.style`
 
 每个元素节点都有 `style` 用来读写该元素的行内样式信息。
 
-##### 3.1.16 Element.children，Element.childElementCount
+### 1.16.`Element.children`，`Element.childElementCount`
 
 `Element.children` 属性返回一个类似数组的对象（`HTMLCollection` 实例），包括当前元素节点的所有子元素。如果当前元素没有子元素，则返回的对象包含零个成员。
 
@@ -470,13 +470,13 @@ if (para.children.length) {
 
 `Element.childElementCount` 属性返回当前元素节点包含的子元素节点的个数，与 `Element.children.length` 的值相同。
 
-##### 3.1.17 Element.firstElementChild，Element.lastElementChild
+### 1.17.`Element.firstElementChild`，`Element.lastElementChild`
 
 `Element.firstElementChild` 属性返回当前元素的第一个元素子节点，`Element.lastElementChild` 返回最后一个元素子节点。
 
 如果没有元素子节点，这两个属性返回 `null`。
 
-##### 3.1.18 Element.nextElementSibling，Element.previousElementSibling
+### 1.18.`Element.nextElementSibling`，`Element.previousElementSibling`
 
 `Element.nextElementSibling` 属性返回当前元素节点的后一个同级元素节点，如果没有则返回 `null`。
 
@@ -491,9 +491,9 @@ el.nextElementSibling;
 
 `Element.previousElementSibling` 属性返回当前元素节点的前一个同级元素节点，如果没有则返回 `null`。
 
-#### 3.2.实例方法
+## 2.实例方法
 
-##### 3.2.1 属性相关方法
+### 2.1 属性相关方法
 
 以下方法用来操作当前节点的属性。
 
@@ -559,7 +559,7 @@ foo.hasAttributes(); // true
 
 `document.getElementById('div1').removeAttribute('id')`
 
-##### 3.2.2 Element.querySelector()
+### 2.2.`Element.querySelector()`
 
 `Element.querySelector` 方法接受 CSS 选择器作为参数，返回父元素的第一个匹配的子元素。如果没有找到匹配的子元素，就返回 `null`。
 
@@ -601,7 +601,7 @@ outer.querySelector("div p");
 // <p>Hello</p>
 ```
 
-##### 3.2.3 Element.querySelectorAll()
+### 2.3.`Element.querySelectorAll()`
 
 `Element.querySelectorAll` 方法接受 CSS 选择器作为参数，返回一个 `NodeList` 实例，包含所有匹配的子元素。
 
@@ -614,7 +614,7 @@ var matches = el.querySelectorAll("div.highlighted > p");
 
 它也可以接受多个 CSS 选择器，它们之间使用逗号分隔。如果选择器里面有伪元素的选择器，则总是返回一个空的 `NodeList` 实例。
 
-##### 3.2.4 Element.getElementsByClassName()
+### 2.4.`Element.getElementsByClassName()`
 
 `Element.getElementsByClassName` 方法返回一个 `HTMLCollection` 实例，成员是当前元素节点的所有具有指定 class 的子元素节点。该方法与 `document.getElementsByClassName` 方法的用法类似，只是搜索范围不是整个文档，而是当前元素节点。
 
@@ -646,7 +646,7 @@ for (var i = 0; i < matches.length; i++) {
 
 上面代码中，matches 集合的第一个成员，一旦被拿掉 class 里面的 foo，就会立刻从 matches 里面消失，导致出现上面的结果。
 
-##### 3.2.5 Element.getElementsByTagName()
+### 2.5.`Element.getElementsByTagName()`
 
 `Element.getElementsByTagName` 方法返回一个 `HTMLCollection` 实例，成员是当前节点的所有匹配指定标签名的子元素节点。该方法与 `document.getElementsByClassName` 方法的用法类似，只是搜索范围不是整个文档，而是当前元素节点。
 
@@ -657,7 +657,7 @@ var cells = table.getElementsByTagName("td");
 
 注意，该方法的参数是大小写不敏感的。
 
-##### 3.2.6 Element.closest()
+### 2.6.`Element.closest()`
 
 `Element.closest` 方法接受一个 CSS 选择器作为参数，返回匹配该选择器的、最接近当前节点的一个祖先节点（包括当前节点本身）。如果没有任何节点匹配 CSS 选择器，则返回 `null`。
 
@@ -682,7 +682,7 @@ div03.closest(":not(div)"); // article
 
 上面代码中，由于 `closest` 方法将当前节点也考虑在内，所以第二个 `closest` 方法返回 div-03。
 
-##### 3.2.7 Element.matches()
+### 2.7.`Element.matches()`
 
 `Element.matches` 方法返回一个布尔值，表示当前元素是否匹配给定的 CSS 选择器。
 
@@ -692,7 +692,7 @@ if (el.matches(".someClass")) {
 }
 ```
 
-##### 3.2.8 事件相关方法
+### 2.8.事件相关方法
 
 以下三个方法与 `Element` 节点的事件相关。这些方法都继承自 `EventTarget` 接口，详见相关章节。
 
@@ -712,7 +712,7 @@ var event = new Event("click");
 element.dispatchEvent(event);
 ```
 
-##### 3.2.9 Element.scrollIntoView()
+### 2.9.`Element.scrollIntoView()`
 
 `Element.scrollIntoView` 方法滚动当前元素，进入浏览器的可见区域，类似于设置 `window.location.hash` 的效果。
 
@@ -723,7 +723,7 @@ el.scrollIntoView(false);
 
 该方法可以接受一个布尔值作为参数。如果为 true，表示元素的顶部与当前区域的可见部分的顶部对齐（前提是当前区域可滚动）；如果为 false，表示元素的底部与当前区域的可见部分的尾部对齐（前提是当前区域可滚动）。如果没有提供该参数，默认为 true。
 
-##### 3.2.10 Element.getBoundingClientRect()
+### 2.10.`Element.getBoundingClientRect()`
 
 `Element.getBoundingClientRect` 方法返回一个对象，提供当前元素节点的大小、位置等信息，基本上就是 CSS 盒状模型的所有信息。
 
@@ -757,7 +757,7 @@ Object.keys(rect); // []
 
 上面代码中，rect 对象没有自身属性，而 `Object.keys` 方法只返回对象自身的属性，所以返回了一个空数组。
 
-##### 3.2.11 Element.getClientRects()
+### 2.11.`Element.getClientRects()`
 
 `Element.getClientRects` 方法返回一个类似数组的对象，里面是当前元素在页面上形成的所有矩形（所以方法名中的 Rect 用的是复数）。每个矩形都有 `bottom`、`height`、`left`、`right`、`top` 和 `width` 六个属性，表示它们相对于视口的四个坐标，以及本身的高度和宽度。
 
@@ -781,7 +781,7 @@ el.getClientRects()[0].width; // 105.908203125
 
 这个方法主要用于判断行内元素是否换行，以及行内元素的每一行的位置偏移。
 
-##### 3.2.12 Element.insertAdjacentElement()
+### 2.12.`Element.insertAdjacentElement()`
 
 `Element.insertAdjacentElement` 方法在相对于当前元素的指定位置，插入一个新的节点。该方法返回被插入的节点，如果插入失败，返回 `null`。
 
@@ -808,7 +808,7 @@ p1.insertAdjacentElement("afterend", p2); // null
 
 如果插入的节点是一个文档里现有的节点，它会从原有位置删除，放置到新的位置。
 
-##### 3.2.13 Element.insertAdjacentHTML()，Element.insertAdjacentText()
+### 2.13.`Element.insertAdjacentHTML()`，`Element.insertAdjacentText()`
 
 `Element.insertAdjacentHTML` 方法用于将一个 HTML 字符串，解析生成 DOM 结构，插入相对于当前节点的指定位置。
 
@@ -847,7 +847,7 @@ d1.insertAdjacentText("afterend", "two");
 // <div id="one">one</div>two
 ```
 
-##### 3.2.14 Element.remove()
+### 2.14.`Element.remove()`
 
 `Element.remove` 方法继承自 `ChildNode` 接口，用于将当前元素节点从它的父节点移除。
 
@@ -856,7 +856,7 @@ var el = document.getElementById("mydiv");
 el.remove();
 ```
 
-##### 3.2.15 Element.focus()，Element.blur()
+### 2.15.`Element.focus()`，`Element.blur()`
 
 `Element.focus` 方法用于将当前页面的焦点，转移到指定元素上。
 
@@ -876,7 +876,6 @@ function getFocus() {
 
 `Element.blur` 方法用于将焦点从当前元素移除。
 
-##### 3.2.16 Element.click()
+### 2.16.`Element.click()`
 
 `Element.clic`k 方法用于在当前元素上模拟一次鼠标点击，相当于触发了 `click` 事件。
-

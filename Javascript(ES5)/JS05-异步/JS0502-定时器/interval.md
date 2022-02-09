@@ -1,12 +1,12 @@
-### 2.定时器
+# 定时器
 
 JavaScript 提供定时执行代码的功能，叫做**定时器**（timer），主要由 `setTimeout()` 和 `setInterval()` 这两个函数来完成。它们向任务队列添加定时任务。
 
-#### 2.1.setTimeout()
+## 1.`setTimeout()`
 
 `setTimeout` 函数用来指定某个函数或某段代码，在多少毫秒之后执行（确切的说，是在多少毫秒以后将定时器内的代码添加到任务队列中，然后等待执行）。
 
-**语法**
+- **语法**
 
 ```js
 var timeoutID = scope.setTimeout(function[, delay, param1, param2, ...]);
@@ -14,7 +14,7 @@ var timeoutID = scope.setTimeout(function[, delay]);
 var timeoutID = scope.setTimeout(code[, delay]);
 ```
 
-**参数**
+- **参数**
 
 - `function`
 
@@ -79,7 +79,7 @@ setTimeout(
 );
 ```
 
-**返回值**
+- **返回值**
 
 - 返回值 `timeoutID` 是一个正整数，表示定时器的编号。这个值可以传递给 `clearTimeout()` 来取消该定时器。
 
@@ -87,18 +87,18 @@ setTimeout(
 
 在同一个对象上（一个 `window` 或者 `worker`），`setTimeout()` 或者 `setInterval()` 在后续的调用不会重用同一个定时器编号。但是不同的对象使用独立的编号池。
 
-#### 2.2.setInterval()
+## 2.`setInterval()`
 
 `setInterval` 函数的用法与 `setTimeout` 完全一致，区别仅仅在于 `setInterval` 指定某个任务每隔一段时间就执行一次，也就是无限次的定时执行。
 
-**语法**
+- **语法**
 
 ```js
 let intervalID = window.setInterval(func, delay[, param1, param2, ...]);
 let intervalID = window.setInterval(code, delay);
 ```
 
-**参数**
+- **参数**
 
 - `intervalID`
 
@@ -139,7 +139,7 @@ var timer = setTimeout(function f() {
 }, 2000);
 ```
 
-#### 2.3.clearTimeout()，clearInterval()
+## 3.`clearTimeout()`，`clearInterval()`
 
 `setTimeout` 和 `setInterval` 函数，都返回一个整数值，表示计数器编号。将该整数传入 `clearTimeout` 和 `clearInterval` 函数，就可以取消对应的定时器。
 
@@ -178,7 +178,7 @@ setTimeout(f, 1000); // 12
 })();
 ```
 
-#### 2.4.定时器中关于 this 的问题
+## 4.定时器中关于 `this` 的问题
 
 一个需要注意的地方，如果回调函数是对象的方法，那么 `setTimeout` 使得方法内部的 `this` 关键字指向全局环境，而不是定义时所在的那个对象。
 
@@ -200,7 +200,7 @@ var obj = {
 setTimeout(obj.y, 1000); // 1
 ```
 
-**可能的解决方案**
+- **可能的解决方案**
 
 1.包装函数
 
@@ -237,11 +237,11 @@ setTimeout(obj.y.bind(obj), 1000);
 // 2
 ```
 
-#### 2.5.兼容
+## 5.兼容
 
 如果你需要向你的回调函数内传递一个或多个参数, 而且还需要兼容那些不支持传递额外参数(不管使用 `setTimeout()` 或者 `setInterval()`)的浏览器时(比如，IE9 及更早的版本), 你可以引入下面的[兼容代码](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setTimeout#%E5%85%BC%E5%AE%B9%E6%97%A7%E7%8E%AF%E5%A2%83%EF%BC%88polyfill%EF%BC%89)来支持向定时器函数传参。
 
-**变通方法**
+- **变通方法**
 
 1.匿名函数（这种方式要消耗更多资源）
 
@@ -269,23 +269,23 @@ var intervalID = setTimeout(() => {
 var intervalID = setTimeout(myFunc.bind(null, 1, 2, 3), 1000);
 ```
 
-#### 2.6.延迟时间
+## 6.延迟时间
 
-##### 2.6.1.最小延迟时间
+### 6.1.最小延迟时间
 
 有很多因素会导致 `setTimeout` 的回调函数执行比设定的预期值更久。
 
-**最小延时 >= 4ms**
+- **最小延时 >= 4ms**
 
 在浏览器中，`setTimeout()/setInterval()` 的每调用一次定时器的最小间隔是 4ms，这通常是由于函数嵌套导致（嵌套层级达到一定深度），或者是由于已经执行的 `setInterval` 的回调函数阻塞导致的。
 
 一直以来，不同浏览器中出现这种最小延迟的情况有所不同（例如 Firefox） - 从其他地方调用了 `setInterval()`，或者在嵌套函数调用 `setTimeout()` 时（嵌套级别达到特定深度时），都会出现超时延迟。
 
-**未被激活的 tabs 的定时最小延迟 >= 1000ms**
+- **未被激活的 tabs 的定时最小延迟 >= 1000ms**
 
 为了优化后台 tab 的加载损耗（以及降低耗电量），在未被激活的 tab 中(即那些不处于当前窗口的页面)定时器的最小延时限制为 1S(1000ms)。
 
-**追踪型脚本的最小延时限制**
+- **追踪型脚本的最小延时限制**
 
 从 Firefox 55 版本开始，追踪型脚本（例如 谷歌分析，或者其他的一些被 Firefox 的 TP lists 识别为追踪型脚本的 外链 URL 脚本）是重点限制加载的对象。在当前正在使用的页面中，这个节流限制的延时依然是 4ms。但是在后台 tabs 中，这个最小延时限制是 10000ms（10s）,这个限制会在文档第一次加载后的 30s 后生效。
 
@@ -295,15 +295,15 @@ var intervalID = setTimeout(myFunc.bind(null, 1, 2, 3), 1000);
 - `dom.min_tracking_background_timeout_value: 10000`
 - `dom.timeout.tracking_throttling_delay: 30000`
 
-**超时延迟**
+- **超时延迟**
 
 除了"最小延时"之外，定时器仍然有可能因为当前页面（或者操作系统/浏览器本身）被其他任务占用导致延时。需要被强调是，直到调用 `setTimeout()` 的主线程执行完其他任务之后，回调函数和代码段才能被执行。
 
-##### 2.6.2.最大延时值
+### 6.2.最大延时值
 
 浏览器包括 IE, Chrome, Safari, Firefox 以 32 个 bit 字节将延时(delay)存储整数。这就会导致如果一个延时(delay)大于 2147483647 (大约 24.8 天)时就会溢出，导致定时器将会被立即执行。
 
-#### 2.7.debounce 函数
+## 7.`debounce` 函数
 
 有时，我们不希望回调函数被频繁调用。比如，用户填入网页输入框的内容，希望通过 Ajax 方法传回服务器，jQuery 的写法如下。
 
@@ -331,7 +331,7 @@ function debounce(fn, delay) {
 }
 ```
 
-#### 2.8.运行机制
+## 8.运行机制
 
 `setTimeout` 和 `setInterval` 的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间；如果到了，就执行对应的代码；如果不到，就继续等待。这意味着，`setTimeout` 和 `setInterval` 指定的回调函数，必须等到本轮事件循环的所有同步任务都执行完，才会开始执行。
 
@@ -349,7 +349,7 @@ sleep(3000);
 
 上面代码中，`setInterval` 要求每隔 1000 毫秒，就输出一个 2。但是，紧接着的 sleep 语句需要 3000 毫秒才能完成，那么 `setInterval` 就必须推迟到 3000 毫秒之后才开始生效。注意，生效后 `setInterval` 不会产生累积效应，即不会一下子输出三个 2，而是只会输出一个 2。
 
-##### 2.8.1.setTimeout(f, 0)
+### 8.1.`setTimeout(f, 0)`
 
 `setTimeout` 的作用是将代码推迟到指定时间执行，如果指定时间为 0，即 `setTimeout(f, 0)`，那么会立刻执行吗？
 
@@ -366,7 +366,7 @@ console.log(2);
 
 总之，`setTimeout(f, 0)` 这种写法的目的是，尽可能早地执行 f，但是并不能保证立刻就执行 f。
 
-##### 2.8.2.应用
+### 8.2.应用
 
 `setTimeout(f, 0)` 有几个非常重要的用途。
 
@@ -445,6 +445,8 @@ timer = setTimeout(func, 0);
 上面代码有两种写法，都是改变一个网页元素的背景色。写法一会造成浏览器“堵塞”，因为 JavaScript 执行速度远高于 DOM，会造成大量 DOM 操作“堆积”，而写法二就不会，这就是 `setTimeout(f, 0)` 的好处(但是更耗费时间)。
 
 另一个使用这种技巧的例子是代码高亮的处理。如果代码块很大，一次性处理，可能会对性能造成很大的压力，那么将其分成一个个小块，一次处理一块，比如写成 `setTimeout(highlightNext, 50)` 的样子，性能压力就会减轻。
+
+---
 
 参考：
 

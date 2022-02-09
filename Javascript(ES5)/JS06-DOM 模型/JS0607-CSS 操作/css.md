@@ -1,8 +1,8 @@
-### 8.CSS 操作
+# CSS 操作
 
 CSS 与 JavaScript 是两个有着明确分工的领域，前者负责页面的视觉效果，后者负责与用户的行为互动。但是，它们毕竟同属网页开发的前端，因此不可避免有着交叉和互相配合。
 
-#### 1.HTML 元素的 style 属性
+## 1.HTML 元素的 `style` 属性
 
 操作 CSS 样式最简单的方法，就是使用网页元素节点的 `getAttribute` 方法、`setAttribute` 方法和 `removeAttribute` 方法，直接读写或删除网页元素的 `style` 属性。
 
@@ -14,9 +14,9 @@ div.setAttribute("style", "background-color:red;" + "border:1px solid black;");
 
 `<div style="background-color:red; border:1px solid black;" />`
 
-#### 2.CSSStyleDeclaration 接口
+## 2.`CSSStyleDeclaration` 接口
 
-##### 2.1 简介
+### 2.1.简介
 
 `CSSStyleDeclaration` 接口用来操作元素的样式。三个地方部署了这个接口。
 
@@ -51,7 +51,7 @@ divStyle.width; // 100px
 
 另外，`Element.style` 返回的只是行内样式，并不是该元素的全部样式。通过样式表设置的样式，或者从父元素继承的样式，无法通过这个属性得到。元素的全部样式要通过 `window.getComputedStyle()` 得到。
 
-##### 2.2 CSSStyleDeclaration 实例属性
+### 2.2.`CSSStyleDeclaration` 实例属性
 
 1).CSSStyleDeclaration.cssText
 
@@ -101,7 +101,7 @@ declaration.parentRule === document.styleSheets[0].rules[0];
 // true
 ```
 
-##### 2.3 CSSStyleDeclaration 实例方法
+### 2.3.`CSSStyleDeclaration` 实例方法
 
 1).CSSStyleDeclaration.getPropertyPriority
 
@@ -186,7 +186,7 @@ var style = document.getElementById("myDiv").style;
 style.setProperty("border", "1px solid blue");
 ```
 
-#### 3.CSS 模块的侦测
+## 3.CSS 模块的侦测
 
 CSS 的规格发展太快，新的模块层出不穷。不同浏览器的不同版本，对 CSS 模块的支持情况都不一样。有时候，需要知道当前浏览器是否支持某个模块，这就叫做“CSS 模块的侦测”。
 
@@ -239,11 +239,11 @@ isPropertySupported("background-clip");
 // true
 ```
 
-#### 4.CSS 对象
+## 4.CSS 对象
 
 浏览器原生提供 CSS 对象，为 JavaScript 操作 CSS 提供一些工具方法。
 
-##### 4.1 CSS.escape
+### 4.1.`CSS.escape`
 
 `CSS.escape` 方法用于转义 CSS 选择器里面的特殊字符。
 
@@ -255,7 +255,7 @@ isPropertySupported("background-clip");
 
 `document.querySelector('#' + CSS.escape('foo#bar'))`
 
-##### 4.2 CSS.supports
+### 4.2.`CSS.supports`
 
 `CSS.supports` 方法返回一个布尔值，表示当前环境是否支持某一句 CSS 规则。
 
@@ -273,7 +273,7 @@ CSS.supports("display: table-cell"); // true
 
 `CSS.supports('display: table-cell;') // false`
 
-#### 5.window.getComputedStyle()
+## 5.`window.getComputedStyle()`
 
 行内样式（inline style）具有最高的优先级，改变行内样式，通常会立即反映出来。但是，网页元素最终的样式是综合各种规则计算出来的。因此，如果想得到元素实际的样式，只读取行内样式是不够的，需要得到浏览器最终计算出来的样式规则。
 
@@ -324,7 +324,7 @@ var height = styleObj.getPropertyValue("height");
 
 ---
 
-#### 6.CSS 伪元素
+## 6.CSS 伪元素
 
 CSS 伪元素是通过 CSS 向 DOM 添加的元素，主要是通过 `:before` 和 `:after` 选择器生成，然后用 `content` 属性指定伪元素的内容。
 
@@ -359,9 +359,9 @@ var result = window
 var color = window.getComputedStyle(test, ":before").getPropertyValue("color");
 ```
 
-#### 7.StyleSheet 接口
+## 7.StyleSheet 接口
 
-##### 7.1 概述
+### 7.1.概述
 
 `StyleSheet` 接口代表网页的一张样式表，包括 `<link>` 元素加载的样式表和 `<style>` 元素内嵌的样式表。
 
@@ -381,7 +381,7 @@ var myStyleSheet = document.getElementById("myStyle").sheet;
 myStyleSheet instanceof StyleSheet; // true
 ```
 
-##### 7.2 实例属性
+### 7.2.实例属性
 
 `StyleSheet` 实例有以下属性。
 
@@ -467,7 +467,7 @@ styleSheet.cssRules[1].style.color = "purple";
 
 有些样式表是通过 `@import` 规则输入的，它的 `ownerRule` 属性会返回一个 `CSSRule` 实例，代表那行 `@import` 规则。如果当前样式表不是通过 `@import` 引入的，`ownerRule` 属性返回 `null`。
 
-##### 7.3 实例方法
+### 7.3.实例方法
 
 1).CSSStyleSheet.insertRule
 
@@ -491,7 +491,7 @@ sheet.insertRule("p { color: red }", 1);
 
 `document.styleSheets[0].deleteRule(1);`
 
-#### 8.实例：添加样式表
+## 8.实例：添加样式表
 
 网页添加样式表有两种方式。一种是添加一张内置样式表，即在文档中添加一个 `<style>` 节点。
 
@@ -522,7 +522,7 @@ linkElm.setAttribute("href", "reset-min.css");
 document.head.appendChild(linkElm);
 ```
 
-#### 9.CSSRuleList 接口
+## 9.`CSSRuleList` 接口
 
 `CSSRuleList` 接口是一个类似数组的对象，表示一组 CSS 规则，成员都是 `CSSRule` 实例。
 
@@ -548,9 +548,9 @@ crl.length; // 2
 
 注意，添加规则和删除规则不能在 `CSSRuleList` 实例操作，而要在它的父元素 `StyleSheet` 实例上，通过 `StyleSheet.insertRule()` 和 `StyleSheet.deleteRule()` 操作。
 
-#### 10.CSSRule 接口
+## 10.`CSSRule` 接口
 
-##### 10.1 概述
+### 10.1.概述
 
 一条 CSS 规则包括两个部分：CSS 选择器和样式声明。下面就是一条典型的 CSS 规则。
 
@@ -577,7 +577,7 @@ var rule = ruleList[0];
 rule instanceof CSSRule; // true
 ```
 
-##### 10.2 CSSRule 实例的属性
+### 10.2.`CSSRule` 实例的属性
 
 1).CSSRule.cssText
 
@@ -654,7 +654,7 @@ rule2.parentRule === rule1; // true
 
 ---
 
-##### 10.3 CSSStyleRule 接口
+### 10.3.`CSSStyleRule` 接口
 
 如果一条 CSS 规则是普通的样式规则（不含特殊的 CSS 命令），那么除了 `CSSRule` 接口，它还部署了 `CSSStyleRule` 接口。
 
@@ -694,7 +694,7 @@ styleSheet.cssRules[0].selectorText;
 // "p"
 ```
 
-##### 10.4 CSSMediaRule 接口
+### 10.4.`CSSMediaRule` 接口
 
 如果一条 CSS 规则是 `@media` 代码块，那么它除了 `CSSRule` 接口，还部署了 `CSSMediaRule` 接口。
 
@@ -725,9 +725,9 @@ styleSheet.cssRules[0].conditionText;
 // "screen and (min-width: 900px)"
 ```
 
-#### 11.window.matchMedia()
+## 11.`window.matchMedia()`
 
-##### 11.1 基本用法
+### 11.1.基本用法
 
 `window.matchMedia` 方法用来将 CSS 的 `MediaQuery` 条件语句，转换成一个 `MediaQueryList` 实例。
 
@@ -740,7 +740,7 @@ mdl instanceof MediaQueryList; // true
 
 `window.matchMedia('bad string') instanceof MediaQueryList // true`
 
-##### 11.2 MediaQueryList 接口的实例属性
+#### 11.2.`MediaQueryList` 接口的实例属性
 
 `MediaQueryList` 实例有三个属性。
 
@@ -798,7 +798,7 @@ mql.onchange = function(e) {
 
 上面代码中，`change` 事件发生后，存在两种可能。一种是显示宽度从 700 像素以上变为以下，另一种是从 700 像素以下变为以上，所以在监听函数内部要判断一下当前是哪一种情况。
 
-##### 11.3 MediaQueryList 接口的实例方法
+### 11.3.`MediaQueryList` 接口的实例方法
 
 `MediaQueryList` 实例有两个方法 `MediaQueryList.addListener()` 和 `MediaQueryList.removeListener()`，用来为 `change` 事件添加或撤销监听函数。
 
@@ -820,9 +820,9 @@ function mqCallback(e) {
 }
 ```
 
-#### 12.CSS 事件
+## 12.CSS 事件
 
-##### 12.1 transitionEnd 事件
+### 12.1.`transitionEnd` 事件
 
 CSS 的**过渡效果（transition）**结束后，触发 `transitionEnd` 事件。
 
@@ -852,7 +852,7 @@ el.addEventListener("webkitTransitionEnd", function() {
 });
 ```
 
-##### 12.2 animationstart 事件，animationend 事件，animationiteration 事件
+### 12.2.`animationstart` 事件，`animationend` 事件，`animationiteration` 事件
 
 CSS 动画有以下三个事件。
 

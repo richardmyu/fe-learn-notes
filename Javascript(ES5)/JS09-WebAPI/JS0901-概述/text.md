@@ -1,8 +1,8 @@
- # 概述
+# 概述
 
 ## 1.元素与变量名
 
-### 1.1 id 属性
+### 1.1.`id` 属性
 
 由于历史原因，HTML 元素的 `id` 属性的名字，会自动成为全局变量，指向该 HTML 元素。
 
@@ -54,7 +54,7 @@ console.log(document.querySelector("#navigator"));
 
 另外，由于原则上，网页之中不应该有同名 `id` 属性的 HTML 元素，所以，这种机制产生的全局变量不会重名。
 
-### 1.2 name 属性
+### 1.2.`name` 属性
 
 由于历史原因，以下 HTML 元素的 `name` 属性，也会成为全局变量。
 
@@ -117,11 +117,11 @@ document.xx === xx; // true
 
 `document.forms.myforms;`
 
-## 2.Form 元素（表单）
+## 2.`Form` 元素（表单）
 
 表单主要用于收集用户的输入，送到服务器或者在前端处理。
 
-### 2.1 选中表单元素
+### 2.1.选中表单元素
 
 如果 `<form>` 元素带有 `name` 或者 `id` 属性，这个元素节点会自动成为 `window` 和 `document` 的属性，并且可以从 `document.forms` 上取到。`<form name="myForm">` 节点用下面几种方法可以拿到。
 
@@ -174,7 +174,7 @@ for (var i = 0; i < methods.length; i++) {
 }
 ```
 
-### 2.2 Form 对象
+### 2.2.`Form` 对象
 
 `<form>` 元素对应的 DOM 节点是一个 Form 对象。这个对象除了上一小节提到的 `elements` 属性，还有以下属性，分别对应元素标签中的同名属性。
 
@@ -204,7 +204,7 @@ Form 对象的方法主要是下面两个。
 - `submit()`：将表单数据提交到服务器
 - `reset()`：重置表单数据
 
-### 2.3 表单控件对象
+### 2.3.表单控件对象
 
 表单包含了各种控件，每个控件都是一个对象。它们都包含了以下四个属性。
 
@@ -224,7 +224,7 @@ Form 对象的方法主要是下面两个。
 - `focus`：得到焦点时触发
 - `blur`：失去焦点时触发
 
-### 2.4 Select 元素
+### 2.4.`Select` 元素
 
 `<select>` 元素用来生成下拉列表。默认情况下，浏览器只显示一条选项，其他选项需要点击下拉按钮才会显示。`size` 选项如果大于 1，那么浏览器就会默认显示多个选项。
 
@@ -260,7 +260,7 @@ element.options.length;
 
 `Select` 对象的 `selectedIndex` 属性，返回用户选中的第一个下拉选项的位置（从 0 开始）。如果返回 `-1`，则表示用户没有选中任何选项。该属性可读写。对于单选的下拉列表，这个属性就可以得知用户的选择；对于多选的下拉列表，这个属性还不够，必须逐个轮询 `options` 属性，判断每个 `Option` 对象的 `selected` 属性是否为 `true`。
 
-### 2.5 Option 元素
+### 2.5.`Option` 元素
 
 `<option>` 元素用于在下拉列表（`<select>`）中生成下拉选项。每个下拉选项就是一个 `Option` 对象，它有以下属性。
 
@@ -292,9 +292,9 @@ mySelector.options[mySelector.options.length] = item;
 
 注意，用脚本插入下拉选项完全可以用标准的 DOM 操作方法实现，比如 `Document.create Element()`、`Node.insertBefore()` 和 `Node.removeChild()` 等等。
 
-## 3.image 元素
+## 3.`image` 元素
 
-### 3.1 alt 属性，src 属性
+### 3.1.`alt` 属性，`src` 属性
 
 `alt` 属性返回 `image` 元素的 HTML 标签的 `alt` 属性值，`src` 属性返回 `image` 元素的 HTML 标签的 `src` 属性值。
 
@@ -315,15 +315,15 @@ document.images[0].src;
 // image1.png
 ```
 
-### 3.2 complete 属性
+### 3.2.`complete` 属性
 
 `complete` 属性返回一个布尔值，`true` 表示当前图像属于浏览器支持的图形类型，并且加载完成，解码过程没有出错，否则就返回 `false`。
 
-### 3.3 height 属性，width 属性
+### 3.3.`height` 属性，`width` 属性
 
 这两个属性返回 `image` 元素被浏览器渲染后的高度和宽度。
 
-### 3.4 naturalWidth 属性，naturalHeight 属性
+### 3.4.`naturalWidth` 属性，`naturalHeight` 属性
 
 这两个属性只读，表示 `image` 对象真实的宽度和高度。
 
@@ -334,7 +334,7 @@ myImage.addEventListener("onload", function() {
 });
 ```
 
-## 4.table 元素
+## 4.`table` 元素
 
 表格有一些特殊的 DOM 操作方法。
 
@@ -396,7 +396,7 @@ document.body.appendChild(table);
 
 ---
 
-## 5.audio 元素，video 元素
+## 5.`audio` 元素，`video` 元素
 
 `audio` 元素和 `video` 元素加载音频和视频时，以下事件按次序发生。
 
@@ -432,7 +432,7 @@ document.body.appendChild(table);
 | volumechange |                        音量改变时触发（包括静音）。                        |
 |   waiting    | 由于另一个操作（比如搜索）还没有结束，导致当前操作（比如播放）不得不等待。 |
 
-## 6.tabindex 属性
+## 6.`tabindex` 属性
 
 `tabindex` 属性用来指定，当前 HTML 元素节点是否被 `tab` 键遍历，以及遍历的优先级。
 
