@@ -460,6 +460,7 @@ replacement 中的 `$` 具有特定的含义：
 
 ```javascript
 var s = "hello world";
+console.log(s.replace(/(l)/, $&)); // error
 console.log(s.replace(/(l)/, "$&")); //hello world
 console.log(s.replace(/(l)/, "$`")); //hehelo world
 console.log(s.replace(/(l)/, "$'")); //helo worldlo world
@@ -470,6 +471,8 @@ result = text.replace(/(.at)/g, "word($1)");
 console.log(result);
 //word(cat),word(bat),word(sat),word(fat)
 ```
+
+> 使用 `$n` 时，在第二个参数中作为字符串拼接或替换，若要作为变量使用，需要将第二个参数改为函数，并作为参数传入。
 
 当 `replace()` 方法的第二个参数是函数而不是字符串时，每次匹配都调用该函数（匹配多少次自执行多少次），将这个函数的返回的字符串当做替换文本使用；这个函数是自定义的替换规则；
 
