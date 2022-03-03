@@ -9,7 +9,67 @@ const animateBox = document.getElementsByClassName('animate')[0];
 const syntxBox = document.getElementsByClassName('syntx_content')[0];
 const btns = document.getElementsByClassName('btns')[0];
 
-// 定义栈
+// 全局创建 style，作为动画容器，
+// 每次创建动画，更新 style 内容即可
+const style = document.createElement("style");
+style.textContent = '';
+document.getElementsByTagName("head")[0].appendChild(style);
+
+/**********************************
+ *         动画，样式              *
+ **********************************/
+
+// 创建 动画单元 和 语法单元 元素
+const createEle = function () {
+  let num = Math.floor(Math.random() * 10);
+  const animateItem = document.createElement('li');
+  animateItem.className = 'animate_item';
+  animateItem.innerText = '' + num;
+
+  const syntxItem = document.createElement('code');
+  syntxItem.innerText = 'stack.push(' + num + ')';
+
+  activatedAnima(animateItem, syntxItem);
+
+  return [animateItem, syntxItem];
+}
+
+const activatedAnima = function (animateItem, syntxItem) {
+  // aniamte-item 进入动画
+  animateItem.style.animation = 'anima-in 2s ease-out';
+  let aniKeyframes = `@keyframes ${'anima-in'}{
+    from { transform: translate(0, -${360 - animateStack.size() * 40}px); }
+    to { transform: translate(0, 0); } }`;
+
+  // syntx-item 进入动画
+  syntxItem.style.animation = 'syntx-show 2s ease-out';
+  let asybKeyframes = `@keyframes ${'syntx-show'}{
+    from { opacity: 0; }
+    to { opacity: 1; } }`;
+
+  style.textContent = aniKeyframes + asybKeyframes;
+}
+
+const unactivetedAnima = function (animateItem, syntxItem) {
+  // aniamte-item 离开动画
+  animateItem.style.animation = 'anima-out 2s ease-in';
+  let aniKeyframes = `@keyframes ${'anima-out'}{
+    from { transform: translate(0, 0); }
+    to { transform: translate(0, -${360 - animateStack.size() * 40}px); } }`;
+
+  // syntx-item 离开动画
+  syntxItem.style.animation = 'syntx-hidden 2s ease-in';
+  let asybKeyframes = `@keyframes ${'syntx-hidden'}{
+    from { opacity: 1; }
+    to { opacity: 0; } }`;
+
+  style.textContent = aniKeyframes + asybKeyframes;
+}
+
+
+/**********************************
+ *           事件                 *
+ **********************************/
 const Stack = function () {
   let items = [];
 
@@ -42,24 +102,8 @@ const Stack = function () {
     items.forEach(item => s += item.innerText + '\n');
     alert(s || null);
   };
-
-  this.getAll = function () {
-    return items;
-  };
 }
 
-// 创建 动画单元 和 语法单元 元素
-const createEle = function () {
-  let num = Math.floor(Math.random() * 10);
-  const animateItem = document.createElement('li');
-  animateItem.className = 'animate_item';
-  animateItem.innerText = '' + num;
-
-  const syntxItem = document.createElement('code');
-  syntxItem.innerText = 'stack.push(' + num + ')';
-
-  return [animateItem, syntxItem];
-}
 
 let animateStack = new Stack();
 let syntxStack = new Stack();
@@ -89,12 +133,18 @@ const eventPop = function () {
     return;
   }
 
-  let ani = animateStack.pop();
-  let syn = syntxStack.pop();
+  let animateItem = animateStack.pop();
+  let syntxItem = syntxStack.pop();
 
-  // 视图更新
-  animateBox.removeChild(ani);
-  syntxBox.removeChild(syn);
+  // 先处理动画
+  unactivetedAnima(animateItem, syntxItem);
+
+  let timer = setTimeout(() => {
+    // 再视图更新
+    animateBox.removeChild(animateItem);
+    syntxBox.removeChild(syntxItem);
+    clearTimeout(timer);
+  }, 2000);
 }
 
 const eventPeek = function () {
