@@ -2,6 +2,8 @@
  * 汉诺塔（hanoi）
  * 移动过程中，通过切换实参的位置，巧妙的实现了简单的 source->dest 移动包含了其他 5 移动方向的功能
  * 代码比较简练，但是理解起来就有点难受了
+ * 奇数个盘子，第一盘要移动到目标盘；
+ * 偶数个盘子，第一盘要移动到中间盘；
  */
 
 const Stack = require('./stack');
@@ -33,13 +35,8 @@ function towerOfHanoi(plates, source, helper, dest, sourceName, helperName, dest
     moves.push(move);
 
   } else {
-    // 圆盘多余 1 个时，不能直接先移动圆盘到 目标柱，而是中间柱
-    // 以 2 个盘为例子：
-    // source: [2, 1] helper: [] dest: []
-    // 第一步：source: [2] dest: [] helper: [1]
-    // 第二步：source: [] dest: [2] helper: [1]
-    // 第三步：sorce: [] helper: [] dest: [2, 1]
-    // 移至中间柱缓冲
+    // 偶数，减 奇数 次，调换了 helper & dest 位置
+    // 奇数，减 偶数 次，负负得正，helper & dest 顺序不变
     towerOfHanoi(
       plates - 1,
       source,

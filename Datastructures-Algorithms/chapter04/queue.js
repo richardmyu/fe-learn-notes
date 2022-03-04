@@ -1,5 +1,4 @@
-//ES6语法实现
-let Queue = (function () {
+const Queue = (function () {
   const items = new WeakMap();
 
   class Queue {
@@ -27,33 +26,26 @@ let Queue = (function () {
       return q.length === 0;
     }
 
-    clear() {
-      items.set(this, []);
-    }
-
     size() {
       let q = items.get(this);
       return q.length;
     }
 
+    clear() {
+      items.set(this, []);
+    }
+
     print() {
+      console.log(this.toString());
+    }
+
+    toString() {
       let q = items.get(this);
-      console.log(q.toString());
+      return q.toString();
     }
   }
 
   return Queue;
 })();
 
-let queue = new Queue();
-console.log(queue.isEmpty());//true
-
-queue.enqueue('John');
-queue.enqueue('Jack');
-queue.enqueue('tian');
-queue.print();//John,Jack,tian
-console.log(queue.size());//3
-console.log(queue.isEmpty());//false
-console.log(queue.dequeue());//John
-console.log(queue.dequeue());//Jack
-queue.print();//tian
+module.exports = Queue;

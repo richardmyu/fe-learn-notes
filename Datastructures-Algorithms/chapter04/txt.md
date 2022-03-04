@@ -1,5 +1,10 @@
-//Queue FIFO
+# 队列
 
+**队列** 是遵循 FIFO (First In First Out) 原则的一组有序的项。队列在尾部添加新元素，并从顶部移除元素。最新添加的元素必须排在队列的末尾。
+
+计算机程序中，常见的例子是打印队列，消息队列。
+
+```js
 //创建一个类来表示队列
 function Queue() {
   //构建数据结构
@@ -16,13 +21,11 @@ function Queue() {
   }
 
   //front(): 返回队列第一项
-
   this.front = function () {
     return items[0];
   }
 
   //isEmpty():
-
   this.isEmpty = function () {
     return items.length === 0;
   }
@@ -42,34 +45,4 @@ function Queue() {
     console.log(items.toString());
   }
 }
-
-let queue = new Queue();
-console.log(queue.isEmpty());//true
-
-queue.enqueue('John');
-queue.enqueue('Jack');
-queue.enqueue('tian');
-queue.print();//John,Jack,tian
-console.log(queue.size());//3
-console.log(queue.isEmpty());//false
-console.log(queue.dequeue());//John
-console.log(queue.dequeue());//Jack
-queue.print();//tian
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```

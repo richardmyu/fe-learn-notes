@@ -13,8 +13,7 @@ const Stack = (function () {
 
     pop() {
       let s = items.get(this);
-      let r = s.pop();
-      return r;
+      return s.pop();
     }
 
     peek() {
