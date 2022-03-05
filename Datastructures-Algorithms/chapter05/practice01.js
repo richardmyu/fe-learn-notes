@@ -1,6 +1,5 @@
 /*
 * 双向链表
-* 与普通链表不同，双向链表，一个链指向前一个元素，一个链指向后一个元素
 * */
 
 function DoublyLinkedList() {
@@ -9,10 +8,11 @@ function DoublyLinkedList() {
     this.next = null;
     this.prev = null;
   };
+
   let length = 0;
+  let head = null;
   //tail:最后一项的引用
   let tail = null;
-  let head = null;
 
   // head ---- prev -- current -- next ---- tail
 
@@ -23,10 +23,9 @@ function DoublyLinkedList() {
       head = node;
       tail = node;
     } else {
-      //双向指定
-      tail.next = node;
-      node.prev = tail;
-      //更新tail
+      current = tail;
+      current.next = node;
+      node.prev = current;
       tail = node;
     }
     length++;
@@ -41,7 +40,7 @@ function DoublyLinkedList() {
 
       if (position === 0) {
         //空
-        if (!current) {
+        if (!head) {
           head = node;
           tail = node;
         } else {
@@ -180,48 +179,48 @@ let list = new DoublyLinkedList();
 
 list.append(15);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.append(16);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.append(17);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.insert(0, 13);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.insert(4, 18);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.insert(1, 14);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.removeAt(0);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.removeAt(list.size() - 1);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.removeAt(1);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.remove(16);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.remove(14);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());
 
 list.remove(17);
 list.print();
-list.printInverse();
+console.log(list.inverseToString());

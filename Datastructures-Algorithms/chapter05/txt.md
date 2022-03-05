@@ -1,3 +1,12 @@
+# LinkedList
+
+要存储多个元素，数组或（列表）可能是最常用的数据结构。这种数据结构非常方便，提供了一个便利的 `[]` 语法来访问它的元素。然而，这种数据结构有一个缺点：（在大多数语言中）数组的大小是固定的，从数组的起点或中间插入或移除项的成本很高，因为需要移动元素。
+
+链表存储有序的元素集合，但不同于数组，链表中的元素在内存中并不是连续放置的。每个元素由一个存储元素的本身节点和一个指向下一个元素的引用（也称指针或链接）组成。
+
+相较于传统的数组，链表的一个好处在于，添加或移除元素的时候不需要移动其他元素。然而，链表需要使用指针，因此实现链表时需要额外注意。数组的另一个细节是可以直接访问任何位置的任何元素，而想要访问链表中间的一个元素，需要从起点（表头）开始迭代列表直到找到所需的元素。
+
+```js
 // 创建链表
 function LinkedList() {
 
@@ -23,6 +32,7 @@ function LinkedList() {
       head = node;
     } else {
       // 链表不为空，即向列表添加元素
+
       // 拿到第一个元素的引用
       // 此时 current 为第一个元素
       current = head;
@@ -79,7 +89,7 @@ function LinkedList() {
     }
   };
 
-  // 从列表特定位置移除一个项（根据指针）
+  // 从列表特定位置移除一个项
   this.removeAt = function (position) {
 
     // 检查越界值（确定位置是有效的，否则返回 null)
@@ -111,7 +121,7 @@ function LinkedList() {
     }
   };
 
-  // 从列表移除一项（根据元素）
+  // 从列表移除一项
   this.remove = function (ele) {
     let index = this.indexOf(ele);
     return this.removeAt(index);
@@ -154,27 +164,8 @@ function LinkedList() {
     return str;
   };
 
-  this.print = function () {
+this.print = function () {
     console.log(this.toString());
   };
 }
-
-
-let list = new LinkedList();
-list.append(15);
-list.append(14);
-list.append(13);
-list.append(12);
-list.append(11);
-list.print();//15,14,13,12,11
-console.log(list.indexOf(15));//0
-console.log(list.indexOf(11));//4
-list.insert(0, 16);
-list.print();//16,15,14,13,12,11
-list.insert(1, 17);
-list.print();//16,17,15,14,13,12,11
-list.remove(16);
-list.remove(11);
-list.print();//17,15,14,13,12
-list.remove(18);
-list.print();//17,15,13,14
+```

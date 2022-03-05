@@ -1,3 +1,6 @@
+/**
+ * 单向循环链表
+ */
 function CircularLinkedList() {
   let Node = function (ele) {
     this.ele = ele;
