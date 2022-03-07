@@ -408,11 +408,11 @@ parseFloat(["1", "2"]); //1
 ```
 
 > 注意：
-
+>
 > 1.`parseFloat` 能有效识别 `Infinity/-Infinity`，而 `parseInt` 则不能；
-
+>
 > 2.参数为字符串类型时，`parseFloat` 不会识别进制，而 `parseInt` 则会区分二进制和十六进制；
-
+>
 > 3.两者在数值类型参数时，能区分各种进制（关于八进制后面有详述）
 
 更多 demo 见 <a href="./demo/number05.html" target="_blank">number05.html</a>
