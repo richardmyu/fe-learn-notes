@@ -1,6 +1,6 @@
 # Web Worker
 
-## 1.概述
+## 1. 概述
 
 JavaScript 语言采用的是单线程模型，也就是说，所有任务只能在一个线程上完成，一次只能做一件事。前面的任务没做完，后面的任务只能等着。随着电脑计算能力的增强，尤其是多核 CPU 的出现，单线程带来很大的不便，无法充分发挥计算机的计算能力。
 
@@ -10,7 +10,7 @@ Web Worker 的作用，就是为 JavaScript 创造多线程环境，允许主线
 
 Web Worker 有以下几个使用注意点。
 
-### 1.1.同源限制
+### 1.1. 同源限制
 
 分配给 Worker 线程运行的脚本文件，必须与主线程的脚本文件同源。
 
@@ -18,21 +18,21 @@ Web Worker 有以下几个使用注意点。
 
 `Worker` 线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用 `document`、`window`、`parent` 这些对象。但是，`Worker` 线程可以 `navigator` 对象和 `location` 对象。
 
-### 1.3.通信联系
+### 1.3. 通信联系
 
 `Worker` 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成。
 
-### 1.4.脚本限制
+### 1.4. 脚本限制
 
 `Worker` 线程不能执行 `alert()` 方法和 `confirm()` 方法，但可以使用 `XMLHttpRequest` 对象发出 AJAX 请求。
 
-### 1.5.文件限制
+### 1.5. 文件限制
 
 `Worker` 线程无法读取本地文件，即不能打开本机的文件系统（`file://`），它所加载的脚本，必须来自网络。
 
-## 2.基本用法
+## 2. 基本用法
 
-### 2.1.主线程
+### 2.1. 主线程
 
 主线程采用 `new` 命令，调用 `Worker()` 构造函数，新建一个 `Worker` 线程。
 
@@ -42,7 +42,7 @@ Web Worker 有以下几个使用注意点。
 
 然后，主线程调用 `worker.postMessage()` 方法，向 `Worker` 发消息。
 
-```javascript
+```js
 worker.postMessage("Hello World");
 worker.postMessage({ method: "echo", args: ["Work"] });
 ```
@@ -51,7 +51,7 @@ worker.postMessage({ method: "echo", args: ["Work"] });
 
 接着，主线程通过 `worker.onmessage` 指定监听函数，接收子线程发回来的消息。
 
-```javascript
+```js
 worker.onmessage = function(event) {
   console.log("Received message " + event.data);
   doSomething();
@@ -73,7 +73,7 @@ function doSomething() {
 
 `Worker` 线程内部需要有一个监听函数，监听 `message` 事件。
 
-```javascript
+```js
 self.addEventListener(
   "message",
   function(e) {
@@ -85,7 +85,7 @@ self.addEventListener(
 
 上面代码中，`self` 代表子线程自身，即子线程的全局对象。因此，等同于下面两种写法。
 
-```javascript
+```js
 // 写法一
 this.addEventListener(
   "message",
@@ -109,7 +109,7 @@ addEventListener(
 
 根据主线程发来的数据，`Worker` 线程可以调用不同的方法，下面是一个例子。
 
-```javascript
+```js
 self.addEventListener(
   "message",
   function(e) {
@@ -142,11 +142,11 @@ self.addEventListener(
 
 `importScripts('script1.js', 'script2.js');`
 
-### 2.4.错误处理
+### 2.4. 错误处理
 
 主线程可以监听 `Worker` 是否发生错误。如果发生错误，`Worker` 会触发主线程的 `error` 事件。
 
-```javascript
+```js
 worker.onerror(function(event) {
   console.log(
     ["ERROR: Line ", e.lineno, " in ", e.filename, ": ", e.message].join("")
@@ -161,11 +161,11 @@ worker.addEventListener("error", function(event) {
 
 `Worker` 内部也可以监听 `error` 事件。
 
-### 2.5.关闭 Worker
+### 2.5. 关闭 Worker
 
 使用完毕，为了节省系统资源，必须关闭 `Worker`。
 
-```javascript
+```js
 // 主线程
 worker.terminate();
 
@@ -173,13 +173,13 @@ worker.terminate();
 self.close();
 ```
 
-## 3.数据通信
+## 3. 数据通信
 
 前面说过，主线程与 `Worker` 之间的通信内容，可以是文本，也可以是对象。需要注意的是，这种通信是拷贝关系，即是传值而不是传址，`Worker` 对通信内容的修改，不会影响到主线程。事实上，浏览器内部的运行机制是，先将通信内容串行化，然后把串行化后的字符串发给 `Worker`，后者再将它还原。
 
 主线程与 `Worker` 之间也可以交换二进制数据，比如 File、Blob、ArrayBuffer 等类型，也可以在线程之间发送。下面是一个例子。
 
-```javascript
+```js
 // 主线程
 var uInt8Array = new Uint8Array(new ArrayBuffer(10));
 for (var i = 0; i < uInt8Array.length; ++i) {
@@ -203,7 +203,7 @@ self.onmessage = function(e) {
 
 如果要直接转移数据的控制权，就要使用下面的写法。
 
-```javascript
+```js
 // Transferable Objects 格式
 worker.postMessage(arrayBuffer, [arrayBuffer]);
 
@@ -212,11 +212,11 @@ var ab = new ArrayBuffer(1);
 worker.postMessage(ab, [ab]);
 ```
 
-## 4.同页面的 Web Worker
+## 4. 同页面的 Web Worker
 
 通常情况下，`Worker` 载入的是一个单独的 JavaScript 脚本文件，但是也可以载入与主线程在同一个网页的代码。
 
-```javascript
+```js
 <!DOCTYPE html>
   <body>
     <script id="worker" type="app/worker">
@@ -232,7 +232,7 @@ worker.postMessage(ab, [ab]);
 
 然后，读取这一段嵌入页面的脚本，用 `Worker` 来处理。
 
-```javascript
+```js
 var blob = new Blob([document.querySelector("#worker").textContent]);
 var url = window.URL.createObjectURL(blob);
 var worker = new Worker(url);
@@ -244,11 +244,11 @@ worker.onmessage = function(e) {
 
 上面代码中，先将嵌入网页的脚本代码，转成一个二进制对象，然后为这个二进制对象生成 URL，再让 `Worker` 加载这个 URL。这样就做到了，主线程和 `Worker` 的代码都在同一个网页上面。
 
-## 5.实例：Worker 线程完成轮询
+## 5. 实例：Worker 线程完成轮询
 
 有时，浏览器需要轮询服务器状态，以便第一时间得知状态改变。这个工作可以放在 `Worker` 里面。
 
-```javascript
+```js
 function createWorker(f) {
   var blob = new Blob([f.toString()]);
   var url = window.URL.createObjectURL(blob);
@@ -282,13 +282,13 @@ pollingWorker.postMessage('init');
 
 上面代码中，`Worker` 每秒钟轮询一次数据，然后跟缓存做比较。如果不一致，就说明服务端有了新的变化，因此就要通知主线程。
 
-## 6.实例：Worker 新建 Worker
+## 6. 实例：Worker 新建 Worker
 
 `Worker` 线程内部还能再新建 `Worker` 线程。下面的例子是将一个计算密集的任务，分配到 10 个 `Worker`。
 
 主线程代码如下。
 
-```javascript
+```js
 var worker = new Worker("worker.js");
 worker.onmessage = function(event) {
   document.getElementById("result").textContent = event.data;
@@ -297,7 +297,7 @@ worker.onmessage = function(event) {
 
 `Worker` 线程代码如下。
 
-```javascript
+```js
 // worker.js
 
 // settings
@@ -324,7 +324,7 @@ function storeResult(event) {
 
 上面代码中，`Worker` 线程内部新建了 10 个 `Worker` 线程，并且依次向这 10 个 `Worker` 发送消息，告知了计算的起点和终点。计算任务脚本的代码如下。
 
-```javascript
+```js
 // core.js
 var start;
 onmessage = getStart;
@@ -353,7 +353,7 @@ function work() {
 
 ## 7.API
 
-### 7.1.主线程
+### 7.1. 主线程
 
 浏览器原生提供 `Worker()` 构造函数，用来供主线程生成 `Worker` 线程。
 
@@ -361,7 +361,7 @@ function work() {
 
 `Worker()` 构造函数，可以接受两个参数。第一个参数是脚本的网址（必须遵守同源政策），该参数是必需的，且只能加载 JS 脚本，否则会报错。第二个参数是配置对象，该对象可选。它的一个作用就是指定 `Worker` 的名称，用来区分多个 `Worker` 线程。
 
-```javascript
+```js
 // 主线程
 var myWorker = new Worker("worker.js", { name: "myWorker" });
 
@@ -398,7 +398,7 @@ Web Worker 有自己的全局对象，不是主线程的 `window`，而是一个
 
 ---
 
-## 8.存档：Service Worker
+## 8. 存档：Service Worker
 
 Service worker 是一个在浏览器后台运行的脚本，与网页不相干，专注于那些不需要网页或用户互动就能完成的功能。它主要用于操作离线缓存。
 
@@ -425,17 +425,17 @@ Service worker 的常见用途。
 
 首先，需要向浏览器登记 Service Worker。
 
-```javascript
+```js
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/sw.js")
     .then(function(registration) {
       // 登记成功
-      console.log("ServiceWorker登记成功，范围为", registration.scope);
+      console.log("ServiceWorker 登记成功，范围为", registration.scope);
     })
     .catch(function(err) {
       // 登记失败
-      console.log("ServiceWorker登记失败：", err);
+      console.log("ServiceWorker 登记失败：", err);
     });
 }
 ```
@@ -444,7 +444,7 @@ if ("serviceWorker" in navigator) {
 
 `sw.js` 位于域名的根目录下，这表明这个 Service worker 的范围（scope）是整个域，即会接收整个域下面的 `fetch` 事件。如果脚本的路径是 `/example/sw.js`，那么 Service worker 只对 `/example/` 开头的 URL 有效（比如 `/example/page1/`、`/example/page2/`）。如果脚本不在根目录下，但是希望对整个域都有效，可以指定 scope 属性。
 
-```javascript
+```js
 navigator.serviceWorker.register("/path/to/serviceworker.js", {
   scope: "/"
 });
@@ -466,7 +466,7 @@ navigator.serviceWorker.register("/path/to/serviceworker.js", {
 
 安装和激活，主要通过事件来判断。
 
-```javascript
+```js
 self.addEventListener("install", function(event) {
   event.waitUntil(fetchStuffAndInitDatabases());
 });
@@ -482,7 +482,7 @@ Service worker 一旦激活，就开始控制页面。网页加载的时候，�
 
 Service worker 激活以后，就能监听 `fetch` 事件。
 
-```javascript
+```js
 self.addEventListener("fetch", function(event) {
   console.log(event.request);
 });
@@ -496,7 +496,7 @@ self.addEventListener("fetch", function(event) {
 
 Service worker 的强大之处，在于它会拦截请求，并会返回一个全新的回应。
 
-```javascript
+```js
 self.addEventListener("fetch", function(event) {
   event.respondWith(new Response("Hello world!"));
 });
@@ -542,7 +542,7 @@ self.addEventListener("fetch", function(event) {
 
 然后是 Service worker 脚本 `sw.js`。
 
-```javascript
+```js
 // The SW will be shutdown when not in use to save memory,
 // be aware that any global state is likely to disappear
 console.log("SW startup");
@@ -563,7 +563,7 @@ self.addEventListener("fetch", function(event) {
 
 每一次浏览器向服务器要求一个文件的时候，就会触发 `fetch` 事件。Service worker 可以在发出这个请求之前，前拦截它。
 
-```javascript
+```js
 self.addEventListener('fetch', function (event) {
   var request = event.request;
   ...
@@ -572,7 +572,7 @@ self.addEventListener('fetch', function (event) {
 
 实际应用中，我们使用 `fetch` 方法去抓取资源，该方法返回一个 `Promise` 对象。
 
-```javascript
+```js
 self.addEventListener("fetch", function(event) {
   if (/\.jpg$/.test(event.request.url)) {
     event.respondWith(
@@ -584,11 +584,11 @@ self.addEventListener("fetch", function(event) {
 });
 ```
 
-上面代码中，如果网页请求 JPG 文件，就会被 Service worker 拦截，转而返回一个 Google 的 Logo 图像。`fetch` 方法默认会加上 `CORS` 信息头，，上面设置了取消这个头。
+上面代码中，如果网页请求 JPG 文件，就会被 Service worker 拦截，转而返回一个 Google 的 Logo 图像。`fetch` 方法默认会加上 `CORS` 信息头，上面设置了取消这个头。
 
 下面的代码是一个将所有 JPG、PNG 图片请求，改成 WebP 格式返回的例子。
 
-```javascript
+```js
 "use strict";
 
 // Listen to fetch events
@@ -619,7 +619,7 @@ self.addEventListener("fetch", function(event) {
 
 如果请求失败，可以通过 `Promise` 的 `catch` 方法处理。
 
-```javascript
+```js
 self.addEventListener("fetch", function(event) {
   event.respondWith(
     fetch(event.request).catch(function() {
@@ -635,7 +635,7 @@ self.addEventListener("fetch", function(event) {
 
 Service worker 有一个 Cache API，用来缓存外部资源。
 
-```javascript
+```js
 self.addEventListener("install", function(event) {
   // pre cache a load of stuff:
   event.waitUntil(
@@ -665,7 +665,7 @@ self.addEventListener("fetch", function(event) {
 
 下面是一个在安装阶段缓存资源的例子。
 
-```javascript
+```js
 var staticCacheName = "static";
 var version = "v1::";
 
@@ -691,7 +691,7 @@ function updateStaticCache() {
 
 安装以后，就需要激活。
 
-```javascript
+```js
 self.addEventListener("activate", function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {

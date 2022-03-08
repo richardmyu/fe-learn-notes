@@ -1,6 +1,6 @@
-### 3.history 对象
+# history 对象
 
-#### 1.概述
+## 1. 概述
 
 浏览器窗口有一个 `history` 对象，用来保存浏览历史。
 
@@ -16,7 +16,7 @@
 
 ---
 
-```javascript
+```js
 history.back();
 history.forward();
 history.go(-2);
@@ -28,7 +28,7 @@ history.go(-2);
 
 常见的“返回上一页”链接，代码如下。
 
-```javascript
+```js
 document.getElementById("backLink").onclick = function() {
   window.history.back();
 };
@@ -36,13 +36,13 @@ document.getElementById("backLink").onclick = function() {
 
 > 注意，返回上一页时，页面通常是从浏览器缓存之中加载，而不是重新要求服务器发送新的网页。
 
-#### 2.history.pushState()
+## 2.history.pushState()
 
 HTML5 为 `history` 对象添加了两个新方法，`history.pushState()` 和 `history.replaceState()`，用来在浏览历史中添加和修改记录。
 
-```javascript
+```js
 if (!!(window.history && history.pushState)) {
-  // 支持History API
+  // 支持 History API
 } else {
   // 不支持
 }
@@ -62,57 +62,57 @@ if (!!(window.history && history.pushState)) {
 
 假定当前网址是 `example.com/1.html`，我们使用 `pushState` 方法在浏览记录（`history` 对象）中添加一个新记录。
 
-```javascript
+```js
 var stateObj = { foo: "bar" };
 history.pushState(stateObj, "page 2", "2.html");
 ```
 
-添加上面这个新记录后，浏览器地址栏立刻显示 `example.com/2.html`，但并不会跳转到 `2.html`，甚至也不会检查 `2.html` 是否存在，它只是成为浏览历史中的最新记录。这时，你在地址栏输入一个新的地址(比如访问 `google.com`)，然后点击了倒退按钮，页面的 URL 将显示 `2.html`；你再点击一次倒退按钮，URL 将显示 `1.html`。
+添加上面这个新记录后，浏览器地址栏立刻显示 `example.com/2.html`，但并不会跳转到 `2.html`，甚至也不会检查 `2.html` 是否存在，它只是成为浏览历史中的最新记录。这时，你在地址栏输入一个新的地址（比如访问 `google.com`)，然后点击了倒退按钮，页面的 URL 将显示 `2.html`；你再点击一次倒退按钮，URL 将显示 `1.html`。
 
 总之，`pushState` 方法不会触发页面刷新，只是导致 `history` 对象发生变化，地址栏会有反应。
 
 如果 `pushState` 的 url 参数，设置了一个新的锚点值（即 `hash`），并不会触发 `hashchange` 事件。如果设置了一个跨域网址，则会报错。
 
-```javascript
+```js
 // 报错
 history.pushState(null, null, "https://twitter.com/hello");
 ```
 
 上面代码中，`pushState` 想要插入一个跨域的网址，导致报错。这样设计的目的是，防止恶意代码让用户以为他们是在另一个网站上。
 
-#### 3.history.replaceState()
+## 3.history.replaceState()
 
 `history.replaceState` 方法的参数与 `pushState` 方法一模一样，区别是它修改浏览历史中当前纪录。
 
 假定当前网页是 `example.com/example.html`。
 
-```javascript
+```js
 history.pushState({ page: 1 }, "title 1", "?page=1");
 history.pushState({ page: 2 }, "title 2", "?page=2");
 history.replaceState({ page: 3 }, "title 3", "?page=3");
 
 history.back();
-// url显示为http://example.com/example.html?page=1
+// url 显示为 http://example.com/example.html?page=1
 
 history.back();
-// url显示为http://example.com/example.html
+// url 显示为 http://example.com/example.html
 
 history.go(2);
-// url显示为http://example.com/example.html?page=3
+// url 显示为 http://example.com/example.html?page=3
 ```
 
-#### 4.history.state 属性
+## 4.history.state 属性
 
 `history.state` 属性返回当前页面的 `state` 对象。
 
-```javascript
+```js
 history.pushState({ page: 1 }, "title 1", "?page=1");
 
 history.state;
 // { page: 1 }
 ```
 
-#### 5.popstate 事件
+## 5.popstate 事件
 
 每当同一个文档的浏览历史（即 `history` 对象）出现变化时，就会触发 `popstate` 事件。
 
@@ -120,7 +120,7 @@ history.state;
 
 使用的时候，可以为 `popstate` 事件指定回调函数。
 
-```javascript
+```js
 window.onpopstate = function(event) {
   console.log("location: " + document.location);
   console.log("state: " + JSON.stringify(event.state));
@@ -142,11 +142,11 @@ window.addEventListener("popstate", function(event) {
 
 注意，页面第一次加载的时候，浏览器不会触发 `popstate` 事件。
 
-#### 6.URLSearchParams API
+## 6.URLSearchParams API
 
 URLSearchParams API 用于处理 URL 之中的查询字符串，即问号之后的部分。没有部署这个 API 的浏览器，可以用 url-search-params 这个垫片库。
 
-```javascript
+```js
 var paramsString = "q=URLUtils.searchParams&topic=api";
 var searchParams = new URLSearchParams(paramsString);
 ```
@@ -165,7 +165,7 @@ var searchParams = new URLSearchParams(paramsString);
 
 ---
 
-```javascript
+```js
 var paramsString = "q=URLUtils.searchParams&topic=api";
 var searchParams = new URLSearchParams(paramsString);
 
@@ -173,7 +173,7 @@ searchParams.has("topic"); // true
 searchParams.get("topic"); // "api"
 searchParams.getAll("topic"); // ["api"]
 
-searchParams.get("foo"); // null，注意Firefox返回空字符串
+searchParams.get("foo"); // null，注意 Firefox 返回空字符串
 searchParams.set("foo", 2);
 searchParams.get("foo"); // 2
 
@@ -199,7 +199,7 @@ searchParams.toString(); // "q=URLUtils.searchParams&foo=2&foo=3"
 
 上面三个方法返回的都是 `Iterator` 对象。
 
-```javascript
+```js
 var searchParams = new URLSearchParams("key1=value1&key2=value2");
 
 for (var key of searchParams.keys()) {
@@ -223,7 +223,7 @@ for (var pair of searchParams.entries()) {
 
 在 Chrome 浏览器之中，`URLSearchParams` 实例本身就是 `Iterator` 对象，与 `entries` 方法返回值相同。所以，可以写成下面的样子。
 
-```javascript
+```js
 for (var p of searchParams) {
   console.log(p);
 }
@@ -231,7 +231,7 @@ for (var p of searchParams) {
 
 下面是一个替换当前 URL 的例子。
 
-```javascript
+```js
 // URL: https://example.com?version=1.0
 var params = new URLSearchParams(location.search.slice(1));
 params.set("version", 2.0);
@@ -242,7 +242,7 @@ window.history.replaceState({}, "", `${location.pathname}?${params}`);
 
 `URLSearchParams` 实例可以当作 POST 数据发送，所有数据都会 URL 编码。
 
-```javascript
+```js
 let params = new URLSearchParams();
 params.append('api_key', '1234567890');
 
@@ -254,7 +254,7 @@ fetch('https://example.com/api', {
 
 DOM 的 a 元素节点的 `searchParams` 属性，就是一个 `URLSearchParams` 实例。
 
-```javascript
+```js
 var a = document.createElement("a");
 a.href = "https://example.com?filter=api";
 a.searchParams.get("filter"); // "api"
@@ -262,7 +262,7 @@ a.searchParams.get("filter"); // "api"
 
 `URLSearchParams` 还可以与 URL 接口结合使用。
 
-```javascript
+```js
 var url = new URL(location);
 var foo = url.searchParams.get("foo") || "somedefault";
 ```

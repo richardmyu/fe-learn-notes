@@ -1,6 +1,6 @@
 # Web Components
 
-## 1.概述
+## 1. 概述
 
 各种网站往往需要一些相同的模块，比如日历、调色板等等，这种模块就被称为“**组件**”（component）。Web Component 就是网页组件式开发的技术规范。
 
@@ -8,7 +8,7 @@
 
 （1）管理和使用非常容易。加载或卸载组件，只要添加或删除一行代码就可以了。
 
-```javascript
+```js
 <link rel="import" href="my-dialog.htm">
 <my-dialog heading="A Dialog">Lorem ipsum</my-dialog>
 ```
@@ -27,13 +27,13 @@ Web Components 不是单一的规范，而是一系列的技术组成，包括 `
 
 ## 2.`template` 标签
 
-### 2.1.基本用法
+### 2.1. 基本用法
 
 `template` 标签表示网页中某些重复出现的部分的代码模板。它存在于 DOM 之中，但是在页面中不可见。
 
 下面的代码用来检查，浏览器是否支持 `template` 标签。
 
-```javascript
+```js
 function supportsTemplate() {
   return "content" in document.createElement("template");
 }
@@ -59,7 +59,7 @@ if (supportsTemplate()) {
 
 使用的时候，需要用 JavaScript 在模板中插入内容，然后将其插入 DOM。
 
-```javascript
+```js
 var template = document.querySelector("#profileTemplate");
 template.content.querySelector(".profile__img").src = "profile.jpg";
 template.content.querySelector(".profile__name").textContent = "Barack Obama";
@@ -70,7 +70,7 @@ document.body.appendChild(template.content);
 
 上面的代码是将模板直接插入 DOM，更好的做法是克隆 template 节点，然后将克隆的节点插入 DOM。这样做可以多次使用模板。
 
-```javascript
+```js
 var clone = document.importNode(template.content, true);
 document.body.appendChild(clone);
 ```
@@ -94,7 +94,7 @@ document.body.appendChild(clone);
 
 `document.importNode` 方法用于克隆外部文档的 DOM 节点。
 
-```javascript
+```js
 var iframe = document.getElementsByTagName("iframe")[0];
 var oldNode = iframe.contentWindow.document.getElementById("myNode");
 var newNode = document.importNode(oldNode, true);
@@ -117,7 +117,7 @@ HTML 预定义的网页元素，有时并不符合我们的需要，这时可以
 
 下面的代码用于测试浏览器是否支持自定义元素。
 
-```javascript
+```js
 if ("registerElement" in document) {
   // 支持
 } else {
@@ -128,7 +128,7 @@ document.registerElement();
 
 使用自定义元素前，必须用 `document` 对象的 `registerElement` 方法登记该元素。该方法返回一个自定义元素的构造函数。
 
-```javascript
+```js
 var SuperButton = document.registerElement("super-button");
 document.body.appendChild(new SuperButton());
 ```
@@ -137,7 +137,7 @@ document.body.appendChild(new SuperButton());
 
 可以看到，`document.registerElement` 方法的第一个参数是一个字符串，表示自定义的网页元素标签名。该方法还可以接受第二个参数，表示自定义网页元素的原型对象。
 
-```javascript
+```js
 var MyElement = document.registerElement("user-profile", {
   prototype: Object.create(HTMLElement.prototype)
 });
@@ -147,7 +147,7 @@ var MyElement = document.registerElement("user-profile", {
 
 但是，如果写成上面这样，自定义网页元素就跟普通元素没有太大区别。自定义元素的真正优势在于，可以自定义它的 API。
 
-```javascript
+```js
 var buttonProto = Object.create(HTMLElement.prototype);
 
 buttonProto.print = function() {
@@ -167,7 +167,7 @@ supperButton.print();
 
 如果想让自定义元素继承某种特定的网页元素，就要指定 `extends` 属性。比如，想让自定义元素继承 `h1` 元素，需要写成下面这样。
 
-```javascript
+```js
 var MyElement = document.registerElement("another-heading", {
   prototype: Object.create(HTMLElement.prototype),
   extends: "h1"
@@ -176,7 +176,7 @@ var MyElement = document.registerElement("another-heading", {
 
 另一个是自定义按钮（`button`）元素的例子。
 
-```javascript
+```js
 var MyButton = document.registerElement("super-button", {
   prototype: Object.create(HTMLButtonElement.prototype),
   extends: "button"
@@ -185,7 +185,7 @@ var MyButton = document.registerElement("super-button", {
 
 如果要继承一个自定义元素（比如 `x-foo-extended` 继承 `x-foo`），也是采用 `extends` 属性。
 
-```javascript
+```js
 var XFooExtended = document.registerElement("x-foo-extended", {
   prototype: Object.create(HTMLElement.prototype),
   extends: "x-foo"
@@ -194,7 +194,7 @@ var XFooExtended = document.registerElement("x-foo-extended", {
 
 定义了自定义元素以后，使用的时候，有两种方法。一种是直接使用，另一种是间接使用，指定为某个现有元素是自定义元素的实例。
 
-```javascript
+```js
 <!-- 直接使用 -->
 <supper-button></supper-button>
 
@@ -204,18 +204,18 @@ var XFooExtended = document.registerElement("x-foo-extended", {
 
 总之，如果 A 元素继承了 B 元素。那么，B 元素的 `is` 属性，可以指定 B 元素是 A 元素的一个实例。
 
-### 3.2.添加属性和方法
+### 3.2. 添加属性和方法
 
 自定义元素的强大之处，就是可以在它上面定义新的属性和方法。
 
-```javascript
+```js
 var XFooProto = Object.create(HTMLElement.prototype);
 var XFoo = document.registerElement("x-foo", { prototype: XFooProto });
 ```
 
 上面代码注册了一个 `x-foo` 标签，并且指明原型继承 `HTMLElement.prototype`。现在，我们就可以在原型上面，添加新的属性和方法。
 
-```javascript
+```js
 // 添加属性
 Object.defineProperty(XFooProto, "bar", { value: 5 });
 
@@ -241,7 +241,7 @@ var XFoo = document.registerElement("x-foo", {
 });
 ```
 
-### 3.3.回调函数
+### 3.3. 回调函数
 
 自定义元素的原型有一些属性，用来指定回调函数，在特定事件发生时触发。
 
@@ -256,7 +256,7 @@ var XFoo = document.registerElement("x-foo", {
 
 下面是一个例子。
 
-```javascript
+```js
 var proto = Object.create(HTMLElement.prototype);
 
 proto.createdCallback = function() {
@@ -273,7 +273,7 @@ var XFoo = document.registerElement("x-foo", { prototype: proto });
 
 利用回调函数，可以方便地在自定义元素中插入 HTML 语句。
 
-```javascript
+```js
 var XFooProto = Object.create(HTMLElement.prototype);
 
 XFooProto.createdCallback = function() {
@@ -287,7 +287,7 @@ var XFoo = document.registerElement("x-foo-with-markup", {
 
 上面代码定义了 `createdCallback` 回调函数，生成实例时，该函数运行，插入如下的 HTML 语句。
 
-```javascript
+```js
 <x-foo-with-markup>
   <b>I'm an x-foo-with-markup!</b>
 </x-foo-with-markup>
@@ -299,7 +299,7 @@ var XFoo = document.registerElement("x-foo-with-markup", {
 
 `Shadow DOM` 元素必须依存在一个现有的 DOM 元素之下，通过 `createShadowRoot` 方法创造，然后将其插入该元素。
 
-```javascript
+```js
 var shadowRoot = element.createShadowRoot();
 document.body.appendChild(shadowRoot);
 ```
@@ -321,7 +321,7 @@ document.body.appendChild(shadowRoot);
 
 通过 `innerHTML` 属性，可以为 `Shadow DOM` 指定内容。
 
-```javascript
+```js
 var shadow = document.querySelector("#hostElement").createShadowRoot();
 shadow.innerHTML = "<p>Here is some new text</p>";
 shadow.innerHTML += "<style>p { color: red };</style>";
@@ -348,7 +348,7 @@ shadow.innerHTML += "<style>p { color: red };</style>";
 
 上面代码是一个 `div` 元素和模板。接下来，就是要把模板应用到 `div` 元素上。
 
-```javascript
+```js
 var shadow = document.querySelector("#nameTag").createShadowRoot();
 var template = document.querySelector("#nameTagTemplate");
 shadow.appendChild(template.content.cloneNode(true));
@@ -358,13 +358,13 @@ shadow.appendChild(template.content.cloneNode(true));
 
 ## 5.HTML Import
 
-### 5.1.基本操作
+### 5.1. 基本操作
 
 长久以来，网页可以加载外部的样式表、脚本、图片、多媒体，却无法方便地加载其他网页，`iframe` 和 `ajax` 都只能提供部分的解决方案，且有很大的局限。`HTML Import` 就是为了解决加载外部网页这个问题，而提出来的。
 
 下面代码用于测试当前浏览器是否支持 `HTML Import`。
 
-```javascript
+```js
 function supportsImports() {
   return "import" in document.createElement("link");
 }
@@ -393,7 +393,7 @@ if (supportsImports()) {
 
 除了用 `link` 标签，也可以用 JavaScript 调用 `link` 元素，完成 `HTML Import`。
 
-```javascript
+```js
 var link = document.createElement('link');
 link.rel = 'import';
 link.href = 'file.html'
@@ -432,7 +432,7 @@ document.head.appendChild(link);
 
 最后，`HTML Import` 支持多重加载，即被加载的网页同时又加载其他网页。如果这些网页都重复加载同一个外部脚本，浏览器只会抓取并执行一次该脚本。比如，A 网页加载了 B 网页，它们各自都需要加载 jQuery，浏览器只会加载一次 jQuery。
 
-### 5.2.脚本的执行
+### 5.2. 脚本的执行
 
 外部网页的内容，并不会自动显示在当前网页中，它只是储存在浏览器中，等到被调用的时候才加载进入当前网页。为了加载网页网页，必须用 DOM 操作获取加载的内容。具体来说，就是使用 `link` 元素的 `import` 属性，来获取加载的内容。这一点与 `iframe` 完全不同。
 
@@ -452,7 +452,7 @@ document.head.appendChild(link);
 
 下面代码用于从加载的外部网页选取 id 为 `template` 的元素，然后将其克隆后加入当前网页的 DOM。
 
-```javascript
+```js
 var el = linkElement.import.querySelector("#template");
 
 document.body.appendChild(el.cloneNode(true));
@@ -460,7 +460,7 @@ document.body.appendChild(el.cloneNode(true));
 
 当前网页可以获取外部网页，反过来也一样，外部网页中的脚本，不仅可以获取本身的 DOM，还可以获取 `link` 元素所在的当前网页的 DOM。
 
-```javascript
+```js
 // 以下代码位于被加载（import）的外部网页
 
 // importDoc 指向被加载的 DOM
@@ -540,9 +540,9 @@ mainDoc.head.appendChild(styles.cloneNode(true));
 
 `Web Components` 是非常新的技术，为了让老式浏览器也能使用，Google 推出了一个函数库 `Polymer.js`。这个库不仅可以帮助开发者，定义自己的网页元素，还提供许多预先制作好的组件，可以直接使用。
 
-### 6.1.直接使用的组件
+### 6.1. 直接使用的组件
 
-`Polymer.js` 提供的组件，可以直接插入网页，比如下面的 `google-map`。。
+`Polymer.js` 提供的组件，可以直接插入网页，比如下面的 `google-map`。
 
 ```html
 <script src="components/platform/platform.js"></script>
@@ -567,18 +567,18 @@ polymer-ui-clock {
 }
 ```
 
-### 6.2.安装
+### 6.2. 安装
 
 如果使用 bower 安装，至少需要安装 `platform` 和 `core components` 这两个核心部分。
 
-```javascript
+```js
 bower install --save Polymer/platform
 bower install --save Polymer/polymer
 ```
 
 你还可以安装所有预先定义的界面组件。
 
-```javascript
+```js
 bower install Polymer/core-elements
 bower install Polymer/polymer-ui-elements
 ```
@@ -589,7 +589,7 @@ bower install Polymer/polymer-ui-elements
 
 这时，组件根目录下的 `bower.json`，会指明该组件的依赖的模块，这些模块会被自动安装。
 
-```javascript
+```js
 {
   "name": "polymer-ui-accordion",
   "private": true,
@@ -602,7 +602,7 @@ bower install Polymer/polymer-ui-elements
 }
 ```
 
-### 6.3.自定义组件
+### 6.3. 自定义组件
 
 下面是一个最简单的自定义组件的例子。
 
@@ -632,7 +632,7 @@ bower install Polymer/polymer-ui-elements
 
 `template` 标签定义了网页元素的模板。
 
-### 6.4.组件的使用方法
+### 6.4. 组件的使用方法
 
 在调用组件的网页中，首先加载 `polymer.js` 库和组件文件。
 

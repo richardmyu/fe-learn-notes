@@ -1,13 +1,13 @@
 # 概述
 
-## 1.元素与变量名
+## 1. 元素与变量名
 
 ### 1.1.`id` 属性
 
 由于历史原因，HTML 元素的 `id` 属性的名字，会自动成为全局变量，指向该 HTML 元素。
 
-```javascript
-// HTML元素为
+```js
+// HTML 元素为
 <div id="example" />;
 
 console.log(example);
@@ -16,7 +16,7 @@ console.log(example);
 
 如果已有同名全局变量，则 `id` 元素不会自动生成全局变量。
 
-```javascript
+```js
 // js
 var example = 1;
 
@@ -29,9 +29,9 @@ console.log(document.querySelector(".example"));
 // <div id="example"></div>
 ```
 
-由于这种原因，默认的全局变量名（比如，`history`、`location`、`navigator` 等），最好不要设为 `id` 属性的名字。(根据下列结果，似乎没有什么影响？？？那么让 `id` 变成全局变量的意义是什么？？？ )
+由于这种原因，默认的全局变量名（比如，`history`、`location`、`navigator` 等），最好不要设为 `id` 属性的名字。（根据下列结果，似乎没有什么影响？？？那么让 `id` 变成全局变量的意义是什么？？？ )
 
-```javascript
+```js
 <div id="history"></div>
 <div id="location"></div>
 <div id="navigator"></div>
@@ -72,8 +72,8 @@ console.log(document.querySelector("#navigator"));
 
 ---
 
-```javascript
-// HTML代码为
+```js
+// HTML 代码为
 // <form name="myForm" />
 
 myForm; // [object HTMLFormElement]
@@ -83,7 +83,7 @@ myForm; // [object HTMLFormElement]
 
 如果 `name` 属性同名的 `HTML` 元素不止一个，或者某个元素的 `id` 属性与另一个元素的 `name` 属性同名，这时全局变量会指向一个类似数组的对象。
 
-```javascript
+```js
 // HTML 代码为
 // <div id="myForm" />
 // <form name="myForm" />
@@ -96,7 +96,7 @@ myForm[1]; // [object HTMLFormElement]
 
 这些元素的 `name` 属性名，也会成为 `document` 对象的属性。
 
-```javascript
+```js
 // HTML 代码为<img name="xx" />
 document.xx === xx; // true
 ```
@@ -121,11 +121,11 @@ document.xx === xx; // true
 
 表单主要用于收集用户的输入，送到服务器或者在前端处理。
 
-### 2.1.选中表单元素
+### 2.1. 选中表单元素
 
 如果 `<form>` 元素带有 `name` 或者 `id` 属性，这个元素节点会自动成为 `window` 和 `document` 的属性，并且可以从 `document.forms` 上取到。`<form name="myForm">` 节点用下面几种方法可以拿到。
 
-```javascript
+```js
 window.myForm;
 document.myForm;
 document.forms.myForm;
@@ -136,7 +136,7 @@ document.forms[n];
 
 表单对象本身也是一个 HTMLCollection 对象的实例，它里面的各个子节点也可以用 `id` 属性、`name` 属性或者索引值取到。举例来说，`myForm` 表单的第一个子节点是 `<input type="text" name="address">`，它可以用下面的方法取到。
 
-```javascript
+```js
 document.forms.myForm[0];
 document.forms.myForm.address;
 document.myForm.address;
@@ -144,7 +144,7 @@ document.myForm.address;
 
 表单节点都有一个 `elements` 属性，包含了当前表单的所有子元素，所以也可以用下面的方法取到 `address` 子节点。
 
-```javascript
+```js
 document.forms.myForm.elements[0];
 document.forms.myForm.elements.address;
 ```
@@ -165,7 +165,7 @@ document.forms.myForm.elements.address;
 
 如果想知道，用户到底选中了哪一个子节点，就必须遍历所有的同名节点。
 
-```javascript
+```js
 var methods = document.forms.myForm.elements.method;
 var result;
 
@@ -204,7 +204,7 @@ Form 对象的方法主要是下面两个。
 - `submit()`：将表单数据提交到服务器
 - `reset()`：重置表单数据
 
-### 2.3.表单控件对象
+### 2.3. 表单控件对象
 
 表单包含了各种控件，每个控件都是一个对象。它们都包含了以下四个属性。
 
@@ -248,7 +248,7 @@ Form 对象的方法主要是下面两个。
 </select>
 ```
 
-```javascript
+```js
 var element = document.querySelector("#example");
 element.options.length;
 // 3
@@ -275,7 +275,7 @@ element.options.length;
 
 浏览器提供 `Option` 构造函数，用来生成下拉列表的选项对象。利用这个函数，可以用脚本生成下拉选项，然后放入 `Select.options` 对象里面，从而自动生成下拉列表。
 
-```javascript
+```js
 var item = new Option(
   "Hello World", // 显示的文本，即 text 属性
   "myValue", // 向服务器发送的值，即 value 属性
@@ -298,7 +298,7 @@ mySelector.options[mySelector.options.length] = item;
 
 `alt` 属性返回 `image` 元素的 HTML 标签的 `alt` 属性值，`src` 属性返回 `image` 元素的 HTML 标签的 `src` 属性值。
 
-```javascript
+```js
 // 方法一：HTML5 构造函数 Image
 var img1 = new Image();
 img1.src = "image1.png";
@@ -327,7 +327,7 @@ document.images[0].src;
 
 这两个属性只读，表示 `image` 对象真实的宽度和高度。
 
-```javascript
+```js
 myImage.addEventListener("onload", function() {
   console.log("My width is: ", this.naturalWidth);
   console.log("My height is: ", this.naturalHeight);
@@ -353,7 +353,7 @@ myImage.addEventListener("onload", function() {
 
 下面是使用 JavaScript 生成表格的一个例子。
 
-```javascript
+```js
 var table = document.createElement("table");
 var tbody = document.createElement("tbody");
 table.appendChild(tbody);
@@ -436,7 +436,7 @@ document.body.appendChild(table);
 
 `tabindex` 属性用来指定，当前 HTML 元素节点是否被 `tab` 键遍历，以及遍历的优先级。
 
-```javascript
+```js
 var b1 = document.getElementById("button1");
 
 b1.tabIndex = 1;

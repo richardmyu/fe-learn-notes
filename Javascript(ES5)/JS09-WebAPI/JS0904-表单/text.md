@@ -1,6 +1,6 @@
 # 表单
 
-## 1.表单元素
+## 1. 表单元素
 
 `input`、`textarea`、`password`、`select` 等元素都可以通过 `value` 属性取到它们的值。
 
@@ -39,7 +39,7 @@
 
 设为多选时，`value` 只返回选中的第一个选项。要取出所有选中的值，就必须遍历 `select` 的所有选项，检查每一项的 `selected` 属性。
 
-```javascript
+```js
 var selected = [];
 for (var i = 0, count = elem.options.length; i < count; i++) {
   if (elem.options[i].selected) {
@@ -64,7 +64,7 @@ for (var i = 0, count = elem.options.length; i < count; i++) {
 
 `value` 属性可以获取单选框的值。
 
-```javascript
+```js
 if (which.checked) {
   var value = document.getElementById("someCheckbox").value;
 }
@@ -74,7 +74,7 @@ if (which.checked) {
 
 `radio` 是单选框控件，同一组选择框同时只能选中一个，选中元素的 `checked` 属性为 `true`。由于同一组选择框的 `name` 属性都相同，所以只有通过遍历，才能获得用户选中的那个选择框的 `value`。
 
-```javascript
+```js
 <input type="radio" name="gender" value="Male"> Male </input>
 <input type="radio" name="gender" value="Female"> Female </input>
 <script>
@@ -94,7 +94,7 @@ if (selected) {
 
 上面代码中，要求用户选择“性别”。通过遍历所有选项，获取用户选中的项。如果用户未做任何选择，则 `selected` 就为 `undefined`。
 
-## 2.表单的验证
+## 2. 表单的验证
 
 ### 2.1.HTML5 表单验证
 
@@ -102,7 +102,7 @@ if (selected) {
 
 检查用户是否在 `input` 输入框之中填入值。
 
-```javascript
+```js
 if (inputElem.value === inputElem.defaultValue) {
   // 用户没有填入内容
 }
@@ -116,7 +116,7 @@ HTML 5 原生支持表单验证，不需要 JavaScript。
 
 但有时，原生的表单验证不完全符合需要，而且出错信息无法指定样式。这时，可能需要使用表单对象的 `noValidate` 属性，将原生的表单验证关闭。
 
-```javascript
+```js
 var form = document.getElementById("myform");
 form.noValidate = true;
 
@@ -133,9 +133,9 @@ form.onsubmit = validateForm;
 
 麻烦的地方在于，即使 `willValidate` 属性为 `true`，也不足以表示浏览器支持所有种类的表单验证。比如，Firefox 29 不支持 `date` 类型的输入框，会自动将其改为 `text` 类型，而此时它的 `willValidate` 属性为 `true`。为了解决这个问题，必须确认 `input` 输入框的类型（`type`）未被浏览器改变。
 
-```javascript
+```js
 if (field.nodeName === "INPUT" && field.type !== field.getAttribute("type")) {
-  // 浏览器不支持该种表单验证，需自行部署JavaScript验证
+  // 浏览器不支持该种表单验证，需自行部署 JavaScript 验证
 }
 ```
 
@@ -143,7 +143,7 @@ if (field.nodeName === "INPUT" && field.type !== field.getAttribute("type")) {
 
 提交表单之前（即 `submit` 事件发生之前），浏览器会执行 `form.checkValidity()`，检查是否所有输入项都能通过验证。那些不能通过验证的输入项，会触发该输入项元素的 `invalid` 事件。因此，可以定义 `invalid` 事件的监听函数，一旦通不过验证，就显示报错提示。
 
-```javascript
+```js
 // CSS 样式如下：
 // input.error {
 //   border-color: red;
@@ -164,7 +164,7 @@ inputs.forEach(input => {
 
 单个输入项也有 `checkValidity` 方法，可以手动触发。
 
-```javascript
+```js
 input.addEventListener("blur", function() {
   input.checkValidity();
 });
@@ -192,7 +192,7 @@ input.addEventListener("blur", function() {
 
 `setCustomValidity` 方法用于自定义错误信息，该提示信息也反映在输入框的 `validationMessage` 属性中。如果将 `setCustomValidity` 设为空字符串，则意味该项目验证通过。
 
-```javascript
+```js
 var passcode_input = document.querySelector("#passcode");
 if (passcode_input.value !== "123") {
   passcode_input.setCustomValidity("Wrong. It should be 123.");

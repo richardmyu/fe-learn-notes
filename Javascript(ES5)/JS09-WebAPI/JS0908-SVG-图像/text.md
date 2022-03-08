@@ -1,6 +1,6 @@
 # SVG 图像
 
-## 1.概述
+## 1. 概述
 
 SVG 是一种基于 XML 语法的图像格式，全称是**可缩放矢量图**（Scalable Vector Graphics）。其他图像格式都是基于像素的，SVG 则是属于对图像的数学描述，所以它本质上是文本文件，体积较小，且不管放大多少倍都不会失真。
 
@@ -49,7 +49,7 @@ SVG 文件还可以转为 BASE64 编码，然后作为 Data URI 写入网页。
 
 `<img src="data:image/svg+xml;base64,[data]">`
 
-## 2.语法
+## 2. 语法
 
 ### 2.1.`<svg>` 标签
 
@@ -71,7 +71,7 @@ SVG 代码都放在顶层标签 `<svg>` 之中。下面是一个例子。
 </svg>
 ```
 
-`<viewBox>` 属性的值有四个数字，分别是左上角的横坐标和纵坐标、视口的宽度和高度。上面代码中，SVG 图像是 100 像素宽 x 100 像素高，`viewBox` 属性指定视口从(50, 50)这个点开始。所以，实际看到的是右下角的四分之一圆。
+`<viewBox>` 属性的值有四个数字，分别是左上角的横坐标和纵坐标、视口的宽度和高度。上面代码中，SVG 图像是 100 像素宽 x 100 像素高，`viewBox` 属性指定视口从 (50, 50) 这个点开始。所以，实际看到的是右下角的四分之一圆。
 
 注意，视口必须适配所在的空间。上面代码中，视口的大小是 50 x 50，由于 SVG 图像的大小是 100 x 100，所以视口会放大去适配 SVG 图像的大小，即放大了四倍。
 
@@ -392,7 +392,7 @@ SVG 的 `CSS` 属性与网页元素有所不同。
 </svg>
 ```
 
-上面代码中，`<animateTransform>` 的效果为旋转（rotate），这时 `from` 和 `to` 属性值有三个数字，第一个数字是角度值，第二个值和第三个值是旋转中心的坐标。`from="0 200 200"` 表示开始时，角度为 0，围绕(200, 200)开始旋转；`to="360 400 400"` 表示结束时，角度为 360，围绕(400, 400)旋转。
+上面代码中，`<animateTransform>` 的效果为旋转（rotate），这时 `from` 和 `to` 属性值有三个数字，第一个数字是角度值，第二个值和第三个值是旋转中心的坐标。`from="0 200 200"` 表示开始时，角度为 0，围绕 (200, 200) 开始旋转；`to="360 400 400"` 表示结束时，角度为 360，围绕 (400, 400) 旋转。
 
 ## 3.JavaScript 操作
 
@@ -444,11 +444,11 @@ mycircle.addEventListener(
 
 上面代码指定，如果点击图形，就改写 `circle` 元素的 `r` 属性。
 
-### 3.2.获取 SVG DOM
+### 3.2. 获取 SVG DOM
 
 使用 `<object>`、`<iframe>`、`<embed>` 标签插入 SVG 文件，可以获取 SVG DOM。
 
-```javascript
+```js
 var svgObject = document.getElementById("object").contentDocument;
 var svgIframe = document.getElementById("iframe").contentDocument;
 var svgEmbed = document.getElementById("embed").getSVGDocument();
@@ -456,7 +456,7 @@ var svgEmbed = document.getElementById("embed").getSVGDocument();
 
 注意，如果使用 `<img>` 标签插入 SVG 文件，就无法获取 SVG DOM。
 
-### 3.3.读取 SVG 源码
+### 3.3. 读取 SVG 源码
 
 由于 SVG 文件就是一段 XML 文本，因此可以通过读取 XML 代码的方式，读取 SVG 源码。
 
@@ -482,7 +482,7 @@ var svgEmbed = document.getElementById("embed").getSVGDocument();
 
 首先，需要新建一个 `Image` 对象，将 SVG 图像指定到该 `Image` 对象的 `src` 属性。
 
-```javascript
+```js
 var img = new Image();
 var svg = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
 
@@ -494,7 +494,7 @@ img.src = url;
 
 然后，当图像加载完成后，再将它绘制到 `<canvas>` 元素。
 
-```javascript
+```js
 img.onload = function() {
   var canvas = document.getElementById("canvas");
   var ctx = canvas.getContext("2d");
@@ -502,7 +502,7 @@ img.onload = function() {
 };
 ```
 
-## 4.实例：折线图
+## 4. 实例：折线图
 
 下面将一张数据表格画成折线图。
 

@@ -1,6 +1,6 @@
-### 5.Web Storage：浏览器端数据储存机制
+# Web Storage：浏览器端数据储存机制
 
-#### 1.概述
+## 1. 概述
 
 这个 API 的作用是，使得网页可以在浏览器端储存数据。它分成两类：`sessionStorage` 和 `localStorage`。
 
@@ -28,9 +28,9 @@ function checkStorageSupport() {
 }
 ```
 
-#### 2.操作方法
+## 2. 操作方法
 
-##### 2.1 存入/读取数据
+### 2.1 存入/读取数据
 
 `sessionStorage` 和 `localStorage` 保存的数据，都以“键值对”的形式存在。也就是说，每一项数据都有一个键名和对应的值。所有的数据都是以文本格式保存。
 
@@ -48,7 +48,7 @@ var valueSession = sessionStorage.getItem("key");
 var valueLocal = localStorage.getItem("key");
 ```
 
-##### 2.2 清除数据
+### 2.2 清除数据
 
 `removeItem` 方法用于清除某个键名对应的数据。
 
@@ -64,7 +64,7 @@ sessionStorage.clear();
 localStorage.clear();
 ```
 
-##### 2.3 遍历操作
+### 2.3 遍历操作
 
 利用 `length` 属性和 `key` 方法，可以遍历所有的键。
 
@@ -78,7 +78,7 @@ for (var i = 0; i < localStorage.length; i++) {
 
 `localStorage.key(1);`
 
-#### 3.storage 事件
+## 3.storage 事件
 
 当储存的数据发生变化时，会触发 `storage` 事件。我们可以指定这个事件的回调函数。
 

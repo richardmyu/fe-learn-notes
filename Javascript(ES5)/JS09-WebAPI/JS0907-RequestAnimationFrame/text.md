@@ -1,6 +1,6 @@
 # requestAnimationFrame
 
-## 1.概述
+## 1. 概述
 
 `requestAnimationFrame` 是浏览器用于定时循环操作的一个接口，类似于 `setTimeout`，主要用途是按帧对网页进行重绘。
 
@@ -16,7 +16,7 @@
 
 目前，主要浏览器（Firefox 23 / IE 10 / Chrome / Safari）都支持这个方法。可以用下面的方法，检查浏览器是否支持这个 API。如果不支持，则自行模拟部署该方法。
 
-```javascript
+```js
 window.requestAnimFrame = (function() {
   return (
     window.requestAnimationFrame ||
@@ -35,7 +35,7 @@ window.requestAnimFrame = (function() {
 
 使用 `requestAnimationFrame` 的时候，只需反复调用它即可。
 
-```javascript
+```js
 function repeatOften() {
   // Do whatever
   requestAnimationFrame(repeatOften);
@@ -52,7 +52,7 @@ requestAnimationFrame(repeatOften);
 
 它的参数是 `requestAnimationFrame` 返回的一个代表任务 ID 的整数值。
 
-```javascript
+```js
 var globalID;
 
 function repeatOften() {
@@ -71,7 +71,7 @@ $("#stop").on("click", function() {
 
 上面代码持续在 `body` 元素下添加 `div` 元素，直到用户点击 `stop` 按钮为止。
 
-## 3.实例
+## 3. 实例
 
 下面，举一个实例。
 
@@ -81,7 +81,7 @@ $("#stop").on("click", function() {
 
 然后，定义动画效果。
 
-```javascript
+```js
 var elem = document.getElementById("anim");
 
 var startTime = undefined;
@@ -96,7 +96,7 @@ function render(time) {
 
 最后，定义 click 事件。
 
-```javascript
+```js
 elem.onclick = function() {
   (function animloop() {
     render();

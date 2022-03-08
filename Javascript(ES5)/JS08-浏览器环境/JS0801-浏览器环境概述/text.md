@@ -1,8 +1,6 @@
-## 八.浏览器环境
+# 浏览器环境概述
 
-### 1.浏览器环境概述
-
-#### 1.JavaScript 代码嵌入网页的方法
+## 1.JavaScript 代码嵌入网页的方法
 
 JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
@@ -17,12 +15,12 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
 ---
 
-> 伪协议不同于因特网上所真实存在的协议，如 `http://`，`https://`，`ftp://`，而是为关联应用程序而使用的.如: `tencent://`(关联 QQ)，`data:`(用 base64 编码来在浏览器端输出二进制文件)，还有就是 `javascript:`。
+> 伪协议不同于因特网上所真实存在的协议，如 `http://`，`https://`，`ftp://`，而是为关联应用程序而使用的。如：`tencent://`（关联 QQ)，`data:`（用 base64 编码来在浏览器端输出二进制文件），还有就是 `javascript:`。
 > `javascript:` 这个特殊的协议类型声明了 URL 的主体是任意的 javascript 代码，它由 javascript 的解释器运行。
 
 后两种方法用得很少，常用的是前两种方法。由于内容（HTML 代码）和行为代码（JavaScript）应该分离，所以第一种方法应当谨慎使用。
 
-##### 1.1 script 标签：代码嵌入网页
+### 1.1 script 标签：代码嵌入网页
 
 通过 `<script>` 标签，可以直接将 JavaScript 代码嵌入网页。
 
@@ -51,14 +49,14 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
 上面的代码，浏览器不会执行，也不会显示它的内容，因为不认识它的 `type` 属性。但是，这个 `<script>` 节点依然存在于 DOM 之中，可以使用 `<script>` 节点的 text 属性读出它的内容。
 
-```javascript
+```js
 document.getElementById("myData").text;
 // "
 //   console.log('Hello World');
 // "
 ```
 
-##### 1.2 script 标签：加载外部脚本
+### 1.2 script 标签：加载外部脚本
 
 `<script>` 标签也可以指定加载外部的脚本文件。
 
@@ -89,7 +87,7 @@ document.getElementById("myData").text;
 
 上面代码中，script 标签有一个 `integrity` 属性，指定了外部脚本 `/assets/application.js` 的 `SHA256` 签名。一旦有人改了这个脚本，导致 `SHA256` 签名不匹配，浏览器就会拒绝加载。
 
-##### 1.3 事件属性
+### 1.3 事件属性
 
 某些 HTML 元素的事件属性（比如 `onclick` 和 `onmouseover`），可以写入 JavaScript 代码。当指定事件发生时，就会调用这些代码。
 
@@ -97,7 +95,7 @@ document.getElementById("myData").text;
 
 上面的事件属性代码只有一个语句。如果有多个语句，用分号分隔即可。
 
-##### 1.4 URL 协议
+### 1.4 URL 协议
 
 URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript 代码。
 
@@ -125,19 +123,19 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 `javascript:` 协议的常见用途是书签脚本 `Bookmarklet`。由于浏览器的书签保存的是一个网址，所以 `javascript:` 网址也可以保存在里面，用户选择这个书签的时候，就会在当前页面执行这个脚本。为了防止书签替换掉当前文档，可以在脚本最后返回 `void 0`。???
 
-#### 2.script 标签
+## 2.script 标签
 
-##### 2.1 工作原理
+### 2.1 工作原理
 
 浏览器加载 JavaScript 脚本，主要通过 `<script>` 标签完成。正常的网页加载流程是这样的。
 
 ---
 
-- a.浏览器一边下载 HTML 网页，一边开始解析
-- b.解析过程中，发现 `<script>` 标签
-- c.暂停解析，网页渲染的控制权转交给 JavaScript 引擎
-- d.如果 `<script>` 标签引用了外部脚本，就下载该脚本，否则就直接执行
-- e.执行完毕，控制权交还渲染引擎，恢复往下解析 HTML 网页
+- a. 浏览器一边下载 HTML 网页，一边开始解析
+- b. 解析过程中，发现 `<script>` 标签
+- c. 暂停解析，网页渲染的控制权转交给 JavaScript 引擎
+- d. 如果 `<script>` 标签引用了外部脚本，就下载该脚本，否则就直接执行
+- e. 执行完毕，控制权交还渲染引擎，恢复往下解析 HTML 网页
 
 ---
 
@@ -153,7 +151,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 还有一种解决方法是设定 `DOMContentLoaded` 事件的回调函数。
 
-```javascript
+```js
 <head>
   <script>
     document.addEventListener(
@@ -166,7 +164,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 </head>
 ```
 
-另一种解决方法是，使用 `<script>` 标签的 `onload` 属性。当 `<script>` 标签指定的外部脚本文件下载和解析完成，会触发一个 `load` 事件，可以把所需执行的代码，放在这个事件的回调函数里面。(会报错的。。。)
+另一种解决方法是，使用 `<script>` 标签的 `onload` 属性。当 `<script>` 标签指定的外部脚本文件下载和解析完成，会触发一个 `load` 事件，可以把所需执行的代码，放在这个事件的回调函数里面。（会报错的。)
 
 > 如果放到 head 部分，会报错；放到 body ，则可以获取到自身及自身之前；
 
@@ -174,7 +172,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 但是，如果将脚本放在页面底部，就可以完全按照正常的方式写，上面两种方式都不需要。
 
-```javascript
+```js
 <body>
   <!-- 其他代码  -->
   <script>
@@ -185,7 +183,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 如果有多个 `script` 标签，比如下面这样。
 
-```javascript
+```js
 <script src="a.js"></script>
 <script src="b.js"></script>
 ```
@@ -193,18 +191,18 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 浏览器会同时并行下载 `a.js` 和 `b.js`，但是，执行时会保证先执行 `a.js`，然后再执行 `b.js`，即使后者先下载完成，也是如此。也就是说，脚本的执行顺序由它们在页面中的出现顺序决定，这是为了保证脚本之间的依赖关系不受到破坏。当然，加载这两个脚本都会产生“阻塞效应”，必须等到它们都加载完成，浏览器才会继续页面渲染。
 
 > `a.js` 比 `b.js` 先执行，不见得一定会先出结果。
-
+>
 > Gecko 和 Webkit 引擎在网页被阻塞后，会生成第二个线程解析文档，下载外部资源，但是不会修改 DOM，网页还是处于阻塞状态。
 
 解析和执行 CSS，也会产生阻塞。Firefox 会等到脚本前面的所有样式表，都下载并解析完，再执行脚本；Webkit 则是一旦发现脚本引用了样式，就会暂停执行脚本，等到样式表下载并解析完，再恢复执行。
 
 此外，对于来自同一个域名的资源，比如脚本文件、样式表文件、图片文件等，浏览器一般最多同时下载六个（IE11 允许同时下载 13 个）。如果是来自不同域名的资源，就没有这个限制。所以，通常把静态文件放在不同的域名之下，以加快下载速度。
 
-##### 2.2 defer 属性
+### 2.2 defer 属性
 
 为了解决脚本文件下载阻塞网页渲染的问题，一个方法是加入 `defer` 属性。
 
-```javascript
+```js
 <script src="a.js" defer></script>
 <script src="b.js" defer></script>
 ```
@@ -215,10 +213,10 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 ---
 
-- a.浏览器开始解析 HTML 网页
-- b.解析过程中，发现带有 `defer` 属性的 `script` 标签
-- c.浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
-- d.浏览器完成解析 HTML 网页，此时再执行下载的脚本
+- a. 浏览器开始解析 HTML 网页
+- b. 解析过程中，发现带有 `defer` 属性的 `script` 标签
+- c. 浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
+- d. 浏览器完成解析 HTML 网页，此时再执行下载的脚本
 
 ---
 
@@ -226,11 +224,11 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 对于内置而不是加载外部脚本的 `script` 标签，以及动态生成的 `script` 标签，`defer` 属性不起作用。另外，使用 `defer` 加载的外部脚本不应该使用 `document.write` 方法。(？？？)
 
-##### 2.3 async 属性
+### 2.3 async 属性
 
 解决“阻塞效应”的另一个方法是加入 `async` 属性。
 
-```javascript
+```js
 <script src="a.js" async></script>
 <script src="b.js" async></script>
 ```
@@ -239,11 +237,11 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 ---
 
-- a.浏览器开始解析 HTML 网页
-- b.解析过程中，发现带有 `async` 属性的 `script` 标签
-- c.浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
-- d.脚本下载完成，浏览器暂停解析 HTML 网页，开始执行下载的脚本
-- e.脚本执行完毕，浏览器恢复解析 HTML 网页
+- a. 浏览器开始解析 HTML 网页
+- b. 解析过程中，发现带有 `async` 属性的 `script` 标签
+- c. 浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
+- d. 脚本下载完成，浏览器暂停解析 HTML 网页，开始执行下载的脚本
+- e. 脚本执行完毕，浏览器恢复解析 HTML 网页
 
 ---
 
@@ -251,13 +249,13 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 `defer` 属性和 `async` 属性到底应该使用哪一个？
 
-一般来说，如果脚本之间没有依赖关系，就使用 `async` 属性，如果脚本之间有依赖关系，就使用 `defer` 属性。如果同时使用 `async` 和 `defer` 属性，后者不起作用(会立即下载执行。。。)，浏览器行为由 `async` 属性决定。
+一般来说，如果脚本之间没有依赖关系，就使用 `async` 属性，如果脚本之间有依赖关系，就使用 `defer` 属性。如果同时使用 `async` 和 `defer` 属性，后者不起作用（会立即下载执行。)，浏览器行为由 `async` 属性决定。
 
-##### 2.4 脚本的动态加载
+### 2.4 脚本的动态加载
 
 除了静态的 `script` 标签，还可以动态生成 `script` 标签，然后加入页面，从而实现脚本的动态加载。
 
-```javascript
+```js
 ["a.js", "b.js"].forEach(function(src) {
   var script = document.createElement("script");
   script.src = src;
@@ -269,7 +267,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 如果想避免这个问题，可以设置 `async` 属性为 false。
 
-```javascript
+```js
 ["a.js", "b.js"].forEach(function(src) {
   var script = document.createElement("script");
   script.src = src;
@@ -282,7 +280,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 我们可以把上面的写法，封装成一个函数。
 
-```javascript
+```js
 (function() {
   var scripts = document.getElementsByTagName("script")[0];
   function load(url) {
@@ -292,8 +290,6 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
     scripts.parentNode.insertBefore(script, scripts);
   }
   load("xxx");
-  load("xxx");
-  load("xxx");
 })();
 ```
 
@@ -301,7 +297,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 如果想为动态加载的脚本指定回调函数，可以使用下面的写法。
 
-```javascript
+```js
 function loadScript(src, done) {
   var js = document.createElement("script");
   js.src = src;
@@ -317,7 +313,7 @@ function loadScript(src, done) {
 
 此外，动态嵌入还有一个地方需要注意。动态嵌入必须等待 CSS 文件加载完成后，才会去下载外部脚本文件。静态加载就不存在这个问题，`script` 标签指定的外部脚本文件，都是与 CSS 文件同时并发下载的。
 
-##### 2.5 加载使用的协议
+### 2.5 加载使用的协议
 
 如果不指定协议，浏览器默认采用 HTTP 协议下载。
 
@@ -331,11 +327,11 @@ function loadScript(src, done) {
 
 `<script src="//example.js"></script>`
 
-#### 3.浏览器的组成
+## 3. 浏览器的组成
 
 浏览器的核心是两部分：渲染引擎和 JavaScript 解释器（又称 JavaScript 引擎）。
 
-##### 3.1 渲染引擎
+### 3.1 渲染引擎
 
 渲染引擎的主要作用是，将网页代码渲染为用户视觉可以感知的平面文档。
 
@@ -345,7 +341,7 @@ function loadScript(src, done) {
 
 - Firefox：Gecko 引擎
 - Safari：WebKit 引擎
-- Chrome：Blink 引擎(基于 WebKit 的 fork Web 渲染引擎)
+- Chrome：Blink 引擎（基于 WebKit 的 fork Web 渲染引擎）
 - Opera：Presto 引擎
 - IE: Trident 引擎
 - Edge: EdgeHTML 引擎
@@ -356,16 +352,16 @@ function loadScript(src, done) {
 
 ---
 
-- a.解析代码：HTML 代码解析为 DOM，CSS 代码解析为 CSSOM（CSS Object Model）
-- b.对象合成：将 DOM 和 CSSOM 合成一棵渲染树（render tree）
-- c.布局：计算出渲染树的布局（layout）
-- d.绘制：将渲染树绘制到屏幕
+- a. 解析代码：HTML 代码解析为 DOM，CSS 代码解析为 CSSOM（CSS Object Model）
+- b. 对象合成：将 DOM 和 CSSOM 合成一棵渲染树（render tree）
+- c. 布局：计算出渲染树的布局（layout）
+- d. 绘制：将渲染树绘制到屏幕
 
 ---
 
 以上四步并非严格按顺序执行，往往第一步还没完成，第二步和第三步就已经开始了。所以，会看到这种情况：网页的 HTML 代码还没下载完，但浏览器已经显示出内容了。
 
-##### 3.2 重流和重绘
+### 3.2 重流和重绘
 
 渲染树转换为网页布局，称为**布局流**（flow）；布局显示到页面的这个过程，称为**绘制**（paint）。它们都具有阻塞效应，并且会耗费很多时间和计算资源。
 
@@ -377,7 +373,7 @@ function loadScript(src, done) {
 
 作为开发者，应该尽量设法降低重绘的次数和成本。比如，尽量不要变动高层的 DOM 元素，而以底层 DOM 元素的变动代替；再比如，重绘 `table` 布局和 `flex` 布局，开销都会比较大。
 
-```javascript
+```js
 var foo = document.getElementById("foobar");
 
 foo.style.color = "blue";
@@ -390,20 +386,20 @@ foo.style.marginTop = "30px";
 
 ---
 
-- a.读取 DOM 或者写入 DOM，尽量写在一起，不要混杂
-- b.缓存 DOM 信息
-- c.不要一项一项地改变样式，而是使用 `CSS class` 一次性改变样式
-- d.使用 `document fragment` 操作 DOM (<a href="./index.html">index.html</a>)
-- e.动画时使用 `absolute` 定位或 `fixed` 定位，这样可以减少对其他元素的影响
-- f.只在必要时才显示元素
-- g.使用 `window.requestAnimationFrame()`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流
-- e.使用虚拟 DOM（virtual DOM）库
+- a. 读取 DOM 或者写入 DOM，尽量写在一起，不要混杂
+- b. 缓存 DOM 信息
+- c. 不要一项一项地改变样式，而是使用 `CSS class` 一次性改变样式
+- d. 使用 `document fragment` 操作 DOM (<a href="./index.html">index.html</a>)
+- e. 动画时使用 `absolute` 定位或 `fixed` 定位，这样可以减少对其他元素的影响
+- f. 只在必要时才显示元素
+- g. 使用 `window.requestAnimationFrame()`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流
+- e. 使用虚拟 DOM（virtual DOM）库
 
 ---
 
 下面是一个 `window.requestAnimationFrame()` 对比效果的例子。
 
-```javascript
+```js
 // 重绘代价高
 function doubleHeight(element) {
   var currentHeight = element.clientHeight;
@@ -424,7 +420,7 @@ function doubleHeight(element) {
 all_my_elements.forEach(doubleHeight);
 ```
 
-##### 3.3 JavaScript 引擎
+### 3.3 JavaScript 引擎
 
 JavaScript 引擎的主要作用是，读取网页中的 JavaScript 代码，对其处理后运行。
 
@@ -436,10 +432,10 @@ JavaScript 是一种解释型语言，也就是说，它不需要编译，由解
 
 ---
 
-- a.读取代码，进行词法分析（Lexical analysis），将代码分解成词元（token）。
-- b.对词元进行语法分析（parsing），将代码整理成“语法树”（syntax tree）。
-- c.使用“翻译器”（translator），将代码转为字节码（bytecode）。
-- d.使用“字节码解释器”（bytecode interpreter），将字节码转为机器码。
+- a. 读取代码，进行词法分析（Lexical analysis），将代码分解成词元（token）。
+- b. 对词元进行语法分析（parsing），将代码整理成“语法树”（syntax tree）。
+- c. 使用“翻译器”（translator），将代码转为字节码（bytecode）。
+- d. 使用“字节码解释器”（bytecode interpreter），将字节码转为机器码。
 
 ---
 
@@ -454,5 +450,3 @@ JavaScript 是一种解释型语言，也就是说，它不需要编译，由解
 - Carakan (Opera)
 - SpiderMonkey (Firefox)
 - V8 (Chrome, Chromium)
-
----

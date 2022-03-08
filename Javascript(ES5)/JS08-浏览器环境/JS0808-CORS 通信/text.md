@@ -1,10 +1,10 @@
-### 8.CORS 通信
+# CORS 通信
 
 CORS 是一个 W3C 标准，全称是“**跨域资源共享**”（Cross-origin resource sharing）。
 
 它允许浏览器向跨源服务器，发出 `XMLHttpRequest` 请求，从而克服了 AJAX 只能同源使用的限制。
 
-#### 1.简介
+## 1. 简介
 
 CORS 需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，IE 浏览器不能低于 IE10。
 
@@ -12,13 +12,13 @@ CORS 需要浏览器和服务器同时支持。目前，所有浏览器都支持
 
 因此，实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信。
 
-#### 2.两种请求
+## 2. 两种请求
 
 浏览器将 CORS 请求分成两类：**简单请求（simple request）**和**非简单请求（not-so-simple request）**。
 
 只要同时满足以下两大条件，就属于简单请求。
 
-1).请求方法是以下三种方法之一。
+1). 请求方法是以下三种方法之一。
 
 ---
 
@@ -44,15 +44,15 @@ CORS 需要浏览器和服务器同时支持。目前，所有浏览器都支持
 
 浏览器对这两种请求的处理，是不一样的。
 
-#### 3.简单请求
+## 3. 简单请求
 
-##### 3.1 基本流程
+### 3.1 基本流程
 
 对于简单请求，浏览器直接发出 CORS 请求。具体来说，就是在头信息之中，增加一个 `Origin` 字段。
 
 下面是一个例子，浏览器发现这次跨源 AJAX 请求是简单请求，就自动在头信息之中，添加一个 `Origin` 字段。
 
-```javascript
+```js
 GET /cors HTTP/1.1
 Origin: http://api.bob.com
 Host: api.alice.com
@@ -69,7 +69,7 @@ User-Agent: Mozilla/5.0...
 
 如果 `Origin` 指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段。
 
-```javascript
+```js
 Access-Control-Allow-Origin: http://api.bob.com
 Access-Control-Allow-Credentials: true
 Access-Control-Expose-Headers: FooBar
@@ -90,7 +90,7 @@ Content-Type: text/html; charset=utf-8
 
 该字段可选。CORS 请求时，`XMLHttpRequest` 对象的 `getResponseHeader()` 方法只能拿到 6 个基本字段：`Cache-Control`、`Content-Language`、`Content-Type`、`Expires`、`Last-Modified`、`Pragma`。如果想拿到其他字段，就必须在 `Access-Control-Expose-Headers` 里面指定。上面的例子指定，`getResponseHeader('FooBar')` 可以返回 `FooBar` 字段的值。
 
-##### 3.2 withCredentials 属性
+### 3.2 withCredentials 属性
 
 上面说到，CORS 请求默认不包含 `Cookie` 信息（以及 HTTP 认证信息等）。如果需要包含 `Cookie` 信息，一方面要服务器同意，指定 `Access-Control-Allow-Credentials` 字段。
 
@@ -98,7 +98,7 @@ Content-Type: text/html; charset=utf-8
 
 另一方面，开发者必须在 AJAX 请求中打开 `withCredentials` 属性。
 
-```javascript
+```js
 var xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 ```
@@ -111,9 +111,9 @@ xhr.withCredentials = true;
 
 需要注意的是，如果要发送 `Cookie`，`Access-Control-Allow-Origin` 就不能设为星号，必须指定明确的、与请求网页一致的域名。同时，`Cookie` 依然遵循同源政策，只有用服务器域名设置的 `Cookie` 才会上传，其他域名的 `Cookie` 并不会上传，且（跨源）原网页代码中的 `document.cookie` 也无法读取服务器域名下的 `Cookie`。
 
-#### 4.非简单请求
+## 4. 非简单请求
 
-##### 4.1 预检请求
+### 4.1 预检请求
 
 非简单请求是那种对服务器有特殊要求的请求，比如请求方法是 PUT 或 DELETE，或者 `Content-Type` 字段的类型是 `application/json`。
 
@@ -123,7 +123,7 @@ xhr.withCredentials = true;
 
 下面是一段浏览器的 JavaScript 脚本。
 
-```javascript
+```js
 var url = "http://api.alice.com/cors";
 var xhr = new XMLHttpRequest();
 xhr.open("PUT", url, true);
@@ -135,7 +135,7 @@ xhr.send();
 
 浏览器发现，这是一个非简单请求，就自动发出一个“预检”请求，要求服务器确认可以这样请求。下面是这个“预检”请求的 HTTP 头信息。
 
-```javascript
+```js
 OPTIONS /cors HTTP/1.1
 Origin: http://api.bob.com
 Access-Control-Request-Method: PUT
@@ -158,11 +158,11 @@ User-Agent: Mozilla/5.0...
 
 该字段是一个逗号分隔的字符串，指定浏览器 CORS 请求会额外发送的头信息字段，上例是 `X-Custom-Header`。
 
-##### 4.2 预检请求的回应
+### 4.2 预检请求的回应
 
 服务器收到“预检”请求以后，检查了 `Origin`、`Access-Control-Request-Method` 和 `Access-Control-Request-Headers` 字段以后，确认允许跨源请求，就可以做出回应。
 
-```javascript
+```js
 HTTP/1.1 200 OK
 Date: Mon, 01 Dec 2008 01:15:39 GMT
 Server: Apache/2.0.61 (Unix)
@@ -183,14 +183,14 @@ Content-Type: text/plain
 
 如果服务器否定了“预检”请求，会返回一个正常的 HTTP 回应，但是没有任何 CORS 相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被 `XMLHttpRequest` 对象的 `onerror` 回调函数捕获。控制台会打印出如下的报错信息。
 
-```javascript
+```js
 XMLHttpRequest cannot load http://api.alice.com.
 Origin http://api.bob.com is not allowed by Access-Control-Allow-Origin.
 ```
 
 服务器回应的其他 CORS 相关字段如下。
 
-```javascript
+```js
 Access-Control-Allow-Methods: GET, POST, PUT
 Access-Control-Allow-Headers: X-Custom-Header
 Access-Control-Allow-Credentials: true
@@ -213,13 +213,13 @@ Access-Control-Max-Age: 1728000
 
 该字段可选，用来指定本次预检请求的有效期，单位为秒。上面结果中，有效期是 20 天（1728000 秒），即允许缓存该条回应 1728000 秒（即 20 天），在此期间，不用发出另一条预检请求。
 
-##### 4.3 浏览器的正常请求和回应
+### 4.3 浏览器的正常请求和回应
 
 一旦服务器通过了“预检”请求，以后每次浏览器正常的 CORS 请求，就都跟简单请求一样，会有一个 `Origin` 头信息字段。服务器的回应，也都会有一个 `Access-Control-Allow-Origin` 头信息字段。
 
 下面是“预检”请求之后，浏览器的正常 CORS 请求。
 
-```javascript
+```js
 PUT /cors HTTP/1.1
 Origin: http://api.bob.com
 Host: api.alice.com
@@ -233,14 +233,14 @@ User-Agent: Mozilla/5.0...
 
 下面是服务器正常的回应。
 
-```javascript
+```js
 Access-Control-Allow-Origin: http://api.bob.com
 Content-Type: text/html; charset=utf-8
 ```
 
 上面头信息中，`Access-Control-Allow-Origin` 字段是每次回应都必定包含的。
 
-#### 5.与 JSONP 的比较
+## 5. 与 JSONP 的比较
 
 CORS 与 JSONP 的使用目的相同，但是比 JSONP 更强大。
 

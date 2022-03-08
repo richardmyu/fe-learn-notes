@@ -1,6 +1,6 @@
 # Web Speech
 
-## 1.概述
+## 1. 概述
 
 这个 API 用于浏览器接收语音输入。
 
@@ -18,7 +18,7 @@
 
 这个 API 部署在 SpeechRecognition 对象之上。
 
-```javascript
+```js
 var SpeechRecognition =
   window.SpeechRecognition ||
   window.webkitSpeechRecognition ||
@@ -31,7 +31,7 @@ var SpeechRecognition =
 
 确定浏览器支持以后，新建一个 SpeechRecognition 的实例对象。
 
-```javascript
+```js
 if (SpeechRecognition) {
   var recognition = new SpeechRecognition();
   recognition.maxAlternatives = 5;
@@ -40,11 +40,11 @@ if (SpeechRecognition) {
 
 `maxAlternatives` 属性等于 5，表示最多返回 5 个语音匹配结果。
 
-## 3.事件
+## 3. 事件
 
 目前，该 API 部署了 11 个事件。下面对其中的 3 个定义回调函数（假定 speak 是语音输入框）。
 
-```javascript
+```js
 var speak = \$('#speak');
 
 recognition.onaudiostart = function() {
@@ -64,7 +64,7 @@ speak.val("Error. Try Again...");
 
 如果得到与语音匹配的值，则会触发 `result` 事件。
 
-```javascript
+```js
 recognition.onresult = function(event) {
   if (event.results.length > 0) {
     var results = event.results[0],

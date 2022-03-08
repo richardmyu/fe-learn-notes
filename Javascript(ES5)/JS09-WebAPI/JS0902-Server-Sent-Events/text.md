@@ -1,6 +1,6 @@
 # Server-Sent Events
 
-## 1.简介
+## 1. 简介
 
 服务器向客户端推送数据，有很多解决方案。除了“轮询” 和 WebSocket，HTML 5 还提供了 Server-Sent Events（以下简称 SSE）。
 
@@ -8,7 +8,7 @@
 
 SSE 就是利用这种机制，使用流信息向浏览器推送信息。它基于 HTTP 协议，目前除了 IE/Edge，其他浏览器都支持。
 
-## 2.与 WebSocket 的比较
+## 2. 与 WebSocket 的比较
 
 SSE 与 WebSocket 作用相似，都是建立浏览器与服务器之间的通信渠道，然后服务器向浏览器推送信息。
 
@@ -28,13 +28,13 @@ SSE 与 WebSocket 作用相似，都是建立浏览器与服务器之间的通�
 
 因此，两者各有特点，适合不同的场合。
 
-## 3.客户端 API
+## 3. 客户端 API
 
 ### 3.1.`EventSource` 对象
 
 SSE 的客户端 API 部署在 `EventSource` 对象上。下面的代码可以检测浏览器是否支持 SSE。
 
-```javascript
+```js
 if ("EventSource" in window) {
   // ...
 }
@@ -60,7 +60,7 @@ if ("EventSource" in window) {
 
 ---
 
-```javascript
+```js
 var source = new EventSource(url);
 console.log(source.readyState);
 ```
@@ -77,7 +77,7 @@ console.log(source.readyState);
 
 连接一旦建立，就会触发 `open` 事件，可以在 `onopen` 属性定义回调函数。
 
-```javascript
+```js
 source.onopen = function(event) {
   // ...
 };
@@ -96,7 +96,7 @@ source.addEventListener(
 
 客户端收到服务器发来的数据，就会触发 `message` 事件，可以在 `onmessage` 属性定义回调函数。
 
-```javascript
+```js
 source.onmessage = function(event) {
   var data = event.data;
   var origin = event.origin;
@@ -131,7 +131,7 @@ source.addEventListener(
 
 如果发生通信错误（比如连接中断），就会触发 `error` 事件，可以在 `onerror` 属性定义回调函数。
 
-```javascript
+```js
 source.onerror = function(event) {
   // handle error event
 };
@@ -146,11 +146,11 @@ source.addEventListener(
 );
 ```
 
-### 3.8.自定义事件
+### 3.8. 自定义事件
 
 默认情况下，服务器发来的数据，总是触发浏览器 `EventSource` 实例的 `message` 事件。开发者还可以自定义 SSE 事件，这种情况下，发送回来的数据不会触发 `message` 事件。
 
-```javascript
+```js
 source.addEventListener(
   "foo",
   function(event) {
@@ -171,13 +171,13 @@ source.addEventListener(
 
 `source.close();`
 
-## 4.服务器实现
+## 4. 服务器实现
 
-### 4.1.数据格式
+### 4.1. 数据格式
 
 服务器向浏览器发送的 SSE 数据，必须是 UTF-8 编码的文本，具有如下的 HTTP 头信息。
 
-```javascript
+```js
 Content-Type: text/event-stream
 Cache-Control: no-cache
 Connection: keep-alive
@@ -206,7 +206,7 @@ Connection: keep-alive
 
 下面是一个例子。
 
-```javascript
+```js
 : this is a test stream\n\n
 
 data: some text\n\n
@@ -223,14 +223,14 @@ data: with two lines \n\n
 
 如果数据很长，可以分成多行，最后一行用 `\n\n` 结尾，前面行都用 `\n` 结尾。
 
-```javascript
+```js
 data: begin message\n
 data: continue message\n\n
 ```
 
 下面是一个发送 JSON 数据的例子。
 
-```javascript
+```js
 data: {\n
 data: "foo": "bar",\n
 data: "baz", 555\n
@@ -241,7 +241,7 @@ data: }\n\n
 
 数据标识符用 id 字段表示，相当于每一条数据的编号。
 
-```javascript
+```js
 id: msg1\n
 data: message\n\n
 ```
@@ -252,7 +252,7 @@ data: message\n\n
 
 `event` 字段表示自定义的事件类型，默认是 `message` 事件。浏览器可以用 `addEventListener()` 监听该事件。
 
-```javascript
+```js
 event: foo\n
 data: a foo event\n\n
 
@@ -266,7 +266,7 @@ data: a bar event\n\n
 
 下面是另一个例子。
 
-```javascript
+```js
 event: userconnect
 data: {"username": "bobby", "time": "02:33:48"}
 
@@ -294,7 +294,7 @@ SSE 要求服务器与浏览器保持连接。对于不同的服务器软件来�
 
 下面是 Node 的 SSE 服务器实例。
 
-```javascript
+```js
 var http = require("http");
 
 http
@@ -310,7 +310,6 @@ http
       });
       res.write("retry: 10000\n");
       res.write("event: connecttime\n");
-      res.write("data: " + new Date() + "\n\n");
       res.write("data: " + new Date() + "\n\n");
 
       interval = setInterval(function() {

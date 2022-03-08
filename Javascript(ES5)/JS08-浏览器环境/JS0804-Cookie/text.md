@@ -1,6 +1,6 @@
-### 4.Cookie
+# Cookie
 
-#### 1.概述
+## 1.概述
 
 `Cookie` 是服务器保存在浏览器的一小段文本信息，每个 `Cookie` 的大小一般不能超过 4KB。浏览器每次向服务器发出请求，就会自动附上这段信息。
 
@@ -32,14 +32,14 @@
 
 浏览器可以设置不接受 `Cookie`，也可以设置不向服务器发送 `Cookie`。`window.navigator.cookieEnabled` 属性返回一个布尔值，表示浏览器是否打开 `Cookie` 功能。
 
-```javascript
+```js
 // 浏览器是否打开 Cookie 功能
 window.navigator.cookieEnabled; // true
 ```
 
 `document.cookie` 属性返回当前网页的 `Cookie`。
 
-```javascript
+```js
 // 当前网页的 Cookie
 document.cookie;
 ```
@@ -48,11 +48,11 @@ document.cookie;
 
 浏览器的同源政策规定，两个网址只要域名相同和端口相同，就可以共享 `Cookie`。注意，这里不要求协议相同。也就是说，`http://example.com` 设置的 `Cookie`，可以被 `https://example.com` 读取。
 
-#### 2.Cookie 与 HTTP 协议
+## 2.Cookie 与 HTTP 协议
 
 `Cookie` 由 HTTP 协议生成，也主要是供 HTTP 协议使用。
 
-##### 2.1 HTTP 回应：Cookie 的生成
+### 2.1 HTTP 回应：Cookie 的生成
 
 服务器如果希望在浏览器保存 `Cookie`，就要在 HTTP 回应的头信息里面，放置一个 `Set-Cookie` 字段。
 
@@ -62,7 +62,7 @@ document.cookie;
 
 HTTP 回应可以包含多个 `Set-Cookie` 字段，即在浏览器生成多个 `Cookie`。下面是一个例子。
 
-```javascript
+```js
 HTTP/1.0 200 OK
 Content-type: text/html
 Set-Cookie: yummy_cookie=choco
@@ -73,7 +73,7 @@ Set-Cookie: tasty_cookie=strawberry
 
 除了 `Cookie` 的值，`Set-Cookie` 字段还可以附加 `Cookie` 的属性。
 
-```javascript
+```js
 Set-Cookie: <cookie-name>=<cookie-value>; Expires=<date>
 Set-Cookie: <cookie-name>=<cookie-value>; Max-Age=<non-zero-digit>
 Set-Cookie: <cookie-name>=<cookie-value>; Domain=<domain-value>
@@ -108,7 +108,7 @@ Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
 
 上面代码的两个 `Cookie` 是同名的，匹配越精确的 `Cookie` 排在越前面。
 
-##### 2.2 HTTP 请求：Cookie 的发送
+### 2.2 HTTP 请求：Cookie 的发送
 
 浏览器向服务器发送 HTTP 请求时，每个请求都会带上相应的 `Cookie`。也就是说，把服务器早前保存在浏览器的这段信息，再发回服务器。这时要使用 HTTP 头信息的 `Cookie` 字段。
 
@@ -122,7 +122,7 @@ Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
 
 下面是一个例子。
 
-```javascript
+```js
 GET /sample_page.html HTTP/1.1
 Host: www.example.org
 Cookie: yummy_cookie=choco; tasty_cookie=strawberry
@@ -133,9 +133,9 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 - `Cookie` 的各种属性，比如何时过期。
 - 哪个域名设置的 `Cookie`，到底是一级域名设的，还是某一个二级域名设的。
 
-#### 3.Cookie 的属性
+## 3.Cookie 的属性
 
-##### 3.1 Expires，Max-Age
+### 3.1 Expires，Max-Age
 
 `Expires` 属性指定一个具体的到期时间，到了指定时间以后，浏览器就不再保留这个 `Cookie`。它的值是 UTC 格式，可以使用 `Date.prototype.toUTCString()` 进行格式转换。
 
@@ -149,13 +149,13 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 
 如果 `Set-Cookie` 字段没有指定 `Expires` 或 `Max-Age` 属性，那么这个 `Cookie` 就是 `Session Cookie`，即它只在本次对话存在，一旦用户关闭浏览器，浏览器就不会再保留这个 `Cookie`。
 
-##### 3.2 Domain，Path
+### 3.2 Domain，Path
 
 `Domain` 属性指定浏览器发出 HTTP 请求时，哪些域名要附带这个 `Cookie`。如果没有指定该属性，浏览器会默认将其设为当前 URL 的一级域名，比如 `www.example.com` 会设为 `example.com`，而且以后如果访问 `example.com` 的任何子域名，HTTP 请求也会带上这个 `Cookie`。如果服务器在 `Set-Cookie` 字段指定的域名，不属于当前域名，浏览器会拒绝这个 `Cookie`。
 
 `Path` 属性指定浏览器发出 HTTP 请求时，哪些路径要附带这个 `Cookie`。只要浏览器发现，`Path` 属性是 HTTP 请求路径的开头一部分，就会在头信息里面带上这个 `Cookie`。比如，`PATH` 属性是 `/`，那么请求 `/docs` 路径也会包含该 `Cookie`。当然，前提是域名必须一致。
 
-##### 3.3 Secure，HttpOnly
+### 3.3 Secure，HttpOnly
 
 `Secure` 属性指定浏览器只有在加密协议 HTTPS 下，才能将这个 `Cookie` 发送到服务器。另一方面，如果当前协议是 HTTP，浏览器会自动忽略服务器发来的 `Secure` 属性。该属性只是一个开关，不需要指定值。如果通信是 HTTPS 协议，该开关自动打开。
 
@@ -165,7 +165,7 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 
 上面是跨站点载入的一个恶意脚本的代码，能够将当前网页的 `Cookie` 发往第三方服务器。如果设置了一个 `Cookie` 的 `HttpOnly` 属性，上面代码就不会读到该 `Cookie`。
 
-#### 4.document.cookie
+## 4.document.cookie
 
 `document.cookie` 属性用于读写当前网页的 `Cookie`。
 
@@ -175,7 +175,7 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 
 上面代码从 `document.cookie` 一次性读出两个 `Cookie`，它们之间使用分号分隔。必须手动还原，才能取出每一个 `Cookie` 的值。
 
-```javascript
+```js
 var cookies = document.cookie.split(";");
 
 for (var i = 0; i < cookies.length; i++) {
@@ -193,7 +193,7 @@ for (var i = 0; i < cookies.length; i++) {
 
 但是，`document.cookie` 一次只能写入一个 `Cookie`，而且写入并不是覆盖，而是添加。
 
-```javascript
+```js
 document.cookie = "test1=hello";
 document.cookie = "test2=world";
 document.cookie;
@@ -221,7 +221,7 @@ document.cookie;
 
 `document.cookie` 写入 `Cookie` 的例子如下。
 
-```javascript
+```js
 document.cookie =
   "fontSize=14; " +
   "expires=" +
