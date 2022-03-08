@@ -1,6 +1,6 @@
-### 9.Mutation Observer API
+# Mutation Observer API
 
-#### 1.概述
+## 1. 概述
 
 Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节点的增减、属性的变动、文本内容的变动，这个 API 都可以得到通知。
 
@@ -12,13 +12,13 @@ Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节�
 
 ---
 
-- a.它等待所有脚本任务完成后，才会运行（即异步触发方式）。
-- b.它把 DOM 变动记录封装成一个数组进行处理，而不是一条条个别处理 DOM 变动。
-- c.它既可以观察 DOM 的所有类型变动，也可以指定只观察某一类变动。
+- a. 它等待所有脚本任务完成后，才会运行（即异步触发方式）。
+- b. 它把 DOM 变动记录封装成一个数组进行处理，而不是一条条个别处理 DOM 变动。
+- c. 它既可以观察 DOM 的所有类型变动，也可以指定只观察某一类变动。
 
 ---
 
-#### 2.MutationObserver 构造函数
+## 2.MutationObserver 构造函数
 
 使用时，首先使用 `MutationObserver` 构造函数，新建一个观察器实例，同时指定这个实例的回调函数。
 
@@ -26,7 +26,7 @@ Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节�
 
 上面代码中的回调函数，会在每次 DOM 变动后调用。该回调函数接受两个参数，第一个是变动数组，第二个是观察器实例，下面是一个例子。
 
-```javascript
+```js
 var observer = new MutationObserver(function(mutations, observer) {
   mutations.forEach(function(mutation) {
     console.log(mutation);
@@ -34,9 +34,9 @@ var observer = new MutationObserver(function(mutations, observer) {
 });
 ```
 
-#### 3.MutationObserver 的实例方法
+## 3.MutationObserver 的实例方法
 
-##### 3.1 observe()
+### 3.1 observe()
 
 `observe` 方法用来启动监听，它接受两个参数。
 
@@ -47,7 +47,7 @@ var observer = new MutationObserver(function(mutations, observer) {
 
 ---
 
-```javascript
+```js
 var article = document.querySelector("article");
 
 var options = {
@@ -83,7 +83,7 @@ observer.observe(article, options);
 
 ---
 
-```javascript
+```js
 // 开始监听文档根节点（即<html>标签）的变动
 mutationObserver.observe(document.documentElement, {
   attributes: true,
@@ -99,7 +99,7 @@ mutationObserver.observe(document.documentElement, {
 
 下面的例子是观察新增的子节点。
 
-```javascript
+```js
 var insertedNodes = [];
 var observer = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
@@ -111,7 +111,7 @@ observer.observe(document, { childList: true });
 console.log(insertedNodes);
 ```
 
-##### 3.2 disconnect()，takeRecords（）
+### 3.2 disconnect()，takeRecords（）
 
 `disconnect` 方法用来停止观察。调用该方法后，DOM 再发生变动，也不会触发观察器。
 
@@ -123,7 +123,7 @@ console.log(insertedNodes);
 
 下面是一个例子。
 
-```javascript
+```js
 // 保存所有没有被观察器处理的变动
 var changes = mutationObserver.takeRecords();
 
@@ -131,7 +131,7 @@ var changes = mutationObserver.takeRecords();
 mutationObserver.disconnect();
 ```
 
-#### 4.MutationRecord 对象
+## 4.MutationRecord 对象
 
 DOM 每次发生变化，就会生成一条变动记录（`MutationRecord` 实例）。该实例包含了与变动相关的所有信息。`Mutation Observer` 处理的就是一个个 `MutationRecord` 实例所组成的数组。
 
@@ -150,13 +150,13 @@ DOM 每次发生变化，就会生成一条变动记录（`MutationRecord` 实�
 
 ---
 
-#### 5.应用示例
+## 5. 应用示例
 
-##### 5.1 子元素的变动
+### 5.1 子元素的变动
 
 下面的例子说明如何读取变动记录。
 
-```javascript
+```js
 var callback = function(records) {
   records.map(function(record) {
     console.log("Mutation type: " + record.type);
@@ -176,11 +176,11 @@ mo.observe(document.body, option);
 
 上面代码的观察器，观察 `<body>` 的所有下级节点（`childList` 表示观察子节点，`subtree` 表示观察后代节点）的变动。回调函数会在控制台显示所有变动的类型和目标节点。
 
-##### 5.2 属性的变动
+### 5.2 属性的变动
 
 下面的例子说明如何追踪属性的变动。
 
-```javascript
+```js
 var callback = function(records) {
   records.map(function(record) {
     console.log("Previous attribute value: " + record.oldValue);
@@ -201,11 +201,11 @@ mo.observe(element, options);
 
 上面代码先设定追踪属性变动（`'attributes': true`），然后设定记录变动前的值。实际发生变动时，会将变动前的值显示在控制台。
 
-##### 5.3 取代 DOMContentLoaded 事件
+### 5.3 取代 DOMContentLoaded 事件
 
 网页加载的时候，DOM 节点的生成会产生变动记录，因此只要观察 DOM 的变动，就能在第一时间触发相关事件，因此也就没有必要使用 `DOMContentLoaded` 事件。
 
-```javascript
+```js
 var observer = new MutationObserver(callback);
 observer.observe(document.documentElement, {
   childList: true,
@@ -217,7 +217,7 @@ observer.observe(document.documentElement, {
 
 下面的代码，使用 `MutationObserver` 对象封装一个监听 DOM 生成的函数。
 
-```javascript
+```js
 (function(win) {
   "use strict";
 
@@ -233,14 +233,14 @@ observer.observe(document.documentElement, {
       fn: fn
     });
     if (!observer) {
-      // 监听document变化
+      // 监听 document 变化
       observer = new MutationObserver(check);
       observer.observe(doc.documentElement, {
         childList: true,
         subtree: true
       });
     }
-    // 检查该节点是否已经在DOM中
+    // 检查该节点是否已经在 DOM 中
     check();
   }
 
@@ -262,7 +262,7 @@ observer.observe(document.documentElement, {
     }
   }
 
-  // 对外暴露ready
+  // 对外暴露 ready
   win.ready = ready;
 })(this);
 

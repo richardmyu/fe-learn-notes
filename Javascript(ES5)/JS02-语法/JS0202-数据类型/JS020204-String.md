@@ -28,7 +28,7 @@ str.length;
 
 > 任何字符串的长度都可以通过访问其 `length` 属性取得。如果字符中包含双字节字符，那么 `length` 属性可能不会精确返回字符数目。
 
-## 2.字符字面量
+## 2. 字符字面量
 
 `String` 类型用于表示由零个或多个 16 位 `Unicode` 字符组成的字符序列，即字符串。如果要在单引号字符串的内部，使用单引号，就必须在内部的单引号前面加上反斜杠，用来转义。
 
@@ -36,7 +36,7 @@ str.length;
 
 字符串默认只能写在一行内，分成多行将会报错。如果长字符串必须分成多行，可以在每一行的尾部使用反斜杠。但是，输出的时候还是单行，效果与写在同一行完全一样。注意，反斜杠的后面必须是换行符，而不能有其他字符（比如空格），否则会报错。
 
-```javascript
+```js
 var str='a
 b
 c';
@@ -54,7 +54,7 @@ str; //a b c
 
 如果想输出多行字符串，有一种利用多行注释的变通方法。
 
-```javascript
+```js
 (function() {
   /*
   line 1
@@ -120,7 +120,7 @@ str; //a b c
 "a"; //a
 ```
 
-## 3.字符串的特点
+## 3. 字符串的特点
 
 ECMAScript 中的字符串是不可变的，也就是说，字符一旦创建，他们的值就不可能改变。
 
@@ -132,7 +132,7 @@ str[0] = "b";
 str; //'asdf'
 ```
 
-## 4.转换为字符串
+## 4. 转换为字符串
 
 要把一个值转换为一个字符串有两种方式。第一种是使用几乎每个值都有的 `toString` 方法，这个方法唯一要做的就是返回相应值的字符串表现。
 
@@ -204,7 +204,7 @@ String(true); //'true'
 
 更多 demo 见 <a href="./demo/string.html" target="_blank">string.html</a>
 
-## 5.字符集
+## 5. 字符集
 
 JavaScript 使用 Unicode 字符集。JavaScript 引擎内部，所有字符都用 Unicode 表示。
 
@@ -238,7 +238,7 @@ JavaScript 原生提供两个 Base64 相关的方法。
 - `btoa()`：任意值转为 Base64 编码
 - `atob()`：Base64 编码转为原来的值
 
-```javascript
+```js
 btoa("i mess you"); //aSBtZXNzIHlvdQ==
 atob("aSBtZXNzIHlvdQ=="); //i mess you
 ```
@@ -247,7 +247,7 @@ atob("aSBtZXNzIHlvdQ=="); //i mess you
 
 要将非 ASCII 码字符转为 Base64 编码，必须中间插入一个转码环节，再使用这两个方法。
 
-```javascript
+```js
 btoa(encodeURIComponent("分分合合"));
 // "JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"
 

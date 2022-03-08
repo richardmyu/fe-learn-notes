@@ -1,18 +1,18 @@
 # Array 类型
 
-## 1.定义
+## 1. 定义
 
 数组是按次序排列的一组值。每个值的位置都有编号（从 0 开始），整个数组用方括号表示。除了在定义时赋值，数组也可以先定义后赋值。任何类型的数据，都可以放入数组。
 
 > 如果数组的元素还是数组，就形成了多维数组。
 
-## 2.数组的本质
+## 2. 数组的本质
 
 本质上，数组属于一种特殊的对象。`typeof` 运算符会返回数组的类型是 `Object`。
 
 数组的特殊性体现在，它的键名是按次序排列的一组整数（0，1，2，…）。
 
-```javascript
+```js
 var arr = ["a", "b", "c"];
 
 Object.keys(arr);
@@ -41,7 +41,7 @@ arr["4"] = 234;
 arr; //["a", "b", "c", 123, 234]
 ```
 
-对象有两种读取成员的方法：点结构（`object.key`）和方括号结构（`object['key']`）。但是，对于数值的键名，不能使用点结构(SyntaxError)，因为单独的数值不能作为标识符。所以，数组成员只能用方括号 `arr[n]` 表示（方括号是运算符，可以接受数值）。
+对象有两种读取成员的方法：点结构（`object.key`）和方括号结构（`object['key']`）。但是，对于数值的键名，不能使用点结构 (SyntaxError)，因为单独的数值不能作为标识符。所以，数组成员只能用方括号 `arr[n]` 表示（方括号是运算符，可以接受数值）。
 
 ## 3.`length` 属性
 
@@ -55,7 +55,7 @@ JavaScript 使用一个 32 位整数，保存数组的元素个数。这意味�
 
 `length` 属性是可写的。如果人为设置一个小于当前成员个数的值，该数组的成员会自动减少到 `length` 设置的值。清空数组的一个有效方法，就是将 `length` 属性设为 0。
 
-```javascript
+```js
 var arr = ["a", "b", "c"];
 
 arr.length = 0;
@@ -66,12 +66,12 @@ arr; // []
 
 如果人为设置 `length` 为不合法的值，JavaScript 会报错。
 
-```javascript
+```js
 // 设置负值
 [].length = -1
 // RangeError: Invalid array length
 
-// 数组元素个数大于等于2的32次方
+// 数组元素个数大于等于 2 的 32 次方
 [].length = Math.pow(2, 32)
 // RangeError: Invalid array length
 
@@ -82,7 +82,7 @@ arr; // []
 
 值得注意的是，由于数组本质上是一种对象，所以可以为数组添加属性，但是这不影响 `length` 属性的值。
 
-```javascript
+```js
 var arr = [];
 arr["a"] = "ab";
 arr.length; //0
@@ -118,11 +118,11 @@ for (var i = 0; i < arr.length; i++) {
 // zx
 ```
 
-> 对数组而言，`Object.keys()` 和 `for in` 循环是遍历属性；而 `for of` 循环和 `for` 循环则是遍历数组成员。并且 `for of` 循环和 `for` 循环不会过滤数值的空值(empty)，`for in` 循环会忽略，甚至其他数组遍历方法都会忽略。
+> 对数组而言，`Object.keys()` 和 `for in` 循环是遍历属性；而 `for of` 循环和 `for` 循环则是遍历数组成员。并且 `for of` 循环和 `for` 循环不会过滤数值的空值 (empty)，`for in` 循环会忽略，甚至其他数组遍历方法都会忽略。
 
 如果数组的键名是添加超出范围的数值，该键名会自动转为字符串，即作为字符属性添加进去。
 
-```javascript
+```js
 var arr = [];
 arr[-1] = "-11";
 arr[-2] = "-22";
@@ -138,7 +138,7 @@ arr[-2]; //undefined
 
 `in` 运算符 ，适用于对象，也适用于数组。如果数组的某个位置是空位，`in` 运算符返回 false。
 
-```javascript
+```js
 var arr = ["a", "b", "c"];
 2 in arr; //true
 "2" in arr; //true
@@ -153,7 +153,7 @@ arr; //["a", "b", "c", empty]
 
 `for...in` 循环不仅可以遍历对象，也可以遍历数组，毕竟数组只是一种特殊对象。但是，`for...in` 不仅会遍历数组所有的数字键，还会遍历非数字键。所以，不推荐使用 `for...in` 遍历数组。
 
-```javascript
+```js
 var a = [1, 2, 3];
 a.foo = true;
 
@@ -168,7 +168,7 @@ for (var key in a) {
 
 数组的遍历可以考虑使用 `for` 循环或 `while` 循环。
 
-## 6.数组的空位
+## 6. 数组的空位
 
 当数组的某个位置是空元素，即两个逗号之间没有任何值，我们称该数组存在**空位（hole）**。数组的空位不影响 `length` 属性。
 
@@ -178,7 +178,7 @@ for (var key in a) {
 
 使用 `delete` 命令删除一个数组成员，会形成空位，并且不会影响 `length` 属性。
 
-```javascript
+```js
 var a = [1, 2, 3];
 delete a[1];
 
@@ -188,7 +188,7 @@ a.length; // 3
 
 数组的某个位置是空位，与某个位置是 `undefined`，是不一样的。如果是空位，使用数组的 `forEach` 等迭代方法、`for...in` 结构、以及 `Object.keys` 方法进行遍历，空位都会被跳过。(`for`循环和 `for of` 循环 可以遍历，返回 `undefined`)
 
-```javascript
+```js
 var emp = [, 23, undefined];
 
 Object.keys(emp);
@@ -221,7 +221,7 @@ for (var z = 0; z < emp.length; z++) {
 
 作用类似 `Array`，只是解决了 `Array` 传入一个参数变成 `length` 的问题，而会将单个传入的数值当做数组的项传入。
 
-```javascript
+```js
 var ary = Array(4);
 var ary1 = Array.of(4);
 ary; // [empty × 4]
@@ -232,7 +232,7 @@ ary1; //[4]
 
 填充，一般用来初始化或者清空一个数组。
 
-```javascript
+```js
 // 初始化
 Array(4).fill(0)); //[0, 0, 0, 0]
 
@@ -241,11 +241,11 @@ var ary3 = ["name", { name: 12 }, 32];
 ary3.fill(0); //[0, 0, 0]
 ```
 
-## 9.类似数组的对象
+## 9. 类似数组的对象
 
 如果一个对象的所有键名都是正整数或零，并且有 `length` 属性，那么这个对象就很像数组，语法上称为**类似数组的对象（array-like object）**。
 
-```javascript
+```js
 var likeAry = {
   0: "q",
   1: "w",
@@ -261,7 +261,7 @@ likeAry.splice; //undefined
 
 “类似数组的对象”的根本特征，就是具有 `length` 属性。只要有 `length` 属性，就可以认为这个对象类似于数组。但是有一个问题，这种 `length` 属性不是动态值，不会随着成员的变化而变化。
 
-```javascript
+```js
 var obj = {
   length: 0
 };
@@ -292,7 +292,7 @@ Array.from(likeAry);
 
 除了转为真正的数组，“类似数组的对象”还有一个办法可以使用数组的方法，就是通过 `call` 把数组的方法放到对象上面。
 
-```javascript
+```js
 // demo 2
 function print(value, index) {
   console.log(index + " : " + value);

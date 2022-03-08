@@ -6,7 +6,7 @@ CSS 与 JavaScript 是两个有着明确分工的领域，前者负责页面的�
 
 操作 CSS 样式最简单的方法，就是使用网页元素节点的 `getAttribute` 方法、`setAttribute` 方法和 `removeAttribute` 方法，直接读写或删除网页元素的 `style` 属性。
 
-```javascript
+```js
 div.setAttribute("style", "background-color:red;" + "border:1px solid black;");
 ```
 
@@ -16,7 +16,7 @@ div.setAttribute("style", "background-color:red;" + "border:1px solid black;");
 
 ## 2.`CSSStyleDeclaration` 接口
 
-### 2.1.简介
+### 2.1. 简介
 
 `CSSStyleDeclaration` 接口用来操作元素的样式。三个地方部署了这个接口。
 
@@ -30,7 +30,7 @@ div.setAttribute("style", "background-color:red;" + "border:1px solid black;");
 
 `CSSStyleDeclaration` 接口可以直接读写 CSS 的样式属性，不过，连词号需要变成骆驼拼写法。
 
-```javascript
+```js
 var divStyle = document.querySelector("div").style;
 
 divStyle.backgroundColor = "red";
@@ -57,7 +57,7 @@ divStyle.width; // 100px
 
 `CSSStyleDeclaration.cssText` 属性用来读写当前规则的所有样式声明文本。
 
-```javascript
+```js
 var divStyle = document.querySelector("div").style;
 
 divStyle.cssText =
@@ -77,7 +77,7 @@ divStyle.cssText =
 
 `CSSStyleDeclaration.length` 属性返回一个整数值，表示当前规则包含多少条样式声明。
 
-```javascript
+```js
 // HTML 代码如下
 // <div id="myDiv"
 //   style="margin: 0 10px; background-color: #CA1; border: 1px solid red;"
@@ -95,7 +95,7 @@ divStyles.length; // 3
 
 该属性只读，且只在使用 `CSSRule` 接口时有意义。
 
-```javascript
+```js
 var declaration = document.styleSheets[0].rules[0].style;
 declaration.parentRule === document.styleSheets[0].rules[0];
 // true
@@ -107,7 +107,7 @@ declaration.parentRule === document.styleSheets[0].rules[0];
 
 `CSSStyleDeclaration.getPropertyPriority` 方法接受 CSS 样式的属性名作为参数，返回一个字符串，表示有没有设置 `important` 优先级。如果有就返回 `important`，否则返回空字符串。
 
-```javascript
+```js
 // HTML 代码为
 // <div id="myDiv" style="margin: 10px!important; color: red;"/>
 var style = document.getElementById("myDiv").style;
@@ -122,7 +122,7 @@ style.getPropertyPriority("color"); // ""
 
 `CSSStyleDeclaration.getPropertyValue` 方法接受 CSS 样式属性名作为参数，返回一个字符串，表示该属性的属性值。
 
-```javascript
+```js
 // HTML 代码为
 // <div id="myDiv" style="margin: 10px!important; color: red;"/>
 var style = document.getElementById("myDiv").style;
@@ -134,7 +134,7 @@ style.getPropertyValue("margin"); // "10px"
 
 `CSSStyleDeclaration.item` 方法接受一个整数值作为参数，返回该位置的 CSS 属性名。
 
-```javascript
+```js
 // HTML 代码为
 // <div id="myDiv" style="color: red; background-color: white;"/>
 var style = document.getElementById("myDiv").style;
@@ -150,7 +150,7 @@ style.item(1); // "background-color"
 
 `CSSStyleDeclaration.removeProperty` 方法接受一个属性名作为参数，在 CSS 规则里面移除这个属性，返回这个属性原来的值。
 
-```javascript
+```js
 // HTML 代码为
 // <div id="myDiv" style="color: red; background-color: white;">
 //   111
@@ -177,7 +177,7 @@ style.removeProperty("color"); // 'red'
 
 ---
 
-```javascript
+```js
 // HTML 代码为
 // <div id="myDiv" style="color: red; background-color: white;">
 //   111
@@ -192,14 +192,14 @@ CSS 的规格发展太快，新的模块层出不穷。不同浏览器的不同�
 
 一个比较普遍适用的方法是，判断元素的 `style` 对象的某个属性值是否为字符串。
 
-```javascript
+```js
 typeof element.style.animationName === "string";
 typeof element.style.transform === "string";
 ```
 
 如果该 CSS 属性确实存在，会返回一个字符串。即使该属性实际上并未设置，也会返回一个空字符串。如果该属性不存在，则会返回 `undefined`。
 
-```javascript
+```js
 document.body.style["maxWidth"]; // ""
 document.body.style["maximumWidth"]; // undefined
 ```
@@ -208,21 +208,21 @@ document.body.style["maximumWidth"]; // undefined
 
 注意，不管 CSS 属性名的写法带不带连词线，`style` 属性上都能反映出该属性是否存在。
 
-```javascript
+```js
 document.body.style["backgroundColor"]; // ""
 document.body.style["background-color"]; // ""
 ```
 
 另外，使用的时候，需要把不同浏览器的 CSS 前缀也考虑进去。
 
-```javascript
+```js
 var content = document.getElementById("content");
 typeof content.style["webkitAnimation"] === "string";
 ```
 
 这种侦测方法可以写成一个函数。
 
-```javascript
+```js
 function isPropertySupported(property) {
   if (property in document.body.style) return true;
   var prefixes = ["Moz", "Webkit", "O", "ms", "Khtml"];
@@ -261,7 +261,7 @@ isPropertySupported("background-clip");
 
 它的参数有两种写法，一种是第一个参数是属性名，第二个参数是属性值；另一种是整个参数就是一行完整的 CSS 语句。
 
-```javascript
+```js
 // 第一种写法
 CSS.supports("transform-origin", "5px"); // true
 
@@ -279,7 +279,7 @@ CSS.supports("display: table-cell"); // true
 
 `window.getComputedStyle` 方法，就用来返回浏览器计算后得到的最终规则。它接受一个节点对象作为参数，返回一个 `CSSStyleDeclaration` 实例，包含了指定节点的最终样式信息。所谓“最终样式信息”，指的是各种 CSS 规则叠加后的结果。
 
-```javascript
+```js
 var div = document.querySelector("div");
 var styleObj = window.getComputedStyle(div);
 styleObj.backgroundColor;
@@ -293,7 +293,7 @@ styleObj.backgroundColor;
 
 下面的例子是如何获取元素的高度。
 
-```javascript
+```js
 var elem = document.getElementById("elem-container");
 var styleObj = window.getComputedStyle(elem, null);
 var height = styleObj.height;
@@ -332,9 +332,9 @@ CSS 伪元素是通过 CSS 向 DOM 添加的元素，主要是通过 `:before` �
 
 `<div id="test">Test content</div>`
 
-CSS 添加伪元素:before 的写法如下。
+CSS 添加伪元素：before 的写法如下。
 
-```javascript
+```js
 #test:before {
   content: 'Before ';
   color: #FF0;
@@ -343,7 +343,7 @@ CSS 添加伪元素:before 的写法如下。
 
 节点元素的 `style` 对象无法读写伪元素的样式，这时就要用到 `window.getComputedStyle()`。JavaScript 获取伪元素，可以使用下面的方法。
 
-```javascript
+```js
 var test = document.querySelector("#test");
 
 var result = window.getComputedStyle(test, ":before").content;
@@ -352,7 +352,7 @@ var color = window.getComputedStyle(test, ":before").color;
 
 此外，也可以使用 `CSSStyleDeclaration` 实例的 `getPropertyValue` 方法，获取伪元素的属性。
 
-```javascript
+```js
 var result = window
   .getComputedStyle(test, ":before")
   .getPropertyValue("content");
@@ -361,13 +361,13 @@ var color = window.getComputedStyle(test, ":before").getPropertyValue("color");
 
 ## 7.StyleSheet 接口
 
-### 7.1.概述
+### 7.1. 概述
 
 `StyleSheet` 接口代表网页的一张样式表，包括 `<link>` 元素加载的样式表和 `<style>` 元素内嵌的样式表。
 
 `document` 对象的 `styleSheets` 属性，可以返回当前页面的所有 `StyleSheet` 实例（即所有样式表）。它是一个类似数组的对象。
 
-```javascript
+```js
 var sheets = document.styleSheets;
 var sheet = document.styleSheets[0];
 sheet instanceof StyleSheet; // true
@@ -375,13 +375,13 @@ sheet instanceof StyleSheet; // true
 
 如果是 `<style>` 元素嵌入的样式表，还有另一种获取 `StyleSheet` 实例的方法，就是这个节点元素的 `sheet` 属性。
 
-```javascript
+```js
 // HTML 代码为 <style id="myStyle"></style>
 var myStyleSheet = document.getElementById("myStyle").sheet;
 myStyleSheet instanceof StyleSheet; // true
 ```
 
-### 7.2.实例属性
+### 7.2. 实例属性
 
 `StyleSheet` 实例有以下属性。
 
@@ -405,7 +405,7 @@ myStyleSheet instanceof StyleSheet; // true
 
 `MediaList` 实例的 `appendMedium` 方法，用于增加媒介；`deleteMedium` 方法用于删除媒介。
 
-```javascript
+```js
 document.styleSheets[0].media.appendMedium("handheld");
 document.styleSheets[0].media.deleteMedium("print");
 ```
@@ -424,7 +424,7 @@ document.styleSheets[0].media.deleteMedium("print");
 
 CSS 的 `@import` 命令允许在样式表中加载其他样式表。`StyleSheet.parentStyleSheet` 属性返回包含了当前样式表的那张样式表。如果当前样式表是顶层样式表，则该属性返回 `null`。
 
-```javascript
+```js
 if (stylesheet.parentStyleSheet) {
   sheet = stylesheet.parentStyleSheet;
 } else {
@@ -436,8 +436,8 @@ if (stylesheet.parentStyleSheet) {
 
 `StyleSheet.ownerNode` 属性返回 `StyleSheet` 对象所在的 DOM 节点，通常是 `<link>` 或 `<style>`。对于那些由其他样式表引用的样式表，该属性为 `null`。
 
-```javascript
-// HTML代码为
+```js
+// HTML 代码为
 // <link rel="StyleSheet" href="example.css" type="text/css" />
 document.styleSheets[0].ownerNode; // [object HTMLLinkElement]
 ```
@@ -446,7 +446,7 @@ document.styleSheets[0].ownerNode; // [object HTMLLinkElement]
 
 `StyleSheet.cssRules` 属性指向一个类似数组的对象（`CSSRuleList` 实例），里面每一个成员就是当前样式表的一条 CSS 规则。使用该规则的 `cssText` 属性，可以得到 CSS 规则对应的字符串。
 
-```javascript
+```js
 var sheet = document.querySelector("#styleElement").sheet;
 
 sheet.cssRules[0].cssText;
@@ -458,7 +458,7 @@ sheet.cssRules[1].cssText;
 
 每条 CSS 规则还有一个 `style` 属性，指向一个对象，用来读写具体的 CSS 命令。
 
-```javascript
+```js
 styleSheet.cssRules[0].style.color = "red";
 styleSheet.cssRules[1].style.color = "purple";
 ```
@@ -467,13 +467,13 @@ styleSheet.cssRules[1].style.color = "purple";
 
 有些样式表是通过 `@import` 规则输入的，它的 `ownerRule` 属性会返回一个 `CSSRule` 实例，代表那行 `@import` 规则。如果当前样式表不是通过 `@import` 引入的，`ownerRule` 属性返回 `null`。
 
-### 7.3.实例方法
+### 7.3. 实例方法
 
 1).CSSStyleSheet.insertRule
 
 `CSSStyleSheet.insertRule` 方法用于在当前样式表的插入一个新的 CSS 规则。
 
-```javascript
+```js
 var sheet = document.querySelector("#styleElement").sheet;
 sheet.insertRule("#block { color: white }", 0);
 sheet.insertRule("p { color: red }", 1);
@@ -491,11 +491,11 @@ sheet.insertRule("p { color: red }", 1);
 
 `document.styleSheets[0].deleteRule(1);`
 
-## 8.实例：添加样式表
+## 8. 实例：添加样式表
 
 网页添加样式表有两种方式。一种是添加一张内置样式表，即在文档中添加一个 `<style>` 节点。
 
-```javascript
+```js
 // 写法一
 var style = document.createElement("style");
 style.setAttribute("media", "screen");
@@ -513,7 +513,7 @@ style.sheet.insertRule(".foo{color:red;}", 0);
 
 另一种是添加外部样式表，即在文档中添加一个 `<link>` 节点，然后将 `href` 属性指向外部样式表的 URL。
 
-```javascript
+```js
 var linkElm = document.createElement("link");
 linkElm.setAttribute("rel", "stylesheet");
 linkElm.setAttribute("type", "text/css");
@@ -528,7 +528,7 @@ document.head.appendChild(linkElm);
 
 获取 `CSSRuleList` 实例，一般是通过 `StyleSheet.cssRules` 属性。
 
-```javascript
+```js
 // HTML 代码如下
 // <style id="myStyle">
 //   h1 { color: red; }
@@ -541,7 +541,7 @@ crl instanceof CSSRuleList; // true
 
 `CSSRuleList` 实例里面，每一条规则（`CSSRule` 实例）可以通过 `rules.item(index)` 或者 `rules[index]` 拿到。CSS 规则的条数通过 `rules.length` 拿到。还是用上面的例子。
 
-```javascript
+```js
 crl[0] instanceof CSSRule; // true
 crl.length; // 2
 ```
@@ -550,11 +550,11 @@ crl.length; // 2
 
 ## 10.`CSSRule` 接口
 
-### 10.1.概述
+### 10.1. 概述
 
 一条 CSS 规则包括两个部分：CSS 选择器和样式声明。下面就是一条典型的 CSS 规则。
 
-```javascript
+```js
 .myClass {
   color: red;
   background-color: yellow;
@@ -563,7 +563,7 @@ crl.length; // 2
 
 JavaScript 通过 `CSSRule` 接口操作 CSS 规则。一般通过 `CSSRuleList` 接口（`StyleSheet.cssRules`）获取 `CSSRule` 实例。
 
-```javascript
+```js
 // HTML 代码如下
 // <style id="myStyle">
 //   .myClass {
@@ -599,7 +599,7 @@ rule instanceof CSSRule; // true
 
 父规则最常见的情况是，当前规则包含在 `@media` 规则代码块之中。
 
-```javascript
+```js
 // HTML 代码如下
 // <style id="myStyle">
 //   @supports (display: flex) {
@@ -664,7 +664,7 @@ rule2.parentRule === rule1; // true
 
 `CSSStyleRule.selectorText` 属性返回当前规则的选择器。
 
-```javascript
+```js
 var stylesheet = document.styleSheets[0];
 stylesheet.cssRules[0].selectorText; // ".myClass"
 ```
@@ -675,7 +675,7 @@ stylesheet.cssRules[0].selectorText; // ".myClass"
 
 `CSSStyleRule.style` 属性返回一个对象（`CSSStyleDeclaration` 实例），代表当前规则的样式声明，也就是选择器后面的大括号里面的部分。
 
-```javascript
+```js
 // HTML 代码为
 // <style id="myStyle">
 //   p { color: red; }
@@ -687,7 +687,7 @@ styleSheet.cssRules[0].style instanceof CSSStyleDeclaration;
 
 `CSSStyleDeclaration` 实例的 `cssText` 属性，可以返回所有样式声明，格式为字符串。
 
-```javascript
+```js
 styleSheet.cssRules[0].style.cssText;
 // "color: red;"
 styleSheet.cssRules[0].selectorText;
@@ -700,7 +700,7 @@ styleSheet.cssRules[0].selectorText;
 
 该接口主要提供 `media` 属性和 `conditionText` 属性。前者返回代表 `@media` 规则的一个对象（`MediaList` 实例），后者返回 `@media` 规则的生效条件。
 
-```javascript
+```js
 // HTML 代码如下
 // <style id="myStyle">
 //   @media screen and (min-width: 900px) {
@@ -727,11 +727,11 @@ styleSheet.cssRules[0].conditionText;
 
 ## 11.`window.matchMedia()`
 
-### 11.1.基本用法
+### 11.1. 基本用法
 
 `window.matchMedia` 方法用来将 CSS 的 `MediaQuery` 条件语句，转换成一个 `MediaQueryList` 实例。
 
-```javascript
+```js
 var mdl = window.matchMedia("(min-width: 400px)");
 mdl instanceof MediaQueryList; // true
 ```
@@ -748,7 +748,7 @@ mdl instanceof MediaQueryList; // true
 
 `MediaQueryList.media` 属性返回一个字符串，表示对应的 `MediaQuery` 条件语句。
 
-```javascript
+```js
 var mql = window.matchMedia("(min-width: 400px)");
 mql.media; // "(min-width: 400px)"
 ```
@@ -757,7 +757,7 @@ mql.media; // "(min-width: 400px)"
 
 `MediaQueryList.matches` 属性返回一个布尔值，表示当前页面是否符合指定的 `MediaQuery` 条件语句。
 
-```javascript
+```js
 if (window.matchMedia("(min-width: 400px)").matches) {
   /* 当前视口不小于 400 像素 */
 } else {
@@ -767,7 +767,7 @@ if (window.matchMedia("(min-width: 400px)").matches) {
 
 下面的例子根据 `mediaQuery` 是否匹配当前环境，加载相应的 CSS 样式表。
 
-```javascript
+```js
 var result = window.matchMedia("(max-width: 700px)");
 
 if (result.matches) {
@@ -784,7 +784,7 @@ if (result.matches) {
 
 如果 `MediaQuery` 条件语句的适配环境发生变化，会触发 `change` 事件。`MediaQueryList.onchange` 属性用来指定 `change` 事件的监听函数。该函数的参数是 `change` 事件对象（`MediaQueryListEvent` 实例），该对象与 `MediaQueryList` 实例类似，也有 `media` 和 `matches` 属性。
 
-```javascript
+```js
 var mql = window.matchMedia("(max-width: 600px)");
 
 mql.onchange = function(e) {
@@ -802,7 +802,7 @@ mql.onchange = function(e) {
 
 `MediaQueryList` 实例有两个方法 `MediaQueryList.addListener()` 和 `MediaQueryList.removeListener()`，用来为 `change` 事件添加或撤销监听函数。
 
-```javascript
+```js
 var mql = window.matchMedia("(max-width: 600px)");
 
 // 指定监听函数
@@ -826,7 +826,7 @@ function mqCallback(e) {
 
 CSS 的**过渡效果（transition）**结束后，触发 `transitionEnd` 事件。
 
-```javascript
+```js
 el.addEventListener("transitionend", onTransitionEnd, false);
 
 function onTransitionEnd() {
@@ -846,7 +846,7 @@ function onTransitionEnd() {
 
 实际使用 `transitionend` 事件时，可能需要添加浏览器前缀。
 
-```javascript
+```js
 el.addEventListener("webkitTransitionEnd", function() {
   el.style.transition = "none";
 });
@@ -864,7 +864,7 @@ CSS 动画有以下三个事件。
 
 ---
 
-```javascript
+```js
 div.addEventListener("animationiteration", function() {
   console.log("完成一次动画");
 });
@@ -872,7 +872,7 @@ div.addEventListener("animationiteration", function() {
 
 这三个事件的事件对象，都有 `animationName` 属性（返回产生过渡效果的 CSS 属性名）和 `elapsedTime` 属性（动画已经运行的秒数）。对于 `animationstart` 事件，`elapsedTime` 属性等于 0，除非 `animation-delay` 属性等于负值。
 
-```javascript
+```js
 var el = document.getElementById("animation");
 
 el.addEventListener("animationstart", listener, false);
@@ -898,7 +898,7 @@ function listener(e) {
 
 上面代码的运行结果是下面的样子。
 
-```javascript
+```js
 Started: elapsed time is 0
 New loop started at time 3.01200008392334
 New loop started at time 6.00600004196167
@@ -907,7 +907,7 @@ Ended: elapsed time is 9.234000205993652
 
 `animation-play-state` 属性可以控制动画的状态（暂停/播放），该属性需求加上浏览器前缀。
 
-```javascript
+```js
 element.style.webkitAnimationPlayState = "paused";
 element.style.webkitAnimationPlayState = "running";
 ```

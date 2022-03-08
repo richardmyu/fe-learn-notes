@@ -10,13 +10,13 @@
 
 `try … catch` 这是最简单但经常被遗忘的错误处理方法。它可以用来捕获任何类型的同步错误。
 
-## 1.异步性 —— 回调
+## 1. 异步性 —— 回调
 
 异步性，这是在使用 JavaScript 时必须考虑的一个主题。当你有一个异步函数，并且该函数内部发生错误时，你的脚本将继续执行，因此，不会立即出现任何错误。当使用回调函数处理异步函数时（不推荐），你通常会在回调函数中收到两个参数，如下所示：
 
 如果有错误，err 参数就等同于那个错误。如果没有，参数将是 `undefined` 或 `null`。要么在 `if(err)` 块中返回某项内容，要么将其他指令封装在 `else` 块中，这一点很重要，否则你可能会得到另一个错误，例如，`result` 可能未定义，而你试图访问 `result.data`，类似这样的情况。
 
-```javascript
+```js
 myAsyncFunc(someInput, (err, result) => {
   if (err) {
     return console.error(err);
@@ -27,13 +27,13 @@ myAsyncFunc(someInput, (err, result) => {
 });
 ```
 
-## 2.异步性 —— Promises
+## 2. 异步性 —— Promises
 
 处理异步性的更好方法是使用 `Promises`。在这一点上，除了代码可读性更强之外，我们还改进了错误处理。只要有一个 catch 块，我们就不再需要太关注具体的错误捕获。在链接 Promises 时，catch 块捕获会自 Promises 执行或上一个 catch 块以来的所有错误。注意，没有 catch 块的 Promises 不会终止脚本，但会给你一条可读性较差的消息。
 
 因此，务必要在 Promises 中加入 catch 块。
 
-```javascript
+```js
 // condition 1
 Promise.resolve(1)
   .then(res => {
@@ -88,7 +88,7 @@ Promise.resolve(1)
 
 随着 JavaScript 引入 `async/await`，我们回到了最初的错误处理方法，借助 `try … catch … finally`，错误处理变得非常简单。因为这和我们处理“普通”同步错误的方法是一样的，所以如果需要的话，更容易使用作用域更大的 `catch` 语句。
 
-```javascript
+```js
 function someFuncThatThrowsAnError() {
   localStorage.setItem("aa", "aaa");
   return localStorage.getItem("aa");
@@ -122,7 +122,7 @@ function someFuncThatThrowsAnError() {
 // Easy!
 ```
 
-## 2.前端开发中 js 代码异常处理及监控
+## 2. 前端开发中 js 代码异常处理及监控
 
 常见的 js 异常捕获一般有 2 中方式
 
@@ -146,8 +146,7 @@ function someFuncThatThrowsAnError() {
 
 但是这个方法存在兼容性问题，在不同的浏览器上提供的数据不完全一致，
 
-部分过时的浏览器只能提供部分数据。它的用法如下:
-
+部分过时的浏览器只能提供部分数据。它的用法如下：
 `window.onerror = function (message, url, lineNo, columnNo, error)`
 
 1、`message [String]` 错误信息。直观的错误描述信息，不过有时候你确实无法从这里面看出端倪，特别是压缩后脚本的报错信息，可能让你更加疑惑。
@@ -162,7 +161,7 @@ function someFuncThatThrowsAnError() {
 
 ### 2.3 window.onerror js 错误上报库
 
-```javascript
+```js
 (function() {
   "use strict";
 
@@ -183,7 +182,7 @@ function someFuncThatThrowsAnError() {
   };
 
   /*
-   *ajax封装
+   *ajax 封装
    */
   function ajax(options) {
     options = options || {};
@@ -266,9 +265,9 @@ function someFuncThatThrowsAnError() {
       return;
     }
     window.onerror = function(msg, url, line, col, error) {
-      //采用异步的方式,避免阻塞
+      //采用异步的方式，避免阻塞
       setTimeout(function() {
-        //不一定所有浏览器都支持col参数，如果不支持就用window.event来兼容
+        //不一定所有浏览器都支持 col 参数，如果不支持就用 window.event 来兼容
         col = col || (window.event && window.event.errorCharacter) || 0;
 
         defaults.url = url;
@@ -279,7 +278,7 @@ function someFuncThatThrowsAnError() {
           //如果浏览器有堆栈信息，直接使用
           defaults.msg = error.stack.toString();
         } else if (arguments.callee) {
-          //尝试通过callee拿堆栈信息
+          //尝试通过 callee 拿堆栈信息
           var ext = [];
           var fn = arguments.callee.caller;
           var floor = 3; //这里只拿三层堆栈信息
@@ -312,7 +311,7 @@ function someFuncThatThrowsAnError() {
         });
       }, 0);
 
-      return true; //错误不会console浏览器上,如需要，可将这样注释
+      return true; //错误不会 console 浏览器上，如需要，可将这样注释
     };
   };
 
@@ -326,7 +325,7 @@ function someFuncThatThrowsAnError() {
 
 Stack 部分主要在阐明 js 中函数调用栈的概念，它符合栈的基本特性『当调用时，压入栈顶。当它执行完毕时，被弹出栈』，简单看下面的代码：
 
-```javascript
+```js
 function c() {
   try {
     var bar = baz;
@@ -371,7 +370,7 @@ a();
 
 `reject` 如果使用 `Error` 对象，会导致捕获不到错误的情况，在我的博客中有讨论过这种情况：`Callback Promise Generator Async-Await` 和异常处理的演进，我们看以下代码：
 
-```javascript
+```js
 // condition 1 直接 reject('xxx')
 // catch 可以捕获错误
 function thirdFunction() {
@@ -459,7 +458,7 @@ Promise.resolve(true)
 
 下方的函数 请求处理 不但永远不会执行，还无法在异常时做额外的处理，也无法阻止异常产生时笨拙的 `console.log('请求失败')` 行为。
 
-```javascript
+```js
 // 不是 callback 没有执行的问题吗？？？
 function fetch(callback) {
   setTimeout(() => {
@@ -492,7 +491,7 @@ fetch(() => {
 
 从下文开始，我们约定用 `setTimeout` 模拟异步操作
 
-```javascript
+```js
 function fetch(callback) {
   setTimeout(() => {
     throw Error("请求失败");
@@ -518,7 +517,7 @@ try {
 
 更糟糕的问题是，业务方必须处理异常，否则程序挂掉就会什么都不做，这对大部分不用特殊处理异常的场景造成了很大的精神负担。
 
-```javascript
+```js
 function fetch(handleError, callback) {
   setTimeout(() => {
     handleError("请求失败");
@@ -545,7 +544,7 @@ fetch(
 
 > 简单补充下事件循环的知识，js 事件循环分为 macroTask 和 microTask。microTask 会被插入到每一个 macroTask 的尾部，所以 microTask 总会优先执行，哪怕 macroTask 因为 js 进程繁忙被 hung 住。
 
-```javascript
+```js
 new Promise((resolve, reject) => {
   resolve("ok");
 }).then(result => {
@@ -555,7 +554,7 @@ new Promise((resolve, reject) => {
 
 如果决议结果是决绝，那么 `then` 函数的第二个回调会立即插入 microTask 队列。
 
-```javascript
+```js
 new Promise((resolve, reject) => {
   reject("no");
 }).then(
@@ -570,7 +569,7 @@ new Promise((resolve, reject) => {
 
 如果一直不决议，此 `promise` 将处于 `pending` 状态。
 
-```javascript
+```js
 new Promise((resolve, reject) => {
   console.log("nothing"); // nothing
   // nothing
@@ -586,7 +585,7 @@ new Promise((resolve, reject) => {
 
 未捕获的 `reject` 会传到末尾，通过 `catch` 接住；
 
-```javascript
+```js
 new Promise((resolve, reject) => {
   reject("no");
 })
@@ -605,7 +604,7 @@ new Promise((resolve, reject) => {
 
 `resolve` 决议会被自动展开（reject 不会）
 
-```javascript
+```js
 // ???
 new Promise((resolve, reject) => {
   return new Promise((resolve, reject) => {
@@ -634,7 +633,7 @@ new Promise((resolve, reject) => {
 
 链式流，`then` 会返回一个新的 `Promise`，其状态取决于 `then` 的返回值。
 
-```javascript
+```js
 new Promise((resolve, reject) => {
   resolve("ok");
 })
@@ -657,7 +656,7 @@ new Promise((resolve, reject) => {
 
 不仅是 `reject`，抛出的异常也会被作为拒绝状态被 `Promise` 捕获。
 
-```javascript
+```js
 function fetch(callback) {
   return new Promise((resolve, reject) => {
     throw Error("用户不存在");
@@ -683,7 +682,7 @@ fetch()
 
 但是，永远不要在 macroTask 队列中抛出异常，因为 macroTask 队列脱离了运行上下文环境，异常无法被当前作用域捕获。
 
-```javascript
+```js
 function fetch(callback) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -706,7 +705,7 @@ fetch()
 
 不过 microTask 中抛出的异常可以被捕获，说明 microTask 队列并没有离开当前作用域，我们通过以下例子来证明：
 
-```javascript
+```js
 // resolve 执行
 Promise.resolve(true)
   .then((resolve, reject) => {
@@ -765,7 +764,7 @@ Promise.reject(true)
 
 如果第三方函数在 macroTask 回调中以 `throw Error` 的方式抛出异常怎么办？
 
-```javascript
+```js
 function thirdFunction() {
   setTimeout(() => {
     throw Error("就是任性");
@@ -789,7 +788,7 @@ Promise.resolve(true)
 
 我们必须正视这个问题，唯一的解决办法，是第三方函数不要做这种傻事，一定要在 macroTask 抛出异常的话，请改为 `reject` 的方式。
 
-```javascript
+```js
 function thirdFunction() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -811,7 +810,7 @@ Promise.resolve(true)
 
 我们发现，这样还不是完美的办法，不但容易忘记 `return`，而且当同时含有多个第三方函数时，处理方式不太优雅：
 
-```javascript
+```js
 function thirdFunction() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -945,9 +944,8 @@ Promise.reject(true)
 
 ### 4.8 番外 Generator 基础 ???
 
-`generator` 是更为优雅的流程控制方式，可以让函数可中断执行:
-
-```javascript
+`generator` 是更为优雅的流程控制方式，可以让函数可中断执行：
+```js
 function* generatorA() {
   console.log("a");
   yield;
@@ -964,7 +962,7 @@ genA.next(); // b
 
 这些特性足以孕育出伟大的生成器，我们稍后介绍。下面是这个特性的例子：
 
-```javascript
+```js
 function* generatorB(count) {
   console.log(count);
   const result = yield 5;
@@ -994,7 +992,7 @@ console.log(genBValue); // genBValue undefined
 
 如果认为 `Generator` 不太好理解，那 `Async Await` 绝对是救命稻草，我们看看它们的特征：
 
-```javascript
+```js
 const timeOut = (time = 0) =>
   new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -1022,7 +1020,7 @@ main();
 
 终于可以介绍 生成器 了！它可以魔法般将下面的 `generator` 执行成为 `await` 的效果。
 
-```javascript
+```js
 const timeOut = (time = 0) =>
   new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -1046,7 +1044,7 @@ function* main() {
 
 达到这个目标不难，达到了就完成了 `await` 的功能，就是这么神奇。
 
-```javascript
+```js
 function step(generator) {
   const gen = generator();
   // 由于其传值，返回步骤交错的特性，记录上一次 yield 传过来的值，在下一个 next 返回过去
@@ -1062,7 +1060,7 @@ function step(generator) {
 
 利用生成器，模拟出 `await` 的执行效果：
 
-```javascript
+```js
 const run = step(main);
 
 function recursive(promise) {
@@ -1085,7 +1083,7 @@ recursive(run);
 
 不论是同步、异步的异常，await 都不会自动捕获，但好处是可以自动中断函数，我们大可放心编写业务逻辑，而不用担心异步异常后会被执行引发雪崩：
 
-```javascript
+```js
 function fetch(callback) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -1110,7 +1108,7 @@ main();
 
 因为此时的异步其实在一个作用域中，通过 `generator` 控制执行顺序，所以可以将异步看做同步的代码去编写，包括使用 `try catch` 捕获异常。
 
-```javascript
+```js
 function fetch(callback) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -1135,7 +1133,7 @@ main();
 
 和 `Promise` 无法捕获的异常 一样，这也是 `await` 的软肋，不过任然可以解决：
 
-```javascript
+```js
 function thirdFunction() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -1158,7 +1156,7 @@ main();
 
 现在解答为什么 `await` 是更加优雅的方案：
 
-```javascript
+```js
 async function main() {
   try {
     const result1 = await secondFunction(); // 如果不抛出异常，后续继续执行
@@ -1179,7 +1177,7 @@ main();
 
 我们以如下业务代码为例，默认不捕获错误的话，错误会一直冒泡到顶层，最后抛出异常。
 
-```javascript
+```js
 const successRequest = () => Promise.resolve("a");
 const failRequest = () => Promise.reject("b");
 
@@ -1209,7 +1207,6 @@ action.allReuqest();
 
 // 程序崩溃
 // Uncaught (in promise) b
-// Uncaught (in promise) b
 ```
 
 为了防止程序崩溃，需要业务线在所有 `async` 函数中包裹 `try catch`。
@@ -1228,7 +1225,7 @@ action.allReuqest();
 
 类级别装饰器，修饰整个类，可以读取、修改类中任何属性和方法。
 
-```javascript
+```js
 const classDecorator = (target: any) => {
   const keys = Object.getOwnPropertyNames(target.prototype);
   console.log("classA keys,", keys); // classA keys ["constructor", "sayName"]
@@ -1250,7 +1247,7 @@ a.sayName(); // classA ascoders
 
 为了发挥这一特点，我们篡改一下修饰的函数。
 
-```javascript
+```js
 const methodDecorator = (
   target: any,
   propertyKey: string,
@@ -1281,7 +1278,7 @@ c.sayName(); // classC method override
 
 为了发挥这一特点，我们篡改一下修饰的属性值。
 
-```javascript
+```js
 const propertyDecorator = (target: any, propertyKey: string | symbol) => {
     Object.defineProperty(target, propertyKey, {
         get() {
@@ -1309,7 +1306,7 @@ b.sayName() // classB github
 
 我们来编写类级别装饰器，专门捕获 `async` 函数抛出的异常：
 
-```javascript
+```js
 const asyncClass = (errorHandler?: (error?: Error) => void) => (
   target: any
 ) => {
@@ -1329,7 +1326,7 @@ const asyncClass = (errorHandler?: (error?: Error) => void) => (
 
 将类所有方法都用 `try catch` 包裹住，将异常交给业务方统一的 `errorHandler` 处理：
 
-```javascript
+```js
 const successRequest = () => Promise.resolve("a");
 const failRequest = () => Promise.reject("b");
 
@@ -1365,7 +1362,7 @@ action.allReuqest();
 
 我们也可以编写方法级别的异常处理：
 
-```javascript
+```js
 const asyncMethod = (errorHandler?: (error?: Error) => void) => (
   target: any,
   propertyKey: string,
@@ -1389,7 +1386,7 @@ const asyncMethod = (errorHandler?: (error?: Error) => void) => (
 
 业务方用法类似，只是装饰器需要放在函数上：
 
-```javascript
+```js
 const successRequest = () => Promise.resolve("a");
 const failRequest = () => Promise.reject("b");
 
@@ -1435,7 +1432,7 @@ action.allReuqest();
 
 同时业务方也握有绝对的主动权，比如登录失败后，如果账户不存在，那么直接跳转到注册页，而不是傻瓜的提示用户帐号不存在，可以这样做：
 
-```javascript
+```js
 async login(nickname, password) {
 	try {
 		const user = await userService.login(nickname, password)
@@ -1454,7 +1451,7 @@ async login(nickname, password) {
 
 在 nodejs 端，记得监听全局错误，兜住落网之鱼：
 
-```javascript
+```js
 process.on("uncaughtException", (error: any) => {
   logger.error("uncaughtException", error);
 });
@@ -1466,7 +1463,7 @@ process.on("unhandledRejection", (error: any) => {
 
 在浏览器端，记得监听 window 全局错误，兜住漏网之鱼：
 
-```javascript
+```js
 window.addEventListener("unhandledRejection", (event: any) => {
   logger.error("unhandledRejection", event);
 });
@@ -1476,19 +1473,19 @@ window.addEventListener("onRejectionHandled", (event: any) => {
 });
 ```
 
-## 5.深入理解 JavaScript 错误和堆栈追踪
+## 5. 深入理解 JavaScript 错误和堆栈追踪
 
 ### 5.1 堆栈调用如何工作
 
 在谈论 errors 之前我们必须明白堆栈调用如何工作。每当函数被调用，它都会被推到堆栈的顶部。函数执行完毕，便会从堆栈顶部移除。
 
-这种数据结构的有趣之处在于最后一个入栈的将会第一个从堆栈中移除，这也就是我们所熟悉的 **LIFO** (后进，先出)特性。
+这种数据结构的有趣之处在于最后一个入栈的将会第一个从堆栈中移除，这也就是我们所熟悉的 **LIFO** （后进，先出）特性。
 
 这也就是说我们在函数 `x` 中调用函数 `y`，那么对应的堆栈中的顺序为 `x y`。
 
 假设你有下面这样的代码：
 
-```javascript
+```js
 function c() {
   console.log("c");
 }
@@ -1517,7 +1514,7 @@ a();
 
 我们可以利用 `console.trace()` 来更好的演示这种行为，它会在控制台打印出当前堆栈中的记录。此外，通常而言你应该从上到下读取堆栈记录。想想下面的每一行代码都是在哪调用的。
 
-```javascript
+```js
 function c() {
   console.log("c");
   console.trace();
@@ -1546,7 +1543,7 @@ a();
 
 在 Node REPL 服务器上运行上述代码会得到如下结果：
 
-```javascript
+```js
 Trace
     at c (repl:3:9)
     at b (repl:3:1)
@@ -1564,7 +1561,7 @@ Trace
 
 如果我们现在在 `b` 中并且在 `c` 执行完之后打印堆栈，我们将会发现 `c` 已经从堆栈的顶部移除，只剩下了 `a` 和 `b`。
 
-```javascript
+```js
 function c() {
   console.log("c");
 }
@@ -1592,7 +1589,7 @@ a();
 
 正如你看到的那样，堆栈中已经没有 `c`，因为它已经完成运行，已经被弹出去了。
 
-```javascript
+```js
 Trace
     at b (repl:4:9)
     at a (repl:3:1)
@@ -1612,7 +1609,7 @@ Trace
 
 错误堆栈记录包含从（堆栈底部）它自己的构造函数到（堆栈顶部）所有的堆栈帧。
 
-`try` 代码块后面不必紧跟着 `catch`,但(此种情况下)其后必须紧跟着 `finally`。这意味着我们可以使用三种不同形式的 `try` 语句：
+`try` 代码块后面不必紧跟着 `catch`, 但（此种情况下）其后必须紧跟着 `finally`。这意味着我们可以使用三种不同形式的 `try` 语句：
 
 - `try...catch`
 
@@ -1622,7 +1619,7 @@ Trace
 
 `Try` 语句可以像下面这样互相嵌套：
 
-```javascript
+```js
 try {
   try {
     throw new Error("Nested error.");
@@ -1636,7 +1633,7 @@ try {
 
 你甚至还可以在 `catch` 和 `finally` 代码块中嵌套 `try` 语句：
 
-```javascript
+```js
 try {
   throw new Error("First error");
 } catch (err) {
@@ -1660,11 +1657,11 @@ try {
 }
 ```
 
-还有很重要的一点值得注意，那就是我们甚至可以大可不必抛出 `Error` 对象。尽管这看起来非常 cool 且非常自由，但实际并非如此，尤其是对开发第三方库的开发者来说，因为他们必须处理用户(使用库的开发者)的代码。由于缺乏标准，他们并不能把控用户的行为。你不能相信用户并简单的抛出一个 `Error` 对象，因为他们不一定会那么做而是仅仅抛出一个字符串或者数字(鬼知道用户会抛出什么)。这也使得处理必要的堆栈跟踪和其他有意义的元数据变得更加困难。
+还有很重要的一点值得注意，那就是我们甚至可以大可不必抛出 `Error` 对象。尽管这看起来非常 cool 且非常自由，但实际并非如此，尤其是对开发第三方库的开发者来说，因为他们必须处理用户（使用库的开发者）的代码。由于缺乏标准，他们并不能把控用户的行为。你不能相信用户并简单的抛出一个 `Error` 对象，因为他们不一定会那么做而是仅仅抛出一个字符串或者数字（鬼知道用户会抛出什么）。这也使得处理必要的堆栈跟踪和其他有意义的元数据变得更加困难。
 
 假设有以下代码：
 
-```javascript
+```js
 function runWithoutThrowing(func) {
   try {
     func();
@@ -1683,9 +1680,9 @@ runWithoutThrowing(funcThatThrowsError);
 // The error's message was: I am a TypeError.
 ```
 
-如果你的用户像上面这样传递一个抛出 `Error` 对象的函数给 `runWithoutThrowing` 函数(那就谢天谢地了)，然而总有些人偷想懒直接抛出一个 `String`,那你就麻烦了：
+如果你的用户像上面这样传递一个抛出 `Error` 对象的函数给 `runWithoutThrowing` 函数（那就谢天谢地了），然而总有些人偷想懒直接抛出一个 `String`, 那你就麻烦了：
 
-```javascript
+```js
 function runWithoutThrowing(func) {
   try {
     func();
@@ -1704,13 +1701,13 @@ runWithoutThrowing(funcThatThrowsError);
 // The error's message was: undefined.
 ```
 
-现在第二个 `console.log` 会打印出 `the error’s message is undefined`。这么看来也没多大的事(后果)呀，但是如果您需要确保某些属性存在于 `Error` 对象上，或以另一种方式（例如 Chai 的 throws 断言 does)）处理 `Error` 对象的特定属性，那么你做需要更多的工作，以确保它会正常。
+现在第二个 `console.log` 会打印出 `the error’s message is undefined`。这么看来也没多大的事（后果）呀，但是如果您需要确保某些属性存在于 `Error` 对象上，或以另一种方式（例如 Chai 的 throws 断言 does)）处理 `Error` 对象的特定属性，那么你做需要更多的工作，以确保它会正常。
 
 此外，当抛出的值不是 `Error` 对象时，你无法访问其他重要数据，例如 `stack`，在某些环境中它是 `Error` 对象的一个属性。
 
-`Errors` 也可以像其他任何对象一样使用，并不一定非得要抛出他们，这也是它们为什么多次被用作回调函数的第一个参数(俗称 **err first**)。 在下面的 `fs.readdir()` 例子中就是这么用的。
+`Errors` 也可以像其他任何对象一样使用，并不一定非得要抛出他们，这也是它们为什么多次被用作回调函数的第一个参数（俗称 **err first**)。 在下面的 `fs.readdir()` 例子中就是这么用的。
 
-```javascript
+```js
 const fs = require("fs");
 
 fs.readdir("/example/i-do-not-exist", function callback(err, dirs) {
@@ -1727,7 +1724,7 @@ fs.readdir("/example/i-do-not-exist", function callback(err, dirs) {
 
 最后，在 `rejecting promises` 时也可以使用 `Error` 对象。这使得它更容易处理 `promise rejections`：
 
-```javascript
+```js
 new Promise(function(resolve, reject) {
   reject(new Error("The promise was rejected."));
 })
@@ -1742,7 +1739,7 @@ new Promise(function(resolve, reject) {
   });
 ```
 
-## 6.从 JS 引擎理解 Await b() 与 Promise.then(b) 的堆栈处理
+## 6. 从 JS 引擎理解 Await b() 与 Promise.then(b) 的堆栈处理
 
 与直接使用 `Promise` 相比，使用 `Async/Await` 不仅可以提高代码的可读性，同时也可以优化 JavaScript 引擎的执行方式。这篇博客将介绍 `Async/Await` 是如何优化 JavaScript 引擎对堆栈信息的处理。
 
@@ -1754,7 +1751,7 @@ new Promise(function(resolve, reject) {
 
 示例代码中，函数 `c()` 会在异步函数 `b()` 成功 `resolve` 之后执行：
 
-```javascript
+```js
 const a = () => {
   b().then(() => c());
 };
@@ -1763,7 +1760,7 @@ const a = () => {
 当调用 `a()` 函数时，这些事情同步发生：
 
 - `b()` 函数被调用，它会返回一个 `Promise`，这个 `Promise` 会在未来的某个时刻 `resolve`。
-- `.then()` 回调函数(实际调用了 `c()` 函数)被添加到回调链。
+- `.then()` 回调函数（实际调用了 `c()` 函数）被添加到回调链。
 
 这样，`a()` 函数内的代码就执行完了。`a()` 函数不会被暂停，因此在异步函数 `b()resolve` 时，`a()` 函数的作用域已经不存在了。假设 `b()` 或者 `c()` 抛出了一个错误，则堆栈信息中应该包含 `a()` 函数，因为它们都是在 `a()` 函数内被调用。对 `a()` 函数的任何引用都不存在了，要如何生成包含 `a()` 的堆栈信息呢？
 
@@ -1775,7 +1772,7 @@ const a = () => {
 
 我们可以使用 `Async/Await` 实现同样的代码，同步函数 `c()` 会等到异步函数 `b()` 执行结束之后再执行：
 
-```javascript
+```js
 const a = async () => {
   await b();
   c();
@@ -1793,9 +1790,9 @@ const a = async () => {
 - 使用 `Async/Await`，而不是直接使用 `Promise`
 - 使用 `babel-preset-env`，避免 `Babel` 不必要地转换 `Async/Await`
 
-尽管 V8 引擎还没有实现这些优化，请遵循这些建议。当我们为 V8 实现这些优化的时候，你的程序可以保证最佳的性能。(作者是 V8 引擎的开发者)
+尽管 V8 引擎还没有实现这些优化，请遵循这些建议。当我们为 V8 实现这些优化的时候，你的程序可以保证最佳的性能。（作者是 V8 引擎的开发者）
 
-一般来说，尽量不要去使用 Babel 转码器。所有支持 [Service Workers](https://caniuse.com/#) 的浏览器都支持 `Async/Await`，因此没有必要去对 `Async/Await` 转码。这一点对于 [JavaScript modules via script tag](https://caniuse.com/#feat=es6-module) 同样适用。关于这一点，大家可以参考[Deploying ES2015+ Code in Production Today](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/)。
+一般来说，尽量不要去使用 Babel 转码器。所有支持 [Service Workers](https://caniuse.com/#) 的浏览器都支持 `Async/Await`，因此没有必要去对 `Async/Await` 转码。这一点对于 [JavaScript modules via script tag](https://caniuse.com/#feat=es6-module) 同样适用。关于这一点，大家可以参考 [Deploying ES2015+ Code in Production Today](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/)。
 
 参考：
 
@@ -1825,7 +1822,7 @@ const a = async () => {
 
 [从 JS 引擎理解 Await b() 与 Promise.then(b) 的堆栈处理](https://blog.fundebug.com/2018/07/18/javascript-engine-await-promise/)
 
-[显示 javascript 的异常堆栈( show javascript exception stack)](http://siwei.me/blog/posts/javascript-show-javascript-exception-stack)
+[显示 javascript 的异常堆栈 ( show javascript exception stack)](http://siwei.me/blog/posts/javascript-show-javascript-exception-stack)
 
 [异常和错误处理](https://www.css88.com/doc/chrome-devtools/console/track-exceptions/)
 

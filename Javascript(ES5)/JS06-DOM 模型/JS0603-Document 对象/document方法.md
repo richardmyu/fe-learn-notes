@@ -1,6 +1,6 @@
 # document 对象
 
-## 1.方法
+## 1. 方法
 
 ### 3.1 document.open/close()
 
@@ -99,7 +99,7 @@ document.querySelectorAll('[data-foo-bar="someval"]')
 // 选中 myForm 表单中所有不通过验证的元素
 document.querySelectorAll('#myForm :invalid')
 
-// 选中div元素，那些 class 含 ignore 的除外
+// 选中 div 元素，那些 class 含 ignore 的除外
 document.querySelectorAll('DIV:not(.ignore)')
 
 // 同时选中 div，a，script 三类元素
@@ -219,7 +219,7 @@ document.elementsFromPoint(12, 12)
 
 `createElement` 方法的参数为元素的标签名，即元素节点的 `tagName` 属性，对于 HTML 网页大小写不敏感，即参数为 div 或 DIV 返回的是同一种节点。如果参数里面包含尖括号（即 `<` 和 `>`）会报错。
 
-```javascript
+```js
 document.createElement('<div>')
 // DOMException: The tag name provided ('<div>') is not a valid name
 ```
@@ -357,7 +357,7 @@ document.appendChild(node)
 
 注意，`document.importNode` 方法只是拷贝外部节点，这时该节点的父节点是 `null`。下一步还必须将这个节点插入当前文档树。
 
-```javascript
+```js
 var iframe = document.getElementsByTagName('iframe')[0]
 var oldNode = iframe.contentWindow.document.getElementById('myNode')
 var newNode = document.importNode(oldNode, true)

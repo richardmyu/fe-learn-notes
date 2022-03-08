@@ -1,10 +1,10 @@
 # Boolean 对象
 
-## 1.概述
+## 1. 概述
 
 `Boolean` 对象是 JavaScript 的三个包装对象之一。作为构造函数，它主要用于生成布尔值的包装对象实例。
 
-```javascript
+```js
 var b = new Boolean(true);
 
 typeof b; // "object"

@@ -61,7 +61,7 @@ Node 对象定义了几个常量，对应这些类型值。
 
 确定节点类型时，使用 `nodeType` 属性是常用方法。
 
-```javascript
+```js
 var node = document.documentElement.firstChild
 if (node.nodeType !== Node.ELEMENT_NODE) {
   console.log('该节点是元素节点')
@@ -72,7 +72,7 @@ if (node.nodeType !== Node.ELEMENT_NODE) {
 
 `nodeName` 属性返回节点的名称。
 
-```javascript
+```js
 nodeNamedocument.nodeName // #document
 
 let fChildren = document.childNodes
@@ -96,13 +96,13 @@ app.childNodes[2].nodeName // #text
 
 ---
 
-- a.文档节点（document）：`#document`
-- b.元素节点（element）：大写的标签名
-- c.属性节点（attr）：属性的名称
-- d.文本节点（text）：`#text`
-- e.文档片断节点（DocumentFragment）：`#document-fragment`
-- f.文档类型节点（DocumentType）：文档的类型
-- g.注释节点（Comment）：`#comment`
+- a. 文档节点（document）：`#document`
+- b. 元素节点（element）：大写的标签名
+- c. 属性节点（attr）：属性的名称
+- d. 文本节点（text）：`#text`
+- e. 文档片断节点（DocumentFragment）：`#document-fragment`
+- f. 文档类型节点（DocumentType）：文档的类型
+- g. 注释节点（Comment）：`#comment`
 
 ---
 
@@ -112,7 +112,7 @@ app.childNodes[2].nodeName // #text
 
 只有文本节点（text）和注释节点（comment）有文本值，因此这两类节点的 `nodeValue` 可以返回结果，其他类型的节点一律返回 `null`。同样的，也只有这两类节点可以设置 `nodeValue` 属性的值，其他类型的节点设置无效。
 
-```javascript
+```js
 let app = document.getElementById('app')
 app.nodeValue // null
 app.attributes[0].nodeValue // app
@@ -128,7 +128,7 @@ app.childNodes[2].nodeValue // 1234
 
 `textContent` 属性返回当前节点和它的所有后代节点的文本内容。
 
-```javascript
+```js
 nodeTypedocument.textContent // null
 
 let fChildren = document.childNodes
@@ -175,7 +175,7 @@ document.documentElement === document.getElementsByTagName('html')[0]
 
 `baseURI` 属性返回一个字符串，表示当前网页的绝对路径。浏览器根据这个属性，计算网页上的相对路径的 URL。该属性为只读。
 
-```javascript
+```js
 // 当前网页的网址为
 // http://www.example.com/index.html
 document.baseURI
@@ -199,7 +199,7 @@ document.baseURI
 
 `Node.ownerDocument` 属性返回当前节点所在的顶层文档对象，即 `document` 对象。
 
-```javascript
+```js
 let p1 = app.ownerDocument
 let p2 = app.lastChild.ownerDocument
 p1 === document // true
@@ -213,7 +213,7 @@ sChildren[0].ownerDocument === document // true
 
 `Node.nextSibling` 属性返回紧跟在当前节点后面的第一个同级节点。如果当前节点后面没有同级节点，则返回 `null`。
 
-```javascript
+```js
 sChildren[1].nextSibling === sChildren[2]
 // true
 
@@ -226,7 +226,7 @@ app.nextSibling // #text
 
 `nextSibling` 属性可以用来遍历所有子节点。
 
-```javascript
+```js
 let el = fChildren[1].firstChild
 
 while (el !== null) {
@@ -264,7 +264,7 @@ document.parentNode // null
 
 `parentElement` 属性返回当前节点的父元素节点。如果当前节点没有父节点，或者父节点类型不是元素节点，则返回 `null`。
 
-```javascript
+```js
 fChildren[1].parentNode.parentElement // null
 sChildren[1].parentNode.parentElement // HTML
 app.parentNode.parentElement //BODY
@@ -312,7 +312,7 @@ app.childNodes
 
 `isConnected` 属性返回一个布尔值，表示当前节点是否在文档之中。
 
-```javascript
+```js
 let div = document.createElement('div')
 div.isConnected // false
 

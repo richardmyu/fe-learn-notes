@@ -12,7 +12,7 @@
 
 如果没有元素类型的子节点，返回值 `HTMLCollection` 实例的 `length` 属性为 0。
 
-```javascript
+```js
 app.children
 // HTMLCollection(2)
 //   0: div.item.item--first
@@ -53,7 +53,7 @@ list.childElementCount // 0
 
 重复添加的节点，只会执行最后一次添加
 
-```javascript
+```js
 let div = document.createElement('div')
 let text = document.createTextNode('hh')
 app.append(div, text, text, div)

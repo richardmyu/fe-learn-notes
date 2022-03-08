@@ -69,7 +69,7 @@ JavaScript 的新手开发者通常会认为，既然把函数看作一个对象
 function foo(num) {
   console.log("foo: " + num);
 
-  // 记录foo被调用的次数
+  // 记录 foo 被调用的次数
   this.count++;
 }
 
@@ -88,7 +88,7 @@ for (i = 0; i < 10; i++) {
 // foo: 8
 // foo: 9
 
-// foo被调用了多少次？
+// foo 被调用了多少次？
 console.log(foo.count); // 0 -- 什么？！
 ```
 
@@ -120,13 +120,13 @@ setTimeout(function() {
 function foo(num) {
   console.log("foo: " + num);
 
-  // 记录foo被调用的次数
+  // 记录 foo 被调用的次数
   foo.count++;
 }
 
 // ...
 
-// foo被调用了多少次？
+// foo 被调用了多少次？
 console.log(foo.count); // 4
 ```
 
@@ -138,14 +138,14 @@ console.log(foo.count); // 4
 function foo(num) {
   console.log("foo: " + num);
 
-  // 记录foo被调用的次数
-  // 注意，在当前的调用方式下（参见下方代码），this确实指向foo
+  // 记录 foo 被调用的次数
+  // 注意，在当前的调用方式下（参见下方代码），this 确实指向 foo
   this.count++;
 }
 
 // ...
 
-// foo被调用了多少次？
+// foo 被调用了多少次？
 console.log(foo.count); // 4
 ```
 
@@ -202,34 +202,34 @@ function baz() {
   // 因此，当前调用位置是全局作用域
 
   console.log("baz");
-  bar(); // <-- bar的调用位置
+  bar(); // <-- bar 的调用位置
 }
 
 function bar() {
-  // 当前调用栈是baz -> bar
-  // 因此，当前调用位置在baz中
+  // 当前调用栈是 baz -> bar
+  // 因此，当前调用位置在 baz 中
 
   console.log("bar");
-  foo(); // <-- foo的调用位置
+  foo(); // <-- foo 的调用位置
 }
 
 function foo() {
-  // 当前调用栈是baz -> bar -> foo
-  // 因此，当前调用位置在bar中
+  // 当前调用栈是 baz -> bar -> foo
+  // 因此，当前调用位置在 bar 中
 
   console.log("foo");
 }
 
-baz(); // <-- baz的调用位置
+baz(); // <-- baz 的调用位置
 ```
 
 > 获取某个函数的调用栈：
 
-> 1.函数内部调用 `debugger` 语句，在控制台可以查看调用栈；
+> 1. 函数内部调用 `debugger` 语句，在控制台可以查看调用栈；
 
-> 2.函数内部使用 `console.trance()` 语句；
+> 2. 函数内部使用 `console.trance()` 语句；
 
-> 3.函数内部手动抛出一个错误；
+> 3. 函数内部手动抛出一个错误；
 
 ### 2.2 绑定规则
 
@@ -391,7 +391,7 @@ var obj = {
   foo: foo
 };
 
-var a = "oops, global"; // a是全局对象的属性
+var a = "oops, global"; // a 是全局对象的属性
 
 setTimeout(obj.foo, 100); // "oops, global"
 ```
@@ -400,7 +400,7 @@ JavaScript 环境中内置的 `setTimeout()` 函数实现和下面的伪代码�
 
 ```js
 function setTimeout(fn, delay) {
-  // 等待delay毫秒
+  // 等待 delay 毫秒
   fn(); // <-- 调用位置！
 }
 ```
@@ -437,7 +437,7 @@ foo.call(obj); // 2
 
 可惜，显式绑定仍然无法解决我们之前提出的丢失绑定问题。
 
-1.硬绑定
+1. 硬绑定
 
 但是显式绑定的一个变种可以解决这个问题。
 
@@ -828,7 +828,7 @@ function foo(a, b) {
   console.log("a:" + a + ", b:" + b);
 }
 
-// 我们的DMZ空对象
+// 我们的 DMZ 空对象
 var ø = Object.create(null);
 
 // 把数组展开成参数
@@ -917,7 +917,7 @@ setTimeout(obj2.foo, 10);
 // name: obj   <---- 应用了软绑定
 ```
 
-可以看到，软绑定版本的 foo()可以手动将 this 绑定到 obj2 或者 obj3 上，但如果应用默认绑定，则会将 this 绑定到 obj。
+可以看到，软绑定版本的 foo() 可以手动将 this 绑定到 obj2 或者 obj3 上，但如果应用默认绑定，则会将 this 绑定到 obj。
 
 ### 2.5 this 词法
 
@@ -931,7 +931,7 @@ setTimeout(obj2.foo, 10);
 function foo() {
   // 返回一个箭头函数
   return a => {
-    //this继承自foo()
+    //this 继承自 foo()
     console.log(this.a);
   };
 }
@@ -945,7 +945,7 @@ var obj2 = {
 };
 
 var bar = foo.call(obj1);
-bar.call(obj2); // 2, 不是3！
+bar.call(obj2); // 2, 不是 3！
 ```
 
 `foo()` 内部创建的箭头函数会捕获调用时 `foo()` 的 `this`。由于 `foo()` 的 `this` 绑定到 obj1，bar（引用箭头函数）的 `this` 也会绑定到 obj1，箭头函数的绑定无法被修改。（`new` 也不行！）
@@ -1073,8 +1073,8 @@ var obj = {
     if (this.count < 1) {
       setTimeout(
         function timer() {
-          this.count++; // this是安全的
-          // 因为bind(..)
+          this.count++; // this 是安全的
+          // 因为 bind(..)
           console.log("more awesome");
         }.bind(this),
         100

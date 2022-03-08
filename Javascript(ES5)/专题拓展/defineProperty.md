@@ -43,7 +43,7 @@ Object.defineProperty(obj, prop, descriptor)
 
   - 被传递给函数的对象。
 
-> 在 ES6 中，由于 Symbol 类型的特殊性，用 Symbol 类型的值来做对象的 key与常规的定义或修改不同，而 `Object.defineProperty` 是定义 key为 Symbol 的属性的方法之一。
+> 在 ES6 中，由于 Symbol 类型的特殊性，用 Symbol 类型的值来做对象的 key 与常规的定义或修改不同，而 `Object.defineProperty` 是定义 key 为 Symbol 的属性的方法之一。
 
 ### 描述
 
@@ -94,9 +94,9 @@ normalObj.age // 3
 
 这两种描述符都是对象。它们共享以下可选键值（默认值是指在使用 `Object.defineProperty()` 定义属性时的默认值）：
 
-- `configurable` (可配置性)
+- `configurable` （可配置性）
 
-  - 当且仅当该属性的 `configurable` 键值为 true 时，该属性的描述符才能够被改变(???)，同时该属性也能从对应的对象上被删除。
+  - 当且仅当该属性的 `configurable` 键值为 true 时，该属性的描述符才能够被改变 (???)，同时该属性也能从对应的对象上被删除。
   - 默认为 false。
 
 ```js
@@ -128,7 +128,7 @@ obj.name // 张三
 obj.age // undefined
 ```
 
-- `enumerable` (可遍历性)
+- `enumerable` （可遍历性）
 
   - 当且仅当该属性的 `enumerable` 键值为 true 时，该属性才会出现在对象的枚举属性中。
   - 默认为 false。
@@ -165,7 +165,7 @@ obj.age // 3
 
 数据描述符还具有以下可选键值：
 
-- `value` (值)
+- `value` （值）
 
   - 该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。
   - 默认为 undefined。
@@ -187,7 +187,7 @@ Object.defineProperty(obj, 'age', {
 Object.defineProperty(obj, 'class', {
   value: {
     grade: '三年级',
-    class: '1班'
+    class: '1 班'
   }
 })
 
@@ -197,11 +197,11 @@ Object.defineProperty(obj, 'address', {
 
 obj.name // '张三'
 obj.age // 3
-obj.class // {grade: "三年级", class: "1班"}
+obj.class // {grade: "三年级", class: "1 班"}
 obj.address // 湖北省武汉市哈哈区
 ```
 
-- `writable` (可写性)
+- `writable` （可写性）
 
   - 当且仅当该属性的 `writable` 键值为 true 时，属性的值，也就是上面的 value，才能被赋值运算符改变。
   - 默认为 false。
@@ -504,15 +504,15 @@ Object.defineProperty(o, 'a', {
 
 - `configurable` 默认值是 false;
 - 使用【数据描述符】的情况下，`configurable` 为 false：
-  - `value` 赋值(无论严格模式还是非严格模式):
+  - `value` 赋值（无论严格模式还是非严格模式）:
     - 赋同值不会报错，其他值报错
-  - `writable`/`enumerable`/`configurable` 赋值(无论严格模式还是非严格模式):
+  - `writable`/`enumerable`/`configurable` 赋值（无论严格模式还是非严格模式）:
     - 新值设为 true 报错
     - 新值设为 false 不报错
-  - `set`/`get`  赋值:
+  - `set`/`get`  赋值：
     - 都报错
 - 使用【存储描述符】的情况下：`configurable` 为 false：
-  - `enumerable`/`configurable` 赋值(无论严格模式还是非严格模式):
+  - `enumerable`/`configurable` 赋值（无论严格模式还是非严格模式）:
     - 新值设为 true 报错
     - 新值设为 false 不报错
   - 都报错
@@ -534,7 +534,6 @@ Object.defineProperty(o, "a", {
   configurable: true,
   enumerable: true
 });
-
 
 // 另一方面，
 Object.defineProperty(o, "a", { value : 1 });
@@ -626,12 +625,12 @@ console.log(myclass.prototype.y); // 1
 
 一些版本的 Safari 中，`Object.defineProperty()` 在某些情况下会忽略不同于数组当前 `length` 属性的 `length` 值。尝试改变可写性的操作会正常执行而不抛出错误，但事实上并未改变属性的可写性。
 
-只在 Internet Explorer 9及以后版本和 Firefox 23 及以后版本中，才完整地正确地支持数组 `length` 属性的重新定义。目前不要依赖于重定义数组 `length` 属性能够起作用，或在特定情形下起作用。与此同时，即使你能够依赖于它，你也没有合适的理由这样做。
+只在 Internet Explorer 9 及以后版本和 Firefox 23 及以后版本中，才完整地正确地支持数组 `length` 属性的重新定义。目前不要依赖于重定义数组 `length` 属性能够起作用，或在特定情形下起作用。与此同时，即使你能够依赖于它，你也没有合适的理由这样做。
 
 阅读：
 
 1.[Object.defineProperty()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 
-3.[不会Object.defineProperty你就out了](https://imweb.io/topic/56d40adc0848801a4ba198ce)
+3.[不会 Object.defineProperty 你就 out 了](https://imweb.io/topic/56d40adc0848801a4ba198ce)
 
 4.[属性描述对象](https://javascript.ruanyifeng.com/stdlib/attributes.html)

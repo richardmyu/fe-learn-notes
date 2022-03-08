@@ -1,6 +1,6 @@
 # `setTimeout`
 
-### 1.`setTimeout` 最小延迟时间
+## 1.`setTimeout` 最小延迟时间
 
 ---
 
@@ -12,7 +12,7 @@
 
 ---
 
-**1.`timeout` 小于 0 会被设置成0**
+### 1.1.`timeout` 小于 0 会被设置成 0
 
 ```js
 // Google Chrome 91.0.4472.114（正式版本） （64 位）
@@ -25,7 +25,7 @@ setTimeout(()=>console.log(-9),-9);
 // 0 -9
 ```
 
-**2.`timeout` 为 0 不一定是最先执行的**
+### 1.2.`timeout` 为 0 不一定是最先执行的
 
 ```js
 // Google Chrome 91.0.4472.114（正式版本） （64 位）
@@ -42,7 +42,7 @@ setTimeout(()=>console.log(0),0)
 
 而在 Firefox 中，始终是 `0,1,2,3,4,5` 输出。
 
-**3.4ms延迟**
+### 1.3.4ms 延迟
 
 > [8.6 Timers](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers)
 > 10. If timeout is less than 0, then set timeout to 0.
@@ -81,11 +81,11 @@ setTimeout(() => {
 
 5 层嵌套（第 5 层）实测数据：
 
-| 实际延迟 | 频数(5) | 频率(5) |
-| :------: | :-----: | :-----: |
-|    4     |    4    |   8%    |
-|    5     |   33    |   66%   |
-|    6     |   13    |   26%   |
+| 实际延迟 | 频数 (5) | 频率 (5) |
+| :------: | :------: | :------: |
+|    4     |    4     |    8%    |
+|    5     |    33    |   66%    |
+|    6     |    13    |   26%    |
 
 6 层嵌套（第 5、6 层）实测数据：
 
@@ -100,9 +100,9 @@ setTimeout(() => {
 
 > 在 Firefox 中，时间差大概率会到达 15 ms 以上。（主测是 chrome，Firefox 辅助，所以没有翔实的数据）
 
-**4.chrome 实现**
+### 1.4.chrome 实现
 
-上述文章提到的源码连接，没有找到（其实是访问不到:clown_face:，能访问的 [timer](https://github.com/chromium/chromium/tree/master/base/timer)，又看不懂 c++ :angry::angry: ）
+上述文章提到的源码连接，没有找到（其实是访问不到：clown_face:，能访问的 [timer](https://github.com/chromium/chromium/tree/master/base/timer)，又看不懂 c++ :angry::angry: ）
 
 后来切换版本（53.0.2772.0，估计上下浮动几个版本，应该还能看到吧），终于找到了 [DOMTimer.cpp](https://github.com/chromium/chromium/blob/53.0.2772.0/third_party/WebKit/Source/core/frame/DOMTimer.cpp)
 
@@ -119,7 +119,6 @@ static const double oneMillisecond = 0.001;
 // spinning too busily and provides a balance between CPU spinning and
 // the smallest possible interval timer.
 static const double minimumInterval = 0.004;
-
 
  double intervalMilliseconds = std::max(oneMillisecond, interval * oneMillisecond);
     if (intervalMilliseconds < minimumInterval && m_nestingLevel >= maxTimerNestingLevel)
@@ -160,15 +159,14 @@ TimeDelta interval_milliseconds =
 1. 由 `intervalMilliseconds = std::max(oneMillisecond, interval * oneMillisecond);` 可知，chrome 默认最小延迟时间是 1 ms；
 2. `m_nestingLevel >= maxTimerNestingLevel` 也证实了实际在第 5 层，就有了 4 ms 限制；
 
-**4.windows 时间精确度与 15.6s**
+### 1.5.windows 时间精确度与 15.6s
 
 ---
 
-[Windows系统时钟间隔](http://yiiyee.cn/blog/2013/09/01/clock-interval/)
+[Windows 系统时钟间隔](http://yiiyee.cn/blog/2013/09/01/clock-interval/)
 [Why are .NET timers limited to 15 ms resolution?](https://stackoverflow.com/questions/3744032/why-are-net-timers-limited-to-15-ms-resolution)
 
 ---
-
 
 在 Windows 平台，系统时钟并非精确到毫秒级，系统默认的时钟间隔是 15.6 ms。
 
@@ -242,13 +240,13 @@ this timer; and also other Windows applications can alter it, affecting this
 one.
 ```
 
-**5.0 ms**
+### 1.6.5.0 ms
 
 既然追求低延迟，为什么不直接设置为 0 ms 呢？
 
-> 1.其原因在于如果浏览器允许 0ms，会导致 JavaScript 引擎过度循环，也就是说如果浏览器架构是单进程的，那么可能网站很容易无响应。因为浏览器本身也是建立在 event loop 之上的，如果速度很慢的 JavaScript engine 通过 0ms timer 不断安排唤醒系统，那么 event loop 就会被阻塞。那么此时用户会面对什么情况呢？同时遇到 CPU spinning 和基本挂起的浏览器，想想就让人崩溃。<sub>[1]</sub>
+> 1. 其原因在于如果浏览器允许 0ms，会导致 JavaScript 引擎过度循环，也就是说如果浏览器架构是单进程的，那么可能网站很容易无响应。因为浏览器本身也是建立在 event loop 之上的，如果速度很慢的 JavaScript engine 通过 0ms timer 不断安排唤醒系统，那么 event loop 就会被阻塞。那么此时用户会面对什么情况呢？同时遇到 CPU spinning 和基本挂起的浏览器，想想就让人崩溃。<sub>[1]</sub>
 >
-> 2.另外一个就是英特尔团队发现的 chrome 不正常的电量消耗。其发现 timer 导致 CPU spining，而 CPU spinning 的后果是计算机没有办法进入睡眠模式（低功耗模式），也就是耗电非常的快。因此，chrome 团队不得不解决现实问题。当时 chrome 团队的方案是对 timer 设置了很多的限制。后来，经过 chrome 团队的一些实验，发现将 1ms 提升到 4ms，在大部分机器上好像没有了 CPU spinning 和过于耗电的问题。在这种 tradeoff 的情况下达到了 chrome 团队的目标，更加精确的计时器，并且也没有产生更多的问题。<sub>[1]</sub>
+> 2. 另外一个就是英特尔团队发现的 chrome 不正常的电量消耗。其发现 timer 导致 CPU spining，而 CPU spinning 的后果是计算机没有办法进入睡眠模式（低功耗模式），也就是耗电非常的快。因此，chrome 团队不得不解决现实问题。当时 chrome 团队的方案是对 timer 设置了很多的限制。后来，经过 chrome 团队的一些实验，发现将 1ms 提升到 4ms，在大部分机器上好像没有了 CPU spinning 和过于耗电的问题。在这种 tradeoff 的情况下达到了 chrome 团队的目标，更加精确的计时器，并且也没有产生更多的问题。<sub>[1]</sub>
 
 ---
 

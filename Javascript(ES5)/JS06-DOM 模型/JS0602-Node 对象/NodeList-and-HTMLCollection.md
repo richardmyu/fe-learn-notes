@@ -23,9 +23,9 @@ let appGet = document.getElementsByClassName('item')
 appGet //HTMLCollection(2)
 ```
 
-`NodeList` 实例很像数组，可以使用 `length` 属性和 `forEach` 方法(为什么呢个使用 `forEach`)。但是，它不是数组，不能使用 `pop` 或 `push` 之类数组特有的方法。还可以使用 `Array.from()` 将其转换为实际数组。
+`NodeList` 实例很像数组，可以使用 `length` 属性和 `forEach` 方法（为什么呢个使用 `forEach`)。但是，它不是数组，不能使用 `pop` 或 `push` 之类数组特有的方法。还可以使用 `Array.from()` 将其转换为实际数组。
 
-```javascript
+```js
 let app = document.getElementById('app')
 let children = app.childNodes
 
@@ -46,7 +46,7 @@ Array.isArray(Array.from(children)) // true
 
 除了使用 `forEach` 方法遍历 `NodeList` 实例，还可以使用 `for` 循环。
 
-```javascript
+```js
 let children = app.childNodes
 
 for (var i = 0; i < children.length; i++) {
@@ -56,7 +56,7 @@ for (var i = 0; i < children.length; i++) {
 
 注意，`NodeList` 实例可能是动态集合，也可能是静态集合。所谓动态集合就是，DOM 删除或新增一个相关节点，都会立刻反映在 `NodeList` 实例。目前，只有 `Node.childNodes` 返回的是一个动态集合，其他的 `NodeList` 都是静态集合。
 
-```javascript
+```js
 let app = document.getElementById('app')
 let children = app.childNodes
 let items = document.querySelectorAll('.item')
@@ -78,7 +78,7 @@ items.length //2
 
 `forEach` 方法用于遍历 `NodeList` 的所有成员。它接受一个回调函数作为参数，每一轮遍历就执行一次这个回调函数，用法与数组实例的 `forEach` 方法完全一致。
 
-```javascript
+```js
 var children = app.childNodes
 children.forEach(function f(item, i, list) {
   // ...
@@ -112,7 +112,7 @@ children.item()
 
 这三个方法都返回一个 ES6 的遍历器对象，可以通过 `for...of` 循环遍历获取每一个成员的信息。区别在于，`keys()` 返回键名的遍历器，`values()` 返回键值的遍历器，`entries()` 返回的遍历器同时包含键名和键值的数组。
 
-```javascript
+```js
 let app = document.getElementById('app')
 let child = app.childNodes
 for (let key of child.keys()) {
@@ -187,7 +187,7 @@ tests.lin === linkA
 
 `item` 方法接受一个整数值作为参数（参数若传入浮点数，则会忽略小数部分），表示成员的位置，返回该位置上的成员。如果参数值超出成员数量或者不合法（比如小于 0），那么 `item` 方法返回 `null`。不传参数则会报错。
 
-```javascript
+```js
 let imgs = document.images
 imgs.item(0) // <img...
 imgs.item(1) // null
@@ -205,7 +205,7 @@ imgs.item()
 
 `namedItem` 方法的参数是一个字符串，表示 `id` 属性或 `name` 属性的值，返回对应的元素节点。如果没有对应的节点，则返回 `null`。
 
-```javascript
+```js
 let imgs = document.getElementById('img')
 document.images.namedItem('img') === imgs // true
 

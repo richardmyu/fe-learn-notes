@@ -18,9 +18,9 @@ var timeoutID = scope.setTimeout(code[, delay]);
 
 - `function`
 
-  - `function` 是你想要在到期时间(`delay` 毫秒)之后执行的函数。注意这里只是传递一个函数名，而不是要执行函数，若执行函数，就不会有延迟效果。
+  - `function` 是你想要在到期时间 (`delay` 毫秒）之后执行的函数。注意这里只是传递一个函数名，而不是要执行函数，若执行函数，就不会有延迟效果。
 
-```javascript
+```js
 function f() {
   console.log(2);
 }
@@ -30,9 +30,9 @@ setTimeout(f, 1000);
 
 - `code`
 
-  - 这是一个可选语法，你可以使用字符串而不是 `function` ，在 `delay` 毫秒之后编译和执行字符串 (使用该语法是不推荐的, 原因和使用 `eval()` 一样，有安全风险)。若代码不是字符串形式，则不会延迟执行。
+  - 这是一个可选语法，你可以使用字符串而不是 `function` ，在 `delay` 毫秒之后编译和执行字符串 （使用该语法是不推荐的，原因和使用 `eval()` 一样，有安全风险）。若代码不是字符串形式，则不会延迟执行。
 
-```javascript
+```js
 console.log(1);
 setTimeout("console.log(2)", 1000);
 console.log(3);
@@ -43,7 +43,7 @@ console.log(3);
 
 - `delay` ~可选~
 
-  - 延迟的毫秒数 (一秒等于 1000 毫秒)，函数的调用会在该延迟之后发生。如果省略该参数，`delay` 取默认值 0，意味着“马上”执行，或者尽快执行。不管是哪种情况，实际的延迟时间可能会比期待的(`delay` 毫秒数) 值长。
+  - 延迟的毫秒数 （一秒等于 1000 毫秒），函数的调用会在该延迟之后发生。如果省略该参数，`delay` 取默认值 0，意味着“马上”执行，或者尽快执行。不管是哪种情况，实际的延迟时间可能会比期待的 (`delay` 毫秒数） 值长。
 
 > 实际测试中，发现，对于不同浏览器，默认延迟时间并不一致。
 
@@ -68,7 +68,7 @@ HTML5 标准规定，`setTimeout` 的最短时间间隔是 4 毫秒；`setInterv
 
 > 备注：需要注意的是，IE9 及更早的 IE 浏览器不支持向回调函数传递额外参数。
 
-```javascript
+```js
 setTimeout(
   function(a, b) {
     console.log(a + b);
@@ -110,15 +110,15 @@ let intervalID = window.setInterval(code, delay);
 
 - `code`
 
-  - 是另一种语法的应用，是指你想要重复执行的一段字符串构成的代码(使用该语法是不推荐的，不推荐的原因和 `eval()` 一样)。
+  - 是另一种语法的应用，是指你想要重复执行的一段字符串构成的代码（使用该语法是不推荐的，不推荐的原因和 `eval()` 一样）。
 
 - `delay`
 
-  - 是每次延迟的毫秒数 (一秒等于 1000 毫秒)，函数的每次调用会在该延迟之后发生。和 `setTimeout` 一样，实际的延迟时间可能会稍长一点。
+  - 是每次延迟的毫秒数 （一秒等于 1000 毫秒），函数的每次调用会在该延迟之后发生。和 `setTimeout` 一样，实际的延迟时间可能会稍长一点。
 
 `setInterval` 的一个常见用途是实现轮询。下面是一个轮询 `URL` 的 `Hash` 值是否发生变化的例子。
 
-```javascript
+```js
 var hash = window.location.hash;
 var hashWatcher = setInterval(function() {
   if (window.location.hash != hash) {
@@ -131,7 +131,7 @@ var hashWatcher = setInterval(function() {
 
 为了确保两次执行之间有固定的间隔，可以不用 `setInterval`，而是每次执行结束后，使用 `setTimeout` 指定下一次执行的具体时间。
 
-```javascript
+```js
 var i = 1;
 var timer = setTimeout(function f() {
   // ...
@@ -143,7 +143,7 @@ var timer = setTimeout(function f() {
 
 `setTimeout` 和 `setInterval` 函数，都返回一个整数值，表示计数器编号。将该整数传入 `clearTimeout` 和 `clearInterval` 函数，就可以取消对应的定时器。
 
-```javascript
+```js
 var id1 = setTimeout(f, 1000);
 var id2 = setInterval(f, 1000);
 
@@ -153,7 +153,7 @@ clearInterval(id2);
 
 `setTimeout` 和 `setInterval` 返回的整数值是连续的（一定环境下，比如浏览器控制台，或者 js 执行环境等），也就是说，第二个 `setTimeout` 方法返回的整数值，将比第一个的整数值大 1。
 
-```javascript
+```js
 function f() {}
 setTimeout(f, 1000); // 10
 setTimeout(f, 1000); // 11
@@ -162,7 +162,7 @@ setTimeout(f, 1000); // 12
 
 利用这一点，可以写一个函数，取消当前所有的 `setTimeout` 定时器。
 
-```javascript
+```js
 (function() {
   var gid = setInterval(clearAllTimeouts, 0);
 
@@ -178,15 +178,15 @@ setTimeout(f, 1000); // 12
 })();
 ```
 
-## 4.定时器中关于 `this` 的问题
+## 4. 定时器中关于 `this` 的问题
 
 一个需要注意的地方，如果回调函数是对象的方法，那么 `setTimeout` 使得方法内部的 `this` 关键字指向全局环境，而不是定义时所在的那个对象。
 
-由 `setTimeout()` 调用的代码运行在与所在函数完全分离的执行环境上。这会导致，这些代码中包含的 `this` 关键字在非严格模式会指向 `window` (或全局)对象，严格模式下为 `undefined`，这和所期望的 `this` 的值是不一样的。
+由 `setTimeout()` 调用的代码运行在与所在函数完全分离的执行环境上。这会导致，这些代码中包含的 `this` 关键字在非严格模式会指向 `window` （或全局）对象，严格模式下为 `undefined`，这和所期望的 `this` 的值是不一样的。
 
 > 备注：在严格模式下，`setTimeout( )` 的回调函数里面的 `this` 仍然默认指向 `window` 对象， 并不是 `undefined`。
 
-```javascript
+```js
 var x = 1;
 
 var obj = {
@@ -202,9 +202,9 @@ setTimeout(obj.y, 1000); // 1
 
 - **可能的解决方案**
 
-1.包装函数
+1. 包装函数
 
-```javascript
+```js
 var x = 1;
 
 var obj = {
@@ -232,18 +232,18 @@ setTimeout(() => {
 
 3.bind
 
-```javascript
+```js
 setTimeout(obj.y.bind(obj), 1000);
 // 2
 ```
 
-## 5.兼容
+## 5. 兼容
 
-如果你需要向你的回调函数内传递一个或多个参数, 而且还需要兼容那些不支持传递额外参数(不管使用 `setTimeout()` 或者 `setInterval()`)的浏览器时(比如，IE9 及更早的版本), 你可以引入下面的[兼容代码](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setTimeout#%E5%85%BC%E5%AE%B9%E6%97%A7%E7%8E%AF%E5%A2%83%EF%BC%88polyfill%EF%BC%89)来支持向定时器函数传参。
+如果你需要向你的回调函数内传递一个或多个参数，而且还需要兼容那些不支持传递额外参数（不管使用 `setTimeout()` 或者 `setInterval()`) 的浏览器时（比如，IE9 及更早的版本）, 你可以引入下面的 [兼容代码](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setTimeout#%E5%85%BC%E5%AE%B9%E6%97%A7%E7%8E%AF%E5%A2%83%EF%BC%88polyfill%EF%BC%89) 来支持向定时器函数传参。
 
 - **变通方法**
 
-1.匿名函数（这种方式要消耗更多资源）
+1. 匿名函数（这种方式要消耗更多资源）
 
 ```js
 function myFunc(a, b, c) {
@@ -255,7 +255,7 @@ var intervalID = setTimeout(function() {
 }, 1000);
 ```
 
-2.箭头函数
+2. 箭头函数
 
 ```js
 var intervalID = setTimeout(() => {
@@ -269,9 +269,9 @@ var intervalID = setTimeout(() => {
 var intervalID = setTimeout(myFunc.bind(null, 1, 2, 3), 1000);
 ```
 
-## 6.延迟时间
+## 6. 延迟时间
 
-### 6.1.最小延迟时间
+### 6.1. 最小延迟时间
 
 有很多因素会导致 `setTimeout` 的回调函数执行比设定的预期值更久。
 
@@ -283,11 +283,11 @@ var intervalID = setTimeout(myFunc.bind(null, 1, 2, 3), 1000);
 
 - **未被激活的 tabs 的定时最小延迟 >= 1000ms**
 
-为了优化后台 tab 的加载损耗（以及降低耗电量），在未被激活的 tab 中(即那些不处于当前窗口的页面)定时器的最小延时限制为 1S(1000ms)。
+为了优化后台 tab 的加载损耗（以及降低耗电量），在未被激活的 tab 中（即那些不处于当前窗口的页面）定时器的最小延时限制为 1S(1000ms)。
 
 - **追踪型脚本的最小延时限制**
 
-从 Firefox 55 版本开始，追踪型脚本（例如 谷歌分析，或者其他的一些被 Firefox 的 TP lists 识别为追踪型脚本的 外链 URL 脚本）是重点限制加载的对象。在当前正在使用的页面中，这个节流限制的延时依然是 4ms。但是在后台 tabs 中，这个最小延时限制是 10000ms（10s）,这个限制会在文档第一次加载后的 30s 后生效。
+从 Firefox 55 版本开始，追踪型脚本（例如 谷歌分析，或者其他的一些被 Firefox 的 TP lists 识别为追踪型脚本的 外链 URL 脚本）是重点限制加载的对象。在当前正在使用的页面中，这个节流限制的延时依然是 4ms。但是在后台 tabs 中，这个最小延时限制是 10000ms（10s）, 这个限制会在文档第一次加载后的 30s 后生效。
 
 控制这些行为的属性包含以下这些：
 
@@ -299,9 +299,9 @@ var intervalID = setTimeout(myFunc.bind(null, 1, 2, 3), 1000);
 
 除了"最小延时"之外，定时器仍然有可能因为当前页面（或者操作系统/浏览器本身）被其他任务占用导致延时。需要被强调是，直到调用 `setTimeout()` 的主线程执行完其他任务之后，回调函数和代码段才能被执行。
 
-### 6.2.最大延时值
+### 6.2. 最大延时值
 
-浏览器包括 IE, Chrome, Safari, Firefox 以 32 个 bit 字节将延时(delay)存储整数。这就会导致如果一个延时(delay)大于 2147483647 (大约 24.8 天)时就会溢出，导致定时器将会被立即执行。
+浏览器包括 IE, Chrome, Safari, Firefox 以 32 个 bit 字节将延时 (delay) 存储整数。这就会导致如果一个延时 (delay) 大于 2147483647 （大约 24.8 天）时就会溢出，导致定时器将会被立即执行。
 
 ## 7.`debounce` 函数
 
@@ -315,7 +315,7 @@ var intervalID = setTimeout(myFunc.bind(null, 1, 2, 3), 1000);
 
 这种做法叫做**防抖动**（debounce）。假定两次 Ajax 通信的间隔不得小于 2500 毫秒，上面的代码可以改写成下面这样。
 
-```javascript
+```js
 $("textarea").on("keydown", debounce(ajaxAction, 2500));
 
 function debounce(fn, delay) {
@@ -331,7 +331,7 @@ function debounce(fn, delay) {
 }
 ```
 
-## 8.运行机制
+## 8. 运行机制
 
 `setTimeout` 和 `setInterval` 的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间；如果到了，就执行对应的代码；如果不到，就继续等待。这意味着，`setTimeout` 和 `setInterval` 指定的回调函数，必须等到本轮事件循环的所有同步任务都执行完，才会开始执行。
 
@@ -339,7 +339,7 @@ function debounce(fn, delay) {
 
 由于前面的任务到底需要多少时间执行完，是不确定的，所以没有办法保证，`setTimeout` 和 `setInterval` 指定的任务，一定会按照预定时间执行。
 
-```javascript
+```js
 setInterval(function() {
   console.log(2);
 }, 1000);
@@ -355,7 +355,7 @@ sleep(3000);
 
 答案是不会。必须要等到当前脚本的同步任务和“任务队列”中已有的事件，全部处理完以后，才会执行 `setTimeout` 指定的回调函数 f。
 
-```javascript
+```js
 setTimeout(function() {
   console.log(1);
 }, 0);
@@ -366,11 +366,11 @@ console.log(2);
 
 总之，`setTimeout(f, 0)` 这种写法的目的是，尽可能早地执行 f，但是并不能保证立刻就执行 f。
 
-### 8.2.应用
+### 8.2. 应用
 
 `setTimeout(f, 0)` 有几个非常重要的用途。
 
-1.**调整事件的发生顺序**
+1. **调整事件的发生顺序**
 
 它的一大应用是，可以调整事件的发生顺序。比如，网页开发中，某个事件先发生在子元素，然后冒泡到父元素，即子元素的事件回调函数，会早于父元素的事件回调函数触发。如果，想让父元素的事件回调函数先发生，就要用到 `setTimeout(f, 0)`。
 
@@ -378,7 +378,7 @@ console.log(2);
 <input type="button" id="myButton" value="click" />
 ```
 
-```javascript
+```js
 var input = document.getElementById("myButton");
 
 input.onclick = function A() {
@@ -396,7 +396,7 @@ document.body.onclick = function C() {
 
 另一个应用是，用户自定义的回调函数，通常在浏览器的默认动作之前触发。比如，用户在输入框输入文本，`keypress` 事件会在浏览器接收文本之前触发。因此，下面的回调函数是达不到目的的。
 
-```javascript
+```js
 document.getElementById("input-box").onkeypress = function(event) {
   this.value = this.value.toUpperCase();
 };
@@ -404,7 +404,7 @@ document.getElementById("input-box").onkeypress = function(event) {
 
 上面代码想在用户每次输入文本后，立即将字符转为大写。但是实际上，它只能将本次输入前的字符转为大写，因为浏览器此时还没接收到新的文本，所以 `this.value` 取不到最新输入的那个字符。只有用 `setTimeout` 改写，上面的代码才能发挥作用。
 
-```javascript
+```js
 document.getElementById("input-box").onkeypress = function() {
   var self = this;
   setTimeout(function() {
@@ -415,11 +415,11 @@ document.getElementById("input-box").onkeypress = function() {
 
 上面代码将代码放入 `setTimeout` 之中，就能使得它在浏览器接收到文本之后触发。
 
-2.**分割耗时任务**
+2. **分割耗时任务**
 
 `setTimeout` 一个很关键的用法就是分片，如果一段程序过大，我们可以拆分成若干细小的块。由于 `setTimeout(f, 0)` 实际上意味着，将任务放到浏览器最早可得的空闲时段执行，所以那些计算量大、耗时长的任务，常常会被放到几个小部分，分别放到 `setTimeout(f, 0)` 里面执行。
 
-```javascript
+```js
 var div = document.getElementsByTagName("div")[0];
 
 // 写法一
@@ -442,7 +442,7 @@ function func() {
 timer = setTimeout(func, 0);
 ```
 
-上面代码有两种写法，都是改变一个网页元素的背景色。写法一会造成浏览器“堵塞”，因为 JavaScript 执行速度远高于 DOM，会造成大量 DOM 操作“堆积”，而写法二就不会，这就是 `setTimeout(f, 0)` 的好处(但是更耗费时间)。
+上面代码有两种写法，都是改变一个网页元素的背景色。写法一会造成浏览器“堵塞”，因为 JavaScript 执行速度远高于 DOM，会造成大量 DOM 操作“堆积”，而写法二就不会，这就是 `setTimeout(f, 0)` 的好处（但是更耗费时间）。
 
 另一个使用这种技巧的例子是代码高亮的处理。如果代码块很大，一次性处理，可能会对性能造成很大的压力，那么将其分成一个个小块，一次处理一块，比如写成 `setTimeout(highlightNext, 50)` 的样子，性能压力就会减轻。
 

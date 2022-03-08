@@ -6,7 +6,7 @@
 
 “顶层对象”指的是最高一层的对象，所有其他对象都是它的下属。JavaScript 规定，浏览器环境的所有全局变量，都是 `window` 对象的属性。
 
-```javascript
+```js
 var a = 1;
 window.a; // 1
 ```
@@ -25,7 +25,7 @@ window.a; // 1
 
 `window.name` 属性用于设置当前浏览器窗口的名字。
 
-```javascript
+```js
 window.name = "Hello World!";
 console.log(window.name);
 // "Hello World!"
@@ -49,7 +49,7 @@ console.log(window.name);
 
 上面代码检查当前窗口是否关闭。这种检查意义不大，因为只要能运行代码，当前窗口肯定没有关闭。这个属性一般用来检查，使用脚本打开的新窗口是否关闭。
 
-```javascript
+```js
 var popup = window.open();
 
 if (popup !== null && !popup.closed) {
@@ -115,7 +115,7 @@ if (popup !== null && !popup.closed) {
 
 下面是 Chrome 浏览器的 `userAgent`。
 
-```javascript
+```js
 navigator.userAgent;
 // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
 ```
@@ -124,7 +124,7 @@ navigator.userAgent;
 
 不过，通过 `userAgent` 可以大致准确地识别手机浏览器，方法就是测试是否包含 mobi 字符串。
 
-```javascript
+```js
 var ua = navigator.userAgent.toLowerCase();
 
 if (/mobi/i.test(ua)) {
@@ -146,7 +146,7 @@ if (/mobi/i.test(ua)) {
 
 `navigator.platform` 属性返回用户的操作系统信息。
 
-```javascript
+```js
 navigator.platform;
 // "Linux x86_64"
 ```
@@ -179,7 +179,7 @@ javaEnabled 方法返回一个布尔值，表示浏览器是否能运行 Java Ap
 
 `screen.height` 和 `screen.width` 两个属性，一般用来了解设备的分辨率。
 
-```javascript
+```js
 // 显示设备的高度，单位为像素
 screen.height; // 1920
 
@@ -193,7 +193,7 @@ screen.width; // 1080
 
 下面是根据屏幕分辨率，将用户导向不同网页的代码。
 
-```javascript
+```js
 if (screen.width <= 800 && screen.height <= 600) {
   window.location.replace("small.html");
 } else {
@@ -263,7 +263,7 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 下面是一个例子。
 
-```javascript
+```js
 var popup = window.open(
   "somepage.html",
   "DefinitionsWindows",
@@ -279,14 +279,14 @@ var popup = window.open(
 
 `open` 方法返回新窗口的引用。
 
-```javascript
+```js
 var windowB = window.open("windowB.html", "WindowB");
 windowB.window.name; // "WindowB"
 ```
 
 下面是另一个例子。
 
-```javascript
+```js
 var w = window.open();
 w.alert("已经打开新窗口");
 w.location = "http://example.com";
@@ -296,7 +296,7 @@ w.location = "http://example.com";
 
 由于 `open` 这个方法很容易被滥用，许多浏览器默认都不允许脚本自动新建窗口。只允许在用户点击链接或按钮，脚本做出反应，弹出新窗口。因此，有必要检查一下打开新窗口是否成功。
 
-```javascript
+```js
 if (popup === null) {
   // 新建窗口失败
 }
@@ -314,7 +314,7 @@ if (popup === null) {
 
 页面上的打印按钮代码如下。
 
-```javascript
+```js
 document.getElementById("printLink").onclick = function() {
   window.print();
 };
@@ -322,7 +322,7 @@ document.getElementById("printLink").onclick = function() {
 
 非桌面设备（比如手机）可能没有打印功能，这时可以这样判断。
 
-```javascript
+```js
 if (typeof window.print === "function") {
   // 支持打印功能
 }
@@ -340,7 +340,7 @@ if (typeof window.print === "function") {
 
 `focus` 方法会激活指定当前窗口，使其获得焦点。
 
-```javascript
+```js
 var popup = window.open("popup.html", "Popup Window");
 
 if (popup !== null && !popup.closed) {
@@ -380,7 +380,7 @@ if (popup !== null && !popup.closed) {
 
 下面代码可以判断，当前窗口是否为顶层窗口。
 
-```javascript
+```js
 top === self;
 
 // 更好的写法
@@ -409,7 +409,7 @@ window.top === window.self;
 
 对于 `iframe` 嵌入的窗口，`document.getElementById` 方法可以拿到该窗口的 DOM 节点，然后使用 `contentWindow` 属性获得 `iframe` 节点包含的 `window` 对象，或者使用 `contentDocument` 属性获得包含的 `document` 对象。
 
-```javascript
+```js
 var frame = document.getElementById("theFrame");
 var frameWindow = frame.contentWindow;
 
@@ -427,7 +427,7 @@ frameWindow.title;
 
 `iframe` 窗口内部，使用 `window.parent` 引用父窗口。如果当前页面没有父窗口，则 `window.parent` 属性返回自身。因此，可以通过 `window.parent` 是否等于 `window.self`，判断当前窗口是否为 `iframe` 窗口。
 
-```javascript
+```js
 if (window.parent !== window.self) {
   // 当前窗口是子窗口
 }
@@ -435,7 +435,7 @@ if (window.parent !== window.self) {
 
 `iframe` 嵌入窗口的 `window` 对象，有一个 `frameElement` 属性，返回它在父窗口中的 DOM 节点。对于那么非嵌入的窗口，该属性等于 `null`。
 
-```javascript
+```js
 var f1Element = document.getElementById("f1");
 var fiWindow = f1Element.contentWindow;
 f1Window.frameElement === f1Element; // true
@@ -450,7 +450,7 @@ window.frameElement === null; // true
 
 另外，如果 `iframe` 元素设置了 `name` 或 `id` 属性，那么属性值会自动成为全局变量，并且可以通过 `window.frames` 属性引用，返回子窗口的 `window` 对象。
 
-```javascript
+```js
 // HTML 代码为<iframe id="myFrame">
 myFrame; // [HTMLIFrameElement]
 frames.myframe === myFrame; // true
@@ -466,7 +466,7 @@ frames.myframe === myFrame; // true
 
 `load` 事件发生在文档在浏览器窗口加载完毕时。`window.onload` 属性可以指定这个事件的回调函数。
 
-```javascript
+```js
 window.onload = function() {
   var elements = document.getElementsByClassName("example");
   for (var i = 0; i < elements.length; i++) {
@@ -482,7 +482,7 @@ window.onload = function() {
 
 浏览器脚本发生错误时，会触发 `window` 对象的 `error` 事件。我们可以通过 `window.onerror` 属性对该事件指定回调函数。
 
-```javascript
+```js
 window.onerror = function(message, filename, lineno, colno, error) {
   console.log("出错了！--> %s", error.stack);
 };
@@ -506,7 +506,7 @@ window.onerror = function(message, filename, lineno, colno, error) {
 
 下面是一个例子，如果整个页面未捕获错误超过 3 个，就显示警告。
 
-```javascript
+```js
 window.onerror = function(msg, url, line) {
   if (onerror.num++ > onerror.max) {
     alert("ERROR: " + msg + "\n" + url + ":" + line);
@@ -555,7 +555,7 @@ JavaScript 提供四个 URL 的编码/解码方法。
 
 `encodeURI` 方法的参数是一个字符串，代表整个 URL。它会将元字符和语义字符之外的字符，都进行转义。
 
-```javascript
+```js
 encodeURI("http://www.example.com/q=春节");
 // "http://www.example.com/q=%E6%98%A5%E8%8A%82"
 ```
@@ -564,7 +564,7 @@ encodeURI("http://www.example.com/q=春节");
 
 `encodeURIComponent` 只转除了语义字符之外的字符，元字符也会被转义。因此，它的参数通常是 URL 的路径或参数值，而不是整个 URL。
 
-```javascript
+```js
 encodeURIComponent("春节");
 // "%E6%98%A5%E8%8A%82"
 encodeURIComponent("http://www.example.com/q=春节");
@@ -577,7 +577,7 @@ encodeURIComponent("http://www.example.com/q=春节");
 
 `decodeURI` 用于还原转义后的 URL。它是 `encodeURI` 方法的逆运算。
 
-```javascript
+```js
 decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
 // "http://www.example.com/q=春节"
 ```
@@ -598,7 +598,7 @@ decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
 
 `alert` 方法弹出的对话框，只有一个“确定”按钮，往往用来通知用户某些信息。
 
-```javascript
+```js
 // 格式
 alert(message);
 
@@ -614,7 +614,7 @@ alert("Hello World");
 
 `prompt` 方法弹出的对话框，在提示文字的下方，还有一个输入框，要求用户输入信息，并有“确定”和“取消”两个按钮。它往往用来获取用户输入的数据。
 
-```javascript
+```js
 // 格式
 var result = prompt(text[, default]);
 
@@ -640,7 +640,7 @@ var result = prompt('您的年龄？', 25)
 
 `confirm` 方法弹出的对话框，除了提示信息之外，只有“确定”和“取消”两个按钮，往往用来征询用户的意见。
 
-```javascript
+```js
 // 格式
 var result = confirm(message);
 
@@ -652,7 +652,7 @@ var result = confirm("你最近好吗？");
 
 `confirm` 方法返回一个布尔值，如果用户点击“确定”，则返回 true；如果用户点击“取消”，则返回 `false`。
 
-```javascript
+```js
 var okay = confirm("Please confirm this message.");
 if (okay) {
   // 用户按下“确定”
@@ -663,7 +663,7 @@ if (okay) {
 
 `confirm` 的一个用途是，当用户离开当前页面时，弹出一个对话框，问用户是否真的要离开。
 
-```javascript
+```js
 window.onunload = function() {
   return confirm("你确定要离开当面页面吗？");
 };

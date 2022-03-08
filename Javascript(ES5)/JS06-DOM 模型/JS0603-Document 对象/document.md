@@ -1,24 +1,24 @@
 # document 对象
 
-## 1.概述
+## 1. 概述
 
 `document` 对象是文档的根节点，每张网页都有自己的 `document` 对象。`window.document` 属性就指向这个对象。只要浏览器开始载入 HTML 文档，该对象就存在了，可以直接使用。
 
 `document` 对象有不同的办法可以获取。
 
-- a.正常的网页，直接使用 `document` 或 `window.document`。
+- a. 正常的网页，直接使用 `document` 或 `window.document`。
   >
 - b.`iframe` 框架里面的网页，使用 `iframe` 节点的 `contentDocument` 属性。
   >
 - c.Ajax 操作返回的文档，使用 `XMLHttpRequest` 对象的 `responseXML` 属性。
   >
-- d.内部节点的 `ownerDocument` 属性和 `getRootNode()` 方法 。
+- d. 内部节点的 `ownerDocument` 属性和 `getRootNode()` 方法 。
 
 `document` 对象继承了 `EventTarget` 接口、`Node` 接口、`ParentNode` 接口。这意味着，这些接口的方法都可以在 `document` 对象上调用。除此之外，`document` 对象还有很多自己的属性和方法。
 
-## 2.属性
+## 2. 属性
 
-### 2.1.快捷方式属性
+### 2.1. 快捷方式属性
 
 以下属性是指向文档内部的某个节点的快捷方式。
 
@@ -77,7 +77,7 @@ document.body === document.documentElement.lastElementChild
 
 标准模式下，这个属性返回的文档的根元素 `document.documentElement`（即 `<html>`）。**兼容**（quirk）模式下，返回的是 `<body>` 元素，如果该元素不存在，返回 `null`。
 
-```javascript
+```js
 // 页面滚动到浏览器顶部
 document.scrollingElement.scrollTop = 0
 ```
@@ -97,7 +97,7 @@ inp.addEventListener('click', function() {
 
 `document.fullscreenElement` 属性返回当前以全屏状态展示的 DOM 元素。如果不是全屏状态，该属性返回 `null`。
 
-### 2.2.节点集合属性
+### 2.2. 节点集合属性
 
 以下属性返回一个 `HTMLCollection` 实例，表示文档内部特定元素的集合。这些集合都是动态的，原节点有任何变化，立刻会反映在集合中。
 
@@ -121,7 +121,7 @@ inp.addEventListener('click', function() {
 
 `document.scripts` 属性返回所有 `<script>` 节点。
 
-```javascript
+```js
 var scripts = document.scripts
 if (scripts.length !== 0) {
   console.log('当前网页有脚本')
@@ -132,11 +132,11 @@ if (scripts.length !== 0) {
 
 `document.styleSheets` 属性返回文档内嵌或引入的样式表集合。
 
-#### 2.2.7.小结
+#### 2.2.7. 小结
 
 除了 `document.styleSheets`，以上的集合属性返回的都是 `HTMLCollection` 实例。而 `document.styleSheets` 返回的是 `StyleSheetList`。
 
-```javascript
+```js
 document.links instanceof HTMLCollection // true
 document.images instanceof HTMLCollection // true
 document.forms instanceof HTMLCollection // true
@@ -145,7 +145,7 @@ document.scripts instanceof HTMLCollection // true
 document.styleSheets // StyleSheetList {length: 0}
 ```
 
-### 2.3.文档静态信息属性
+### 2.3. 文档静态信息属性
 
 以下属性返回文档信息。
 
@@ -153,7 +153,7 @@ document.styleSheets // StyleSheetList {length: 0}
 
 `document.documentURI` 属性和 `document.URL` 属性都返回一个字符串，表示当前文档的网址。不同之处是它们继承自不同的接口，`documentURI` 继承自 `Document` 接口，可用于所有文档；URL 继承自 `HTMLDocument` 接口，只能用于 HTML 文档。
 
-```javascript
+```js
 document.URL
 // http://www.example.com/about
 
@@ -163,7 +163,7 @@ window.location.href === document.baseURI // true
 window.location.href === document.URL // true
 ```
 
-添加:
+添加：
 
 ```html
 <base href="http://xx.com" />
@@ -201,7 +201,7 @@ window.location.href // file:xxx#inp
 
 #### 2.3.3.`document.location`
 
-`Location` 对象是浏览器提供的原生对象，提供 URL 相关的信息和操作方法。通过 `window.location和document.location` 属性，可以拿到这个对象。具体看后续章节。
+`Location` 对象是浏览器提供的原生对象，提供 URL 相关的信息和操作方法。通过 `window.location 和 document.location` 属性，可以拿到这个对象。具体看后续章节。
 
 #### 2.3.4.`document.lastModified`
 
@@ -223,7 +223,7 @@ document.lastModified // 11/01/2019 16:01:13
 
 注意，`document.lastModified` 属性的值是字符串，所以不能直接用来比较。`Date.parse` 方法将其转为 `Date` 实例，才能比较两个网页。
 
-```javascript
+```js
 var lastVisitedDate = Date.parse('01/01/2018')
 if (Date.parse(document.lastModified) > lastVisitedDate) {
   console.log('网页已经变更')
@@ -307,19 +307,19 @@ document.title // hhh
 
 ---
 
-- a.浏览器开始解析 HTML 文档，`document.readyState` 属性等于 `loading`。
+- a. 浏览器开始解析 HTML 文档，`document.readyState` 属性等于 `loading`。
   >
-- b.浏览器遇到 HTML 文档中的 `<script>` 元素，并且没有 `async` 或 `defer` 属性，就暂停解析，开始执行脚本，这时 `document.readyState` 属性还是等于 `loading`。
+- b. 浏览器遇到 HTML 文档中的 `<script>` 元素，并且没有 `async` 或 `defer` 属性，就暂停解析，开始执行脚本，这时 `document.readyState` 属性还是等于 `loading`。
   >
 - c.HTML 文档解析完成，`document.readyState` 属性变成 `interactive`。
   >
-- d.浏览器等待图片、样式表、字体文件等外部资源加载完成，一旦全部加载完成，`document.readyState` 属性变成 `complete`。
+- d. 浏览器等待图片、样式表、字体文件等外部资源加载完成，一旦全部加载完成，`document.readyState` 属性变成 `complete`。
 
 ---
 
 下面的代码用来检查网页是否加载成功。
 
-```javascript
+```js
 // 基本检查
 if (document.readyState === 'complete') {
   // ...
@@ -346,7 +346,7 @@ var interval = setInterval(function() {
 
 下面代码打开 `iframe` 元素内部文档的 `designMode` 属性，就能将其变为一个所见即所得的编辑器。
 
-```javascript
+```js
 // HTML 代码如下
 // <iframe id="editor" src="about:blank"></iframe>
 var editor = document.getElementById('editor')
@@ -365,7 +365,7 @@ editor.contentDocument.designMode = 'on'
 
 下面是创建 HTML 文档的例子。
 
-```javascript
+```js
 let doc = document.implementation.createHTMLDocument('Title')
 let p = doc.createElement('p')
 p.innerHTML = 'hello world'

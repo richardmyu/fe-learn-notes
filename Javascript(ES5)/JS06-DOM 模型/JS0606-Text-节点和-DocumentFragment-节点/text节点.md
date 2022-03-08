@@ -6,7 +6,7 @@
 
 通常我们使用父节点的 `firstChild`、`nextSibling` 等属性获取文本节点，或者使用 `Document` 节点的 `createTextNode` 方法创造一个文本节点。
 
-```javascript
+```js
 // 获取文本节点
 var textNode = document.querySelector("p").firstChild;
 
@@ -17,7 +17,7 @@ document.querySelector("div").appendChild(textNode);
 
 浏览器原生提供一个 `Text` 构造函数。它返回一个文本节点实例。它的参数就是该文本节点的文本内容。
 
-```javascript
+```js
 // 空字符串
 var text1 = new Text();
 
@@ -35,7 +35,7 @@ var text2 = new Text("This is a text node");
 
 `data` 属性等同于 `nodeValue` 属性，用来设置或读取文本节点的内容。
 
-```javascript
+```js
 // 读取文本内容
 document.querySelector("p").firstChild.data;
 // 等同于
@@ -55,7 +55,7 @@ document.querySelector("p").firstChild.data = "Hello World";
 
 这时，文本节点的 `wholeText` 属性和 `data` 属性，返回值相同。
 
-```javascript
+```js
 var el = document.getElementById("para");
 el.firstChild.wholeText; // "A "
 el.firstChild.data; // "A "
@@ -63,7 +63,7 @@ el.firstChild.data; // "A "
 
 但是，一旦移除 `<em>` 节点，`wholeText` 属性与 `data` 属性就会有差异，因为这时其实 `<p>` 节点下面包含了两个毗邻的文本节点。
 
-```javascript
+```js
 el.removeChild(para.childNodes[1]);
 el.firstChild.wholeText; // "A C"
 el.firstChild.data; // "A "
@@ -79,7 +79,7 @@ el.firstChild.data; // "A "
 
 `nextElementSibling` 属性返回紧跟在当前文本节点后面的那个同级元素节点。如果取不到元素节点，则返回 `null`。
 
-```javascript
+```js
 // HTML 为
 // <div>Hello <em>World</em></div>
 var tn = document.querySelector("div").firstChild;
@@ -105,7 +105,7 @@ tn.nextElementSibling;
 
 ---
 
-```javascript
+```js
 // HTML 代码为
 // <p>Hello World</p>
 var pElementText = document.querySelector("p").firstChild;
@@ -126,7 +126,7 @@ pElementText.substringData(7, 10);
 
 `remove` 方法用于移除当前 `Text` 节点。
 
-```javascript
+```js
 // HTML 代码为
 // <p>Hello World</p>
 document.querySelector("p").firstChild.remove();
@@ -140,7 +140,7 @@ document.querySelector("p").firstChild.remove();
 
 分割后，该方法返回分割位置后方的字符串，而原 `Text` 节点变成只包含分割位置前方的字符串。
 
-```javascript
+```js
 // html 代码为 <p id="p">foobar</p>
 var p = document.getElementById("p");
 var textnode = p.firstChild;
@@ -154,7 +154,7 @@ textnode; // "foo"
 
 接上面的例子，文本节点的 `splitText` 方法将一个 `Text` 节点分割成两个，父元素的 `normalize` 方法可以实现逆操作，将它们合并。
 
-```javascript
+```js
 p.childNodes.length; // 2
 
 // 将毗邻的两个 Text 节点合并
@@ -168,7 +168,7 @@ p.childNodes.length; // 1
 
 它一般用于构建一个 DOM 结构，然后插入当前文档。`document.createDocumentFragment` 方法，以及浏览器原生的 `DocumentFragment` 构造函数，可以创建一个空的 `DocumentFragment` 节点。然后再使用其他 DOM 方法，向其添加子节点。
 
-```javascript
+```js
 var docFrag = document.createDocumentFragment();
 // 等同于
 var docFrag = new DocumentFragment();
@@ -184,7 +184,7 @@ document.querySelector("ul").appendChild(docFrag);
 
 注意，`DocumentFragment` 节点本身不能被插入当前文档。当它作为 `appendChild()`、`insertBefore()`、`replaceChild()` 等方法的参数时，是它的所有子节点插入当前文档，而不是它自身。一旦 `DocumentFragment` 节点被添加进当前文档，它自身就变成了空节点（`textContent` 属性为空字符串），可以被再次使用。如果想要保存 `DocumentFragment` 节点的内容，可以使用 `cloneNode` 方法。
 
-```javascript
+```js
 document.queryselector("ul").appendChild(docFrag.cloneNode(true));
 ```
 
@@ -192,7 +192,7 @@ document.queryselector("ul").appendChild(docFrag.cloneNode(true));
 
 下面是一个例子，使用 `DocumentFragment` 反转一个指定节点的所有子节点的顺序。
 
-```javascript
+```js
 function reverse(n) {
   var f = document.createDocumentFragment();
   while (n.lastChild) f.appendChild(n.lastChild);
@@ -208,5 +208,3 @@ function reverse(n) {
 - b.`firstElementChild`：返回当前 `DocumentFragment` 对象的第一个子元素节点，如果没有则返回 `null`。
 - c.`lastElementChild`：返回当前 `DocumentFragment` 对象的最后一个子元素节点，如果没有则返回 `null`。
 - d.`childElementCount`：返回当前 `DocumentFragment` 对象的所有子元素数量。
-
----

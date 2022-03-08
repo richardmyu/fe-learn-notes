@@ -1,8 +1,8 @@
-### 7.事件类型
+# 事件类型
 
 浏览器支持大量的事件，本章介绍其中一些主要的事件。
 
-#### 7.1.鼠标事件
+## 1. 鼠标事件
 
 鼠标事件指与鼠标相关的事件，继承了 `MouseEvent` 接口。具体的事件主要有以下一些。
 
@@ -37,7 +37,7 @@
 
 `mouseover` 事件和 `mouseenter` 事件，都是鼠标进入一个节点时触发。两者的区别是，`mouseenter` 事件只触发一次，而只要鼠标在节点内部移动，`mouseover` 事件会在子节点上触发多次。
 
-```javascript
+```js
 /* HTML 代码如下
  <ul>
    <li>item 1</li>
@@ -80,7 +80,7 @@ ul.addEventListener(
 
 `mouseout` 事件和 `mouseleave` 事件，都是鼠标离开一个节点时触发。两者的区别是，在父元素内部离开一个子元素时，`mouseleave` 事件不会触发，而 `mouseout` 事件会触发。
 
-```javascript
+```js
 /* HTML 代码如下
  <ul>
    <li>item 1</li>
@@ -121,7 +121,7 @@ ul.addEventListener(
 
 上面代码中，在父节点内部离开子节点，不会触发 `mouseleave` 事件，但是会触发 `mouseout` 事件。
 
-#### 7.2.MouseEvent 接口概述
+## 2.MouseEvent 接口概述
 
 `MouseEvent` 接口代表了鼠标相关的事件，单击（`click`）、双击（`dblclick`）、松开鼠标键（`mouseup`）、按下鼠标键（`mousedown`）等动作，所产生的事件对象都是 `MouseEvent` 实例。此外，滚轮事件和拖拉事件也是 `MouseEvent` 实例。
 
@@ -166,7 +166,7 @@ ul.addEventListener(
 
 下面是一个例子。
 
-```javascript
+```js
 function simulateClick() {
   var event = new MouseEvent("click", {
     bubbles: true,
@@ -179,9 +179,9 @@ function simulateClick() {
 
 上面代码生成一个鼠标点击事件，并触发该事件。
 
-#### 7.3.MouseEvent 接口的实例属性
+## 3.MouseEvent 接口的实例属性
 
-##### 7.3.1 MouseEvent.altKey，MouseEvent.ctrlKey，MouseEvent.metaKey，MouseEvent.shiftKey
+### 3.1 MouseEvent.altKey，MouseEvent.ctrlKey，MouseEvent.metaKey，MouseEvent.shiftKey
 
 `MouseEvent.altKey`、`MouseEvent.ctrlKey`、`MouseEvent.metaKey`、`MouseEvent.shiftKey` 这四个属性都返回一个布尔值，表示事件发生时，是否按下对应的键。它们都是只读属性。
 
@@ -194,7 +194,7 @@ function simulateClick() {
 
 ---
 
-```javascript
+```js
 // HTML 代码如下
 // <body onclick="showKey(event)">
 function showKey(e) {
@@ -207,7 +207,7 @@ function showKey(e) {
 
 上面代码中，点击网页会输出是否同时按下对应的键。
 
-##### 7.3.2 MouseEvent.button，MouseEvent.buttons
+### 3.2 MouseEvent.button，MouseEvent.buttons
 
 `MouseEvent.button` 属性返回一个数值，表示事件发生时按下了鼠标的哪个键。该属性只读。
 
@@ -219,7 +219,7 @@ function showKey(e) {
 
 ---
 
-```javascript
+```js
 // HTML 代码为
 // <button onmouseup="whichButton(event)">点击</button>
 var whichButton = function(e) {
@@ -251,11 +251,11 @@ var whichButton = function(e) {
 
 同时按下多个键的时候，每个按下的键对应的比特位都会有值。比如，同时按下左键和右键，会返回 3（二进制为 011）。
 
-##### 7.3.3 MouseEvent.clientX，MouseEvent.clientY
+### 3.3 MouseEvent.clientX，MouseEvent.clientY
 
 `MouseEvent.clientX` 属性返回鼠标位置相对于浏览器窗口左上角的水平坐标（单位像素），`MouseEvent.clientY` 属性返回垂直坐标。这两个属性都是只读属性。
 
-```javascript
+```js
 // HTML 代码为
 // <body onmousedown="showCoords(event)">
 function showCoords(evt) {
@@ -272,7 +272,7 @@ function showCoords(evt) {
 
 > 这两个属性还分别有一个别名 `MouseEvent.x` 和 `MouseEvent.y`。
 
-##### 7.3.4 MouseEvent.movementX，MouseEvent.movementY
+### 3.4 MouseEvent.movementX，MouseEvent.movementY
 
 `MouseEvent.movementX` 属性返回当前位置与上一个 `mousemove` 事件之间的水平距离（单位像素）。数值上，它等于下面的计算公式。
 
@@ -284,11 +284,11 @@ function showCoords(evt) {
 
 > 这两个属性都是只读属性。
 
-##### 7.3.5 MouseEvent.screenX，MouseEvent.screenY
+### 3.5 MouseEvent.screenX，MouseEvent.screenY
 
 `MouseEvent.screenX` 属性返回鼠标位置相对于屏幕左上角的水平坐标（单位像素），`MouseEvent.screenY` 属性返回垂直坐标。这两个属性都是只读属性。
 
-```javascript
+```js
 // HTML 代码如下
 // <body onmousedown="showCoords(event)">
 function showCoords(evt) {
@@ -299,11 +299,11 @@ function showCoords(evt) {
 }
 ```
 
-##### 7.3.6 MouseEvent.offsetX，MouseEvent.offsetY
+### 3.6 MouseEvent.offsetX，MouseEvent.offsetY
 
 `MouseEvent.offsetX` 属性返回鼠标位置与目标节点左侧的 `padding` 边缘的水平距离（单位像素），`MouseEvent.offsetY` 属性返回与目标节点上方的 `padding` 边缘的垂直距离。这两个属性都是只读属性。
 
-```javascript
+```js
 /* HTML 代码如下
   <style>
     p {
@@ -327,11 +327,11 @@ p.addEventListener(
 
 上面代码中，鼠标如果在 `p` 元素的中心位置点击，会返回 `150 150`。因此中心位置距离左侧和上方的 `padding` 边缘，等于 `padding` 的宽度（100 像素）加上元素内容区域一半的宽度（50 像素）。
 
-##### 7.3.7 MouseEvent.pageX，MouseEvent.pageY
+### 3.7 MouseEvent.pageX，MouseEvent.pageY
 
 `MouseEvent.pageX` 属性返回鼠标位置与文档左侧边缘的距离（单位像素），`MouseEvent.pageY` 属性返回与文档上侧边缘的距离（单位像素）。它们的返回值都包括文档不可见的部分。这两个属性都是只读。
 
-```javascript
+```js
 /* HTML 代码如下
   <style>
     body {
@@ -351,7 +351,7 @@ document.body.addEventListener(
 
 上面代码中，页面高度为 2000 像素，会产生垂直滚动条。滚动到页面底部，点击鼠标输出的 `pageY` 值会接近 2000。
 
-##### 7.3.8 MouseEvent.relatedTarget
+### 3.8 MouseEvent.relatedTarget
 
 `MouseEvent.relatedTarget` 属性返回事件的相关节点。对于那些没有相关节点的事件，该属性返回 `null`。该属性只读。
 
@@ -370,7 +370,7 @@ document.body.addEventListener(
 
 下面是一个例子。
 
-```javascript
+```js
 /*
   HTML 代码如下
   <div id="outer" style="height:50px;width:50px;border-width:1px solid black;">
@@ -396,22 +396,20 @@ inner.addEventListener("mouseleave", function() {
   console.log("离开" + event.target.id + " 进入" + event.relatedTarget.id);
 });
 
-// 鼠标从 outer 进入inner，输出
-// 进入inner 离开outer
-// 进入inner 离开outer
+// 鼠标从 outer 进入 inner，输出
+// 进入 inner 离开 outer
 
-// 鼠标从 inner进入 outer，输出
-// 离开inner 进入outer
-// 离开inner 进入outer
+// 鼠标从 inner 进入 outer，输出
+// 离开 inner 进入 outer
 ```
 
-#### 7.4.MouseEvent 接口的实例方法
+## 4.MouseEvent 接口的实例方法
 
-##### 7.4.1 MouseEvent.getModifierState()
+### 4.1 MouseEvent.getModifierState()
 
 `MouseEvent.getModifierState` 方法返回一个布尔值，表示有没有按下特定的功能键。它的参数是一个表示功能键的字符串。
 
-```javascript
+```js
 document.addEventListener(
   "click",
   function(e) {
@@ -423,9 +421,9 @@ document.addEventListener(
 
 上面的代码可以了解用户是否按下了大写键。
 
-#### 7.5.WheelEvent 接口
+## 5.WheelEvent 接口
 
-##### 7.5.1 概述
+### 5.1 概述
 
 `WheelEvent` 接口继承了 `MouseEvent` 实例，代表鼠标滚轮事件的实例对象。目前，鼠标滚轮相关的事件只有一个 `wheel` 事件，用户滚动鼠标的滚轮，就生成这个事件的实例。
 
@@ -444,7 +442,7 @@ document.addEventListener(
 
 ---
 
-##### 7.5.2 实例属性
+### 5.2 实例属性
 
 `WheelEvent` 事件实例除了具有 `Event` 和 `MouseEvent` 的实例属性和实例方法，还有一些自己的实例属性，但是没有自己的实例方法。
 
@@ -459,7 +457,7 @@ document.addEventListener(
 
 ---
 
-#### 7.6.键盘事件
+## 6. 键盘事件
 
 键盘事件由用户击打键盘触发，主要有 `keydown`、`keypress`、`keyup` 三个事件，它们都继承了 `KeyboardEvent` 接口。
 
@@ -484,7 +482,7 @@ document.addEventListener(
 
 ---
 
-#### 7.7.KeyboardEvent 接口
+## 7.KeyboardEvent 接口
 
 `KeyboardEvent` 接口用来描述用户与键盘的互动。这个接口继承了 `Event` 接口，并且定义了自己的实例属性和实例方法。
 
@@ -510,9 +508,9 @@ document.addEventListener(
 
 ---
 
-#### 7.8.KeyboardEvent 的实例属性
+## 8.KeyboardEvent 的实例属性
 
-##### 7.8.1 KeyboardEvent.altKey，KeyboardEvent.metaKey.ctrlKey，KeyboardEvent.metaKey，KeyboardEvent.shiftKey
+### 8.1 KeyboardEvent.altKey，KeyboardEvent.metaKey.ctrlKey，KeyboardEvent.metaKey，KeyboardEvent.shiftKey
 
 以下属性都是只读属性，返回一个布尔值，表示是否按下对应的键。
 
@@ -527,7 +525,7 @@ document.addEventListener(
 
 下面是一个示例。
 
-```javascript
+```js
 function showChar(e) {
   console.log("ALT: " + e.altKey);
   console.log("CTRL: " + e.ctrlKey);
@@ -538,7 +536,7 @@ function showChar(e) {
 document.body.addEventListener("click", showChar, false);
 ```
 
-##### 7.8.2 KeyboardEvent.code
+### 8.2 KeyboardEvent.code
 
 `KeyboardEvent.code` 属性返回一个字符串，表示当前按下的键的字符串形式。该属性只读。
 
@@ -556,7 +554,7 @@ document.body.addEventListener("click", showChar, false);
 
 ---
 
-##### 7.8.3 KeyboardEvent.key
+### 8.3 KeyboardEvent.key
 
 `KeyboardEvent.key` 属性返回一个字符串，表示按下的键名。该属性只读。
 
@@ -568,7 +566,7 @@ document.body.addEventListener("click", showChar, false);
 
 如果无法识别键名，返回字符串 `Unidentified`。
 
-##### 7.8.4 KeyboardEvent.location
+### 8.4 KeyboardEvent.location
 
 `KeyboardEvent.location` 属性返回一个整数，表示按下的键处在键盘的哪一个区域。它可能取以下值。
 
@@ -581,13 +579,13 @@ document.body.addEventListener("click", showChar, false);
 
 ---
 
-##### 7.8.5 KeyboardEvent.repeat
+### 8.5 KeyboardEvent.repeat
 
 `KeyboardEvent.repeat` 返回一个布尔值，代表该键是否被按着不放，以便判断是否重复这个键，即浏览器会持续触发 `keydown` 和 `keypress` 事件，直到用户松开手为止。
 
-#### 7.9.KeyboardEvent 的实例方法
+## 9.KeyboardEvent 的实例方法
 
-##### 7.9.1 KeyboardEvent.getModifierState()
+### 9.1 KeyboardEvent.getModifierState()
 
 `KeyboardEvent.getModifierState()` 方法返回一个布尔值，表示是否按下或激活指定的功能键。它的常用参数如下。
 
@@ -602,7 +600,7 @@ document.body.addEventListener("click", showChar, false);
 
 ---
 
-```javascript
+```js
 if (
   event.getModifierState("Control") +
     event.getModifierState("Alt") +
@@ -615,7 +613,7 @@ if (
 
 上面代码表示，只要 Control、Alt、Meta 里面，同时按下任意两个或两个以上的键就返回。
 
-#### 7.10.进度事件
+## 10. 进度事件
 
 进度事件用来描述资源加载的进度，主要由 AJAX 请求、`<img>`、`<audio>`、`<video>`、`<style>`、`<link>` 等外部资源的加载触发，继承了 `ProgressEvent` 接口。它主要包含以下几种事件。
 
@@ -635,7 +633,7 @@ if (
 
 下面是一个例子。
 
-```javascript
+```js
 image.addEventListener("load", function(event) {
   image.classList.add("finished");
 });
@@ -649,7 +647,7 @@ image.addEventListener("error", function(event) {
 
 有时候，图片加载会在脚本运行之前就完成，尤其是当脚本放置在网页底部的时候，因此有可能 `load` 和 `error` 事件的监听函数根本不会执行。所以，比较可靠的方式，是用 `complete` 属性先判断一下是否加载完成。
 
-```javascript
+```js
 function loaded() {
   // ...
 }
@@ -667,7 +665,7 @@ if (image.complete) {
 
 `loadend` 事件的监听函数，可以用来取代 `abort` 事件、`load` 事件、`error` 事件的监听函数，因为它总是在这些事件之后发生。
 
-```javascript
+```js
 req.addEventListener("loadend", loadEnd, false);
 
 function loadEnd(e) {
@@ -679,7 +677,7 @@ function loadEnd(e) {
 
 另外，`error` 事件有一个特殊的性质，就是不会冒泡。所以，子元素的 `error` 事件，不会触发父元素的 `error` 事件监听函数。
 
-#### 7.11.ProgressEvent 接口
+## 11.ProgressEvent 接口
 
 `ProgressEvent` 接口主要用来描述外部资源加载的进度，比如 AJAX 加载、`<img>`、`<video>`、`<style>`、`<link>` 等外部资源加载。进度相关的事件都继承了这个接口。
 
@@ -711,7 +709,7 @@ function loadEnd(e) {
 
 下面是一个例子。
 
-```javascript
+```js
 var p = new ProgressEvent("load", {
   lengthComputable: true,
   loaded: 30,
@@ -730,7 +728,7 @@ document.body.dispatchEvent(p);
 
 下面是一个实际的例子。
 
-```javascript
+```js
 var xhr = new XMLHttpRequest();
 
 xhr.addEventListener("progress", updateProgress, false);
@@ -763,7 +761,7 @@ function transferCanceled(evt) {
 
 上面是下载过程的进度事件，还存在上传过程的进度事件。这时所有监听函数都要放在 `XMLHttpRequest.upload` 对象上面。
 
-```javascript
+```js
 var xhr = new XMLHttpRequest();
 
 xhr.upload.addEventListener("progress", updateProgress, false);
@@ -774,7 +772,7 @@ xhr.upload.addEventListener("abort", transferCanceled, false);
 xhr.open();
 ```
 
-#### 7.12.拖拉事件
+## 12. 拖拉事件
 
 **拖拉**（drag）指的是，用户在某个对象上按下鼠标键不放，拖动它到另一个位置，然后释放鼠标键，将该对象放在那里。
 
@@ -819,7 +817,7 @@ xhr.open();
 
 下面的例子展示，如何动态改变被拖动节点的背景色。
 
-```javascript
+```js
 div.addEventListener(
   "dragstart",
   function(e) {
@@ -839,15 +837,13 @@ div.addEventListener(
 
 下面是一个例子，展示如何实现将一个节点从当前父节点，拖拉到另一个父节点中。
 
-```javascript
+```js
 /* HTML 代码如下
  <div class="dropzone">
    <div id="draggable" draggable="true">
      该节点可拖拉
    </div>
  </div>
- <div class="dropzone"></div>
- <div class="dropzone"></div>
  <div class="dropzone"></div>
 */
 
@@ -936,14 +932,14 @@ document.addEventListener(
 
 ---
 
-```javascript
+```js
 <div ondragover="return false">
 <div ondragover="event.preventDefault()">
 ```
 
 上面代码中，如果不取消拖拉事件或者阻止默认行为，就不能在 div 节点上放下被拖拉的节点。
 
-#### 7.13.DragEvent 接口
+## 13.DragEvent 接口
 
 拖拉事件都继承了 `DragEvent` 接口，这个接口又继承了 `MouseEvent` 接口和 `Event` 接口。
 
@@ -955,9 +951,9 @@ document.addEventListener(
 
 `DataTransfer` 的实例对象用来读写拖拉事件中传输的数据。
 
-#### 7.14.DataTransfer 接口
+## 14.DataTransfer 接口
 
-##### 7.14.1 概述
+### 14.1 概述
 
 所有拖拉事件的实例都有一个 `DragEvent.dataTransfer` 属性，用来读写需要传递的数据。这个属性的值是一个 `DataTransfer` 接口的实例。
 
@@ -973,7 +969,7 @@ document.addEventListener(
 
 发生 `drop` 事件时，监听函数取出拖拉的数据，对其进行处理。
 
-##### 7.14.2 DataTransfer 的实例属性
+### 14.2 DataTransfer 的实例属性
 
 `DataTransfer` 实例对象有以下属性。
 
@@ -992,7 +988,7 @@ document.addEventListener(
 
 除了上面这些值，设置其他的值都是无效的。
 
-```javascript
+```js
 target.addEventListener("dragover", function(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -1034,7 +1030,7 @@ target.addEventListener("dragover", function(e) {
 
 `dragstart` 事件的监听函数，可以用来设置这个属性。其他事件的监听函数里面设置这个属性是无效的。
 
-```javascript
+```js
 source.addEventListener("dragstart", function(e) {
   e.dataTransfer.effectAllowed = "move";
 });
@@ -1052,7 +1048,7 @@ target.addEventListener("dragover", function(e) {
 
 下面就是一个接收拖拉文件的例子。
 
-```javascript
+```js
 // HTML 代码如下
 // <div id="output" style="min-height: 200px;border: 1px solid black;">
 //   文件拖拉到这里
@@ -1086,7 +1082,7 @@ div.addEventListener(
     event.preventDefault();
     var files = event.dataTransfer.files;
     for (var i = 0; i < files.length; i++) {
-      div.textContent += files[i].name + " " + files[i].size + "字节\n";
+      div.textContent += files[i].name + " " + files[i].size + "字节、n";
     }
   },
   false
@@ -1095,7 +1091,7 @@ div.addEventListener(
 
 上面代码中，通过 `dataTransfer.files` 属性读取被拖拉的文件的信息。如果想要读取文件内容，就要使用 `FileReader` 对象。
 
-```javascript
+```js
 div.addEventListener("drop", function(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -1121,7 +1117,7 @@ div.addEventListener("drop", function(e) {
 
 下面是一个例子，通过检查 `dataTransfer` 属性的类型，决定是否允许在当前节点执行 `drop` 操作。
 
-```javascript
+```js
 function contains(list, value) {
   for (var i = 0; i < list.length; ++i) {
     if (list[i] === value) return true;
@@ -1162,7 +1158,7 @@ function doDragOver(event) {
 - `getAsFile()`：如果被拖拉是文件，返回该文件，否则返回 `null`
 - `getAsString(callback)`：如果被拖拉的是字符串，将该字符传入指定的回调函数处理
 
-##### 7.14.3 DataTransfer 的实例方法
+### 14.3 DataTransfer 的实例方法
 
 `DataTransfer` 对象有以下方法。
 
@@ -1176,7 +1172,7 @@ function doDragOver(event) {
 
 如果拖拉文本框或者拖拉选中的文本，会默认将文本数据添加到 `dataTransfer` 属性，不用手动指定。
 
-```javascript
+```js
 <div
   draggable="true"
   ondragstart="
@@ -1190,23 +1186,23 @@ function doDragOver(event) {
 
 下面是添加其他类型的数据。由于 `text/plain` 是最普遍支持的格式，为了保证兼容性，建议最后总是将数据保存一份纯文本的格式。
 
-```javascript
+```js
 var dt = event.dataTransfer;
 
 // 添加链接
 dt.setData("text/uri-list", "http://www.example.com");
 dt.setData("text/plain", "http://www.example.com");
-// 添加HTML代码
+// 添加 HTML 代码
 dt.setData("text/html", "Hello there, <strong>stranger</strong>");
 dt.setData("text/plain", "Hello there, <strong>stranger</strong>");
-// 添加图像的URL
+// 添加图像的 URL
 dt.setData("text/uri-list", imageurl);
 dt.setData("text/plain", imageurl);
 ```
 
 可以一次提供多种格式的数据。
 
-```javascript
+```js
 var dt = event.dataTransfer;
 dt.setData("application/x-bookmark", bookmarkString);
 dt.setData("text/uri-list", "http://www.example.com");
@@ -1221,7 +1217,7 @@ dt.setData("text/plain", "http://www.example.com");
 
 下面是一个 `drop` 事件的监听函数，用来取出指定类型的数据。
 
-```javascript
+```js
 function onDrop(event) {
   var data = event.dataTransfer.getData("text/plain");
   event.target.textContent = data;
@@ -1233,7 +1229,7 @@ function onDrop(event) {
 
 `getData` 方法返回的是一个字符串，如果其中包含多项数据，就必须手动解析。
 
-```javascript
+```js
 function doDrop(event) {
   var lines = event.dataTransfer.getData("text/uri-list").split("\n");
   for (let line of lines) {
@@ -1254,7 +1250,7 @@ function doDrop(event) {
 
 下面是一次性取出多种类型的数据。
 
-```javascript
+```js
 function doDrop(event){
   var types = event.dataTransfer.types;
   var supportedTypes = ["text/uri-list", "text/plain"];
@@ -1279,8 +1275,8 @@ function doDrop(event){
 
 下面是一个例子。
 
-```javascript
-// HTML代码为
+```js
+// HTML 代码为
 // <div id="drag-with-image" class="dragdemo" draggable="true">
      drag me
 // </div>
@@ -1293,7 +1289,7 @@ div.addEventListener("dragstart", function(e) {
 }, false);
 ```
 
-#### 7.15.触摸操作概述
+## 15. 触摸操作概述
 
 浏览器的触摸 API 由三个部分组成。
 
@@ -1309,9 +1305,9 @@ div.addEventListener("dragstart", function(e) {
 
 很多时候，触摸事件和鼠标事件同时触发，即使这个时候并没有用到鼠标。这是为了让那些只定义鼠标事件、没有定义触摸事件的代码，在触摸屏的情况下仍然能用。如果想避免这种情况，可以用 `event.preventDefault` 方法阻止发出鼠标事件。
 
-#### 7.16.Touch 接口
+## 16.Touch 接口
 
-##### 7.16.1 Touch 接口概述
+### 16.1 Touch 接口概述
 
 `Touch` 接口代表单个触摸点。触摸点可能是一根手指，也可能是一根触摸笔。
 
@@ -1356,13 +1352,13 @@ div.addEventListener("dragstart", function(e) {
 
 ---
 
-##### 7.16.2 Touch 接口的实例属性
+### 16.2 Touch 接口的实例属性
 
 1).Touch.identifier
 
 `Touch.identifier` 属性返回一个整数，表示触摸点的唯一 ID。这个值在整个触摸过程保持不变，直到触摸事件结束。
 
-```javascript
+```js
 someElement.addEventListener(
   "touchmove",
   function(e) {
@@ -1392,7 +1388,7 @@ someElement.addEventListener(
 
 下面是一个示例。
 
-```javascript
+```js
 div.addEventListener("touchstart", rotate);
 div.addEventListener("touchmove", rotate);
 div.addEventListener("touchend", rotate);
@@ -1415,7 +1411,7 @@ function rotate(e) {
 
 `Touch.target` 属性返回一个元素节点，代表触摸发生时所在的那个元素节点。即使触摸点已经离开了这个节点，该属性依然不变。
 
-#### 7.17. TouchList 接口
+## 17. TouchList 接口
 
 `TouchList` 接口表示一组触摸点的集合。它的实例是一个类似数组的对象，成员是 `Touch` 的实例对象，表示所有触摸点。用户用三根手指触摸，产生的 `TouchList` 实例就会包含三个成员，每根手指的触摸点对应一个 `Touch` 实例对象。
 
@@ -1430,9 +1426,9 @@ function rotate(e) {
 
 ---
 
-#### 7.18.TouchEvent 接口
+## 18.TouchEvent 接口
 
-##### 7.18.1 概述
+### 18.1 概述
 
 `TouchEvent` 接口继承了 `Event` 接口，表示由触摸引发的事件实例，通常来自触摸屏或轨迹板。除了被继承的属性以外，它还有一些自己的属性。
 
@@ -1457,7 +1453,7 @@ function rotate(e) {
 
 ---
 
-##### 7.18.2 实例属性
+### 18.2 实例属性
 
 `TouchEvent` 接口的实例具有 `Event` 实例的所有属性和方法，此外还有一些它自己的实例属性，这些属性全部都是只读。
 
@@ -1474,7 +1470,7 @@ function rotate(e) {
 
 下面是一个示例。
 
-```javascript
+```js
 someElement.addEventListener(
   "touchstart",
   function(e) {
@@ -1503,7 +1499,7 @@ someElement.addEventListener(
 
 下面是一个示例。
 
-```javascript
+```js
 someElement.addEventListener(
   "touchmove",
   function(e) {
@@ -1521,7 +1517,7 @@ someElement.addEventListener(
 
 下面是一个示例。
 
-```javascript
+```js
 someElement.addEventListener(
   "touchstart",
   function(e) {
@@ -1552,7 +1548,7 @@ someElement.addEventListener(
 
 `TouchEvent.targetTouches` 属性返回一个 `TouchList` 实例，成员是触摸事件的目标元素节点内部、所有仍然处于活动状态（即触摸中）的触摸点。
 
-```javascript
+```js
 function touches_in_target(ev) {
   return ev.touches.length === ev.targetTouches.length ? true : false;
 }
@@ -1560,7 +1556,7 @@ function touches_in_target(ev) {
 
 上面代码用来判断，是否所有触摸点都在目标元素内。
 
-#### 7.19.触摸事件的种类
+## 19. 触摸事件的种类
 
 触摸引发的事件，有以下几种。可以通过 `TouchEvent.type` 属性，查看到底发生的是哪一种事件。
 
@@ -1584,7 +1580,7 @@ function touches_in_target(ev) {
 
 下面是一个例子。
 
-```javascript
+```js
 var el = document.getElementsByTagName("canvas")[0];
 el.addEventListener("touchstart", handleStart, false);
 el.addEventListener("touchmove", handleMove, false);
@@ -1607,9 +1603,9 @@ function handleMove(evt) {
 }
 ```
 
-#### 7.20.表单事件
+## 20. 表单事件
 
-##### 7.20.1 Input 事件，select 事件，change 事件
+### 20.1 Input 事件，select 事件，change 事件
 
 以下事件与表单成员的值变化有关。
 
@@ -1623,8 +1619,8 @@ function handleMove(evt) {
 
 `select` 事件当在 `<input>`、`<textarea>` 中选中文本时触发。
 
-```javascript
-// HTML代码为
+```js
+// HTML 代码为
 // <input id="test" type="text" value="Select me!" />
 
 var elem = document.getElementById("test");
@@ -1651,8 +1647,8 @@ elem.addEventListener(
 
 下面是一个例子。
 
-```javascript
-// HTML代码为
+```js
+// HTML 代码为
 // <select size="1" onchange="changeEventHandler(event);">
 //   <option>chocolate</option>
 //   <option>strawberry</option>
@@ -1664,7 +1660,7 @@ function changeEventHandler(event) {
 }
 ```
 
-##### 7.20.2 reset 事件，submit 事件
+### 20.2 reset 事件，submit 事件
 
 以下事件发生在表单对象上，而不是发生在表单的成员上。
 
@@ -1676,9 +1672,9 @@ function changeEventHandler(event) {
 
 `submit` 事件当表单数据向服务器提交时触发。注意，`submit` 事件的发生对象是 `form` 元素，而不是 `button` 元素（即使它的类型是 `submit`），因为提交的是表单，而不是按钮。
 
-#### 7.21.文档事件
+## 21. 文档事件
 
-##### 7.21.1 beforeunload 事件，unload 事件，load 事件，error 事件，pageshow 事件，pagehide 事件
+### 21.1 beforeunload 事件，unload 事件，load 事件，error 事件，pageshow 事件，pagehide 事件
 
 以下事件与网页的加载与卸载相关。
 
@@ -1688,7 +1684,7 @@ function changeEventHandler(event) {
 
 根据标准，只要在该事件的回调函数中，调用了 `event.preventDefault()`，或者 `event.returnValue` 属性的值是一个非空的值，就会自动跳出一个确认框，让用户确认是否关闭网页。如果用户点击“取消”按钮，网页就不会关闭。`event.returnValue` 属性的值，会显示在确认对话框之中。
 
-```javascript
+```js
 window.addEventListener("beforeunload", function(event) {
   event.returnValue = "你确认要离开吗？";
 });
@@ -1700,7 +1696,7 @@ window.addEventListener("beforeunload", function(event) {
 
 但是，浏览器的行为很不一致，Chrome 就不遵守 `event.preventDefault()`，还是会关闭窗口，而 IE 需要显式返回一个非空的字符串。而且，大多数浏览器在对话框中不显示指定文本，只显示默认文本。因此，可以采用下面的写法，取得最大的兼容性。
 
-```javascript
+```js
 window.addEventListener("beforeunload", function(e) {
   var confirmationMessage = "确认关闭窗口？";
 
@@ -1717,7 +1713,7 @@ window.addEventListener("beforeunload", function(e) {
 
 当 `unload` 事件发生时，`document` 对象处于一个特殊状态。所有资源依然存在，但是对用户来说都不可见，UI 互动（`window.open`、`alert`、`confirm` 方法等）全部无效。这时即使抛出错误，也不能停止文档的卸载。
 
-```javascript
+```js
 window.addEventListener("unload", function(event) {
   console.log("文档将要卸载");
 });
@@ -1739,7 +1735,7 @@ window.addEventListener("unload", function(event) {
 
 第一次加载时，它的触发顺序排在 `load` 事件后面。从缓存加载时，`load` 事件不会触发，因为网页在缓存中的样子通常是 `load` 事件的监听函数运行后的样子，所以不必重复执行。同理，如果是从缓存中加载页面，网页内初始化的 JavaScript 脚本（比如 `DOMContentLoaded` 事件的监听函数）也不会执行。
 
-```javascript
+```js
 window.addEventListener("pageshow", function(event) {
   console.log("pageshow: ", event);
 });
@@ -1747,7 +1743,7 @@ window.addEventListener("pageshow", function(event) {
 
 `pageshow` 事件有一个 `persisted` 属性，返回一个布尔值。页面第一次加载时，这个属性是 `false`；当页面从缓存加载时，这个属性是 `true`。
 
-```javascript
+```js
 window.addEventListener("pageshow", function(event) {
   if (event.persisted) {
     // ...
@@ -1761,7 +1757,7 @@ window.addEventListener("pageshow", function(event) {
 
 如果页面包含 `frame` 或 `iframe` 元素，则 `frame` 页面的 `pageshow` 事件和 `pagehide` 事件，都会在主页面之前触发。
 
-##### 7.21.2 DOMContentLoaded 事件，readystatechange 事件
+### 21.2 DOMContentLoaded 事件，readystatechange 事件
 
 以下事件与文档状态相关。
 
@@ -1769,9 +1765,9 @@ window.addEventListener("pageshow", function(event) {
 
 当 HTML 文档下载并解析完成以后，就会在 `document` 对象上触发 `DOMContentLoaded` 事件。这时，仅仅完成了 HTML 文档的解析（整张页面的 DOM 生成），所有外部资源（样式表、脚本、`iframe` 等等）可能还没有下载结束。也就是说，这个事件比 `load` 事件，发生时间早得多。
 
-```javascript
+```js
 document.addEventListener("DOMContentLoaded", function(event) {
-  console.log("DOM生成");
+  console.log("DOM 生成");
 });
 ```
 
@@ -1781,7 +1777,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 `readystatechange` 事件发生在 `Document` 对象和 `XMLHttpRequest` 对象，当它们的 `readyState` 属性发生变化时触发。
 
-```javascript
+```js
 document.onreadystatechange = function() {
   if (document.readyState == "interactive") {
     // ...
@@ -1791,7 +1787,7 @@ document.onreadystatechange = function() {
 
 > IE8 不支持 `DOMContentLoaded` 事件，但是支持这个事件。因此，可以使用 `readystatechange` 事件，在低版本的 IE 中代替 `DOMContentLoaded` 事件。
 
-##### 7.21.3 scroll 事件，resize 事件
+### 21.3 scroll 事件，resize 事件
 
 以下事件与窗口行为有关。
 
@@ -1803,7 +1799,7 @@ document.onreadystatechange = function() {
 
 由于该事件会连续地大量触发，所以它的监听函数之中不应该有非常耗费计算的操作。推荐的做法是使用 `requestAnimationFrame` 或 `setTimeout` 控制该事件的触发频率，然后可以结合 `customEvent` 抛出一个新事件。
 
-```javascript
+```js
 (function() {
   var throttle = function(type, name, obj) {
     var obj = obj || window;
@@ -1821,7 +1817,7 @@ document.onreadystatechange = function() {
     obj.addEventListener(type, func);
   };
 
-  // 将scroll事件重定义为optimizedScroll事件
+  // 将 scroll 事件重定义为 optimizedScroll 事件
   throttle("scroll", "optimizedScroll");
 })();
 
@@ -1834,7 +1830,7 @@ window.addEventListener("optimizedScroll", function() {
 
 改用 `setTimeout` 方法，可以放置更大的时间间隔。
 
-```javascript
+```js
 (function() {
   window.addEventListener("scroll", scrollThrottler, false);
 
@@ -1858,7 +1854,7 @@ window.addEventListener("optimizedScroll", function() {
 
 下面是一个更一般的 `throttle` 函数的写法。
 
-```javascript
+```js
 function throttle(fn, wait) {
   var time = Date.now();
   return function() {
@@ -1882,7 +1878,7 @@ window.addEventListener("scroll", throttle(callback, 1000));
 
 `resize` 事件在改变浏览器窗口大小时触发，发生在 `window`、`body`、`frameset` 对象上面。
 
-```javascript
+```js
 var resizeMethod = function() {
   if (document.body.clientWidth < 768) {
     console.log("移动设备");
@@ -1894,7 +1890,7 @@ window.addEventListener("resize", resizeMethod, true);
 
 该事件也会连续地大量触发，所以最好像上面的 `scroll` 事件一样，通过 `throttle` 函数控制事件触发频率。
 
-##### 7.21.4 hashchange 事件，popstate 事件
+### 21.4 hashchange 事件，popstate 事件
 
 以下事件与文档的 URL 变化相关。
 
@@ -1902,7 +1898,7 @@ window.addEventListener("resize", resizeMethod, true);
 
 `hashchange` 事件在 URL 的 `hash` 部分（即 `#` 号后面的部分，包括 `#` 号）发生变化时触发。如果老式浏览器不支持该属性，可以通过定期检查 `location.hash` 属性，模拟该事件，下面就是代码。
 
-```javascript
+```js
 (function(window) {
   if ("onhashchange" in window.document.body) {
     return;
@@ -1912,7 +1908,7 @@ window.addEventListener("resize", resizeMethod, true);
   var oldURL = location.href;
   var oldHash = location.hash;
 
-  // 每隔100毫秒检查一下URL的hash
+  // 每隔 100 毫秒检查一下 URL 的 hash
   setInterval(function() {
     var newURL = location.href;
     var newHash = location.hash;
@@ -1939,7 +1935,7 @@ window.addEventListener("resize", resizeMethod, true);
 
 该事件对象有一个 `state` 属性，保存 `history.pushState` 方法和 `history.replaceState` 方法为当前记录添加的 `state` 对象。
 
-```javascript
+```js
 window.onpopstate = function(event) {
   console.log("state: " + event.state);
 };
@@ -1955,7 +1951,7 @@ history.go(2); // state: {"page":3}
 
 > 浏览器对于页面首次加载，是否触发 `popstate` 事件，处理不一样，Firefox 不触发该事件。
 
-##### 7.21.5 cut 事件，copy 事件，paste 事件
+### 21.5 cut 事件，copy 事件，paste 事件
 
 以下三个事件属于文本操作触发的事件。
 
@@ -1969,7 +1965,7 @@ history.go(2); // state: {"page":3}
 
 这三个事件都有一个 `clipboardData` 只读属性。该属性存放剪贴的数据，是一个 `DataTransfer` 对象。
 
-##### 7.21.6 焦点事件
+### 21.6 焦点事件
 
 焦点事件发生在 `Element` 节点和 `document` 对象上面，与获得或失去焦点相关。它主要包括以下四个事件。
 
@@ -1986,7 +1982,7 @@ history.go(2); // state: {"page":3}
 
 由于 `focus` 和 `blur` 事件不会冒泡，只能在捕获阶段触发，所以 `addEventListener` 方法的第三个参数需要设为 `true`。
 
-```javascript
+```js
 form.addEventListener(
   "focus",
   function(event) {
