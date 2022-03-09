@@ -4,9 +4,9 @@
 
 变形是一种更强大的方法，可以将原点移动到另一点、对网格进行旋转和缩放。
 
-### 一.状态的保存和恢复
+### 1.状态的保存和恢复
 
-#### 1.`ctx.save()`
+#### 1.1.`ctx.save()`
 
 通过将当前状态放入栈中，保存 canvas 全部状态的方法。
 
@@ -30,7 +30,7 @@ ctx.save();
 
 > Canvas 的状态就是当前画面应用的所有样式和变形的一个快照。
 
-#### 2.`ctx.restore()`
+#### 1.2.`ctx.restore()`
 
 通过在绘图状态栈中弹出顶端的状态，将 canvas 恢复到最近的保存状态的方法。 如果没有保存状态，此方法不做任何改变。
 
@@ -38,9 +38,9 @@ ctx.save();
 ctx.restore();
 ```
 
-### 二.移动
+### 2.移动
 
-#### 1.`ctx.translate()`
+#### 2.1.`ctx.translate()`
 
 将 canvas 按原始 `x` 点的水平方向、原始的 `y` 点垂直方向进行平移变换。
 
@@ -50,9 +50,9 @@ ctx.translate(x, y);
 
 在做变形之前先保存状态是一个良好的习惯。大多数情况下，调用 `restore` 方法比手动恢复原先的状态要简单得多。如果在一个循环中做位移但没有保存和恢复 canvas 的状态，很可能到最后会发现怎么有些东西不见了，那是因为它很可能已经超出 canvas 范围以外了。
 
-### 三.旋转
+### 3.旋转
 
-#### 1.`ctx.rotate()`
+#### 3.1.`ctx.rotate()`
 
 在变换矩阵中增加旋转。角度变量表示一个顺时针旋转角度并且用弧度表示。
 
@@ -65,9 +65,9 @@ ctx.rotate(angle);
 
 > 旋转中心点一直是 canvas 的起始点。 如果想改变中心点，可以通过 `translate()` 方法移动 canvas 。
 
-### 四.缩放
+### 4.缩放
 
-#### 1.`ctx.scale()`
+#### 4.1.`ctx.scale()`
 
 根据 `x` 水平方向和 `y` 垂直方向，为 canvas 单位添加缩放变换。
 
@@ -75,7 +75,7 @@ ctx.rotate(angle);
 ctx.scale(x, y);
 ```
 
-两个参数都是实数，可以为负数，如果比1小，会缩小图形， 如果比1大会放大图形。默认值为 1， 为实际大小。
+两个参数都是实数，可以为负数，如果比 1 小，会缩小图形， 如果比 1 大会放大图形。默认值为 1， 为实际大小。
 
 画布初始情况下， 是以左上角坐标为原点的第一象限。如果参数为负实数， 相当于以 x 或 y 轴作为对称轴镜像反转（例如， 使用 `translate(0,canvas.height); scale(1,-1);` 以 y 轴作为对称轴镜像反转， 就可得到著名的笛卡尔坐标系，左下角为原点）。
 
@@ -83,9 +83,9 @@ ctx.scale(x, y);
 
 > 可以使用 `ctx.scale(-1, 1)` 水平翻转上下文，使用 `ctx.scale(1, -1)` 垂直翻转上下文。
 
-### 五.变形
+### 5.变形
 
-#### 1.`ctx.transform()`
+#### 5.1.`ctx.transform()`
 
 使用矩阵多次叠加当前变换，矩阵由方法的参数进行描述。可以缩放、旋转、移动和倾斜上下文。
 
@@ -110,17 +110,17 @@ ctx.transform(a, b, c, d, e, f);
 
 > 如果任意一个参数是 `Infinity`，变形矩阵也必须被标记为无限大，否则会抛出异常。
 
-#### 2.`ctx.setTransform()`
+#### 5.2.`ctx.setTransform()`
 
 使用 *单位矩阵* 重新设置（覆盖）当前的变换并调用变换，此变换由方法的变量进行描述。
 
-> 从根本上来说，该方法是取消了当前变形,然后设置为指定的变形,一步完成。这个方法不会覆盖当前的变换矩阵，会多次叠加变换。
+> 从根本上来说，该方法是取消了当前变形，然后设置为指定的变形，一步完成。这个方法不会覆盖当前的变换矩阵，会多次叠加变换。
 
 ```js
 ctx.setTransform(a, b, c, d, e, f);
 ```
 
-#### 3.`ctx.resetTransform()` :mag:Experimental
+#### 5.3.`ctx.resetTransform()` :mag:Experimental
 
 使用单位矩阵重新设置当前变形。和调用以下语句是一样的：`ctx.setTransform(1, 0, 0, 1, 0, 0);`。
 
@@ -130,8 +130,7 @@ ctx.resetTransform();
 
 ## 合成和剪辑
 
-### 一.组合 Compositing
-
+### 一。组合 Compositing
 
 不仅可以在已有图形后面再画新图形，还可以用来遮盖指定区域，清除画布中的某些部分（清除区域不仅限于矩形，像 `clearRect()` 方法做的那样）以及更多其他操作。
 
@@ -194,11 +193,11 @@ ctx.globalCompositeOperation = type;
 - `saturation`
   - 保留底层的亮度（luma）和色调（hue），同时采用顶层的色度（chroma）。
 - `color`
-  - 保留了底层的亮度（luma），同时采用了顶层的色调(hue)和色度(chroma)。
+  - 保留了底层的亮度（luma），同时采用了顶层的色调 (hue) 和色度 (chroma)。
 - `luminosity`
   - 保持底层的色调（hue）和色度（chroma），同时采用顶层的亮度（luma）。
 
-### 二.裁切路径
+### 二。裁切路径
 
 裁切路径和普通的 canvas 图形差不多，不同的是它的作用是遮罩，用来隐藏不需要的部分。
 
@@ -218,10 +217,9 @@ ctx.clip(path, fillRule);
 
 可能最大的限制就是图像一旦绘制出来，它就是一直保持那样了。如果需要移动它，我们不得不对所有东西（包括之前的）进行重绘。重绘是相当费时的，而且性能很依赖于电脑的速度。
 
-### 一.动画的基本步骤
+### 一。动画的基本步骤
 
-可以通过以下的步骤来画出一帧:
-
+可以通过以下的步骤来画出一帧：
 1. **清空 canvas**
   除非接下来要画的内容会完全充满 canvas （例如背景图），否则就需要清空所有。最简单的做法就是用 `clearRect` 方法。
 2. **保存 canvas 状态**
@@ -231,7 +229,7 @@ ctx.clip(path, fillRule);
 4. **恢复 canvas 状态**
   如果已经保存了 canvas 的状态，可以先恢复它，然后重绘下一帧。
 
-### 二.操控动画
+### 二。操控动画
 
 为了实现动画，我们需要一些可以定时执行重绘的方法。有两种方法可以实现这样的动画操控。
 
@@ -250,7 +248,7 @@ window.requestAnimationFrame(callback);
 
 ## 像素处理
 
-### 一.ImageData 对象
+### 一。ImageData 对象
 
 `ImageData` 对象中存储着 canvas 对象真实的像素数据，它包含以下几个只读属性：
 
@@ -261,7 +259,7 @@ window.requestAnimationFrame(callback);
 - `data`
   - `Uint8ClampedArray` 类型的一维数组，包含着 RGBA`格式的整型数据，范围在 0 至 255 之间（包括 255）。
 
-`Uint8ClampedArray`  包含 `高度 × 宽度 × 4 bytes` 数据，索引值从 0 到 `(高度×宽度×4)-1`。
+`Uint8ClampedArray`  包含 `高度 × 宽度 × 4 bytes` 数据，索引值从 0 到 `（高度×宽度×4)-1`。
 
 例如，要读取图片中位于第 50 行，第 200 列的像素的 R/G/B/A 值：
 
@@ -269,7 +267,7 @@ window.requestAnimationFrame(callback);
 blueComponent = imageData.data[((50 * (imageData.width * 4)) + (200 * 4)) + 0/1/2/3];
 ```
 
-#### 1.创建一个 ImageData 对象
+#### 1. 创建一个 ImageData 对象
 
 ```js
 // 创建一个新的，空白的 `ImageData` 对象
@@ -281,7 +279,7 @@ var myImageData = ctx.createImageData(anotherImageData);
 
 > 所有像素被预设为透明黑。
 
-#### 2.得到场景像素数据
+#### 2. 得到场景像素数据
 
 ```js
 var myImageData = ctx.getImageData(left, top, width, height);
@@ -293,7 +291,7 @@ var myImageData = ctx.getImageData(left, top, width, height);
 
 > [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata.html)
 
-#### 3.在场景中写入像素数据
+#### 3. 在场景中写入像素数据
 
 ```js
 ctx.putImageData(myImageData, dx, dy);
@@ -301,7 +299,7 @@ ctx.putImageData(myImageData, dx, dy);
 
 > [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata_2.html)
 
-### 二.保存图片
+### 二。保存图片
 
 #### 1.`canvas.toDataURL()`
 
@@ -309,7 +307,7 @@ ctx.putImageData(myImageData, dx, dy);
 
 - 如果画布的高度或宽度是 0，那么会返回字符串 “`data:,`”。
 - 如果传入的类型非 “`image/png`”，但是返回的值以 “`data:image/png`” 开头，那么该传入的类型是不支持的。
-- Chrome支持 “`image/webp`” 类型。
+- Chrome 支持 “`image/webp`” 类型。
 
 ```js
 canvas.toDataURL(type, encoderOptions);
@@ -339,17 +337,17 @@ canvas.toBlob(callback, type, encoderOptions);
 
 ## 点击区域和无障碍访问
 
-### 一.内容兼容
+### 一。内容兼容
 
 `<canvas>` 标签只是一个位图，它并不提供任何已经绘制在上面的对象的信息。 canvas 的内容不能像语义化的 HTML 一样暴露给一些协助工具。一般来说，应该避免在交互型的网站或者 App 上使用 canvas。
 
-### 二.ARIA 规则
+### 二。ARIA 规则
 
 Accessible Rich Internet Applications (ARIA) 定义了让 Web 内容和 Web 应用更容易被有身体缺陷的人获取的办法。可以用 ARIA 属性来描述 canvas 元素的行为和存在目的。
 
 ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其适用于 HTML。`role` 属性定义了对象的通用类型（例如文章、警告，或幻灯片）。额外的 ARIA 属性提供了其他有用的特性，例如表单的描述或进度条的当前值。
 
-### 三.点击区域
+### 三。点击区域
 
 判断鼠标坐标是否在 canvas 上一个特定区域里一直是个有待解决的问题。 hit region API 让你可以在 canvas 上定义一个区域，这让无障碍工具获取 canvas 上的交互内容成为可能。它能让你更容易地进行点击检测并把事件转发到 DOM 元素去。这个 API 有以下三个方法：
 
@@ -362,7 +360,7 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 
 > 均已废弃。慎用！
 
-### 四.焦点圈
+### 四。焦点圈
 
 当用键盘控制时，焦点圈是一个能帮我们在页面上快速导航的标记。要在 canvas 上绘制焦点圈，可以使用 `drawFocusIfNeeded` 属性。
 
@@ -386,33 +384,33 @@ ctx.scrollPathIntoView(path);
 
 ## 优化
 
-`<canvas>` 元素是众多广泛使用的网络2D图像渲染标准之一。它被广泛用于游戏及复杂的图像可视化中。然而，随着网站和应用将 canvas 画布推至极限，性能开始成为问题。
+`<canvas>` 元素是众多广泛使用的网络 2D 图像渲染标准之一。它被广泛用于游戏及复杂的图像可视化中。然而，随着网站和应用将 canvas 画布推至极限，性能开始成为问题。
 
-**1.在离屏 canvas 上预渲染相似的图形或重复的对象**
+**1. 在离屏 canvas 上预渲染相似的图形或重复的对象**
 
 如果发现自己在每个动画帧上重复了一些相同的绘制操作，请考虑将其分流到屏幕外的画布上。然后，可以根据需要频繁地将屏幕外图像渲染到主画布上，而不必首先重复生成该图像的步骤。
 
-**2.避免浮点数的坐标点，用整数取而代之**
+**2. 避免浮点数的坐标点，用整数取而代之**
 
 当画一个没有整数坐标点的对象时会发生子像素渲染。浏览器为了达到抗锯齿的效果会做额外的运算。为了避免这种情况，请保证在你调用 `drawImage()` 函数时，用 `Math.floor()` 函数对所有的坐标点取整。
 
-**3.不要在用 `drawImage` 时缩放图像**
+**3. 不要在用 `drawImage` 时缩放图像**
 
 在离屏 canvas 中缓存图片的不同尺寸，而不要用 `drawImage()` 去缩放它们。
 
-**4.使用多层画布去画一个复杂的场景**
+**4. 使用多层画布去画一个复杂的场景**
 
 在应用程序中，如果会发现某些对象需要经常移动或更改，而其他对象则保持相对静态。在这种情况下，可能的优化是使用多个 `<canvas>` 元素对项目进行分层。
 
-**5.用 CSS 设置大的背景图**
+**5. 用 CSS 设置大的背景图**
 
 如果像大多数游戏那样，有一张静态的背景图，用一个静态的 `<div>` 元素，结合 `background` 特性，以及将它置于画布元素之后。这么做可以避免在每一帧在画布上绘制大图。
 
-**6.用 CSS `transforms` 特性缩放画布**
+**6. 用 CSS `transforms` 特性缩放画布**
 
 CSS `transforms` 使用 GPU，因此速度更快。 最好的情况是不直接缩放画布，或者具有较小的画布并按比例放大，而不是较大的画布并按比例缩小。
 
-**7.关闭透明度**
+**7. 关闭透明度**
 
 如果游戏使用画布而且不需要透明，当使用 `HTMLCanvasElement.getContext()` 创建一个绘图上下文时把 `alpha` 选项设置为 `false` 。这个选项可以帮助浏览器进行内部优化。
 
@@ -420,25 +418,25 @@ CSS `transforms` 使用 GPU，因此速度更快。 最好的情况是不直接�
 var ctx = canvas.getContext('2d', { alpha: false });
 ```
 
-**8.将画布的函数调用集合到一起**
+**8. 将画布的函数调用集合到一起**
 
 例如，画一条折线，而不要画多条分开的直线。
 
-**9.避免不必要的画布状态改变**
+**9. 避免不必要的画布状态改变**
 
-**10.渲染画布中的不同点，而非整个新状态**
+**10. 渲染画布中的不同点，而非整个新状态**
 
-**11.尽可能避免 `shadowBlur` 特性**
+**11. 尽可能避免 `shadowBlur` 特性**
 
-**12.尽可能避免 `text rendering`**
+**12. 尽可能避免 `text rendering`**
 
-**13.尝试不同的方法来清除画布**
+**13. 尝试不同的方法来清除画布**
 
 `clearRect()` vs. `fillRect()` vs. 调整 canvas 大小。
 
-**14.使用 `window.requestAnimationFrame()` 而非 `window.setInterval()`**
+**14. 使用 `window.requestAnimationFrame()` 而非 `window.setInterval()`**
 
-**15.谨慎使用大型物理库**
+**15. 谨慎使用大型物理库**
 
 ## 安全性和“被污染”的 canvas
 
