@@ -16,7 +16,7 @@ CSS transforms 通过一系列 CSS 属性实现，通过使用这些属性，可
 
 #### 1.1.1.translate
 
-根据左(X 轴)和顶部(Y 轴)位置给定的参数，从当前元素位置移动。
+根据左 (X 轴）和顶部 (Y 轴）位置给定的参数，从当前元素位置移动。
 
 #### 1.1.2.rotate
 
@@ -65,7 +65,7 @@ transform: matrix(1, tan(θy), tan(θx), 1, 0, 0);
 
 ![转换公式](http://image.zhangxinxu.com/image/blog/201206/css-transforms-matrix5.gif)
 
-> x、y 表示矩阵偏移元素的中心点的(x,y)；
+> x、y 表示矩阵偏移元素的中心点的 (x,y)；
 > 对于一般地交互应用，`transform` 属性默认提供的些方法是足够了，但是，一些其他的效果，如果 `transform` 属性没有提供接口方法就只能靠 `matrix` 矩阵了。
 
 ### 1.2.3d 转换
@@ -150,7 +150,7 @@ transform-style: flat|preserve-3d;
 
 当该属性值不为 0 和 none 时，会创建新的 层叠上下文。在这种情况下，容器内元素的层叠关系像是使用了 `position: fixed` 一样。
 
-两种书写:
+两种书写：
 
 ```css
 /* 在舞台元素上 */
@@ -158,7 +158,7 @@ transform-style: flat|preserve-3d;
   perspective: 600px;
 }
 
-/* 用在当前动画元素上,与 transform 的其他属性写在一起 */
+/* 用在当前动画元素上，与 transform 的其他属性写在一起 */
 .stage .box {
   transform: perspective(600px) rotateY(45deg);
 }

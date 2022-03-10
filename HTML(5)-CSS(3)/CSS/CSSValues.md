@@ -6,11 +6,11 @@
 
 一个 css 属性值从定义到最终实际使用，是存在一个过程的。这其中涉及到 Specified Values（指定值）、Computed Values（计算值）、 Used Values（使用值）、Actual Values（实际值）等概念，可以想见到，百分比值实际会在这个过程中，根据它的参照计算转化为一个绝对值（比如 100px），然后再被应用。这就是百分比值的意义。
 
-### 1.百分比值的作用
+### 1. 百分比值的作用
 
 简单地说，就是可变性。这可以衍生出自适应、响应式等看起来很有用的东西。
 
-### 2.可用百分比值的常见 css 属性
+### 2. 可用百分比值的常见 css 属性
 
 #### 2.1.width & height
 
@@ -48,7 +48,7 @@ background-position 的初始值就是百分比值 0% 0%。background-position �
 
 对这个属性我还想说，尽管 vertical-align 可以使用数字，百分比值，但浏览器兼容性差异较大，在跨浏览器实现时可能需要较多 hack。因此，我个人倾向于使用 middle 等相对来说兼容性差异较小的关键字类型的值。
 
-#### 2.8.定位用的 bottom、left、right、top
+#### 2.8. 定位用的 bottom、left、right、top
 
 参照是元素的包含块。left 和 right 是参照包含块的宽度，bottom 和 top 是参照包含块的高度。
 
@@ -56,10 +56,10 @@ background-position 的初始值就是百分比值 0% 0%。background-position �
 
 平移变换，在水平方向和垂直方向上也可以使用百分比，其参照是变换的边界框的尺寸（等于这个元素自己的 border-box 尺寸）。例如，一个宽度为 150px，高度为 100px 的元素，定义 `transform:translate(50%, 50%)` 的效果是 `transform:translate(75px, 50px);`。
 
-还可以补充一点，translate3d 对应是还有第三个维度的，但是，经过测试，最后的第 3 个值不可以使用百分比（否则样式定义无效）。至于为什么不可以参照呢，大概是因为那是神秘的第三维度吧...
+还可以补充一点，translate3d 对应是还有第三个维度的，但是，经过测试，最后的第 3 个值不可以使用百分比（否则样式定义无效）。至于为什么不可以参照呢，大概是因为那是神秘的第三维度吧。..
 
-### 3.百分比值的继承
+### 3. 百分比值的继承
 
 请注意，当百分比值用于可继承属性时，只有结合参照值计算后的绝对值会被继承，而不是百分比值本身。例如，一个元素的 font-size 是 14px，并定义了 line-height:150%;，那么该元素的下一级子元素继承到的 line-height 就是 21px，而不会再和子元素自己的 font-size 有关。
 
-[详述css中的百分比值](http://acgtofe.com/posts/2014/06/percentage-in-css)
+[详述 css 中的百分比值](http://acgtofe.com/posts/2014/06/percentage-in-css)

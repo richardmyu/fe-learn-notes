@@ -12,9 +12,9 @@ SVG 是一种 XML 语言，类似 XHTML，可以用来绘制矢量图形。SVG �
 
 ### 基本要素
 
-SVG也提供了一些元素，用于定义圆形、矩形、简单或复杂的曲线。一个简单的 SVG 文档由 `<svg>` 根元素和基本的形状元素构成。
+SVG 也提供了一些元素，用于定义圆形、矩形、简单或复杂的曲线。一个简单的 SVG 文档由 `<svg>` 根元素和基本的形状元素构成。
 
-- SVG 的元素和属性必须按标准格式书写，因为 XML 是区分大小写的（这一点和HTML不同）
+- SVG 的元素和属性必须按标准格式书写，因为 XML 是区分大小写的（这一点和 HTML 不同）
 - SVG 里的属性值必须用引号引起来，就算是数值也必须这样做。
 
 > [hello demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/hello.svg)
@@ -26,6 +26,7 @@ SVG也提供了一些元素，用于定义圆形、矩形、简单或复杂的�
 最值得注意的一点是元素的渲染顺序。SVG 文件全局有效的规则是“后来居上”，越后面的元素越可见。
 
 web 上的 svg 文件可以直接在浏览器上展示，或者通过以下几种方法嵌入到 HTML 文件中：
+
 - 如果 HTML 是 XHTML 并且声明类型为 `application/xhtml+xml`，可以直接把 SVG 嵌入到 XML 源码中。
 - 如果 HTML 是 HTML5 并且浏览器支持 HTML5，同样可以直接嵌入 SVG。然而为了符合 HTML5 标准，可能需要做一些语法调整。
 - 可以通过 `object` 元素引用 `SVG` 文件：
@@ -63,7 +64,7 @@ SVG 文件有两种形式。
 
 **什么是 "像素"?**
 
-基本上，在 SVG 文档中的1个像素对应输出设备（比如显示屏）上的1个像素。但是这种情况是可以改变的，否则 SVG 的名字里也不至于会有“Scalable”（可缩放）这个词。
+基本上，在 SVG 文档中的 1 个像素对应输出设备（比如显示屏）上的 1 个像素。但是这种情况是可以改变的，否则 SVG 的名字里也不至于会有“Scalable”（可缩放）这个词。
 
 在没有进一步规范说明的情况下，1 个用户单位等同于 1 个屏幕单位。要明确改变这种设定，SVG 里有多种方法。
 
@@ -75,27 +76,27 @@ SVG 文件有两种形式。
 <svg width="200" height="200" viewBox="0 0 100 100">
 ```
 
-这里定义的画布尺寸是 `200*200px`。但是，`viewBox` 属性定义了画布上可以显示的区域：从 `(0,0)` 点开始，`100宽*100高` 的区域。这个 `100*100` 的区域，会放到 `200*200` 的画布上显示。于是就形成了放大两倍的效果。
+这里定义的画布尺寸是 `200*200px`。但是，`viewBox` 属性定义了画布上可以显示的区域：从 `(0,0)` 点开始，`100 宽* 100 高` 的区域。这个 `100*100` 的区域，会放到 `200*200` 的画布上显示。于是就形成了放大两倍的效果。
 
 `viewBox` 属性的值是一个包含 4 个参数的列表 `min-x`, `min-y`, `width` and `height`，以空格或者逗号分隔开，在用户空间中指定一个矩形区域映射到给定的元素。
 
-> `min-x/min-y` 实测是视图偏移量。正数往负方向偏移 `min-x/min-y*放缩倍数`；负数则往正方向偏移 `min-x/min-y*放缩倍数`。
+> `min-x/min-y` 实测是视图偏移量。正数往负方向偏移 `min-x/min-y *放缩倍数`；负数则往正方向偏移 `min-x/min-y *放缩倍数`。
 
 这个属性会受到 `preserveAspectRatio` 的影响。
 
 > `width` 或者 `height` 的值，小于或等于 0 的情况下，这个元素将不会被渲染出来。
 
-用户单位和屏幕单位的映射关系被称为用户坐标系统。除了缩放之外，坐标系统还可以旋转、倾斜、翻转。。在定义了具体尺寸单位的 SVG 中，比如单位是 “`cm`” 或 “`in`”，最终图形会以实际大小的1比1比例呈现。
+用户单位和屏幕单位的映射关系被称为用户坐标系统。除了缩放之外，坐标系统还可以旋转、倾斜、翻转。在定义了具体尺寸单位的 SVG 中，比如单位是 “`cm`” 或 “`in`”，最终图形会以实际大小的 1 比 1 比例呈现。
 
 > [viewbox demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/viewbox.svg)
 
 ### `preserveAspectRatio`
 
-通常我们使用 `viewBox` 属性时, 希望图形拉伸占据整个视口。在其他情况下，为了保持图形的长宽比，必须使用统一的缩放比例。`preserveAspectRatio` 属性表示是否强制进行统一缩放。
+通常我们使用 `viewBox` 属性时，希望图形拉伸占据整个视口。在其他情况下，为了保持图形的长宽比，必须使用统一的缩放比例。`preserveAspectRatio` 属性表示是否强制进行统一缩放。
 
 对于支持该属性的所有元素，除了 `<image>` 元素之外，`preserveAspectRatio` 只适用于在同一元素上为 `viewBox` 提供的值。对于这些元素，如果没有提供属性 `viewBox` ，则忽略了 `preserveAspectRatio`。
 
-对于 `<image>` 元素, `preserveAspectRatio` 指示引用的图像应该如何与参考矩形进行匹配，以及是否应该相对于当前用户坐标系保留参考图像的长宽比。
+对于 `<image>` 元素，`preserveAspectRatio` 指示引用的图像应该如何与参考矩形进行匹配，以及是否应该相对于当前用户坐标系保留参考图像的长宽比。
 
 **`<align>`**
 
@@ -103,7 +104,7 @@ SVG 文件有两种形式。
 
 > 注意：如果 `<align>` 的值是 `none` ，则 `<meetOrSlice>` 属性的值将会被忽略。
 
-`<align>` 属性的值一定是下列的值之一:
+`<align>` 属性的值一定是下列的值之一：
 
 - `none` 不会进行强制统一缩放；如果需要，会缩放指定元素的图形内容，使元素的边界完全匹配视图矩形。
 >
@@ -129,16 +130,16 @@ SVG 文件有两种形式。
 
 `<meetOrSlice>` 是可选的，如果提供的话，与 `<align>` 间隔一个或多个的空格。
 
-参数所选值必须是以下值之一:
+参数所选值必须是以下值之一：
 
-- `meet` (默认值) - 图形将缩放到:
+- `meet` （默认值） - 图形将缩放到：
   - 宽高比将会被保留
   - 整个 SVG 的 `viewbox` 在视图范围内是可见的
   - 尽可能的放大 SVG 的 `viewbox`，同时仍然满足其他的条件。
 
 在这种情况下，如果图形的宽高比和视图窗口不匹配，则某些视图将会超出 `viewbox` 范围（即 SVG 的 `viewbox` 视图将会比可视窗口小）。
 
-- `slice` - 图形将缩放到:
+- `slice` - 图形将缩放到：
   - 宽高比将会被保留
   - 整个视图窗口将覆盖 `viewbox`
   - SVG 的 `viewbox` 属性将会被尽可能的缩小，但是仍然符合其他标准。
@@ -151,7 +152,7 @@ SVG 文件有两种形式。
 
 要想插入一个形状，你可以在文档中创建一个元素。不同的元素对应着不同的形状，并且使用不同的属性来定义图形的大小和位置。有一些形状因为可以由其他的形状创建而略显冗余，但是它们用起来方便，可让我们的 SVG 文档简洁易懂。
 
-> 默认黑色(#000)。
+> 默认黑色 (#000)。
 
 ### 矩形
 
@@ -161,9 +162,9 @@ SVG 文件有两种形式。
 ```
 
 - x`
-  - 矩形左上角的x位置
+  - 矩形左上角的 x 位置
 - y`
-  - 矩形左上角的y位置
+  - 矩形左上角的 y 位置
 - width`
   - 矩形的宽度
 - height`
@@ -174,7 +175,6 @@ SVG 文件有两种形式。
   - 圆角的 y 方位的半径
 
 > 只指定 `rx` 和 `ry` 中任意一个，等价于 `rx=a ry=a`。
-
 > [basic_shape_rect demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/basic_shape_rect.svg)
 
 ### 圆形
@@ -186,15 +186,15 @@ SVG 文件有两种形式。
 - `r`
   - 圆的半径
 - `cx`
-  - 圆心的x位置
+  - 圆心的 x 位置
 - `cy`
-  - 圆心的y位置
+  - 圆心的 y 位置
 
 > [basic_shape_circle demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/basic_shape_circle.svg)
 
 ### 椭圆
 
-椭圆不能指定精确的椭圆倾向（假设，举个例子，想画一个45度角倾斜的椭圆），但是可以利用 `transform` 属性实现旋转。
+椭圆不能指定精确的椭圆倾向（假设，举个例子，想画一个 45 度角倾斜的椭圆），但是可以利用 `transform` 属性实现旋转。
 
 ```xml
 <ellipse cx="75" cy="75" rx="20" ry="5"/>
@@ -218,13 +218,13 @@ SVG 文件有两种形式。
 ```
 
 - `x1`
- - 起点的 x 位置
+  - 起点的 x 位置
 - `y1`
- - 起点的 y 位置
+  - 起点的 y 位置
 - `x2`
- - 终点的 x 位置
+  - 终点的 x 位置
 - `y2`
- - 终点的 y 位置
+  - 终点的 y 位置
 
 > [basic_shape_line demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/basic_shape_line.svg)
 
@@ -238,7 +238,6 @@ SVG 文件有两种形式。
   - 点集数列。每个数字用空白、逗号、终止命令符或者换行符分隔开。每个点必须包含 2 个数字，一个是 x 坐标，一个是 y 坐标。所以点列表 `(0,0), (1,1)` 和 `(2,2)` 可以写成这样：“`0 0, 1 1, 2 2`”。
 
 > 非闭合。填充（`fill!=none`）类型，最少需要三个点集，才能绘制；描绘类型（`stroke="color" fill="none"`），最少需要两个点集。
-
 > [basic_shape_polyline demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/basic_shape_polyline.svg)
 
 ### 多边形
@@ -256,9 +255,13 @@ SVG 文件有两种形式。
 
 > [basic_shape_polygon demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/basic_shape_polygon.svg)
 
-### 路径
+## 路径
 
-`path` 可能是 SVG 中最常见的形状。你可以用 `path` 元素绘制矩形（直角矩形或者圆角矩形）、圆形、椭圆、折线形、多边形，以及一些其他的形状，例如贝塞尔曲线、2次曲线等曲线。
+`<path>` 元素是 SVG 基本形状中最强大的一个你可以用 `path` 元素绘制矩形（直角矩形或者圆角矩形）、圆形、椭圆、折线形、多边形，以及一些其他的形状，例如贝塞尔曲线、2 次曲线等曲线。
+
+另外，`path`只需要设定很少的点，就可以创建平滑流畅的线条（比如曲线）。虽然 `polyline` 元素也能实现类似的效果，但是必须设置大量的点（点越密集，越接近连续，看起来越平滑流畅），并且这种做法不能够放大（放大后，点的离散更明显）。所以在绘制 SVG 时，对路径的良好理解很重要。
+
+`path` 元素的形状是通过属性 `d` 定义的，属性 `d` 的值是一个“命令+参数”的序列。
 
 ```xml
 <path d="M 20 230 Q 40 205, 50 230 T 90230"/>
@@ -267,14 +270,6 @@ SVG 文件有两种形式。
 - `d`
   - 一个点集数列以及其它关于如何绘制路径的信息。
 
-> [basic_shape_path demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/basic_shape_path.svg)
-
-## 路径
-
-`<path>` 元素是 SVG 基本形状中最强大的一个。你可以用它创建线条, 曲线, 弧形等等。另外，`path`只需要设定很少的点，就可以创建平滑流畅的线条（比如曲线）。虽然 `polyline` 元素也能实现类似的效果，但是必须设置大量的点（点越密集，越接近连续，看起来越平滑流畅），并且这种做法不能够放大（放大后，点的离散更明显）。所以在绘制 SVG 时，对路径的良好理解很重要。
-
-`path` 元素的形状是通过属性 `d` 定义的，属性 `d` 的值是一个“命令+参数”的序列。
-
 每一个命令都用一个关键字母来表示，比如，字母“`M`”表示的是“Move to”命令，当解析器读到这个命令时，它就知道你是打算移动到某个点。
 
 跟在命令字母后面的，是你需要移动到的那个点的 x 和 y 轴坐标。比如移动到 `(10,10)` 这个点的命令，应该写成 “`M 10 10`”。这一段字符结束后，解析器就会去读下一段命令。
@@ -282,18 +277,19 @@ SVG 文件有两种形式。
 每一个命令都有两种表示方式，一种是用 **大写字母**，表示采用 *绝对定位*。另一种是用 **小写字母**，表示采用 *相对定位*。
 
 > 因为属性 `d` 采用的是用户坐标系统，所以不需标明单位。
+> [basic_shape_path demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/basic_shape_path.svg)
 
 ### 直线命令
 
 `<path>` 元素里有 5 个画直线的命令，顾名思义，直线命令就是在两个点之间画直线。
 
-能够真正画出线的命令有三个（M命令是移动画笔位置，但是不画线）:
+能够真正画出线的命令有三个（M 命令是移动画笔位置，但是不画线）:
 
 - L
 - H 绘制水平线
 - V 绘制垂直线
 
-**M**
+- **M**
 
 ```shell
 M x y
@@ -301,7 +297,7 @@ M x y
 m dx dy
 ```
 
-**L**
+- **L**
 
 ```shell
 L x y
@@ -309,7 +305,7 @@ L x y
 l dx dy
 ```
 
-**H**
+- **H**
 
 ```shell
 H x
@@ -317,7 +313,7 @@ H x
 h dx
 ```
 
-**V**
+- **V**
 
 ```shell
 V y
@@ -325,7 +321,7 @@ V y
 v dy
 ```
 
-**Z**
+- **Z**
 
 `Z` 命令会从当前点画一条直线到路径的起点，尽管我们不总是需要闭合路径，但是它还是经常被放到路径的最后。另外，`Z` 命令不用区分大小写。
 
@@ -339,7 +335,7 @@ z
 
 ### 曲线命令
 
-**三次贝塞尔曲线**
+- **三次贝塞尔曲线**
 
 三次贝塞尔曲线需要定义一个点和两个控制点，需要设置三组坐标参数：
 
@@ -367,7 +363,7 @@ s dx2 dy2, dx dy
 
 > [cubic_bezier_curve demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/path_cubic_bezier_curve.svg)
 
-**二次贝塞尔曲线**
+- **二次贝塞尔曲线**
 
 比三次贝塞尔曲线简单，只需要一个控制点，用来确定起点和终点的曲线斜率。因此它需要两组参数，控制点和终点坐标。
 
@@ -387,7 +383,7 @@ t dx dy
 
 > [quadratic_bezier_curve demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/path_quadratic_bezier_curve.svg)
 
-**弧形**
+- **弧形**
 
 基本上，弧形可以视为圆形或椭圆形的一部分。假设，已知椭圆形的长轴半径和短轴半径，并且已知两个点（在椭圆上），根据半径和两点，可以画出两个椭圆，在每个椭圆上根据两点都可以画出两种弧形。所以，仅仅根据半径和两点，可以画出四种弧形。为了保证创建的弧形唯一，`A` 命令需要用到比较多的参数：
 
@@ -430,7 +426,6 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 此外，在 SVG 中可以分别定义填充色和边框色的不透明度，属性 `fill-opacity` 控制填充色的不透明度，属性 `stroke-opacity` 控制描边的不透明度。
 
 > 如果同时指定了 `rgba` 值和填充/描边不透明度，它们将都被调用。
-
 > [fill stroke](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke.svg)
 
 ### 描边
@@ -439,11 +434,11 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 > 注意，描边是以路径为中心线绘制的注意，描边是以路径为中心线绘制的。
 
-**`stroke-width`**
+- **`stroke-width`**
 
 指定了当前对象的轮廓的宽度。它的默认值是 1。如果使用了一个 `<percentage>`，这个值代表 *当前视口* 的百分比。如果使用了 0 值，则将不绘制轮廓。
 
-**`stroke-linecap`**
+- **`stroke-linecap`**
 
 在开放子路径被设置描边的情况下，用于开放自路径两端的形状。
 
@@ -453,7 +448,7 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 > [stroke-linecap demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke_linecap.svg)
 
-**`stroke-linejoin`**
+- **`stroke-linejoin`**
 
 指明路径的转角处使用的形状或者绘制的基础形状。
 
@@ -464,7 +459,7 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 > [stroke-linejoin demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke_linejoin.svg)
 > [stroke-linejoin demo-2](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke_linejoin_2.svg)
 
-**`stroke-dasharray`**
+- **`stroke-dasharray`**
 
 用来描边的点划线的图案范式。
 
@@ -472,7 +467,7 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 > [stroke-dasharray demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/fill_stroke_dasharray.svg)
 
-**`fill-rule`**
+- **`fill-rule`**
 
 是一个外观属性，它定义了用来确定一个多边形内部区域的算法。
 
@@ -491,7 +486,7 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 > 一些可以在 HTML 里使用的 CSS，在 svg 里可能无法正常工作，比如 `before` 和 `after` 伪类。
 
-也可以定义一个外部的样式表，但是要符合 [normal XML-stylesheet syntax] 的 CSS 规则:
+也可以定义一个外部的样式表，但是要符合 [normal XML-stylesheet syntax] 的 CSS 规则：
 
 ```xml
 <?xml version="1.0" standalone="no"?>
@@ -570,8 +565,6 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 也可以在渐变上使用 `xlink:href` 属性。如果使用了该属性时，一个渐变的属性和颜色中值（stop）可以被另一个渐变包含引用。
 
 ```xml
-
-```
 <linearGradient id="Gradient1">
   <stop class="stop1" offset="0%"/>
   <stop class="stop2" offset="50%"/>
@@ -601,6 +594,7 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
     .stop3 { stop-color: blue; }
   ]]>
 </style>
+```
 
 > [gradient_linear demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_linear.svg.svg)
 
@@ -680,7 +674,6 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 - `repeat` 也会让渐变继续，但是它不会像 `reflect` 那样反向渐变，而是跳回到最初的颜色然后继续渐变；(1,2,1,2...)
 
 > 对线性渐变似乎没有影响。
-
 > [gradient_spreadmethod demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/gradient_spreadmethod.svg)
 
 ### `gradientUnits`
@@ -732,4 +725,4 @@ a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 
 参考
 
-1.[SVG文档](https://developer.mozilla.org/zh-CN/docs/Web/SVG)
+1.[SVG 文档](https://developer.mozilla.org/zh-CN/docs/Web/SVG)

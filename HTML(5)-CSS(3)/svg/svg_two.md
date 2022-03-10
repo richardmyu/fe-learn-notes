@@ -12,7 +12,7 @@
 
 属性 `x` 和属性 `y` 性决定了文本在视口中显示的位置。属性 `text-anchor`，可以有这些值：`start`、`middle`、`end` 或 `inherit`，允许决定从这一点开始的文本流的方向。
 
-和形状元素类似，属性 `fill` 可以给文本填充颜色，属性 `stroke` 可以给文本描边，形状元素和文本元素都可以引用渐变或图案, 相比较 CSS2.1 只能绘制简单的彩色文字，SVG 显得更具有优势。
+和形状元素类似，属性 `fill` 可以给文本填充颜色，属性 `stroke` 可以给文本描边，形状元素和文本元素都可以引用渐变或图案，相比较 CSS2.1 只能绘制简单的彩色文字，SVG 显得更具有优势。
 
 > [text demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/text.svg)
 
@@ -20,7 +20,7 @@
 
 该元素用来标记大块文本的子部分，它必须是一个 `text` 元素或别的 `tspan` 元素的子元素。
 
-tspan元素有以下的自定义属性：
+tspan 元素有以下的自定义属性：
 
 - `x/y`
   - 为容器设置一个新 **绝对** `x/y` 坐标。它覆盖了默认的当前的文本位置。这个属性可以包含一个数列，它们将一个一个地应用到 `tspan` 元素内的每一个字符上。
@@ -51,7 +51,7 @@ tspan元素有以下的自定义属性：
 </text>
 ```
 
-> 实测无效果，见[tref demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/text_tref.svg)
+> 实测无效果，见 [tref demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/text_tref.svg)
 
 ### `textPath`
 
@@ -104,7 +104,6 @@ tspan元素有以下的自定义属性：
 `scale(<x> [<y>])` 变换函数通过 `x` 和 `y` 指定一个 **等比例放大缩小** 操作。如果 `y` 没有被提供，那么假定为等同于 `x`。
 
 > 等比例放大缩小：除了自身几何大小放大缩小，其坐标 `(x,y)` 也会等比放缩。
-
 > [scale demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_scale.svg)
 
 ### `matrix`
@@ -150,7 +149,7 @@ tspan元素有以下的自定义属性：
 
 > [coordinate demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/transform_coordinate.svg)
 
-### SVG嵌在SVG内部
+### SVG 嵌在 SVG 内部
 
 SVG 允许无缝嵌入别的 `svg` 元素。因此你可以利用内部 `svg` 元素的属性 `viewBox`、属性 `width` 和属性 `height` 简单创建一个新的坐标系统。
 
@@ -219,7 +218,6 @@ SVG 元素 `<clipPath>` 定义一条剪切路径，可作为其他元素的 `cli
 
 有一个简单方法可以用来为整个元素设置透明度。它就是 `opacity` 属性：
 
-
 ```xml
 <rect x="0" y="0" width="100" height="100" opacity=".5" />
 ```
@@ -265,7 +263,7 @@ SVG 文件是这样的一种图像：不被当做外部资源加载，不可以�
 
 因为 SVG 是一个 XML 应用，所以总是可以在 SVG 文档的任何位置嵌入任意 XML。但是没有必要定义周围的 SVG 需要怎样反作用于这个内容。实际上，在一个遵从的浏览者中，根本没有反作用的方法，数据将简单被忽略。
 
-因此特地在 SVG中 添加了 `<foreignObject>` 元素。它的唯一的目的是作为其它标记的容器和 SVG 样式属性的载体（更突出的 `width/height` 和 `x/y` 用来定义该对象占用的空间/位置）。
+因此特地在 SVG 中 添加了 `<foreignObject>` 元素。它的唯一的目的是作为其它标记的容器和 SVG 样式属性的载体（更突出的 `width/height` 和 `x/y` 用来定义该对象占用的空间/位置）。
 
 `foreignObject` 元素允许包含来自不同的 XML 命名空间的元素。在浏览器的上下文中，很可能是 XHTML / HTML。
 
@@ -274,4 +272,3 @@ SVG 文件是这样的一种图像：不被当做外部资源加载，不可以�
 因为 `foreignObject` 是一个 SVG 元素，所以可以像用图像那样，使用任何 SVG 的精华，它将被应用到它的内容。
 
 > [foreignObject demo](https://github.com/richardmyu/CSS-And-JS-Animate/blob/master/htmlcss/svg/foreignObject.svg)
-

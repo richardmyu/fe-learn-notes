@@ -1,8 +1,8 @@
 # HTML5
 
-## 一.新标签
+## 新标签
 
-```javascript
+```js
 <header><!--头部-->
     <nav></nav><!--导航-->
     <main><!--主体-->
@@ -20,14 +20,14 @@
         </hygroup>
         <progress max="100" value="50"></progress><!--进度条-->
         <time>12:00</time><!--时间标记-->
-        <mark>O(∩_∩)O哈哈哈~</mark><!--高亮文本-->
+        <mark>O(∩_∩)O 哈哈哈~</mark><!--高亮文本-->
         <input type="text" list="i">
-        <datalist id="i"><!--配合input的隐藏列表，可以输入，也可以选择-->
+        <datalist id="i"><!--配合 input 的隐藏列表，可以输入，也可以选择-->
             <option value="小明"></option><!--选项-->
             <option value="小兰"></option>
             <option value="小写"></option>
         </datalist>
-        <details><!--隐藏列表，配合summary使用，只能选择，不能输入-->
+        <details><!--隐藏列表，配合 summary 使用，只能选择，不能输入-->
             <summary>today</summary><!--标题-->
             <ul>
                 <li>1</li><!--选项-->
@@ -40,7 +40,7 @@
 <footer></footer><!--尾部-->
 ```
 
-## 二.表单元素
+## 表单元素
 
 - 1.HTML5 表单的属性
 
@@ -72,7 +72,7 @@
 
 必填选项；
 
-```javascript
+```js
 <form autocomplete="on" id="form1">
     <label for="user">用户</label>
     <input name="user" type="text" id="user" autofocus>
@@ -99,11 +99,11 @@
 <input name="age" type="text" form="form1">
 ```
 
-- 2.表单元素的 type 类型
+- 2. 表单元素的 type 类型
 
-```javascript
+```js
     <form action="">
-    //action:跳转地址，不写默认是自身
+    //action: 跳转地址，不写默认是自身
 
     // 文本：
     <input type="text"><br>
@@ -126,7 +126,7 @@
     // 电话：
     <input type="tel" value=""><br>
 
-    // 日期(年-月-日):
+    // 日期（年-月-日）:
     <input type="date"><br>
 
     // 日期（时-分）:
@@ -152,7 +152,7 @@
 </form>
 ```
 
-- 3.表单元素事件：
+- 3. 表单元素事件：
 
   1).`onfocus`
 
@@ -190,7 +190,7 @@
 
   1).`Required`
 
-```javascript
+```js
 //Required 属性主要防止域为空时提交表单。该属性不需要设置任何值。
 
 //语法：<input type="text" required />
@@ -198,7 +198,7 @@
 
 2).`Pattern`
 
-```javascript
+```js
 //Pattern 属性的作用是实现元素的验证。它支持使用正则表达式定制验证规则。
 
 //语法：<input type="text" pattern="13[0-9]\d{8}">
@@ -206,15 +206,15 @@
 
 3).`Min` 和 `Max`
 
-```javascript
+```js
 //min、max 和 step 属性用于为包含数字或日期的 input 类型规定限定。
 
-//语法：：<input type="number" min="1" max="5">
+//语法：<input type="number" min="1" max="5">
 ```
 
 4).`Minlength` 和 `Maxlength`
 
-```javascript
+```js
 //Minlength 和 Maxlength 属性的作用是定制元素允许的最小字符串和最大字符串。
 
 //语法：<input type="text" minlength="1" maxlength="5">
@@ -222,7 +222,7 @@
 
 5).`Validity`
 
-```javascript
+```js
 //在 HTML5 提供的有关表单验证的新特性中，提供了一个 validity 属性。该属性是利用 ValidityState 对象描述指定元素的有效状态。
 
 //ValidityState 对象代表了有效状态，可以实现对指定元素进行约束验证功能，该对象提供了一系列的属性，这些属性用于描述指定元素的有效状态。
@@ -232,11 +232,11 @@
 //例子：Ele .validity . valid
 ```
 
-- 5.验证状态
+- 5. 验证状态
 
   5).`valid`
 
-```javascript
+```js
 //执行完毕，我们会得到一个布尔值，它表示表单控件是否已通过了所有的验证约束条件。
 //可以把 valid 特性看做是最终验证结果：如果所有约束条件都通过了，Valid 的值就是 true。否则，只要有一项约束没通过，valid 的值都是 false。
 
@@ -249,7 +249,7 @@
 
 6).`valueMissing`
 
-```javascript
+```js
 //如果表单控件设置了 required 特性，那么在用户填写完或者通过代码调用方式填值之前，控件会一直处于无效状态。例如：空的文本输入框无法通过必填检查，除非在其中输入任意文本。输入值为空时，valueMissing 会返回 true。
 
     if (username.validity.valueMissing ){
@@ -261,12 +261,12 @@
 
 7).`typeMismatch`
 
-```javascript
+```js
 //如果输入语法不符合指定的类型，那么这个状态就是 true。
 //例如：email 类型输入元素的内容不是电子邮件地址。
 
     if( email.validity.typeMismatch ) {
-        alert(‘Email格式不正确‘);
+        alert(‘Email 格式不正确‘);
     } else {
         alert(‘通过‘);
     }
@@ -274,7 +274,7 @@
 
 8).`pattenMismatch`
 
-```javascript
+```js
 //如果输入内容与所设置模式不匹配，那么这个状态就是 true。
 
     if( phone.validity.patternMismatch ) {
@@ -286,11 +286,11 @@
 
 9).`tooLong`
 
-```javascript
+```js
 //如果输入内容长度大于 maxlength 属性指定值，那么这个状态就是 true。
 
     if( pwd.validity.tooLong ) {
-        alert(‘密码长度不能超过12位‘);
+        alert(‘密码长度不能超过 12 位‘);
     } else {
         alert(‘通过‘);
     }
@@ -298,7 +298,7 @@
 
 10).`rangeUnderflow`
 
-```javascript
+```js
 //如果输入内容小于 min 属性声明的值，那么这个状态就是 true。
 
     if( age.validity.rangeUnderflow ) {
@@ -310,7 +310,7 @@
 
 11).`stepMismatch`
 
-```javascript
+```js
 //如果给定的值与 min，max，step 不一致，那么这个状态就是 true。
 
     if( elem.validity.setpMismatch ) {
@@ -322,7 +322,7 @@
 
 12).`customError`
 
-```javascript
+```js
 //如果元素使用 setCustomValidity() 方法设置了自定义错误，那么这个状态就是 true。
 
     if( uname.value == "" ) {
@@ -338,14 +338,14 @@
 
 语法：
 
-```javascript
-<audio src="">您的浏览器不支持audio元素</audio>
+```js
+<audio src="">您的浏览器不支持 audio 元素</audio>
 <video src="" width="300" height="250" controls poster=""></video>
 ```
 
 由于各家浏览器制造商对标准音视频编解码器支持上为达成一致，通常需要 `<source>` 元素来指定不同格式的媒体源：
 
-```javascript
+```js
 <vedio id="">
     <source src="img.mov" type="video/quicktime">
     <source src="img.ogv" type="video/ogg";codes="theora,vorbis">
@@ -354,18 +354,18 @@
 
 source 元素具有几个属性：src 属性是指播放媒体的 URL 地址；type 表示媒体类型，其属性值为播放文件的 MIME 类型，该属性中的 codes 参数表示所使用的媒体的编码格式。type 属性是可选的，但最好不要省略 type 属性，否则浏览器会从上往下选择时无法判断自己能不能播放而先行下载一小段视频（音频）数据，这样有可能浪费宽带和时间。
 
-```javascript
-    src:播放地址
-    controls:控制条
-    autoplay:自动播放
-    loop:循环播放
-    muted:静音
-    poster:视频播放之前，用图片掩盖
+```js
+    src: 播放地址
+    controls: 控制条
+    autoplay: 自动播放
+    loop: 循环播放
+    muted: 静音
+    poster: 视频播放之前，用图片掩盖
 
-    currentSrc:返回当前音视频的地址
-    currentTime:获取或设置当前播放时间
+    currentSrc: 返回当前音视频的地址
+    currentTime: 获取或设置当前播放时间
 
-    //获取音视频的总时间(缺解析文件)
+    //获取音视频的总时间（缺解析文件）
     console.log(audio.duration);
     console.log(video.duration);
 
@@ -398,7 +398,7 @@ source 元素具有几个属性：src 属性是指播放媒体的 URL 地址；t
 |    **duration**     | 返回当前音频/视频的长度（以秒计）                       |
 |        ended        | 返回音频/视频的播放是否已结束                           |
 |      **loop**       | 设置或返回音频/视频是否应在结束时重新播放               |
-|     **muted **      | 设置或返回音频/视频是否静音                             |
+|      **muted**      | 设置或返回音频/视频是否静音                             |
 |     **paused**      | 设置或返回音频/视频是否暂停                             |
 |  **playbackRate**   | 设置或返回音频/视频播放的速度                           |
 |       played        | 返回表示音频/视频已播放部分的 TimeRanges 对象           |
@@ -406,11 +406,11 @@ source 元素具有几个属性：src 属性是指播放媒体的 URL 地址；t
 |     readyState      | 返回音频/视频当前的就绪状态                             |
 |      seekable       | 返回表示音频/视频可寻址部分的 TimeRanges 对象           |
 |       seeking       | 返回用户是否正在音频/视频中进行查找                     |
-|      **src **       | 设置或返回音频/视频元素的当前来源                       |
+|       **src**       | 设置或返回音频/视频元素的当前来源                       |
 |      startDate      | 返回表示当前时间偏移的 `Date` 对象                      |
 |     **volume**      | 设置或返回音频/视频的音量                               |
 
-### 5.本地储存和浏览器储存
+### 5. 本地储存和浏览器储存
 
 Web Storage 存储机制是对 HTML4 中 cookies 存储机制的一个改善。而本地数据库是 HTML5 新增的一个功能，使用它可以在客户端本地建立一个数据库------原本必须要保存在服务端数据库中的内容现在可以直接保存在客户端了，这大大减轻了服务器端的负担，同时加快了数据访问的速度。
 
@@ -422,8 +422,8 @@ Web Storage 功能，顾名思义，就是在 Web 上存储数据的功能，而
 
 将数据保存在客户端本地的硬件设备中，即便浏览器被关闭，该数据仍然还在，下次打开浏览器访问网站时仍然可以继续使用。
 
-```javascript
-//localStorage,只要使用浏览器打开,存在里面的内容会被永久存储,关闭页 面再打开任然存在,在其他的网页也可以获取
+```js
+//localStorage, 只要使用浏览器打开，存在里面的内容会被永久存储，关闭页 面再打开任然存在，在其他的网页也可以获取
 
     localStorage.zf="珠峰培训";
     alert(localStorage.zf);
@@ -443,8 +443,8 @@ Web Storage 功能，顾名思义，就是在 Web 上存储数据的功能，而
 
 将数据保存到 `session` 对象中。所谓 session 是指用户访问某个网站时，从进入网站到浏览器关闭所进过的这段时间。session 对象可以用来保存这段时间内要求保存的任何数据。
 
-```javascript
-//sessionStorage:存储在浏览器上,只要浏览器不关闭,就会有, 关闭浏览器就是消失,但是在其他的页面中获取不到
+```js
+//sessionStorage: 存储在浏览器上，只要浏览器不关闭，就会有，关闭浏览器就是消失，但是在其他的页面中获取不到
 
      if(!sessionStorage.getItem("code")){
          sessionStorage.setItem("code",1)

@@ -16,10 +16,10 @@
 
 `filterUnits` 属性定义 `x`, `y`, `width` 和 `height` 使用的坐标系系统。
 
-如果 `filterUnits` 属性未指定,那么效果如同指定了值为 `objectBoundingBox`。
+如果 `filterUnits` 属性未指定，那么效果如同指定了值为 `objectBoundingBox`。
 
 - `userSpaceOnUse`
-  - `x`, `y`, `width` 和 `height` 表示当前坐标系统中的值，这些值表示 `<filter>` 元素在当前用户坐标系中的位置和大小(例如通过 `filter` 引用该`<filter>`元素的元素所在的坐标系系统)。
+  - `x`, `y`, `width` 和 `height` 表示当前坐标系统中的值，这些值表示 `<filter>` 元素在当前用户坐标系中的位置和大小（例如通过 `filter` 引用该`<filter>`元素的元素所在的坐标系系统）。
 >
 - `objectBoundingBox`
   - 在这种情况下，`x`，`y`，`width` 和 `heightbiao` 表示引用 `<filter>` 元素的元素的 `baow` 包围盒的分数或百分比。
@@ -46,7 +46,7 @@
 
 `in` 属性标识输入的原语。
 
-其值可以是下面六种关键词中的一种，或者是一个字符串匹配在同一个 `<filter>` 元素中前面的原语的 `result` 属性值。如果没有提供值并且这是 `filter` 中第一个原语,那么原语将相当于使用 `SourceGraphic` 作为输入值。如果没有提供值并且这不是第一个原语，那么原语将使用前面原语的 `result` 属性值作为输入。
+其值可以是下面六种关键词中的一种，或者是一个字符串匹配在同一个 `<filter>` 元素中前面的原语的 `result` 属性值。如果没有提供值并且这是 `filter` 中第一个原语，那么原语将相当于使用 `SourceGraphic` 作为输入值。如果没有提供值并且这不是第一个原语，那么原语将使用前面原语的 `result` 属性值作为输入。
 
 如果 `result` 的值在同一个 `<filter>` 中出现多次，那么将使用前面的距离使用该 `result` 值的原语最近的该 `result` 值的原语作为输入。
 
@@ -65,7 +65,7 @@
 
 ### `<feSpecularLighting>`
 
-该滤镜照亮一个源图形，使用 `alpha` 通道作为隆起映射。该结果图像是一个基于光色的 RGBA 图象。该光照计算遵守标准冯氏照明模式的镜面组件。结果图像依赖于光色、光的位置以及输入隆起映射的表面几何形状。光照计算的结果是叠加的。该滤镜假定观察者在X方向无穷远处。
+该滤镜照亮一个源图形，使用 `alpha` 通道作为隆起映射。该结果图像是一个基于光色的 RGBA 图象。该光照计算遵守标准冯氏照明模式的镜面组件。结果图像依赖于光色、光的位置以及输入隆起映射的表面几何形状。光照计算的结果是叠加的。该滤镜假定观察者在 X 方向无穷远处。
 
 该滤镜制作了一个图像，图像包含光照计算的镜面反射部分。如此一个映射是为了与纹理相结合，使用算术 `<feComposite>` 方法的叠加。利用在应用到纹理图像前添加多个光映射，可以模拟多个光源。
 
@@ -77,7 +77,7 @@
 
 **`specularConstant`**
 
-`specularConstant` 属性控制镜面照明的反射率。它表示 Phong Lighting Model (冯氏光照模型) 中的 `ks` 值。值越大，反射越强。
+`specularConstant` 属性控制镜面照明的反射率。它表示 Phong Lighting Model （冯氏光照模型） 中的 `ks` 值。值越大，反射越强。
 
 > [Phong Lighting Model](https://blog.csdn.net/Lyn_B/article/details/89852600)
 
