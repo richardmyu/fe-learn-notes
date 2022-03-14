@@ -37,7 +37,7 @@ promise.then(successCallback, failureCallback);
 createImageFileAsync(imageSettings).then(successCallback, failureCallback);
 ```
 
-> [demo](./demo/part01/test01.js)
+<!-- > [demo](./demo/part01/test01.js) -->
 
 不同于“老式”的传入回调，在使用 Promise 时，会有以下约定：
 
@@ -45,7 +45,7 @@ createImageFileAsync(imageSettings).then(successCallback, failureCallback);
 - 即使异步操作已经完成（成功或失败），在这之后通过 `then()` 添加的回调函数也会被调用。
 - 通过多次调用 `then()` 可以添加多个回调函数，它们会按照插入顺序执行。
 
-Promise 很棒的一点就是链式调用（chaining）。
+Promise 很棒的一点就是 **链式调用**（chaining）。
 
 ### 1.1.链式调用
 
@@ -59,7 +59,7 @@ const promise2 = doSomething().then(successCallback, failureCallback);
 
 `promise2` 不仅表示 `doSomething()` 函数的完成，也代表了你传入的 `successCallback` 或者 `failureCallback` 的完成，这两个函数也可以返回一个 Promise 对象，从而形成另一个异步操作，这样的话，在 `promise2` 上新增的回调函数会排在这个 Promise 对象的后面。
 
-> [demo](./demo/part01/test02.js)
+<!-- > [demo](./demo/part01/test02.js) -->
 >
 > 从测试结果看，promise2 确实返回了一个新的 promise，只是，在 node 环境中，表现为 `<pending>` 状态，而在浏览器则会表现为 `<resolve>` 状态（不论 promise 是 `<resolve>` 还是 `<reject>`）
 
@@ -191,7 +191,7 @@ const promiseErr = new Promise((res, rej) => {
 })
 ```
 
-> [demo](./demo/part02/test01.js)
+<!-- > [demo](./demo/part02/test01.js) -->
 
 谷歌浏览器的输出有时候有点让人疑惑：
 
@@ -470,7 +470,7 @@ Promise.prototype.finally = function (callback) {
 };
 ```
 
-> [demo](./demo/part03/mock_finally.js)
+<!-- > [demo](./demo/part03/mock_finally.js) -->
 
 `finally` 也会返回一个**新** promise：
 
@@ -570,7 +570,9 @@ foxfire:
 // Promise { <state>: "rejected" }
 ```
 
-注意：p3 中没有添加 `then` 或 `catch`，如果添加了，会有不一样的情况。如果作为参数的 Promise 实例，自己定义了 `catch` 方法，那么它一旦被 `rejected`，并不会触发 `Promise.all()` 的 `catch` 方法。见 [demo](demo/part03/all.js)。
+注意：p3 中没有添加 `then` 或 `catch`，如果添加了，会有不一样的情况。如果作为参数的 Promise 实例，自己定义了 `catch` 方法，那么它一旦被 `rejected`，并不会触发 `Promise.all()` 的 `catch` 方法。
+
+<!-- 见 [demo](demo/part03/all.js)。 -->
 
 ### 3.5.`Promise.race()`
 
@@ -1218,6 +1220,8 @@ window.addEventListener("rejectionhandled", event => {
   console.log('rejectionhandled: ', event)
 }, false)
 ```
+
+---
 
 参考：
 
