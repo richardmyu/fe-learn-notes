@@ -2,7 +2,7 @@
 
 ## 1.babel/cli
 
-```js
+```sh
 npm install --save-dev @babel/core @babel/cli
 ```
 
@@ -31,7 +31,7 @@ let fun = () => console.log('hello babel.js');
 
 首先，安装 `@babel/plugin-transform-arrow-functions`：
 
-```js
+```sh
 npm install --save-dev @babel/plugin-transform-arrow-functions
 ```
 
@@ -46,7 +46,7 @@ let fun = function () {
 
 编译成功。
 
-## 3.配置文件 .babelrc
+## 3. 配置文件 .babelrc
 
 随着各种新插件的加入，我们的命令行参数会越来越长。
 
@@ -87,7 +87,7 @@ let fun = function () {
 
 首先在项目下安装：
 
-```js
+```sh
 npm install --save-dev @babel/preset-env
 ```
 
@@ -153,8 +153,8 @@ npm install --save-dev @babel/preset-env
 
 我们知道，IE 11 不支持 `Object.assign`，此时，我们有俩种候选方案：
 
-1. 引入 `babel-polyfill`，补丁一打，`Object.assign` 就被创造出来
-配置 `@babel/plugin-transform-object-assign`
+1. 引入 `babel-polyfill`，补丁一打，`Object.assign` 就被创造出来配置 `@babel/plugin-transform-object-assign`
+
 2. 第二种方案中，babel 会将所有的 `Object.assign` 替换成 `_extends` 这样一个辅助函数。如下所示：
 
 ```js
@@ -185,13 +185,13 @@ _extends({}, {});
 
 我们首先安装插件：
 
-```js
+```sh
 npm install --save-dev @babel/plugin-transform-runtime
 ```
 
 然后再安装 `babel-runtime`：
 
-```js
+```sh
 npm install @babel/runtime
 ```
 
@@ -222,7 +222,7 @@ npm install @babel/runtime
 
 我们先在项目下安装 `babel-register`：
 
-```js
+```sh
 npm install --save-dev @babel/register
 ```
 
@@ -241,12 +241,14 @@ require('./app')
 
 我们上面说，`babel-register` 提供动态编译，能够让我们的源代码真正运行在生产环境下 - 但其实不然，我们仍需要做部分调整，比如新增一个入口文件，并在该文件中 `require('@babel/register')`。而 `babel-node` 能真正做到一行源代码都不需要调整：
 
-```js
+```sh
 npm install --save-dev @babel/core @babel/node
 npx babel-node app.js
 ```
 
 只是，请不要在生产环境中使用 `babel-node`，因为它是动态编译源代码，应用启动速度非常慢。
+
+---
 
 **参考：**
 
