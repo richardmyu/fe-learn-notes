@@ -1,6 +1,6 @@
 # High-order reading
 
-### 1.GUI
+## 1.GUI
 
 [用户界面（UI）测试初学者指南](https://blog.csdn.net/renshuaicsdn/article/details/80661702)
 
@@ -8,17 +8,17 @@
 
 [实战 GUI 产品的自动化测试](https://www.ibm.com/developerworks/cn/rational/r-cn-guiautotesting1/index.html)
 
-### 2.Shallow Rendering（浅渲染） | Full Rendering （全渲染）| Static Rendering （静态渲染）
+## 2.Shallow Rendering（浅渲染） | Full Rendering （全渲染）| Static Rendering （静态渲染）
 
-### 3.快照测试
+## 3.快照测试
 
-### 4.TDD & BDD
+## 4.TDD & BDD
 
 TDD 是 Test Driven Development 的缩写，也就是测试驱动开发。
 
 通常传统软件工程将测试描述为软件生命周期的一个环节，并且是在编码之后。但敏捷开发大师 Kent Beck 在 2003 年出版了 _Test Driven Development By Example_ 一书，从而确立了测试驱动开发这个领域。
 
-## TDD 需要遵循如下规则
+### TDD 需要遵循如下规则
 
 - 写一个单元测试去描述程序的一个方面。
 - 运行它应该会失败，因为程序还缺少这个特性。

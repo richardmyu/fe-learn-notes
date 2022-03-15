@@ -6,7 +6,7 @@
 
 前端自动化测试一般是指是在预设条件下运行前端页面或逻辑模块，评估运行结果。预设条件应包括正常条件和异常条件，以达到自动运行测试过程、减少或避免人工干预测试的目的。
 
-在前端自动化测试中，我们通常是通过不同的工具来解决不同场景下不同的问题的。就测试类型（测试语法类型）来看，主要分为 **BDD**(Bebavior Driven Developement，**行为驱动开发**)和 **TDD**(Testing Driven Developement，**测试驱动开发**)。
+在前端自动化测试中，我们通常是通过不同的工具来解决不同场景下不同的问题的。就测试类型（测试语法类型）来看，主要分为 **BDD**(Bebavior Driven Developement，**行为驱动开发**) 和 **TDD**(Testing Driven Developement，**测试驱动开发**)。
 
 BDD 可以让项目成员（甚至是不懂编程的）使用自然描述语言来描述系统功能和业务逻辑，从而根据这些描述步骤进行系统自动化的测试；TDD 则要求在编写某个功能的代码之前先编写测试代码，然后只编写使测试通过的功能代码，通过测试来推动整个开发的进行。这有助于编写简洁可用和高质量的代码，并加速实际开发过程。<sub>[[1]](#data1)</sub>
 
@@ -44,9 +44,9 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 - 较为稳定的项目、或项目中较为稳定的部分：给它们写测试用例，维护成本低；
 - 被多次复用的部分（比如一些通用组件和库函数）：因为多处复用，更要保障质量；
 
-## 一.测试方法 <sub>[[2]](#data2)</sub>
+## 测试方法 <sub>[[2]](#data2)</sub>
 
-### 1.黑盒测试
+### 1. 黑盒测试
 
 黑盒测试一般也被称为**功能测试**，黑盒测试要求测试人员将程序看作一个整体，不考虑其内部结构和特性，只是按照期望验证程序是否能正常工作。黑盒测试更接近用户使用的真实场景，因为对于用户来说，程序的内部是不可见的。
 
@@ -54,7 +54,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-**等价类划分**
+- **等价类划分**
 
 等价类划分主要是在已有输入规则的情况下，确定合法输入与非法输入区间来设计测试用例
 
@@ -64,7 +64,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-**边界值分析**
+- **边界值分析**
 
 顾名思义，主要是根据输入输出范围的边界值进行测试用例的设计。原因是大量的错误往往发生在输入或输出范围的边界上（程序员往往在容易在这些地方犯错），边界值分析一般结合等价类划分进行使用，等价类划分区间边界一般就是边界值。
 
@@ -75,13 +75,13 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-**错误推测、异常分析等**
+- **错误推测、异常分析等**
 
 黑盒测试还包含一些其他的测试方式，由于测试往往是不可穷举性的，因此如何如何设计测试用例保证测试覆盖尽可能多的场景，不仅仅是依靠这些总结出来的方法，也考验测试人员自身的天赋。
 
 ---
 
-### 2.白盒测试
+### 2. 白盒测试
 
 白盒测试是基于代码本身的测试，一般指对代码**逻辑结构的测试**。白盒测试是在了解代码结构的前提下进行的测试，目的是遍历尽可能多的可执行路径，得出测试数据。白盒测试方法比较多，主要是逻辑覆盖，即检查代码的每一行、每一次判断结果。
 
@@ -98,11 +98,11 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-## 二.测试分类 <sub>[[2]](#data2)</sub><sub>[[3]](#data3)</sub>
+## 测试分类 <sub>[[2]](#data2)</sub><sub>[[3]](#data3)</sub>
 
 按照软件工程自底而上的概念，前端测试一般分为 **单元测试**（Unit Testing ）、**集成测试**（Integration Testing）和 **端到端测试**（E2E Testing）。
 
-### 1.单元测试（Unit Testing）
+### 1. 单元测试（Unit Testing）
 
 在维基百科英文版中可以找到 Kolawa Adam 在 Automated Defect Prevention: Best Practices in Software Management 一书中对单元测试的定义：<sub>[[6]](#data6)</sub>
 
@@ -128,7 +128,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 于是新的测试很难被加入其中，测试代码的维护变得异常困难，最终在各种压力之中只有扔掉测试代码组。但是没有了测试代码，就失去了确保对代码的改动能如愿以偿的能力，各种问题随之而来。因此，单元测试也需要一种行之有效的实践来确保其质量和可维护性。<sub>[[6]](#data6)</sub>
 
-## **单元测试到底是什么？**<sub>[[8]](#data8)</sub>
+## 单元测试到底是什么？<sub>[[8]](#data8)</sub>
 
 > 需要访问数据库的测试不是单元测试
 >
@@ -140,7 +140,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-## **我们在单元测试中应该避免什么？**<sub>[[8]](#data8)</sub>
+## 我们在单元测试中应该避免什么？<sub>[[8]](#data8)</sub>
 
 ---
 
@@ -153,7 +153,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-#### 1.1.前端单元测试
+#### 1.1. 前端单元测试
 
 前端单元测试和后端单元测试最大的区别在于，前端单元测试无法避免的会存在兼容性问题，如调用浏览器兼容性 API，以及对 BOM（浏览器对象模型）API 的调用，因此前端单元测试需要运行在（伪）浏览器环境下。
 
@@ -168,18 +168,18 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 ---
 
 - **基于 PhantomJs 等无头浏览器**
-  - 优点: 相对较快，并且具有真实的 DOM 环境
-  - 缺点: 同样不在真实浏览器中运行，难以调试，并且项目 `issue` 非常多，`puppeteer` 发布后作者宣布不再维护
+  - 优点：相对较快，并且具有真实的 DOM 环境
+  - 缺点：同样不在真实浏览器中运行，难以调试，并且项目 `issue` 非常多，`puppeteer` 发布后作者宣布不再维护
 
 ---
 
 - **使用 Karma 或 puppeteer 等工具，调用真实的浏览器环境进行测试**
-  - 优点：配置简单，能在真实的浏览器中运行测试，并且 `karma` 能将测试代码在多个浏览器中运行,同时方便调试
-  - 缺点: 唯一的缺点就是相对前两者运行稍慢，但是在单元测试可接受范围内
+  - 优点：配置简单，能在真实的浏览器中运行测试，并且 `karma` 能将测试代码在多个浏览器中运行，同时方便调试
+  - 缺点：唯一的缺点就是相对前两者运行稍慢，但是在单元测试可接受范围内
 
 ---
 
-#### 1.2.前端单元测试工具
+#### 1.2. 前端单元测试工具
 
 前端在近几年如雨后春笋一般涌现出非常多的测试框架和相关工具。
 
@@ -231,7 +231,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 > - [istanbul 官网](https://istanbul.js.org/) 介绍了 `istanbul` 如何与多中测试框架集成以及对于 Typescript 等语言的支持
 > - [阮一峰-代码覆盖率工具 Istanbul 入门教程](http://www.ruanyifeng.com/blog/2015/06/istanbul.html) 介绍了代码覆盖率相关的概念以及 `Istanbul` 搭配 `Mocha` 的简单使用
 
-### 2.集成测试（Integration Testing）
+### 2. 集成测试（Integration Testing）
 
 集成测试就是测试应用中不同模块如何集成。在单元测试的基础上，将已测试过的单元测试函数进行组合集成暴露出的高层函数或类的封装，对这些函数或类进行的测试。
 
@@ -243,7 +243,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 通常，我们可以使用单元测试工具编写集成测试。
 
-### 3.端到端测试（E2E Testing）
+### 3. 端到端测试（E2E Testing）
 
 端到端测试有时候也被称作功能测试，或者浏览器测试，它们指的是同一件事。功能测试是从用户的角度编写的，测试确保用户执行它所期望的工作。
 
@@ -265,7 +265,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 - casperJS
 
-`casperJS` 基于 `PhantomJS` 或 `SlimerJS`(`PhantomJS` 或 `SlimerJS` 都是用于 web 测试的自动化无界面浏览器)，可以模拟完成页面内系统级的自动化操作行为测试。
+`casperJS` 基于 `PhantomJS` 或 `SlimerJS`(`PhantomJS` 或 `SlimerJS` 都是用于 web 测试的自动化无界面浏览器），可以模拟完成页面内系统级的自动化操作行为测试。
 
 ```javascript
 var casper = require('casper').create();
@@ -437,9 +437,9 @@ test
 
 ---
 
-## 三.测试系统构成 <sub>[[3]](#data3)</sub>
+## 三。测试系统构成 <sub>[[3]](#data3)</sub>
 
-测试主要是测试框架、断言库, 代码覆盖率工具，仿真工具 , 测试驱动（测试任务管理工具）组成：
+测试主要是测试框架、断言库，代码覆盖率工具，仿真工具 , 测试驱动（测试任务管理工具）组成：
 
 ---
 
@@ -455,7 +455,7 @@ test
 
 ---
 
-**仿真工具**(`mocks`, `spies` and `stubs`) 模拟方法，模块，甚至服务器，获取方法的调用信息。先来说说为什么需要仿真吧：需要测试的单元依赖于外部的模块，而这些依赖的模块具有一些特点，例如不能控制、实现成本较高、操作危险等原因，不能直接使用依赖的模块，这样情况下就需要对其进行 `mock`，要完整运行前端代码，通常并不需要完整的后端环境。能伪造出前端页面渲染所需要的数据就行，这类工具有 `sinon`，`easy-mock`，`RAP`，甚至手工伪造一些假数据都可以。
+**仿真工具** (`mocks`, `spies` and `stubs`) 模拟方法，模块，甚至服务器，获取方法的调用信息。先来说说为什么需要仿真吧：需要测试的单元依赖于外部的模块，而这些依赖的模块具有一些特点，例如不能控制、实现成本较高、操作危险等原因，不能直接使用依赖的模块，这样情况下就需要对其进行 `mock`，要完整运行前端代码，通常并不需要完整的后端环境。能伪造出前端页面渲染所需要的数据就行，这类工具有 `sinon`，`easy-mock`，`RAP`，甚至手工伪造一些假数据都可以。
 
 ---
 
@@ -473,7 +473,7 @@ test
 
 ---
 
-### 1.测试覆盖率
+### 1. 测试覆盖率
 
 - 行覆盖率（**line coverage**）：是否每一行都执行了
 
@@ -496,12 +496,12 @@ TestCase: (a = 10), (b = 5);
 
 4 个指标当中，分支覆盖率是最重要的，它包括： `!`, `&&`, `||`, `? : ;` ,`if` 和 `else-if`, `else` ,`switch - case` 等等各种包含分支的情况
 
-> 1.覆盖率数据只能代表你测试过哪些代码，不能代表你是否测试好这些代码（比如上面第一个除零 Bug）；
-> 2.不要过于相信覆盖率数据；
-> 3.分支覆盖率 > 函数覆盖 > 语句覆盖；
-> 4.测试人员不能盲目追求代码覆盖率，而应该想办法设计更多更好的案例，哪怕多设计出来的案例对覆盖率一点影响也没有。
+> 1. 覆盖率数据只能代表你测试过哪些代码，不能代表你是否测试好这些代码（比如上面第一个除零 Bug）；
+> 2. 不要过于相信覆盖率数据；
+> 3. 分支覆盖率 > 函数覆盖 > 语句覆盖；
+> 4. 测试人员不能盲目追求代码覆盖率，而应该想办法设计更多更好的案例，哪怕多设计出来的案例对覆盖率一点影响也没有。
 
-## 四.选择单元测试框架 <sub>[[3]](#data3)</sub>
+## 四。选择单元测试框架 <sub>[[3]](#data3)</sub>
 
 **测试框架做的事情**：
 
@@ -513,13 +513,13 @@ TestCase: (a = 10), (b = 5);
 
 **选择框架要考虑下面这些方面**：
 
-- 断言：有些框架内置了断言库,有的框架可以自己选择断言库。
+- 断言：有些框架内置了断言库，有的框架可以自己选择断言库。
 - 测试风格：支持的测试风格 测试驱动型 / 行为驱动型 是否喜欢。
 - 异步测试支持：测试框架对异步测试支持是否良好。
 - 使用的语言：测试框架使用的语言，前端测试框架选择 JS 语言。
-- 社区是否活跃, 有没有完整的 API 文档, 使用的公司多不多，有没有大公司维护 。
+- 社区是否活跃，有没有完整的 API 文档，使用的公司多不多，有没有大公司维护 。
 
-## 五.根据测试环境选择测试框架 <sub>[[4]](#data4)</sub>
+## 五。根据测试环境选择测试框架 <sub>[[4]](#data4)</sub>
 
 大前端时代不谈环境不成方圆，本文从下面几个环境一一分析下如何敏捷测试：
 
@@ -710,7 +710,7 @@ angular 作为框架本身就是全面的，cli 新建的项目自身就带有 `
 
 `e2e` 测试默认是 [protractor](https://www.protractortest.org/#/)。
 
-## 六.测试框架风格 <sub>[[5]](#data5)</sub>
+## 六。测试框架风格 <sub>[[5]](#data5)</sub>
 
 **要测试的代码**
 
@@ -814,7 +814,7 @@ test("Math add function", function(t) {
 });
 ```
 
-## 七.断言库的风格
+## 七。断言库的风格
 
 做单元测试是需要写测试脚本的，那么测试脚本就需要用到断言库。所谓"断言"，就是判断源码的实际执行结果与预期结果是否一致，如果不一致就抛出一个错误。<sub>[[7]](#data7)</sub>
 
@@ -877,7 +877,7 @@ expect(1).to.not.equal(true);
 expect({ foo: "bar" }).to.not.equal({ foo: "bar" });
 expect({ foo: "bar" }).to.deep.equal({ foo: "bar" });
 
-// above 断言目标的值大于某个 value,如果前面有 length 的链式标记，则可以用来判断数组长度或者字符串长度
+// above 断言目标的值大于某个 value, 如果前面有 length 的链式标记，则可以用来判断数组长度或者字符串长度
 expect(10).to.be.above(5);
 expect("foo").to.have.length.above(2);
 expect([1, 2, 3]).to.have.length.above(2);
@@ -906,7 +906,7 @@ expect(null).to.not.be.undefined;
 expect("foo").to.be.NaN;
 expect(4).not.to.be.NaN;
 
-// 判断类型大法(可以实现上面的一些例子): a/an
+// 判断类型大法（可以实现上面的一些例子）: a/an
 expect("test").to.be.a("string");
 expect({ foo: "bar" }).to.be.an("object");
 expect(foo).to.be.an.instanceof(Foo);
@@ -915,7 +915,7 @@ expect(undefined).to.be.an("undefined");
 expect(new Error()).to.be.an("error");
 expect(new Promise()).to.be.a("promise");
 
-// 包含关系:用来断言字符串包含和数组包含。如果用在链式调用中，可以用来测试对象是否包含某key 可以混着用。
+// 包含关系：用来断言字符串包含和数组包含。如果用在链式调用中，可以用来测试对象是否包含某 key 可以混着用。
 expect([1, 2, 3]).to.include(2);
 expect("foobar").to.contain("foo");
 expect({ foo: "bar", hello: "universe" }).to.include.keys("foo");
@@ -949,11 +949,11 @@ var Tea = function(name) {
 expect(Chai).to.be.an.instanceof(Tea);
 expect([1, 2, 3]).to.be.instanceof(Array);
 
-// property(name, [value])  断言目标有以 name 为 key 的属性,并且可以指定 value 断言属性值是严格相等的,此 [value] 参数为可选,如果使用 deep 链式调用,可以在 name 中指定对象或数组的引用表示方法
+// property(name, [value])  断言目标有以 name 为 key 的属性，并且可以指定 value 断言属性值是严格相等的，此 [value] 参数为可选，如果使用 deep 链式调用，可以在 name 中指定对象或数组的引用表示方法
 // simple referencing
 var obj = { foo: "bar" };
 expect(obj).to.have.property("foo");
-expect(obj).to.have.property("foo", "bar"); // 类似于expect(obj).to.contains.keys('foo')
+expect(obj).to.have.property("foo", "bar"); // 类似于 expect(obj).to.contains.keys('foo')
 
 // deep referencing
 var deepObj = {
@@ -988,21 +988,21 @@ expect(1).to.satisfy(function(num) {
 
 ## 参考：
 
-<p id="data1"><a href="http://jixianqianduan.com/frontend-javascript/2016/11/22/front-end-auto-test.html">1.前端自动化测试解决方案探析</a></p>
+<p id="data1"><a href="http://jixianqianduan.com/frontend-javascript/2016/11/22/front-end-auto-test.html">1. 前端自动化测试解决方案探析</a></p>
 
-<p id="data2"><a href="http://alonecat.com/2018/06/19/%E5%89%8D%E7%AB%AF%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">2.前端自动化测试</a></p>
+<p id="data2"><a href="http://alonecat.com/2018/06/19/%E5%89%8D%E7%AB%AF%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">2. 前端自动化测试</a></p>
 
-<p id="data3"><a href="https://www.cnblogs.com/wangpenghui522/p/8955497.html">3.前端测试框架</a></p>
+<p id="data3"><a href="https://www.cnblogs.com/wangpenghui522/p/8955497.html">3. 前端测试框架</a></p>
 
-<p id="data4"><a href="https://juejin.im/post/5b374d8c6fb9a00e2d480bfe">4.浅谈前端测试</a></p>
+<p id="data4"><a href="https://juejin.im/post/5b374d8c6fb9a00e2d480bfe">4. 浅谈前端测试</a></p>
 
-<p id="data5"><a href="https://www.cnblogs.com/lihuanqing/p/8533552.html">5.前端测试框架对比(js单元测试框架对比)</a></p>
+<p id="data5"><a href="https://www.cnblogs.com/lihuanqing/p/8533552.html">5. 前端测试框架对比 (js 单元测试框架对比）</a></p>
 
-<p id="data6"><a href="http://www.tychio.net/tech/2013/07/10/unit-test.html">6.单元测试Unit Test</a></p>
+<p id="data6"><a href="http://www.tychio.net/tech/2013/07/10/unit-test.html">6. 单元测试 Unit Test</a></p>
 
-<p id="data7"><a href="https://juejin.im/post/5b2da89cf265da597f1c7cab?spm=a2c4e.11153940.blogcont610101.27.eb7e64f5LGXAmC">7.浅谈前端单元测试</a></p>
+<p id="data7"><a href="https://juejin.im/post/5b2da89cf265da597f1c7cab?spm=a2c4e.11153940.blogcont610101.27.eb7e64f5LGXAmC">7. 浅谈前端单元测试</a></p>
 
-<p id="data8"><a href="https://github.com/ecmadao/Coding-Guide/blob/master/Notes/UnitTest/%E5%89%8D%E7%AB%AF%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%8E%A2%E7%B4%A2.md">8.前端单元测试探索</a></p>
+<p id="data8"><a href="https://github.com/ecmadao/Coding-Guide/blob/master/Notes/UnitTest/%E5%89%8D%E7%AB%AF%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%8E%A2%E7%B4%A2.md">8. 前端单元测试探索</a></p>
 
 更多阅读：
 
