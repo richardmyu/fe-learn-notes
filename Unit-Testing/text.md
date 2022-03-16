@@ -122,7 +122,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 单元测试最大的特点是测试对象的细颗粒度性，即被测对象独立性高、复杂度低。
 
-无论如何，单元测试永远是少不了的。其实在单元测试中测试代码和生产代码应该是等量的，正如 Robert C. Martin 在其 _Clean Code: A Handbook of Agile Software Craftsmanship_ 一书中所写：<sub>[[6]](#data6)</sub>
+无论如何，单元测试永远是少不了的。其实在单元测试中测试代码和生产代码应该是等量的，正如 Robert C. Martin 在其 *Clean Code: A Handbook of Agile Software Craftsmanship* 一书中所写：<sub>[[6]](#data6)</sub>
 
 > 测试必须随生产代码的演进而修改，测试越脏就越难修改
 
@@ -153,7 +153,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 ---
 
-#### 1.1. 前端单元测试
+### 1.1. 前端单元测试
 
 前端单元测试和后端单元测试最大的区别在于，前端单元测试无法避免的会存在兼容性问题，如调用浏览器兼容性 API，以及对 BOM（浏览器对象模型）API 的调用，因此前端单元测试需要运行在（伪）浏览器环境下。
 
@@ -267,7 +267,7 @@ BDD 和 TDD 均有各自的适用场景，BDD 一般更偏向于系统功能和�
 
 `casperJS` 基于 `PhantomJS` 或 `SlimerJS`(`PhantomJS` 或 `SlimerJS` 都是用于 web 测试的自动化无界面浏览器），可以模拟完成页面内系统级的自动化操作行为测试。
 
-```javascript
+```js
 var casper = require('casper').create();
 casper.start('http://casperjs.org/');
 
@@ -290,7 +290,7 @@ Second Page: PhantomJS | PhantomJS
 
 页面内的操作结合 `casper` 的操作就可以这样来实现。
 
-```javascript
+```js
 var casper = require("casper").create();
 var links;
 
@@ -323,7 +323,7 @@ casper.run(function() {
 
 类似的，`nightmare` 也是一个模拟还原浏览器上业务操作的强大工具，而且更易于使用。同时可以使用 chrome 的插件 `daydreem` 自动录制生成用户行为操作的事件序列，更加方便我们进行实际的测试。
 
-```javascript
+```js
 yield Nightmare()
 .goto('http://yahoo.com')
 .type('input[title="Search"]', 'github nightmare')
@@ -332,7 +332,7 @@ yield Nightmare()
 
 `Nightmare` 也支持异步操作，并支持多种断言库，这里结合 `chai.js` 就可以这样来使用。
 
-```javascript
+```js
 var Nightmare = require("nightmare");
 var expect = require("chai").expect; // jshint ignore:line
 
@@ -362,7 +362,7 @@ describe("test yahoo search results", function() {
 
 `Nightwatch` 则可以使用 node 书写端对端的测试用例，并在 Selenium server 服务端运行测试，同样支持同步和异步。
 
-```javascript
+```js
 this.demoTestGoogle = function(browser) {
   browser
     .url("http://www.google.com")
@@ -382,7 +382,7 @@ this.demoTestGoogle = function(browser) {
 
 `DalekJS` 是一个跨浏览器平台的前端集成测试框架，可以自动配置启动本地的浏览器，也可以模拟填写提交表单、点击、截屏、运行单元测试等丰富的操作。
 
-```javascript
+```js
 module.exports = {
   "Amazon does its thing": function(test) {
     test
@@ -437,7 +437,7 @@ test
 
 ---
 
-## 三。测试系统构成 <sub>[[3]](#data3)</sub>
+## 测试系统构成 <sub>[[3]](#data3)</sub>
 
 测试主要是测试框架、断言库，代码覆盖率工具，仿真工具 , 测试驱动（测试任务管理工具）组成：
 
@@ -479,7 +479,7 @@ test
 
 可执行语句的每一行是否都被执行了，不包括注释，空白行；行覆盖常常被人指责为“最弱的覆盖”，为什么这么说呢，举一个例子
 
-```javascript
+```js
 function foo(a, b) {
   return a / b;
 }
@@ -501,7 +501,7 @@ TestCase: (a = 10), (b = 5);
 > 3. 分支覆盖率 > 函数覆盖 > 语句覆盖；
 > 4. 测试人员不能盲目追求代码覆盖率，而应该想办法设计更多更好的案例，哪怕多设计出来的案例对覆盖率一点影响也没有。
 
-## 四。选择单元测试框架 <sub>[[3]](#data3)</sub>
+## 选择单元测试框架 <sub>[[3]](#data3)</sub>
 
 **测试框架做的事情**：
 
@@ -519,7 +519,7 @@ TestCase: (a = 10), (b = 5);
 - 使用的语言：测试框架使用的语言，前端测试框架选择 JS 语言。
 - 社区是否活跃，有没有完整的 API 文档，使用的公司多不多，有没有大公司维护 。
 
-## 五。根据测试环境选择测试框架 <sub>[[4]](#data4)</sub>
+## 根据测试环境选择测试框架 <sub>[[4]](#data4)</sub>
 
 大前端时代不谈环境不成方圆，本文从下面几个环境一一分析下如何敏捷测试：
 
@@ -540,7 +540,7 @@ TestCase: (a = 10), (b = 5);
 
 配置的注意事项：
 
-```javascript
+```js
 {
   testEnvironment: "node"; // 如不声明默认浏览器环境
 }
@@ -562,7 +562,7 @@ TestCase: (a = 10), (b = 5);
 
 README 给了多个测试库配置的例子，这里还是推荐使用 `jest`，给个例子
 
-```javascript
+```js
 export default {
   props: ["value"],
   data() {
@@ -608,7 +608,7 @@ test("props value", () => {
 
 麻烦在配置上面，先给出需要安装的依赖：
 
-```javascript
+```js
 "@vue/test-utils",
   "ava",
   "browser-env",
@@ -620,7 +620,7 @@ test("props value", () => {
 
 在 `package.json` 里加几行 `ava` 配置：
 
-```javascript
+```js
 "ava": {
   "require": [
     "./tests/helpers/setup.js"
@@ -630,7 +630,7 @@ test("props value", () => {
 
 下面来写 `./tests/helpers/setup.js`：
 
-```javascript
+```js
 const hooks = require("require-extension-hooks");
 
 // Setup browser environment
@@ -672,7 +672,7 @@ hooks(["vue", "js"])
 
 主要讲一下如何配置，先是依赖包：
 
-```javascript
+```js
 "babel-core",
   "babel-jest",
   "enzyme",
@@ -684,7 +684,7 @@ hooks(["vue", "js"])
 
 在 `package.json` 里面加 `script "test": "NODE_ENV=test jest"`，在根路径下加 `jest.config.js`：
 
-```javascript
+```js
 module.exports = {
   setupFiles: ["<rootDir>/jest.setup.js"],
   testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"]
@@ -693,7 +693,7 @@ module.exports = {
 
 在根路径下加 `jest.setup.js`：
 
-```javascript
+```js
 import { configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -710,11 +710,11 @@ angular 作为框架本身就是全面的，cli 新建的项目自身就带有 `
 
 `e2e` 测试默认是 [protractor](https://www.protractortest.org/#/)。
 
-## 六。测试框架风格 <sub>[[5]](#data5)</sub>
+## 测试框架风格 <sub>[[5]](#data5)</sub>
 
-**要测试的代码**
+- **要测试的代码**
 
-```javascript
+```js
 "use strict";
 var Math = {
   add(a, b) {
@@ -724,9 +724,9 @@ var Math = {
 module.exports = Math;
 ```
 
-**AVA**
+- **AVA**
 
-```javascript
+```js
 const test = require("ava");
 const math = require("../Math");
 
@@ -740,9 +740,9 @@ test("Math add function", t => {
 });
 ```
 
-**Jasmine**
+- **Jasmine**
 
-```javascript
+```js
 var math = require("../Math");
 describe("Math", function() {
   var firstOperand;
@@ -758,9 +758,9 @@ describe("Math", function() {
 });
 ```
 
-**Jest**
+- **Jest**
 
-```javascript
+```js
 jest.unmock("../Math"); // unmock to use the actual implementation of Math
 
 var math = require("../Math");
@@ -781,9 +781,9 @@ describe("Math", function() {
 });
 ```
 
-**Mocha**
+- **Mocha**
 
-```javascript
+```js
 var assert = require("assert"); // nodejs 内建断言
 var math = require("../Math");
 describe("Math", function() {
@@ -800,9 +800,9 @@ describe("Math", function() {
 });
 ```
 
-**Tape**
+- **Tape**
 
-```javascript
+```js
 var test = require("tape");
 var math = require("../Math");
 var firstOperand = 2;
@@ -814,7 +814,7 @@ test("Math add function", function(t) {
 });
 ```
 
-## 七。断言库的风格
+## 断言库的风格
 
 做单元测试是需要写测试脚本的，那么测试脚本就需要用到断言库。所谓"断言"，就是判断源码的实际执行结果与预期结果是否一致，如果不一致就抛出一个错误。<sub>[[7]](#data7)</sub>
 
@@ -822,7 +822,7 @@ test("Math add function", function(t) {
 
 #### 1.1.Assert
 
-```javascript
+```js
 var assert = require("chai").assert,
   foo = "bar",
   beverages = { tea: ["chai", "matcha", "oolong"] };
@@ -837,7 +837,7 @@ assert.lengthOf(beverages.tea, 3, "beverages has 3 types of tea");
 
 - `expect`
 
-```javascript
+```js
 var expect = require("chai").expect,
   foo = "bar",
   beverages = { tea: ["chai", "matcha", "oolong"] };
@@ -852,7 +852,7 @@ expect(beverages)
 
 - `should`
 
-```javascript
+```js
 var should = require("chai").should(), //actually call the function
   foo = "bar",
   beverages = { tea: ["chai", "matcha", "oolong"] };
@@ -867,7 +867,7 @@ beverages.should.have.property("tea").with.lengthOf(3);
 
 #### 1.3.expect 断言语法
 
-```javascript
+```js
 // equal 相等或不相等
 expect(4 + 5).to.be.equal(9);
 expect(4 + 5).to.be.not.equal(10);
@@ -986,7 +986,9 @@ expect(1).to.satisfy(function(num) {
 });
 ```
 
-## 参考：
+---
+
+参考：
 
 <p id="data1"><a href="http://jixianqianduan.com/frontend-javascript/2016/11/22/front-end-auto-test.html">1. 前端自动化测试解决方案探析</a></p>
 

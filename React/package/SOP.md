@@ -1,5 +1,7 @@
 # 同源策略
 
+---
+
 参考：
 
 1.[Same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy)

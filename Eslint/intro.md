@@ -36,7 +36,7 @@ module.exports = {
     // 指定想要使用的 ECMAScript 版本
     ecmaVersion: 13,
 
-    // 设置为 "script" (默认) 或 "module"
+    // 设置为 "script" （默认） 或 "module"
     sourceType: "module"
   },
 

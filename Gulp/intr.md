@@ -34,7 +34,7 @@ npm install -g gulp-cli
 npm install -D gulp
 ```
 
-### 1.注册任务
+### 1. 注册任务
 
 每个 gulp 任务（task）都是一个异步的 JavaScript 函数，此函数是一个可以接收 `callback` 作为参数的函数，或者是一个返回 `stream`、`promise`、`event emitter`、`child process` 或 `observable` 类型值的函数。
 
@@ -46,7 +46,6 @@ gulp.task('sayHello', function(){
   console.log('Hello);
 });
 
-
 // 新版本
 function sayHello(){
   console.log('Hello');
@@ -57,7 +56,7 @@ exports.sayHello = sayHello;
 exports.default = sayHello;
 ```
 
-### 2.组合任务
+### 2. 组合任务
 
 Gulp 提供了两个强大的组合方法： `series()` 和 `parallel()`，允许将多个独立的任务组合为一个更大的操作。这两个方法都可以：
 
@@ -155,7 +154,7 @@ bye bye
 [20:05:55] Finished 'concu' after 5.86 ms
 ```
 
-### 3.异步执行
+### 3. 异步执行
 
 Node 库以多种方式处理异步功能。最常见的模式是 `error-first callbacks`，但是你还可能会遇到 `streams`、`promises`、`event emitters`、`child processes`, 或 `observables`。gulp 任务（task）规范化了所有这些类型的异步功能。
 
@@ -180,7 +179,7 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 ```
 
 > [Stream](https://nodejs.org/api/stream.html#stream_stream)
-> > 流是用于在 Node.js 中处理流数据的抽象接口。流模块提供用于实现流接口的API。流可以是可读的，可写的，或两者均可。所有流都是 `EventEmitter` 的实例。
+> > 流是用于在 Node.js 中处理流数据的抽象接口。流模块提供用于实现流接口的 API。流可以是可读的，可写的，或两者均可。所有流都是 `EventEmitter` 的实例。
 >
 > [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
 > > Promise 是一个对象，它代表了一个异步操作的最终完成或者失败。本质上 Promise 是一个函数返回的对象，我们可以在它上面绑定回调函数，这样我们就不需要在一开始把回调函数作为参数传入这个函数了。
@@ -196,7 +195,7 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 
 当使用 `parallel()` 组合多个任务（task）时，一个任务的错误将结束整个任务组合的结束，但是其他并行的任务（task）可能会执行完，也可能没有执行完。
 
-### 4.模式
+### 4. 模式
 
 `src()` 可以工作在三种模式下：缓冲（buffering）、流动（streaming）和空（empty）模式。这些模式可以通过对 `src()` 的 `buffer` 和 `read` 参数 进行设置。
 
@@ -226,14 +225,14 @@ fs.readFile('/some/file/that/does-exist', errorFirstCallback);
 ['**/*.js', '!node_modules/**/*.js']
 ```
 
-### 6.插件
+### 6. 插件
 
 Gulp **插件** 实质上是 Node 转换流（Transform Streams），它封装了通过管道（pipeline）转换文件的常见功能，通常是使用 `.pipe()` 方法并放在 `src()` 和 `dest()` 之间。他们可以更改经过流（stream）的每个文件的文件名、元数据或文件内容。
 
 - 每个插件应当只完成必要的工作，因此你可以把它们像构建块一样连接在一起；
 - 插件应当总是用来转换文件的。其他操作都应该使用（非插件的） Node 模块或库来实现；
 
-### 7.文件监控
+### 7. 文件监控
 
 对匹配 `glob` 的文件进行监控，如果有文件被修改了就执行关联的任务（task）。如果被执行的任务（task）没有触发 异步完成 信号，它将永远不会再次运行了。
 

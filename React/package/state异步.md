@@ -41,7 +41,7 @@ this.setState((state, props) => {
   }
 })
 
-// componentDidUpdate(若要在 componentDidUpdate 使用 setState，必须包含在一个 if 条件中)
+// componentDidUpdate（若要在 componentDidUpdate 使用 setState，必须包含在一个 if 条件中）
 // 不能在一个一直都能满足的条件中使用 setState，否则会造成死循环
 componentDidMount(){
   this.setState((state, props) => ({ count: state.count + props.count }))
@@ -99,7 +99,6 @@ this.setState({quantity: 2})
 Object.assign(
   previousState,
   {quantity: state.quantity + 1},
-  {quantity: state.quantity + 1},
   ...
 )
 ```
@@ -112,7 +111,7 @@ this.setState((state) => {
 });
 ```
 
-## 2.真的是“异步”吗 <sub>[5]</sub>
+## 2. 真的是“异步”吗 <sub>[5]</sub>
 
 1.setState 只在【合成事件】和【钩子函数】中是“异步”的，在【原生事件】和 setTimeout 中都是同步的。
 
@@ -122,14 +121,14 @@ this.setState((state) => {
 
 3.setState 的批量更新优化也是建立在“异步”（合成事件、钩子函数）之上的，在【原生事件】和 setTimeout 中不会批量更新，在“异步”中如果对同一个值进行多次 setState， setState 的批量更新策略会对其进行覆盖，取最后一次的执行，如果是同时 setState 多个不同的值，在更新时会对其进行合并批量更新。
 
-## 3.为什么是“异步”的 <sub>[3]</sub>
+## 3. 为什么是“异步”的 <sub>[3]</sub>
 
 ### 3.1.Guaranteeing Internal Consistency
 
 > Guaranteeing Internal Consistency 保证内部一致性
 
 Even if state is updated synchronously, props are not. (You can’t know props until you re-render the parent component, and if you do this synchronously, batching goes out of the window.)
-(如果是同步)即使 state 被同步更新，props 也不会被更新。（除非重新渲染父组件，否则将不知道 props 状态，并且如果同步进行渲染，则批处理将无法进行。）
+（如果是同步）即使 state 被同步更新，props 也不会被更新。（除非重新渲染父组件，否则将不知道 props 状态，并且如果同步进行渲染，则批处理将无法进行。）
 
 Right now the objects provided by React (state, props, refs) are internally consistent with each other. This means that if you only use those objects, they are guaranteed to refer to a fully reconciled tree (even if it’s an older version of that tree). Why does this matter?
 现在，React 提供的对象（state, props, refs）在内部彼此一致。这意味着如果仅使用这些对象，则可以确保它们引用的是完全协调的树（即使该树是该树的旧版本）。为什么这么重要？
@@ -157,7 +156,7 @@ I want to highlight that in typical React apps that rely on `setState()` this is
 我要强调的是，在依赖 `setState()` 的典型 React 应用程序中，**这是每天都会执行的最常见的一种 React 特定重构**。
 
 However, this breaks our code!
-然而下面的代码却不能按预期工作!
+然而下面的代码却不能按预期工作！
 
 ```jsx
 console.log(this.props.value) // 0
@@ -171,13 +170,13 @@ This is because, in the model you proposed, `this.state` would be flushed immedi
 这是因为在同步模型中，会立即更新 `this.state`，但不会立即更新 `this.props`。而且我们不能在不重新渲染父级的情况下立即更新 `this.props`，这意味着我们将不得不放弃批处理（根据情况的不同，批处理会大大降低性能）。
 
 There are also more subtle cases of how this can break, e.g. if you’re mixing data from props (not yet flushed) and state (proposed to be flushed immediately) to create a new state: [#122 (comment)](https://github.com/facebook/react/issues/122#issuecomment-81856416). Refs present the same problem: [#122 (comment)](https://github.com/facebook/react/issues/122#issuecomment-22659651).
-还有一些更微妙的情况可以解决这个问题，例如: 如果要混合 props（尚未更新）和 state（建议立即更新）中的数据以创建新 state [state：＃122（comment）](https://github.com/facebook/react/issues/122#issuecomment-81856416)。refs 也出了同样的问题：[state：＃122（comment）](https://github.com/facebook/react/issues/122#issuecomment-22659651)。
+还有一些更微妙的情况可以解决这个问题，例如：如果要混合 props（尚未更新）和 state（建议立即更新）中的数据以创建新 state [state：＃122（comment）](https://github.com/facebook/react/issues/122#issuecomment-81856416)。refs 也出了同样的问题：[state：＃122（comment）](https://github.com/facebook/react/issues/122#issuecomment-22659651)。
 
 These examples are not at all theoretical. In fact React Redux bindings used to have exactly this kind of problem because they mix React props with non-React state: [reduxjs/react-redux#86](https://github.com/reduxjs/react-redux/issues/86), [reduxjs/react-redux#99](https://github.com/reduxjs/react-redux/pull/99), [reduxjs/react-redux#292](https://github.com/reduxjs/react-redux/issues/292), [reduxjs/redux#1415](https://github.com/reduxjs/redux/issues/1415), [reduxjs/react-redux#525](https://github.com/reduxjs/react-redux/issues/525).
 这些例子完全不是理论上的。实际上，React Redux 绑定曾经存在这种问题，因为它们将 React props 与 non-React state 混合在一起：[reduxjs/react-redux#86](https://github.com/reduxjs/react-redux/issues/86), [reduxjs/react-redux#99](https://github.com/reduxjs/react-redux/pull/99), [reduxjs/react-redux#292](https://github.com/reduxjs/react-redux/issues/292), [reduxjs/redux#1415](https://github.com/reduxjs/redux/issues/1415), [reduxjs/react-redux#525](https://github.com/reduxjs/react-redux/issues/525)。
 
 I don’t know why MobX users haven’t bumped into this, but my intuition is that they might be bumping into such scenarios but consider them their own fault. Or maybe they don’t read as much from `props` and instead read directly from MobX mutable objects instead.
-我不知道为什么 MobX 用户没有遇到这种情况，但我的直觉是他们可能会遇到这种情况，但认为这是他们自己是错的(译注：即用户没有意识到这是 MobX 自身的错误)。或者，也许他们从 props 中读取的内容不多，而是直接从 MobX 可变对象中读取。
+我不知道为什么 MobX 用户没有遇到这种情况，但我的直觉是他们可能会遇到这种情况，但认为这是他们自己是错的（译注：即用户没有意识到这是 MobX 自身的错误）。或者，也许他们从 props 中读取的内容不多，而是直接从 MobX 可变对象中读取。
 
 So how does React solve this today? **In React, both this.state and this.props update only after the reconciliation and flushing, so you would see 0 being printed both before and after refactoring**. This makes lifting state up safe.
 那么 React 今天如何解决这个问题呢？在 React 中，`this.state` 和 `this.props` 都仅在协调和刷新之后更新，因此将看到在重构前后都打印了 0。这使得提升状态变得安全。
@@ -252,15 +251,15 @@ graph TB
 
 每一次 setState 如果都引发一次组件更新，走完一圈生命周期，实在是有点粗糙和浪费，生命周期函数为纯函数性能应当还能够接受，可是 `render` 函数内返回的虚拟 DOM 去做比较这个就比较费时间了。直观的感受是，React 将多个 setState 产生的修改放在一个队列里，缓一缓，攒在一起，等待时机，觉得差不多了再引发一次更新过程。这样，在每次更新过程中，会把积攒的 setState 结果合并，做一个 merge 的动作，节省 render 触发的频率。这样，对于开发者而言，可以在同步代码中随意多行调用 setState 函数而不用担心重复 setState 重复 render 的问题。<sub>[6]</sub>
 
-## 4.怎么实现“异步”
+## 4. 怎么实现“异步”
 
 在 React 的 setState 函数实现中，会根据一个变量 `isBatchingUpdates` 判断是直接更新 `this.state` 还是放到队列中回头再说，而 `isBatchingUpdates` 默认是 `false`，也就表示 setState 会同步更新 `this.state`，但是，有一个函数 `batchedUpdates`，这个函数会把 `isBatchingUpdates` 修改为 `true`，而当 React 在调用事件处理函数和自身生命周期之前就会调用这个 `batchedUpdates`，造成的后果，就是由 React 控制的事件处理过程和生命周期中的同步代码调用的 setState 不会同步更新 `this.state`。所以按照正常 React 用法都是会经过 `batchedUpdates` 方法的。这是由于 React 有一套自定义的事件系统和生命周期流程控制，使用原生事件监听和 `setTimeout` 这种方式会跳出 React 这个体系，所以会直接更新 `this.state`。<sub>[6]</sub>
 
-### 4.1.合成事件 <sub>[8]</sub>
+### 4.1. 合成事件 <sub>[8]</sub>
 
 react 为了解决跨平台，兼容性问题，自己封装了一套事件机制，代理了原生的事件，像在 jsx 中常见的 `onClick`、`onChange` 这些都是合成事件。
 
-### 4.2.事务 <sub>[6]</sub>
+### 4.2. 事务 <sub>[6]</sub>
 
 React 中的事务借用了计算机专业术语的单词 **`Transaction`**。对比数据库的事务性质，两者之间有共同点却又不是一回事。简单来说，把需要执行的方法用一个容器封装起来，在容器内执行方法的前后，分别执行 `init` 方法和 `close` 方法，其次来说，一个容器可以包裹另一个容器，这点又类似于洋葱模型。
 
@@ -281,13 +280,13 @@ npm run prebuild && npm run build && npm run postbuild
 
 所以，我们可以得到启发，React 的事件系统和生命周期事务前后的钩子对 `isBatchingUpdates` 做了修改，其实就是在事务的前置 pre 内调用了 `batchedUpdates` 方法修改了变量为 `true`，然后在后置钩子又置为 `false`，然后发起真正的更新检测，而事务中异步方法运行时候，由于 JavaScript 的异步机制，异步方法（`setTimeout` 等）其中的 setState 运行时候，同步的代码已经走完，后置钩子已经把 `isBatchingUpdates` 设为 `false`，所以此时的 setState 会直接进入非批量更新模式，表现在我们看来成为了同步 SetState。
 
-尝试在描述一下：整个 React 的每个生命周期和合成事件都处在一个大的事务当中。原生绑定事件和 `setTimeout` 异步的函数没有进入React的事务当中，或者是当他们执行时，刚刚的事务已经结束了，后置钩子触发了，close 了。
+尝试在描述一下：整个 React 的每个生命周期和合成事件都处在一个大的事务当中。原生绑定事件和 `setTimeout` 异步的函数没有进入 React 的事务当中，或者是当他们执行时，刚刚的事务已经结束了，后置钩子触发了，close 了。
 
 React “坐”在顶部调用堆栈框架并知道所有 React 事件处理程序何时运行，setState 在 React 管理的合成事件或者生命周期中调用，它会启用批量更新事务，进入了批量更新模式，所有的 setState 的改变都会暂存到一个队列，延迟到事务结束再合并更新。如果 setState 在 React 的批量更新事务外部或者之后调用，则会立即刷新。
 
 懂得了事务，再回看，就明白，其实 setState 从来都是同步运行，不过是 React 利用事务工具方法模拟了 setState 异步的假象。
 
-## 5.部分源码解析
+## 5. 部分源码解析
 
 ### 5.1 基础 <sub>[6][7]</sub>
 
@@ -296,17 +295,17 @@ graph TB
   A("this.setState(newState)") --> B("newState 存入 pending 队列");
   B --> C{{"是否处于 batch update"}};
   C -->|Y| D("保存组件于 dirtyComponents 中");
-  C -->|N| E(遍历所有的 dirtyComponents <br/> 调用 updateComponent <br/> 更新 pending state or props);
+  C -->|N| E（遍历所有的 dirtyComponents <br/> 调用 updateComponent <br/> 更新 pending state or props);
 ```
 
-首先，我们看下 setState 何处被赋值:
+首先，我们看下 setState 何处被赋值：
 
 ```jsx
 // src/isomorphic/modern/class/ReactComponent.js
 
 /*
  * React 组件继承自 React.Component，而 setState 是 React.Component 的方法，
- * 因此对于组件来讲 setState 属于其原型方法，首先看 setState 的定义:
+ * 因此对于组件来讲 setState 属于其原型方法，首先看 setState 的定义：
  */
 ReactComponent.prototype.setState = function(partialState, callback) {
   // 忽略调入参验证和开发抛错
@@ -457,24 +456,23 @@ var ReactDefaultBatchingStrategy = {
 unstable_batchedUpdates: ReactUpdates.batchedUpdates
 ```
 
-另一个彩蛋，虽然 React 不提倡使用这个 API，以后版本也可能移除(在 React 15.0 之后的版本已经将 batchedUpdates 彻底移除了)，但是现在我们可以这样在 React 中这样使用：
+另一个彩蛋，虽然 React 不提倡使用这个 API，以后版本也可能移除（在 React 15.0 之后的版本已经将 batchedUpdates 彻底移除了），但是现在我们可以这样在 React 中这样使用：
 
 ```jsx
 React.unstable_batchedUpdates(function(){
     this.setState({...})
-    this.setState({...})
-    //...在此函数内也可以使用批量更新策略
+    //... 在此函数内也可以使用批量更新策略
 })
 ```
 
 解决了 `setTimeout` 和 AJAX 异步方法、原生事件内的 setState 批量更新策略失效的问题，让批量更新在任何场景都会发生。
 
-**小结**
+- **小结**
 
 ```mermaid
 graph TB
-  A((合成事件)) --> B["dispatchEvent(ReactEventListener.js)"];
-  C((生命周期)) --> D["_renderNewRootComponent(ReactMount.js)"];
+  A(（合成事件）) --> B["dispatchEvent(ReactEventListener.js)"];
+  C(（生命周期）) --> D["_renderNewRootComponent(ReactMount.js)"];
   B & D --> E["ReactUpdates.batchedUpdates(ReactUpdates.js)"];
   E --> F["isBatchingUpdates = true"];
   F --> G["transaction.perform() <br/> 执行事件回调和生命周期，进入事务"];
@@ -496,7 +494,7 @@ graph TB
 
 ### 5.2 进阶 <sub>[5]</sub>
 
-#### 5.2.1.合成事件中的 setState
+#### 5.2.1. 合成事件中的 setState
 
 ```jsx
 class App extends Component {
@@ -505,7 +503,7 @@ class App extends Component {
 
   increment = () => {
     this.setState({ val: this.state.val + 1 })
-    console.log(this.state.val) // 输出的是更新前的val --> 0
+    console.log(this.state.val) // 输出的是更新前的 val --> 0
   }
   render() {
     return (
@@ -586,13 +584,13 @@ function interactiveUpdates$1(fn, a, b) {
 }
 ```
 
-在这个方法中把 `isBatchingUpdates` 设为了 true ,导致在 `requestWork` 方法中， `isBatchingUpdates` 为 true ，但是 `isUnbatchingUpdates` 是 false ，而被直接 return 了。
+在这个方法中把 `isBatchingUpdates` 设为了 true , 导致在 `requestWork` 方法中， `isBatchingUpdates` 为 true ，但是 `isUnbatchingUpdates` 是 false ，而被直接 return 了。
 
 那 return 完的逻辑回到哪里呢，最终正是回到了 `interactiveUpdates$` 这个方法，仔细看一眼，这个方法里面有个 [try finally](https://javascript.ruanyifeng.com/grammar/error.html#toc12) 语法，前端同学这个其实是用的比较少的，简单的说就是会先执行 `try` 代码块中的语句，然后再执行 `finally` 中的代码，而 `fn(a, b)` 是在 `try` 代码块中，刚才说到在 `requestWork` 中被 return 掉的也就是这个 fn（上文提到的 从 `dispatchEvent` 到 `requestWork` 的一整个调用栈）。
 
-所以当你在 `increment` 中调用 setState 之后去 `console.log` 的时候，是属于 `try` 代码块中的执行，但是由于是合成事件，`try` 代码块执行完 `state` 并没有更新，所以你输入的结果是更新前的 `state` 值，这就导致了所谓的"异步"，但是当你的 `try` 代码块执行完的时候（也就是你的 `increment` 合成事件），这个时候会去执行 `finally` 里的代码，在 `finally` 中执行了 `performSyncWork` 方法，这个时候才会去更新你的 `state` 并且渲染到UI上。
+所以当你在 `increment` 中调用 setState 之后去 `console.log` 的时候，是属于 `try` 代码块中的执行，但是由于是合成事件，`try` 代码块执行完 `state` 并没有更新，所以你输入的结果是更新前的 `state` 值，这就导致了所谓的"异步"，但是当你的 `try` 代码块执行完的时候（也就是你的 `increment` 合成事件），这个时候会去执行 `finally` 里的代码，在 `finally` 中执行了 `performSyncWork` 方法，这个时候才会去更新你的 `state` 并且渲染到 UI 上。
 
-#### 5.2.2.生命周期函数中的setState
+#### 5.2.2. 生命周期函数中的 setState
 
 ```jsx
 class App extends Component {
@@ -613,13 +611,12 @@ class App extends Component {
 }
 ```
 
-钩子函数中setState的调用栈:
-
+钩子函数中 setState 的调用栈：
 ![流程图-2](https://user-gold-cdn.xitu.io/2018/7/11/164888cef54b5edd?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 其实还是和合成事件一样，当 `componentDidmount` 执行的时候，react 内部并没有更新，执行完 `componentDidmount`  后才去 `commitUpdateQueue` 更新。这就导致你在 `componentDidmount` 中 setState 完去 `console.log` 拿的结果还是更新前的值。
 
-#### 5.2.3.原生事件中的setState
+#### 5.2.3. 原生事件中的 setState
 
 ```jsx
 class App extends Component {
@@ -649,9 +646,9 @@ class App extends Component {
 
 ![流程图-3](https://user-gold-cdn.xitu.io/2018/7/11/164888d958a2df16?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
-原生事件的调用栈就比较简单了，因为没有走合成事件的那一大堆，直接触发 `click` 事件，到 `requestWork` ,在 `requestWork` 里由于 `expirationTime === Sync` 的原因，直接走了 `performSyncWork` 去更新，并不像合成事件或钩子函数中被 return，所以当你在原生事件中 setState 后，能同步拿到更新后的 state 值。
+原生事件的调用栈就比较简单了，因为没有走合成事件的那一大堆，直接触发 `click` 事件，到 `requestWork` , 在 `requestWork` 里由于 `expirationTime === Sync` 的原因，直接走了 `performSyncWork` 去更新，并不像合成事件或钩子函数中被 return，所以当你在原生事件中 setState 后，能同步拿到更新后的 state 值。
 
-#### 5.2.4.setTimeout中的setState
+#### 5.2.4.setTimeout 中的 setState
 
 ```jsx
 class App extends Component {
@@ -677,17 +674,19 @@ class App extends Component {
 
 在 `setTimeout` 中去 setState 并不算是一个单独的场景，它是随着你外层去决定的，因为你可以在合成事件中 `setTimeout` ，可以在钩子函数中 `setTimeout` ，也可以在原生事件 `setTimeout`，但是不管是哪个场景下，基于 [event loop](https://www.ruanyifeng.com/blog/2013/10/event_loop.html) 的模型下， `setTimeout` 中里去 `setState` 总能拿到最新的 state 值。
 
-举个栗子，比如之前的合成事件，由于你是 `setTimeout(_ => { this.setState()}, 0)` 是在 `try` 代码块中,当你 `try` 代码块执行到 `setTimeout` 的时候，把它丢到列队里，并没有去执行，而是先执行的 `finally` 代码块，等 `finally` 执行完了， `isBatchingUpdates` 又变为了 false ，导致最后去执行队列里的 setState 时候， requestWork 走的是和原生事件一样的 `expirationTime === Sync` if分支，所以表现就会和原生事件一样，可以同步拿到最新的 state 值。
+举个栗子，比如之前的合成事件，由于你是 `setTimeout(_ => { this.setState()}, 0)` 是在 `try` 代码块中，当你 `try` 代码块执行到 `setTimeout` 的时候，把它丢到列队里，并没有去执行，而是先执行的 `finally` 代码块，等 `finally` 执行完了， `isBatchingUpdates` 又变为了 false ，导致最后去执行队列里的 setState 时候， requestWork 走的是和原生事件一样的 `expirationTime === Sync` if 分支，所以表现就会和原生事件一样，可以同步拿到最新的 state 值。
 
-## 6.补充
+## 6. 补充
 
-### 6.1 生命周期中使用setState <sub>[8]</sub>
+### 6.1 生命周期中使用 setState <sub>[8]</sub>
 
 当调用 setState 时，实际上是会执行 `enqueueSetState` 方法，并会对 `partialState` 及 `_pendingStateQueue` 队列进行合并操作，最终通过 `enqueueUpdate` 执行 state 更新。
 
 而 `performUpdateIfNecessary` 获取 `_pendingElement`、 `_pendingStateQueue`、`_pendingForceUpdate`，并调用 `reaciveComponent` 和 `updateComponent` 来进行组件更新。
 
 但，如果在 `shouldComponentUpdate` 或 `componentWillUpdate` 方法里调用 `this.setState` 方法，就会造成崩溃。这是因为在 `shouldComponentUpdate` 或 `componentWillUpdate` 方法里调用 `this.setState` 时，`this._pendingStateQueue!=null`，则 `performUpdateIfNecessary` 方法就会调用 `updateComponent` 方法进行组件更新，而 `updateComponent` 方法又会调用 `shouldComponentUpdate` 和 `componentWillUpdate` 方法，因此造成循环调用，使得浏览器内存占满后崩溃。
+
+---
 
 参考：
 
@@ -699,22 +698,22 @@ class App extends Component {
 
 4.[Does React keep the order for state updates?](https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973)
 
-5.[你真的理解setState吗？](https://juejin.im/post/5b45c57c51882519790c7441#heading-0)
+5.[你真的理解 setState 吗？](https://juejin.im/post/5b45c57c51882519790c7441#heading-0)
 
-6.[浅入深出setState（上篇）](https://segmentfault.com/a/1190000015615057)
+6.[浅入深出 setState（上篇）](https://segmentfault.com/a/1190000015615057)
 
-7.[浅入深出setState（下篇）](https://segmentfault.com/a/1190000015821018)
+7.[浅入深出 setState（下篇）](https://segmentfault.com/a/1190000015821018)
 
 8.[深入 setState 机制 #26](https://github.com/sisterAn/blog/issues/26)
 
-9.[为何说setState方法是异步的？](https://segmentfault.com/a/1190000007454080)
+9.[为何说 setState 方法是异步的？](https://segmentfault.com/a/1190000007454080)
 
 10.[3 Reasons why I stopped using React.setState](https://blog.cloudboost.io/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e#.hfcnguohj)
 
-11.[React中setState同步更新策略](https://zhuanlan.zhihu.com/p/24781259)
+11.[React 中 setState 同步更新策略](https://zhuanlan.zhihu.com/p/24781259)
 
-12.[React setState是异步吗](https://lq782655835.github.io/blogs/react/react-code-3.setState.html#setstate%E5%BC%82%E6%AD%A5%E5%AE%9E%E7%8E%B0)
+12.[React setState 是异步吗](https://lq782655835.github.io/blogs/react/react-code-3.setState.html#setstate%E5%BC%82%E6%AD%A5%E5%AE%9E%E7%8E%B0)
 
 13.[React 中 setState() 为什么是异步的？](https://qianduan.group/posts/5a6ed9480cf6b624d2239c8a)
 
-[揭密React setState](https://imweb.io/topic/5b189d04d4c96b9b1b4c4ed6)
+[揭密 React setState](https://imweb.io/topic/5b189d04d4c96b9b1b4c4ed6)

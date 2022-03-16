@@ -2,9 +2,9 @@
 
 ## 1.React 是什么
 
-React 是一个声明式，高效且灵活的用于构建用户界面的 JavaScript 库。使用 React 可以将一些简短、独立的代码片段组合成复杂的 UI 界面，这些代码片段被称作“**组件**”。(说到底，就是一个视图库，不是框架，只有结合 React-router 以及 redux 等等，可以完成常规单页应用，此时才更像一个“库”。)
+React 是一个声明式，高效且灵活的用于构建用户界面的 JavaScript 库。使用 React 可以将一些简短、独立的代码片段组合成复杂的 UI 界面，这些代码片段被称作“**组件**”。（说到底，就是一个视图库，不是框架，只有结合 React-router 以及 redux 等等，可以完成常规单页应用，此时才更像一个“库”。)
 
-### 1.1.声明式(Declarative)
+### 1.1. 声明式 (Declarative)
 
 React 使创建交互式 UI 变得轻而易举。为你应用的每一个状态设计简洁的视图，当数据改变时 React 能有效地更新并正确地渲染组件。
 
@@ -12,25 +12,25 @@ React 使创建交互式 UI 变得轻而易举。为你应用的每一个状态�
 
 > [声明式](https://zh.wikipedia.org/wiki/%E5%AE%A3%E5%91%8A%E5%BC%8F%E7%B7%A8%E7%A8%8B)
 
-### 1.2.组件化(Component-Based)
+### 1.2. 组件化 (Component-Based)
 
 创建拥有各自状态的组件，再由这些组件构成更加复杂的 UI。
 
 组件逻辑使用 JavaScript 编写而非模版，因此你可以轻松地在应用中传递数据，并使得状态与 DOM 分离。
 
-### 1.3.一次学习，随处编写(Learn Once, Write Anywhere)
+### 1.3. 一次学习，随处编写 (Learn Once, Write Anywhere)
 
 无论你现在正在使用什么技术栈，你都可以随时引入 React 来开发新特性，而不需要重写现有代码。
 
 React 还可以使用 Node 进行服务器渲染，或使用 React Native 开发原生移动应用。
 
-## 2.安装 React
+## 2. 安装 React
 
 ### 2.1.CDN
 
 ```html
   <!-- 加载 React。-->
-  <!-- 注意: 部署时，将 "development.js" 替换为 "production.min.js"。-->
+  <!-- 注意：部署时，将 "development.js" 替换为 "production.min.js"。-->
   <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
@@ -51,7 +51,7 @@ React 还可以使用 Node 进行服务器渲染，或使用 React Native 开发
 
 ### 2.2.[create-react-app](https://github.com/facebook/create-react-app)
 
-```shell
+```sh
 # Node >= 8.10
 # npm >= 5.6
 
@@ -70,7 +70,7 @@ npm start
 
 > 第一行的 npx 不是拼写错误 —— 它是 npm 5.2+ 附带的 package 运行工具。 [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b)
 
-## 3.核心概念
+## 3. 核心概念
 
 ### 3.1.JSX
 
@@ -157,7 +157,7 @@ function getGreeting(userList) {
 
 - **JSX 特定属性**
 
-你可以通过使用引号(一般双引号)，来将属性值指定为字符串字面量：
+你可以通过使用引号（一般双引号），来将属性值指定为字符串字面量：
 
 ```jsx
 const element = <div tabIndex="0"></div>
@@ -179,7 +179,7 @@ const element = <img src={user.avatarUrl}></img>
 const element = <img src={user.avatarUrl} />
 ```
 
-JSX 标签里能够包含很多子元素:
+JSX 标签里能够包含很多子元素：
 
 ```jsx
 const element = (
@@ -218,12 +218,12 @@ const title = response.potentiallyMaliciousInput
 const element = <h1>{title}</h1>
 ```
 
-React DOM 在渲染所有输入内容之前，默认会进行[【转义】](https://stackoverflow.com/questions/7381974/which-characters-need-to-be-escaped-in-html)。它可以确保在你的应用中，永远不会注入那些并非自己明确编写的内容。所有的内容在渲染之前都被转换成了字符串。这样可以有效地防止 **XSS**（cross-site-scripting, 跨站脚本）攻击。
+React DOM 在渲染所有输入内容之前，默认会进行 [【转义】](https://stackoverflow.com/questions/7381974/which-characters-need-to-be-escaped-in-html)。它可以确保在你的应用中，永远不会注入那些并非自己明确编写的内容。所有的内容在渲染之前都被转换成了字符串。这样可以有效地防止 **XSS**（cross-site-scripting, 跨站脚本）攻击。
 
-```shell
+```sh
 # 有三个字符应该始终作为转义出现在内容中
 # 这样它们就不会与标记的语法交互
-# 它们是所有基于 HTML和 XML 的文档的语言的一部分。
+# 它们是所有基于 HTML 和 XML 的文档的语言的一部分。
 & becomes &amp;
 < becomes &lt;
 > becomes &gt;
@@ -270,7 +270,7 @@ const element = {
 
 这些对象被称为 “**React 元素**”，它们描述了你希望在屏幕上看到的内容。React 通过读取这些对象，然后使用它们来构建 DOM 以及保持随时更新。
 
-### 3.2.元素渲染
+### 3.2. 元素渲染
 
 > **元素是构成 React 应用的最小砖块**。
 
@@ -333,7 +333,7 @@ React DOM 会将元素和它的子元素与它们之前的状态进行比较，�
 
 根据我们的经验，考虑 UI 在任意给定时刻的状态，而不是随时间变化的过程，能够消灭一整类的 bug。
 
-### 3.3.组件 & Props
+### 3.3. 组件 & Props
 
 组件，从概念上类似于 JavaScript 函数。它接受任意的入参（即 “props”），并返回用于描述页面展示内容的 React 元素。
 
@@ -633,7 +633,7 @@ class Clock extends React.Component {
 
 ```jsx
 class Clock extends React.Component {
-  // 2.添加一个 class 构造函数，然后在该函数中为 `this.state` 赋初值：
+  // 2. 添加一个 class 构造函数，然后在该函数中为 `this.state` 赋初值：
   constructor(props) {
     super(props)
     this.state = {date: new Date()}
@@ -643,14 +643,14 @@ class Clock extends React.Component {
     return (
       <div>
         <h1>Hello, world!</h1>
-        {/* 1.把 `render()` 方法中的 `this.props.date` 替换成 `this.state.date` ： */}
+        {/* 1. 把 `render()` 方法中的 `this.props.date` 替换成 `this.state.date` ： */}
         <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
       </div>
     )
   }
 }
 
-// 3.移除 `<Clock />` 元素中的 `date` 属性
+// 3. 移除 `<Clock />` 元素中的 `date` 属性
 ReactDOM.render(
   <Clock />,
   document.getElementById('root')
@@ -768,7 +768,7 @@ ReactDOM.render(
 
 关于 `setState()` 你应该了解三件事：
 
-1.不要直接修改 State
+1. 不要直接修改 State
 
 例如，此代码不会重新渲染组件：
 
@@ -883,8 +883,6 @@ function App() {
   return (
     <div>
       <Clock />
-      <Clock />
-      <Clock />
     </div>
   )
 }
@@ -899,9 +897,9 @@ ReactDOM.render(
 
 在 React 应用中，组件是有状态组件还是无状态组件属于组件实现的细节，它可能会随着时间的推移而改变。你可以在有状态的组件中使用无状态的组件，反之亦然。
 
-### 3.5.事件处理
+### 3.5. 事件处理
 
-React 元素的事件处理和 DOM 元素的很相似，但是有一点语法上的不同:
+React 元素的事件处理和 DOM 元素的很相似，但是有一点语法上的不同：
 
 - React 事件的命名采用小驼峰式（camelCase），而不是纯小写。
 - 使用 JSX 语法时你需要传入一个函数作为事件处理函数，而不是一个字符串。
@@ -987,7 +985,7 @@ ReactDOM.render(
 
 你必须谨慎对待 JSX 回调函数中的 `this`，**在 JavaScript 中，class 的方法默认不会绑定 `this`**。如果你忘记绑定 `this.handleClick` 并把它传入了 `onClick`，当你调用这个函数的时候 this 的值为 `undefined`。
 
-这并不是 React 特有的行为；这其实与 [JavaScript 函数工作原理](https://www.smashingmagazine.com/2014/01/understanding-javascript-function-prototype-bind/)有关。通常情况下，如果你没有在方法后面添加 `()`，例如 `onClick={this.handleClick}`，你应该为这个方法绑定 `this`。
+这并不是 React 特有的行为；这其实与 [JavaScript 函数工作原理](https://www.smashingmagazine.com/2014/01/understanding-javascript-function-prototype-bind/) 有关。通常情况下，如果你没有在方法后面添加 `()`，例如 `onClick={this.handleClick}`，你应该为这个方法绑定 `this`。
 
 > **注意**:
 > `onClick={this.handleClick}` 和 `onClick={this.handleClick()}` 的区别；前者是绑定函数，后者是执行函数
@@ -997,7 +995,7 @@ ReactDOM.render(
 ```jsx
 class LoggingButton extends React.Component {
   // 此语法确保 `handleClick` 内的 `this` 已被绑定。
-  // 注意: 这是 **实验性** 语法。
+  // 注意：这是 **实验性** 语法。
   handleClick = () => {
     console.log('this is:', this)
   }
@@ -1047,13 +1045,13 @@ class LoggingButton extends React.Component {
 > **注意**：
 > 在这两种情况下，React 的事件对象 `e` 会被作为第二个参数传递。如果通过箭头函数的方式，事件对象必须显式的进行传递，而通过 `bind` 的方式，事件对象以及更多的参数将会被隐式的进行传递。
 
-### 3.6.条件渲染
+### 3.6. 条件渲染
 
 在 React 中，你可以创建不同的组件来封装各种你需要的行为。然后，依据应用的不同状态，你可以只渲染对应状态下的部分内容。
 
 React 中的条件渲染和 JavaScript 中的一样，使用 JavaScript 运算符 `if` 或者条件运算符去创建元素来表现当前的状态，然后让 React 根据它们来更新 UI。
 
-观察这两个组件:
+观察这两个组件：
 
 ```jsx
 function UserGreeting(props) {
@@ -1227,7 +1225,7 @@ render() {
 
 在极少数情况下，你可能希望能隐藏组件，即使它已经被其他组件渲染。若要完成此操作，你可以让 `render` 方法直接返回 `null`，而不进行任何渲染。
 
-下面的示例中，`<WarningBanner />` 会根据 prop 中 `warn` 的值来进行条件渲染。如果 `warn` 的值是 `false`，那么组件则不会渲染:
+下面的示例中，`<WarningBanner />` 会根据 prop 中 `warn` 的值来进行条件渲染。如果 `warn` 的值是 `false`，那么组件则不会渲染：
 
 ```jsx
 function WarningBanner(props) {
@@ -1275,7 +1273,7 @@ ReactDOM.render(
 
 在组件的 `render` 方法中返回 `null` 并不会影响组件的生命周期。例如，上面这个示例中，`componentDidUpdate` 依然会被调用。
 
-### 3.7.列表 & key
+### 3.7. 列表 & key
 
 如下代码，我们使用 `map()` 函数让数组中的每一项变双倍，然后我们得到了一个新的列表 `doubled 并打印出来：
 
@@ -1391,9 +1389,9 @@ const todoItems = todos.map((todo, index) =>
 )
 ```
 
-如果列表项目的顺序可能会变化，我们不建议使用索引来用作 `key` 值，因为这样做会导致性能变差，还可能引起组件状态的问题。可以看看 Robin Pokorny 的 [深度解析使用索引作为 key 的负面影响](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318)这一篇文章。如果你选择不指定显式的 key 值，那么 React 将默认使用索引用作为列表项目的 key 值。
+如果列表项目的顺序可能会变化，我们不建议使用索引来用作 `key` 值，因为这样做会导致性能变差，还可能引起组件状态的问题。可以看看 Robin Pokorny 的 [深度解析使用索引作为 key 的负面影响](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318) 这一篇文章。如果你选择不指定显式的 key 值，那么 React 将默认使用索引用作为列表项目的 key 值。
 
-要是你有兴趣了解更多的话，这里有一篇文章[深入解析为什么 key 是必须的](https://zh-hans.reactjs.org/docs/reconciliation.html#recursing-on-children)可以参考。
+要是你有兴趣了解更多的话，这里有一篇文章 [深入解析为什么 key 是必须的](https://zh-hans.reactjs.org/docs/reconciliation.html#recursing-on-children) 可以参考。
 
 - **用 key 提取组件**
 
@@ -1529,14 +1527,14 @@ function NumberList(props) {
 
 这么做有时可以使你的代码更清晰，但有时这种风格也会被滥用。就像在 JavaScript 中一样，何时需要为了可读性提取出一个变量，这完全取决于你。但请记住，如果一个 `map()` 嵌套了太多层级，那可能就是你提取组件的一个好时机。
 
-### 3.8.表单
+### 3.8. 表单
 
 在 React 里，HTML 表单元素的工作方式和其他的 DOM 元素有些不同，这是因为表单元素通常会保持一些内部的 state。例如这个纯 HTML 表单只接受一个名称：
 
 ```jsx
 <form>
   <label>
-    名字:
+    名字：
     <input type="text" name="name" />
   </label>
   <input type="submit" value="提交" />
@@ -1568,7 +1566,7 @@ class NameForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('提交的名字: ' + this.state.value)
+    alert('提交的名字：' + this.state.value)
     event.preventDefault()
   }
 
@@ -1576,7 +1574,7 @@ class NameForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          名字:
+          名字：
           <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="提交" />
@@ -1598,7 +1596,7 @@ handleChange(event) {
 
 - **textarea 标签**
 
-在 HTML 中, `<textarea>` 元素通过其子元素定义其文本:
+在 HTML 中，`<textarea>` 元素通过其子元素定义其文本：
 
 ```jsx
 <textarea>
@@ -1613,7 +1611,7 @@ class EssayForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'
+      value: '请撰写一篇关于你喜欢的 DOM 元素的文章。'
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -1625,7 +1623,7 @@ class EssayForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('提交的文章: ' + this.state.value)
+    alert('提交的文章：' + this.state.value)
     event.preventDefault()
   }
 
@@ -1633,7 +1631,7 @@ class EssayForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          文章:
+          文章：
           <textarea value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="提交" />
@@ -1673,7 +1671,7 @@ class FlavorForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('你喜欢的风味是: ' + this.state.value)
+    alert('你喜欢的风味是：' + this.state.value)
     event.preventDefault()
   }
 
@@ -1681,7 +1679,7 @@ class FlavorForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          选择你喜欢的风味:
+          选择你喜欢的风味：
           <select value={this.state.value} onChange={this.handleChange}>
             <option value="grapefruit">葡萄柚</option>
             <option value="lime">酸橙</option>
@@ -1700,9 +1698,10 @@ class FlavorForm extends React.Component {
 
 > 注意
 > 你可以将数组传递到 `value` 属性中，以支持在 `select` 标签中选择多个选项：
-> ```jsx
-> <select multiple={true} value={['B', 'C']}>
-> ```
+
+```jsx
+<select multiple={true} value={['B', 'C']}>
+```
 
 - **文件 input 标签**
 
@@ -1746,7 +1745,7 @@ class Reservation extends React.Component {
     return (
       <form>
         <label>
-          参与:
+          参与：
           <input
             name="isGoing"
             type="checkbox"
@@ -1755,7 +1754,7 @@ class Reservation extends React.Component {
         </label>
         <br />
         <label>
-          来宾人数:
+          来宾人数：
           <input
             name="numberOfGuests"
             type="number"
@@ -1784,13 +1783,13 @@ setTimeout(function() {
 
 - **受控组件的替代品**
 
-有时使用受控组件会很麻烦，因为你需要为数据变化的每种方式都编写事件处理函数，并通过一个 React 组件传递所有的输入 state。当你将之前的代码库转换为 React 或将 React 应用程序与非 React 库集成时，这可能会令人厌烦。在这些情况下，你可能希望使用非受控组件, 这是实现输入表单的另一种方式。
+有时使用受控组件会很麻烦，因为你需要为数据变化的每种方式都编写事件处理函数，并通过一个 React 组件传递所有的输入 state。当你将之前的代码库转换为 React 或将 React 应用程序与非 React 库集成时，这可能会令人厌烦。在这些情况下，你可能希望使用非受控组件，这是实现输入表单的另一种方式。
 
 - **成熟的解决方案**
 
 如果你想寻找包含验证、追踪访问字段以及处理表单提交的完整解决方案，使用 [Formik](https://jaredpalmer.com/formik) 是不错的选择。然而，它也是建立在受控组件和管理 state 的基础之上 —— 所以不要忽视学习它们。
 
-### 3.9.状态提升
+### 3.9. 状态提升
 
 通常，多个组件需要反映相同的变化数据，这时我们建议将共享状态提升到最近的共同父组件中去。让我们看看它是如何运作的。
 
@@ -1807,9 +1806,9 @@ function BoilingVerdict(props) {
 }
 ```
 
-接下来, 我们创建一个名为 `Calculator` 的组件。它渲染一个用于输入温度的 `<input>`，并将其值保存在 `this.state.temperature` 中。
+接下来，我们创建一个名为 `Calculator` 的组件。它渲染一个用于输入温度的 `<input>`，并将其值保存在 `this.state.temperature` 中。
 
-另外, 它根据当前输入值渲染 BoilingVerdict 组件。
+另外，它根据当前输入值渲染 BoilingVerdict 组件。
 
 ```jsx
 class Calculator extends React.Component {
@@ -1929,7 +1928,7 @@ function tryConvert(temperature, convert) {
 
 - **状态提升**
 
-到目前为止, 两个 `TemperatureInput` 组件均在各自内部的 state 中相互独立地保存着各自的数据。
+到目前为止，两个 `TemperatureInput` 组件均在各自内部的 state 中相互独立地保存着各自的数据。
 
 然而，我们希望两个输入框内的数值彼此能够同步。当我们更新摄氏度输入框内的数值时，华氏度输入框内应当显示转换后的华氏温度，反之亦然。
 
@@ -2070,7 +2069,7 @@ class Calculator extends React.Component {
 
 如果某些数据可以由 props 或 state 推导得出，那么它就不应该存在于 state 中。举个例子，本例中我们没有将 `celsiusValue` 和 `fahrenheitValue` 一起保存，而是仅保存了最后修改的 `temperature` 和它的 `scale`。这是因为另一个输入框的温度值始终可以通过这两个值以及组件的 `render()` 方法获得。这使得我们能够清除输入框内容，亦或是，在不损失用户操作的输入框内数值精度的前提下对另一个输入框内的转换数值做四舍五入的操作。
 
-### 3.10.组合 vs 继承
+### 3.10. 组合 vs 继承
 
 React 有十分强大的组合模式。我们推荐使用组合而非继承来实现组件间的代码重用。
 
@@ -2182,7 +2181,7 @@ Props 和组合为你提供了清晰而安全地定制组件外观和行为的�
 
 - **第一步：将设计好的 UI 划分为组件层级**
 
-如何确定应该将哪些部分划分到一个组件中呢？你可以将组件当作一种函数或者是对象来考虑，根据[单一功能原则](https://en.wikipedia.org/wiki/Single_responsibility_principle)来判定组件的范围。也就是说，一个组件原则上只能负责一个功能。如果它需要负责更多的功能，这时候就应该考虑将它拆分成更小的组件。
+如何确定应该将哪些部分划分到一个组件中呢？你可以将组件当作一种函数或者是对象来考虑，根据 [单一功能原则](https://en.wikipedia.org/wiki/Single_responsibility_principle) 来判定组件的范围。也就是说，一个组件原则上只能负责一个功能。如果它需要负责更多的功能，这时候就应该考虑将它拆分成更小的组件。
 
 在实践中，因为你经常是在向用户展示 JSON 数据模型，所以如果你的模型设计得恰当，UI（或者说组件结构）便会与数据模型一一对应，这是因为 UI 和数据模型都会倾向于遵守相同的信息结构。将 UI 分离为组件，其中每个组件需与数据模型的某部分匹配。
 
@@ -2229,6 +2228,6 @@ React 通过一种比传统的双向绑定略微繁琐的方法来实现反向�
 
 来源：
 
-[1.入门教程: 认识 React](https://zh-hans.reactjs.org/tutorial/tutorial.html#what-is-react)
+[1. 入门教程：认识 React](https://zh-hans.reactjs.org/tutorial/tutorial.html#what-is-react)
 
 [2.React Tutorial: How to Get Started and How it Compares](https://www.toptal.com/react/react-tutorial-pt1)

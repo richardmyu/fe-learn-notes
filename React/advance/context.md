@@ -35,7 +35,7 @@ class ThemedButton extends React.Component {
 }
 ```
 
-使用 context, 我们可以避免通过中间元素传递 props：
+使用 `context`, 我们可以避免通过中间元素传递 `props`：
 
 ```jsx
 // Context 可以让我们无须明确地传遍每一个组件，就能将值深入传递进组件树。
@@ -147,7 +147,7 @@ function Page(props) {
 }
 ```
 
-这种模式足够覆盖很多场景了，在这些场景下你需要将子组件和直接关联的父组件解耦。如果子组件需要在渲染前和父组件进行一些交流，你可以进一步使用 【render props】(见 render props 章节)。
+这种模式足够覆盖很多场景了，在这些场景下你需要将子组件和直接关联的父组件解耦。如果子组件需要在渲染前和父组件进行一些交流，你可以进一步使用 【render props】（见 render props 章节）。
 
 但是，有的时候在组件树中很多不同层级的组件需要访问同样的一批数据。Context 能让你将这些数据向组件树下所有的组件进行“广播”，所有的组件都能访问到这些数据，也能访问到后续的数据更新。使用 context 的通用的场景包括管理当前的 locale，theme，或者一些缓存数据，这比替代方案要简单的多。
 
@@ -235,9 +235,9 @@ class ThemedButton extends React.Component {
 }
 ```
 
-当 `Provider` 的 `value` 值发生变化时，它内部的所有消费组件都会重新渲染。(注：注意是 `value` 值发生变化，除了直接修改 `value` 外，让当前组件重新渲染，使得 `value` 重新赋值，也是可以的)
+当 `Provider` 的 `value` 值发生变化时，它内部的所有消费组件都会重新渲染。（注：注意是 `value` 值发生变化，除了直接修改 `value` 外，让当前组件重新渲染，使得 `value` 重新赋值，也是可以的）
 
-`Provider` 及其内部消费组件都不受制于 `shouldComponentUpdate` 函数，因此当消费组件在其祖先组件退出更新的情况下也能更新。(注：)
+`Provider` 及其内部消费组件都不受制于 `shouldComponentUpdate` 函数，因此当消费组件在其祖先组件退出更新的情况下也能更新。（注：)
 
 通过新旧值检测来确定变化，使用了与 [Object.is](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 相同的算法。
 

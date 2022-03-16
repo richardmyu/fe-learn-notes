@@ -1,6 +1,6 @@
 # Jasmine
 
-## 1.基本语法介绍
+## 1. 基本语法介绍
 
 ### 1.1.Suites
 
@@ -28,7 +28,7 @@
 
 **`expect()`**：断言表达式
 
-```javascript
+```js
 describe("A suite", function() {
   it("contains spec with an expectation", function() {
     expect(true).toBe(true);
@@ -36,12 +36,12 @@ describe("A suite", function() {
 });
 ```
 
-### 1.4.嵌套 describe
+### 1.4. 嵌套 describe
 
 可以嵌套使用 `describe`，形成一个 `Suite` 树，在一个 `spec` 执行之前，`Jasmine` 会顺序执行这颗树上的所有 `beforeEach`。同样的，执行完 `spec` 后，也会顺序执行树上的所有 `afterEach`。
 
-```javascript
-describe("测试嵌套describe：level1", function() {
+```js
+describe("测试嵌套 describe：level1", function() {
   var foo;
 
   beforeEach(function() {
@@ -56,7 +56,7 @@ describe("测试嵌套describe：level1", function() {
     window.console.log("level1：测试");
   });
 
-  describe("测试嵌套describe:level2", function() {
+  describe("测试嵌套 describe:level2", function() {
     beforeEach(function() {
       window.console.log("level2：Setup");
     });
@@ -72,9 +72,9 @@ describe("测试嵌套describe：level1", function() {
 });
 ```
 
-另外可以使用 `pending` 函数将 `specs` 挂起，挂起 `specs` 和使用 `xit` 函数定义的 `spec` 一样，`spec` 不会被执行，但是名字会出现在报表中(经过实践，没有出现，并且一旦有 `pending` 之前禁用的 `spec` 不会出现在报表中)。另外只有名字，没有实际代码的 `spec` 也会在结果中显示为挂起的状态（经过实践，效果更类似与 `xit`）。`pending` 可以在 `spec` 函数体的任何地方调用，不管函数体内有没有 `expectations`，还是看个例子：
+另外可以使用 `pending` 函数将 `specs` 挂起，挂起 `specs` 和使用 `xit` 函数定义的 `spec` 一样，`spec` 不会被执行，但是名字会出现在报表中（经过实践，没有出现，并且一旦有 `pending` 之前禁用的 `spec` 不会出现在报表中）。另外只有名字，没有实际代码的 `spec` 也会在结果中显示为挂起的状态（经过实践，效果更类似与 `xit`）。`pending` 可以在 `spec` 函数体的任何地方调用，不管函数体内有没有 `expectations`，还是看个例子：
 
-```javascript
+```js
 describe("Pending specs", function() {
   xit("can be declared 'xit'", function() {
     expect(true).toBe(false);
@@ -94,7 +94,7 @@ describe("Pending specs", function() {
 
 在 `Jasmine` 中，每个 `Matcher` 实现一个“期望值”和“实际值”的布尔判断，`Jasmine` 会根据 `Mather` 判断 `expectation` 是 `true` 还是 `false`，然后决定 `spec` 是测试通过还是失败。所有 `Matcher` 可以通过 `not` 执行否定判断。
 
-## 2.内置 Matcher 方法的使用
+## 2. 内置 Matcher 方法的使用
 
 测试实例见 [HelloWorld.spec.js](https://github.com/richardmyu/learnRep/blob/master/Notes/unitTesting/demo/vueTest/vue-test-demo-jest/test/unit/specs/HelloWorld.spec.js)
 
@@ -102,7 +102,7 @@ describe("Pending specs", function() {
 
 基本类型判断（执行 `===` 对比）
 
-```javascript
+```js
 it("toBe and not.toBe", function() {
   expect(1).toBe(1);
 
@@ -121,7 +121,7 @@ it("toBe and not.toBe", function() {
 
 `toEqual` 有两种用法，对于基本的类型，`toEqual` 相当于 `toBe`
 
-```javascript
+```js
 it("toEqual and not.toEqual for basic types", function() {
   expect(1).toEqual(1);
   // 同 toBe，也是 ===
@@ -132,7 +132,7 @@ it("toEqual and not.toEqual for basic types", function() {
 
 `toEqual` 还可以用来判断对象：
 
-```javascript
+```js
 it("toEqual and not.toEqual for objects", function() {
   let obj1 = { name: "jack", age: 12 };
   let obj2 = { name: "jack", age: 12 };
@@ -186,7 +186,7 @@ it("toEqual and not.toEqual for objects", function() {
 
 使用正则表达式判断
 
-```javascript
+```js
 it("toMatch and not.toMatch", function() {
   var str = "Michael Jackson";
   expect(str).toMatch(/michael/i);
@@ -199,7 +199,7 @@ it("toMatch and not.toMatch", function() {
 
 判断是否是定义
 
-```javascript
+```js
 it("toBeDefined and not.toBeDefined", function() {
   var student = {
     name: "Jack",
@@ -213,7 +213,7 @@ it("toBeDefined and not.toBeDefined", function() {
   expect(student.gender).not.toBeDefined();
 
   // 下面这种情况会报错（ ReferenceError: a is not defined）
-  // 但可以挂载在全局对象下 window 检测(但那就是另外一个变量了。。。)
+  // 但可以挂载在全局对象下 window 检测（但那就是另外一个变量了。)
   expect(a).not.toBeDefined();
   expect(window.a).not.toBeDefined();
 
@@ -232,7 +232,7 @@ it("toBeDefined and not.toBeDefined", function() {
 
 判断是否是 `undefined`
 
-```javascript
+```js
 it("toBeUndefined and not.toBeUndefined", function() {
   var student = {
     name: "Jack",
@@ -264,7 +264,7 @@ it("toBeUndefined and not.toBeUndefined", function() {
 
 判断是否是 `null`
 
-```javascript
+```js
 it("toBeNull and not.toBeNull", function() {
   let student = {
     name: "jack",
@@ -295,9 +295,9 @@ it("toBeNull and not.toBeNull", function() {
 
 ### 2.7.toBeTruthy
 
-判断是否能转换成 `boolean` 型(类似 `Boolean()`)，判断的是否是 `true`
+判断是否能转换成 `boolean` 型（类似 `Boolean()`)，判断的是否是 `true`
 
-```javascript
+```js
 it("toBeTruthy and not.toBeTruthy", function() {
   var stu1;
   var stu2 = "Tom";
@@ -322,7 +322,7 @@ it("toBeTruthy and not.toBeTruthy", function() {
 
 判断是否能转换成 `boolean` 型，判断的是否是 `false`
 
-```javascript
+```js
 it("toBeFalsy and not.toBeFalsy", function() {
   var stu1;
   var stu2 = "Tom";
@@ -347,7 +347,7 @@ it("toBeFalsy and not.toBeFalsy", function() {
 
 判断数组集合是否包含某个基础类型的值
 
-```javascript
+```js
 it("toContain and not.toContain", function() {
   let arrStr = ["jack", "tom", "mary"];
   let arrObj = [{ name: "jack", age: 21 }, { name: "tom", age: 22 }];
@@ -369,7 +369,7 @@ it("toContain and not.toContain", function() {
 
 判断值类型的大小，结果若小则为 `True`
 
-```javascript
+```js
 it("toBeLessThan and not.toBeLessThan", function() {
   expect(1).toBeLessThan(1.1);
   // Received value must be a number.
@@ -381,7 +381,7 @@ it("toBeLessThan and not.toBeLessThan", function() {
 
 判断值类型的大小，结果若大则为 `True`，与 `toBeLessThan` 相反
 
-```javascript
+```js
 it("toBeGreaterThan and not.toBeGreaterThan", function() {
   expect(1).not.toBeGreaterThan(1.1);
   // Received value must be a number.
@@ -393,7 +393,7 @@ it("toBeGreaterThan and not.toBeGreaterThan", function() {
 
 比较两个值是否足够接近（不一定要相等），而这个“足够接近”就是 `toBeCloseTo` 的第二个参数指定的，它由 `Math.pow(10, -precision) / 2` 表示。
 
-```javascript
+```js
 it("toBeCloseTo and not.toBeCloseTo", function() {
   var a = 1.1;
   var b = 1.5;
@@ -424,7 +424,7 @@ it("toBeCloseTo and not.toBeCloseTo", function() {
 
 再看看它的源码：
 
-```javascript
+```js
 getJasmineRequireObj().toBeCloseTo = function() {
   function toBeCloseTo() {
     return {
@@ -448,7 +448,7 @@ getJasmineRequireObj().toBeCloseTo = function() {
 
 判断是否抛出异常
 
-```javascript
+```js
 it("toThrow and not.toThrow", function() {
   var foo = function() {
     return 1 + 2;
@@ -466,7 +466,7 @@ it("toThrow and not.toThrow", function() {
 
 判断是否抛出了指定的错误
 
-```javascript
+```js
 it("toThrowError and not.toThrowError", function() {
   var foo = function() {
     throw new TypeError("foo bar baz");
@@ -492,7 +492,7 @@ Jasmine 允许在执行测试集/测试用例的开始前/结束后做一些初�
   - `afterAll`：每个 `suite`（即 `describe`）中所有 `spec`（即 `it`）运行之后运行
   - `afterEach`：每个 `spec`（即 `it`）运行之后运行
 
-```javascript
+```js
 var globalCount;
 describe("Setup and Teardown suite 1", function() {
   var suiteGlobalCount;
@@ -548,9 +548,9 @@ describe("Setup and Teardown suite 2", function() {
 
 第二个 `describe`，在 `beforeEach` 中对全局变量 `globalCount` 自增 2，上述代码中，第一个 `describe` 中 `afterAll` 中没有对 `globalCount` 进行重置，因此执行完第一个 `describe` 后，`globalCount` 的值为 2，因此第二个 `describe` 的 `globalCount` 的初始值即为 2。
 
-在 `beforeEach/it/afterEach` 中，还可以使用 `this` 关键字定义变量，需要注意的是，使用 `this` 关键字声明的变量，仅在 `beforeEach/it/afterEach` 这个过程中传递(根据一下代码的实践反应，无法共享 `this`)：
+在 `beforeEach/it/afterEach` 中，还可以使用 `this` 关键字定义变量，需要注意的是，使用 `this` 关键字声明的变量，仅在 `beforeEach/it/afterEach` 这个过程中传递（根据一下代码的实践反应，无法共享 `this`)：
 
-```javascript
+```js
 describe("Test 'this'", function() {
   beforeEach(function() {
     this.testCount = this.testCount || 0;
@@ -579,7 +579,7 @@ describe("Test 'this'", function() {
 - `xdescribe`：该 `describe` 下的所有 `it` 将被忽略，`Jasmine` 将直接忽略这些 `it`，因此不会被运行
 - `xit`：运行到该 `it` 时，挂起它不执行
 
-```javascript
+```js
 xdescribe("Test xdescribe", function() {
   it("Spec 1", function() {
     expect(1).toBe(1);
@@ -609,7 +609,7 @@ describe("Test xit", function() {
 
 `Spy` 用来追踪函数的调用历史信息（是否被调用、调用参数列表、被请求次数等）。可以用来模拟函数的执行，以达到隔离复杂依赖的效果。例如，你要测试列表的处理是否正确，但是数据是异步请求接口取得的，这时你就可以使用 Spies，模拟返回各种不同的数据进行测试。`spy` 可以保存任何函数的调用记录和输入的参数，`Spy` 仅存在于定义它的 `describe` 和 `it` 方法块中，并且每次在 `spec` 执行完之后被销毁。
 
-```javascript
+```js
 describe("A spy", function() {
   var foo,
     bar = null;
@@ -620,7 +620,7 @@ describe("A spy", function() {
         bar = value;
       }
     };
-    
+
 
     spyOn(foo, "setBar"); // 在 foo 对象上添加 spy
 
@@ -656,7 +656,7 @@ describe("A spy", function() {
 
 那如果说我们想在使用 `Spy` 的同时也希望执行实际的代码呢？`spy` 链式调用 `and.callThrough` 后，在获取 `spy` 的同时，调用实际的函数
 
-```javascript
+```js
 // situation 1
 describe("A spy, when configured to call through", function() {
   var foo, bar, fetchedBar;
@@ -873,14 +873,14 @@ describe("A spy, when configured to call through", function() {
 });
 ```
 
-| set-and.callThrough | get-and.callThrough | set | get |    bar    | fetchedBar |
-| :-----------------: | :-----------------: | :-: | :-: | :-------: | :--------: |
-|          ✔          |          ×          |  ×  |  ×  |    123    |    123     |
-|          ×          |          ✔          |  ×  |  ×  |    123    |    123     |
-|          ✔          |          ✔          |  ×  |  ×  |    123    |    123     |
-|          ×          |          ×          |  ✔  |  ×  | undefined | undefined  |
-|          ×          |          ×          |  ×  |  ✔  |    123    | undefined  |
-|          ×          |          ×          |  ✔  |  ✔  | undefined | undefined  |
+| set-and.callThrough | get-and.callThrough |  set  |  get  |    bar    | fetchedBar |
+| :-----------------: | :-----------------: | :---: | :---: | :-------: | :--------: |
+|          ✔          |          ×          |   ×   |   ×   |    123    |    123     |
+|          ×          |          ✔          |   ×   |   ×   |    123    |    123     |
+|          ✔          |          ✔          |   ×   |   ×   |    123    |    123     |
+|          ×          |          ×          |   ✔   |   ×   | undefined | undefined  |
+|          ×          |          ×          |   ×   |   ✔   |    123    | undefined  |
+|          ×          |          ×          |   ✔   |   ✔   | undefined | undefined  |
 
 > 没有被监听的函数，是正常执行的，而被监听的函数是隔离的，即实际没有执行，除非调用 `and.callThrough`。
 
@@ -888,7 +888,7 @@ describe("A spy, when configured to call through", function() {
 
 由于 `Spy` 是模拟函数的调用，因此我们也可以强制指定函数的返回值。
 
-```javascript
+```js
 describe("A spy, when configured to fake a return value", function() {
   var foo, bar, fetchedBar;
 
@@ -929,7 +929,7 @@ describe("A spy, when configured to fake a return value", function() {
 
 与 `returnValue` 相似，`callFake` 则更进一步，直接通过指定一个假的自定义函数来执行。这种方式比 `returnValue` 更灵活，我们可以任意捏造一个函数来达到我们的测试要求。
 
-```javascript
+```js
 describe("A spy, when configured with an alternate implementation", function() {
   var foo, bar, fetchedBar;
 
@@ -969,7 +969,7 @@ describe("A spy, when configured with an alternate implementation", function() {
 
 `throwError` 便于我们模拟异常的抛出。
 
-```javascript
+```js
 describe("A spy, when configured to throw an error", function() {
   var foo, bar;
 
@@ -995,7 +995,7 @@ describe("A spy, when configured to throw an error", function() {
 
 `spy` 恢复到原始状态，不执行任何操作。
 
-```javascript
+```js
 describe("A spy stub", function() {
   let foo;
   let bar = null;
@@ -1010,8 +1010,8 @@ describe("A spy stub", function() {
       }
     };
 
-    spyOn(foo, "setBar").and.callThrough(); // 标记1
-    spyOn(foo, "getBar").and.returnValue(999); // 标记2
+    spyOn(foo, "setBar").and.callThrough(); // 标记 1
+    spyOn(foo, "getBar").and.returnValue(999); // 标记 2
   });
 
   foo.setBar(123);
@@ -1026,12 +1026,12 @@ describe("A spy stub", function() {
 
   foo.setBar.and.stub();
   console.log("333-1", bar, getValue);
-  // 相当于'标记1'中的代码变为了 spyOn(foo, 'setBar')
+  // 相当于'标记 1'中的代码变为了 spyOn(foo, 'setBar')
   // ??? 什么叫相当于
   // ??? 等价于去除 add.callThrough add.returnValue 的影响
   foo.getBar.and.stub();
   console.log("333-2", bar, getValue);
-  // 相当于'标记2'中的代码变为了 spyOn(foo, 'getBar')
+  // 相当于'标记 2'中的代码变为了 spyOn(foo, 'getBar')
   bar = null;
   console.log("444", bar, getValue);
 
@@ -1051,7 +1051,7 @@ describe("A spy stub", function() {
 
 [源码](https://github.com/pivotal/jasmine/blob/master/src/core/SpyStrategy.js)
 
-```javascript
+```js
 getJasmineRequireObj().SpyStrategy = function(j$) {
   /**
    * @interface SpyStrategy
@@ -1119,7 +1119,7 @@ getJasmineRequireObj().SpyStrategy = function(j$) {
 - `.calls.any()`: 被 `Spy` 的函数一旦被调用过，则返回 `true`，否则为 `false`；
 - `.calls.count()`: 返回被 `Spy` 的函数的被调用次数；
 - `.calls.argsFor(index)`: 返回被 `Spy` 的函数的调用参数，以 `index` 来指定参数；
-- `.calls.allArgs()`:返回被 `Spy` 的函数的所有调用参数；
+- `.calls.allArgs()`: 返回被 `Spy` 的函数的所有调用参数；
 - `.calls.all()`: 返回 `calls` 的上下文，这将返回当前 `calls` 的整个实例数据；
 - `.calls.mostRecent()`: 返回 `calls` 中追踪的最近一次的请求数据；
 - `.calls.first()`: 返回 `calls` 中追踪的第一次请求的数据；
@@ -1128,7 +1128,7 @@ getJasmineRequireObj().SpyStrategy = function(j$) {
 
 ---
 
-```javascript
+```js
 describe("A spy calls", function() {
   var foo,
     bar = null;
@@ -1154,7 +1154,6 @@ describe("A spy calls", function() {
   it("tracks the number of times it was called", function() {
     expect(foo.setBar.calls.count()).toEqual(0);
     foo.setBar();
-    foo.setBar();
 
     // 返回被 Spy 的函数的被调用次数
     expect(foo.setBar.calls.count()).toEqual(2);
@@ -1173,7 +1172,7 @@ describe("A spy calls", function() {
     foo.setBar(123);
     foo.setBar(456, "baz");
 
-    // 返回被 Spy 的函数的所有调用参数;
+    // 返回被 Spy 的函数的所有调用参数；
     expect(foo.setBar.calls.allArgs()).toEqual([[123], [456, "baz"]]);
   });
 
@@ -1223,7 +1222,7 @@ describe("A spy calls", function() {
     baz.fn(123);
     quux.fn(456);
 
-    // 当调用 all() ，mostRecent() ，first()方法时
+    // 当调用 all() ，mostRecent() ，first() 方法时
     // 返回对象的 object 属性返回的是当前上下文对象
     // ???
     expect(spy.calls.first().object).toBe(baz);
@@ -1247,7 +1246,7 @@ describe("A spy calls", function() {
 
 假如没有函数可以追踪，我们可以自己创建一个空的 `Spy`。创建后的 `Spy` 功能与其他的 `Spy` 一样：跟踪调用、参数等，但该 `Spy` 没有实际的代码实现，这种方式经常会用在对 JavaScript 中的对象的测试。
 
-```javascript
+```js
 describe("A spy, when created manually", function() {
   var whatAmI;
 
@@ -1289,7 +1288,7 @@ describe("A spy, when created manually", function() {
 
 [源码](https://github.com/jasmine/jasmine/blob/master/src/core/Spy.js)
 
-```javascript
+```js
 getJasmineRequireObj().Spy = function(j$) {
   var nextOrder = (function() {
     var order = 0;
@@ -1491,11 +1490,11 @@ getJasmineRequireObj().Spy = function(j$) {
 };
 ```
 
-### 5.7.createSpyObj (经过实践，没有该方法)
+### 5.7.createSpyObj （经过实践，没有该方法）
 
 如果需要 `spy` 模拟多个函数调用，可以向 `jasmine.createSpyObj` 中传入一个字符串数组，它将返回一个对象，你所传入的所有字符串都将对应一个属性，每个属性即为一个 `Spy`。
 
-```javascript
+```js
 describe("Multiple spies, when created manually", function() {
   var tape;
 
@@ -1529,16 +1528,16 @@ describe("Multiple spies, when created manually", function() {
 });
 ```
 
-## 6.其他匹配方式
+## 6. 其他匹配方式
 
 ### 6.1.jasmine.any
 
 `jasmine.any` 方法以构造器或者类名作为参数，`Jasmine` 将判断期望值和真实值的构造器是否相同，若相同则返回 `true`。
 
-```javascript
+```js
 ```
 
-```javascript
+```js
 describe("jasmine.any", function() {
   it("matches any value", function() {
     expect({}).toEqual(jasmine.any(Object));
@@ -1565,7 +1564,7 @@ describe("jasmine.any", function() {
 
 `jasmine.anything` 判断只要不是 `null` 或 `undefined` 类型的值，若不是则返回 `true`。
 
-```javascript
+```js
 describe("jasmine.anything", function() {
   it("matches anything", function() {
     expect(1).toEqual(jasmine.anything());
@@ -1588,7 +1587,7 @@ describe("jasmine.anything", function() {
 
 `jasmine.objectContaining` 用来判断对象中是否存在指定的键值对。
 
-```javascript
+```js
 describe("jasmine.objectContaining", function() {
   var foo;
 
@@ -1640,7 +1639,7 @@ describe("jasmine.objectContaining", function() {
 
 `jasmine.arrayContaining` 可以用来判断数组中是否有期望的值或者子集。
 
-```javascript
+```js
 describe("jasmine.arrayContaining", function() {
   var foo;
 
@@ -1673,7 +1672,7 @@ describe("jasmine.arrayContaining", function() {
 
 `jasmine.stringMatching` 用来模糊匹配字符串，在 `jasmine.stringMatching` 中也可以使用正则表达式进行匹配，使用起来非常灵活。
 
-```javascript
+```js
 describe("jasmine.stringMatching", function() {
   it("matches as a regexp", function() {
     expect({ foo: "bar" }).toEqual({ foo: jasmine.stringMatching(/^bar$/) });
@@ -1697,11 +1696,11 @@ describe("jasmine.stringMatching", function() {
 });
 ```
 
-### 6.5.不规则匹配（自定义匹配）：asymmetricMatch
+### 6.5. 不规则匹配（自定义匹配）：asymmetricMatch
 
 某些场景下，我们希望能按照自己设计的规则进行匹配，此时我们可以自定义一个对象，该对象只要包含一个名为 `asymmetricMatch` 的方法即可。
 
-```javascript
+```js
 describe("custom asymmetry", function() {
   var tester = {
     asymmetricMatch: function(actual) {
@@ -1732,7 +1731,7 @@ describe("custom asymmetry", function() {
 
 要想使用 `jasmine.clock()`，先调用 `jasmine.clock().install` 在 `spec` 或者 `suite` 中初始化，在执行完测试的时候，一定要卸载，务必调用 `jasmine.clock().uninstall` 来恢复时间状态。
 
-```javascript
+```js
 describe("Manually ticking the Jasmine Clock", function() {
   var timerCallback;
 
@@ -1791,11 +1790,11 @@ describe("Manually ticking the Jasmine Clock", function() {
 });
 ```
 
-## 8.异步支持
+## 8. 异步支持
 
 `Jasmine` 可以支持 `spec` 中执行异步操作，当调用 `beforeEach`, `it` 和 `afterEach` 时，函数可以包含一个可选参数 `done`，当 `spec` 执行完毕之后，调用 `done` 通知 `Jasmine` 异步操作已执行完毕。
 
-```javascript
+```js
 describe("Asynchronous specs", function() {
   var value;
 
@@ -1836,11 +1835,11 @@ describe("Asynchronous specs", function() {
 });
 ```
 
-## 9.自定义 Matcher
+## 9. 自定义 Matcher
 
 自定义的 `Matcher` 从本质上讲是一个对比函数，它的函数名就是暴露给 `expect` 调用的名称，它接受 `actual` 值和 `expected` 值。这个函数会传入 `Jasmine` 作用域中，可以在 `beforeEach` 中调用到。每次 `spec` 执行完后，都会把自定义 `Matchers` 卸载，下面看个简单例子：
 
-```javascript
+```js
 var customMatchers = {
   toBeGoofy: function(util, customEqualityTesters) {
     return {
@@ -1887,13 +1886,13 @@ var customMatchers = {
 
 `compare` 函数必须返回一个结果对象。结果对象必须包含一个布尔值类型的 `pass` 属性，告诉 `expectation Matcher` 是否通过。如果 `expectation` 调用了 `.not` 的话，会做相反的判断。上例中的 `toBeGoofy` 测试实际值得 `hyuk` 属性是否和期望值相等。
 
-### 9.4.错误信息
+### 9.4. 错误信息
 
 如果不指定错误信息，`expectation` 会尝试用 `Matcher` 生成一个错误信息。但是，如果返回的 `result` 对象包含了 `message` 属性的话，会使用 `message` 的值作错误提示。
 
 先看看指定 `message` 的效果
 
-```javascript
+```js
 var customMatchers = {
   toBeGoofy: function(util, customEqualityTesters) {
     return {
@@ -1909,9 +1908,9 @@ var customMatchers = {
           customEqualityTesters
         );
         if (result.pass) {
-          result.message = "通过了，通过了，通过了...";
+          result.message = "通过了，通过了，通过了。..";
         } else {
-          result.message = "没通过，没通过，没通过...";
+          result.message = "没通过，没通过，没通过。..";
         }
         return result;
       }
@@ -1934,7 +1933,7 @@ describe("测试自定义错误信息", function() {
 
 再看看没有指定 `message` 的效果：
 
-```javascript
+```js
 var customMatchers = {
   toBeGoofy: function(util, customEqualityTesters) {
     return {
@@ -1969,7 +1968,7 @@ describe("测试自动生成的错误信息", function() {
 
 可以看出，`Jasmine` 把 `Matcher` 的名字，按照驼峰命名法分隔开，生成错误信息。
 
-### 9.5.自定义“否定”比较规则
+### 9.5. 自定义“否定”比较规则
 
 如果你的自定义 `Matcher` 需要控制 `.not` 的行为的话（不是简单的布尔值取反），那么你的 `Matcher` 构造函数里除了 `compare`，还可以包含另一个函数 `negativeCompare`。当使用了 `.not` 的时候会执行 `negativeCompare`。
 
@@ -1977,7 +1976,7 @@ describe("测试自动生成的错误信息", function() {
 
 向 `Jasmine` 注册自定义的 `Matcher` 后，所有的 `expectation` 都可以使用该 `Matcher`。
 
-```javascript
+```js
 describe("注册'toBeGoofy'", function() {
   beforeEach(function() {
     jasmine.addMatchers(customMatchers);
@@ -1986,6 +1985,8 @@ describe("注册'toBeGoofy'", function() {
   //...
 });
 ```
+
+---
 
 参考：
 
@@ -2011,7 +2012,7 @@ describe("注册'toBeGoofy'", function() {
 
 [Javascript 测试框架 Jasmine（七）：jqPaginator 测试实例](http://keenwon.com/1225.html)
 
-[jasmine 行为驱动,测试先行](http://blog.fens.me/nodejs-jasmine-bdd/)
+[jasmine 行为驱动，测试先行](http://blog.fens.me/nodejs-jasmine-bdd/)
 
 [手把手教你如何安装和使用 Karma-Jasmine](https://www.cnblogs.com/wushangjue/p/4539189.html)
 
