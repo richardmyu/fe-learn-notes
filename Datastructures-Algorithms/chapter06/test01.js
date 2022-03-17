@@ -140,6 +140,7 @@ let setA = new Set();
 setA.add(1);
 setA.add(2);
 setA.add(3);
+
 let setB = new Set();
 setB.add(4);
 setB.add(5);
@@ -147,11 +148,11 @@ setB.add(6);
 let unionAB = setA.union(setB);
 console.log(unionAB.values());
 
-let setA = new Set();
+let setC = new Set();
 setA.add(1);
 setA.add(2);
 setA.add(3);
-let setB = new Set();
+let setD = new Set();
 setB.add(2);
 setB.add(3);
 setB.add(6);
@@ -159,11 +160,11 @@ setB.add(6);
 let intersectionAB = setA.intersection(setB);
 console.log(intersectionAB.values());
 
-let setA = new Set();
+let setE = new Set();
 setA.add(1);
 setA.add(2);
 setA.add(3);
-let setB = new Set();
+let setF = new Set();
 setB.add(2);
 setB.add(3);
 setB.add(6);
@@ -171,15 +172,15 @@ setB.add(6);
 let differenceAB = setA.difference(setB);
 console.log(differenceAB.values());
 
-let setA = new Set();
+let setG = new Set();
 setA.add(1);
 setA.add(2);
 setA.add(3);
-let setB = new Set();
+let setH = new Set();
 setB.add(2);
 setB.add(3);
 setB.add(6);
-let setC = new Set();
+let setI = new Set();
 setC.add(2);
 setC.add(6);
 

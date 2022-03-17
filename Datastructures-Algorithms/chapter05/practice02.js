@@ -6,6 +6,7 @@ function CircularLinkedList() {
     this.ele = ele;
     this.next = null;
   };
+
   let length = 0;
   let head = null;
 
@@ -17,11 +18,14 @@ function CircularLinkedList() {
       head = node;
     } else {
       current = head;
+
       while (current.next !== head) {
         current = current.next;
       }
+
       current.next = node;
     }
+
     node.next = head;
     length++;
   };
@@ -32,15 +36,18 @@ function CircularLinkedList() {
       let current = head;
       let previous;
       let index = 0;
+
       if (position === 0) {
         if (!head) {
           head = node;
           node.next = head;
         } else {
           node.next = current;
+
           while (current.next !== head) {
             current = current.next;
           }
+
           head = node;
           current.next = head;
         }
@@ -49,6 +56,7 @@ function CircularLinkedList() {
           previous = current;
           current = current.next;
         }
+
         node.next = current;
         previous.next = node;
       }
@@ -69,6 +77,7 @@ function CircularLinkedList() {
         while (current.next !== head) {
           current = current.next;
         }
+
         head = head.next;
         current.next = head;
       } else {
@@ -76,6 +85,7 @@ function CircularLinkedList() {
           previous = current;
           current = current.next;
         }
+
         previous.next = current.next;
       }
       length--;
@@ -93,10 +103,13 @@ function CircularLinkedList() {
   this.indexOf = function (ele) {
     let current = head;
     let index = -1;
+
     if (ele === current.ele) {
       return 0;
     }
+
     index++;
+
     while (current.next !== head) {
       if (ele === current.ele) {
         return index;
@@ -104,9 +117,11 @@ function CircularLinkedList() {
       current = current.next;
       index++;
     }
+
     if (ele === current.ele) {
       return index;
     }
+
     return -1;
   };
 
@@ -125,6 +140,7 @@ function CircularLinkedList() {
   this.toString = function () {
     let current = head;
     let str = current.ele;
+
     while (current.next !== head) {
       current = current.next;
       str += ',' + current.ele;

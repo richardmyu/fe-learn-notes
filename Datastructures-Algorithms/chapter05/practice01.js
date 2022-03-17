@@ -19,6 +19,7 @@ function DoublyLinkedList() {
   this.append = function (ele) {
     let node = new Node(ele);
     let current;
+
     if (head === null) {
       head = node;
       tail = node;
@@ -28,6 +29,7 @@ function DoublyLinkedList() {
       node.prev = current;
       tail = node;
     }
+
     length++;
   };
 
@@ -60,11 +62,13 @@ function DoublyLinkedList() {
           previous = current;
           current = current.next;
         }
+
         node.next = current;
         previous.next = node;
         current.prev = node;
         node.prev = previous;
       }
+
       length++;
       return true;
     } else {
@@ -80,6 +84,7 @@ function DoublyLinkedList() {
 
       if (position === 0) {
         head = current.next;
+
         if (length === 1) {
           tail = null;
         } else {
@@ -98,6 +103,7 @@ function DoublyLinkedList() {
         previous.next = current.next;
         current.next.prev = previous;
       }
+
       length--;
       return current.ele;
     } else {
@@ -113,10 +119,13 @@ function DoublyLinkedList() {
   this.indexOf = function (ele) {
     let current = head;
     let index = -1;
+
     if (ele === current.ele) {
       return 0;
     }
+
     index++;
+
     while (current.next) {
       if (ele === current.ele) {
         return index;
@@ -124,9 +133,11 @@ function DoublyLinkedList() {
       current = current.next;
       index++;
     }
+
     if (ele === current.ele) {
       return index;
     }
+
     return -1;
   };
 
@@ -141,20 +152,24 @@ function DoublyLinkedList() {
   this.toString = function () {
     let current = head;
     let str = current ? current.ele : '';
+
     while (current && current.next) {
       current = current.next;
       str += ',' + current.ele;
     }
+
     return str;
   };
 
   this.inverseToString = function () {
     let current = tail;
     let str = current ? current.ele : '';
+
     while (current && current.prev) {
       current = current.prev;
       str += ',' + current.ele;
     }
+
     return str;
   };
 
