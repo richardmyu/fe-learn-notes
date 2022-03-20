@@ -20,8 +20,6 @@ console.log(document.getElementsByTagName('*').length);
 
 > 注意，`getElementById` 和 `getElementsByClassName` 并不支持通配符查询。
 
----
-
 ## 2.getAttribute/setAttribute
 
 通过 `setAttribute` 对文档做出修改后，再通过浏览器的 view source 选项去查看文档的源代码时，仍将看到改变前的属性值，也就是说，`setAttribute` 做出的修改不会反映在文档本身的源代码里。（简单说就是代码加载后不会被动态修改，所以才是源代码呀 O(∩_∩)O)
