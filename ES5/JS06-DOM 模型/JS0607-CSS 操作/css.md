@@ -16,7 +16,7 @@ div.setAttribute("style", "background-color:red;" + "border:1px solid black;");
 
 ## 2.`CSSStyleDeclaration` 接口
 
-### 2.1. 简介
+### 2.1.简介
 
 `CSSStyleDeclaration` 接口用来操作元素的样式。三个地方部署了这个接口。
 
@@ -361,7 +361,7 @@ var color = window.getComputedStyle(test, ":before").getPropertyValue("color");
 
 ## 7.StyleSheet 接口
 
-### 7.1. 概述
+### 7.1.概述
 
 `StyleSheet` 接口代表网页的一张样式表，包括 `<link>` 元素加载的样式表和 `<style>` 元素内嵌的样式表。
 
@@ -381,7 +381,7 @@ var myStyleSheet = document.getElementById("myStyle").sheet;
 myStyleSheet instanceof StyleSheet; // true
 ```
 
-### 7.2. 实例属性
+### 7.2.实例属性
 
 `StyleSheet` 实例有以下属性。
 
@@ -467,7 +467,7 @@ styleSheet.cssRules[1].style.color = "purple";
 
 有些样式表是通过 `@import` 规则输入的，它的 `ownerRule` 属性会返回一个 `CSSRule` 实例，代表那行 `@import` 规则。如果当前样式表不是通过 `@import` 引入的，`ownerRule` 属性返回 `null`。
 
-### 7.3. 实例方法
+### 7.3.实例方法
 
 1).CSSStyleSheet.insertRule
 
@@ -491,7 +491,7 @@ sheet.insertRule("p { color: red }", 1);
 
 `document.styleSheets[0].deleteRule(1);`
 
-## 8. 实例：添加样式表
+## 8.实例：添加样式表
 
 网页添加样式表有两种方式。一种是添加一张内置样式表，即在文档中添加一个 `<style>` 节点。
 
@@ -550,7 +550,7 @@ crl.length; // 2
 
 ## 10.`CSSRule` 接口
 
-### 10.1. 概述
+### 10.1.概述
 
 一条 CSS 规则包括两个部分：CSS 选择器和样式声明。下面就是一条典型的 CSS 规则。
 
@@ -727,7 +727,7 @@ styleSheet.cssRules[0].conditionText;
 
 ## 11.`window.matchMedia()`
 
-### 11.1. 基本用法
+### 11.1.基本用法
 
 `window.matchMedia` 方法用来将 CSS 的 `MediaQuery` 条件语句，转换成一个 `MediaQueryList` 实例。
 

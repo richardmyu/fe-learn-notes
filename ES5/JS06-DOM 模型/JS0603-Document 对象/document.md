@@ -1,6 +1,6 @@
 # document 对象
 
-## 1. 概述
+## 1.概述
 
 `document` 对象是文档的根节点，每张网页都有自己的 `document` 对象。`window.document` 属性就指向这个对象。只要浏览器开始载入 HTML 文档，该对象就存在了，可以直接使用。
 
@@ -16,9 +16,9 @@
 
 `document` 对象继承了 `EventTarget` 接口、`Node` 接口、`ParentNode` 接口。这意味着，这些接口的方法都可以在 `document` 对象上调用。除此之外，`document` 对象还有很多自己的属性和方法。
 
-## 2. 属性
+## 2.属性
 
-### 2.1. 快捷方式属性
+### 2.1.快捷方式属性
 
 以下属性是指向文档内部的某个节点的快捷方式。
 
@@ -97,7 +97,7 @@ inp.addEventListener('click', function() {
 
 `document.fullscreenElement` 属性返回当前以全屏状态展示的 DOM 元素。如果不是全屏状态，该属性返回 `null`。
 
-### 2.2. 节点集合属性
+### 2.2.节点集合属性
 
 以下属性返回一个 `HTMLCollection` 实例，表示文档内部特定元素的集合。这些集合都是动态的，原节点有任何变化，立刻会反映在集合中。
 
@@ -132,7 +132,7 @@ if (scripts.length !== 0) {
 
 `document.styleSheets` 属性返回文档内嵌或引入的样式表集合。
 
-#### 2.2.7. 小结
+#### 2.2.7.小结
 
 除了 `document.styleSheets`，以上的集合属性返回的都是 `HTMLCollection` 实例。而 `document.styleSheets` 返回的是 `StyleSheetList`。
 
@@ -145,7 +145,7 @@ document.scripts instanceof HTMLCollection // true
 document.styleSheets // StyleSheetList {length: 0}
 ```
 
-### 2.3. 文档静态信息属性
+### 2.3.文档静态信息属性
 
 以下属性返回文档信息。
 
@@ -281,13 +281,13 @@ document.title // hhh
 
 ---
 
-- a.visible：页面可见。注意，页面可能是部分可见，即不是焦点窗口，前面被其他窗口部分挡住了。
+- a.`visible`：页面可见。注意，页面可能是部分可见，即不是焦点窗口，前面被其他窗口部分挡住了。
   >
-- b.hidden：页面不可见，有可能窗口最小化，或者浏览器切换到了另一个 Tab。
+- b.`hidden`：页面不可见，有可能窗口最小化，或者浏览器切换到了另一个 Tab。
   >
-- c.prerender：页面处于正在渲染状态，对于用于来说，该页面不可见。
+- c.`prerender`：页面处于正在渲染状态，对于用于来说，该页面不可见。
   >
-- d.unloaded：页面从内存里面卸载了。
+- d.`unloaded`：页面从内存里面卸载了。
 
 ---
 

@@ -2,7 +2,7 @@
 
 ## 1. 方法
 
-### 3.1 document.open/close()
+### 3.1.`document.open/close()`
 
 `document.open` 方法清除当前文档所有内容，使得文档处于可写状态，供 `document.write` 方法写入内容（但是会添加到 `body` 的最后面）。
 
@@ -14,7 +14,7 @@ document.write('hello world')
 document.close()
 ```
 
-### 3.2 document.write/writeln()
+### 3.2.`document.write/writeln()`
 
 `document.write` 方法用于向当前文档写入内容。
 
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 </html>
 ```
 
-在浏览器打开上面网页，将会显示 hello world。
+在浏览器打开上面网页，将会显示 `hello world`。
 
 `document.write` 是 JavaScript 语言标准化之前就存在的方法，现在完全有更符合标准的方法向文档写入内容（比如对 `innerHTML` 属性赋值）。所以，除了某些特殊情况，应该尽量避免使用 `document.write` 这个方法。
 
@@ -77,7 +77,7 @@ document.writeln(2)
 
 > 注意，`writeln` 方法添加的是 `ASCII` 码的换行符，渲染成 HTML 网页时不起作用，即在网页上显示不出换行。网页上的换行，必须显式写入 `<br>`。
 
-### 3.3 document.querySelector/querySelectorAll()
+### 3.3.`document.querySelector/querySelectorAll()`
 
 `document.querySelector` 方法接受一个 CSS 选择器作为参数，返回匹配该选择器的元素节点。如果有多个节点满足匹配条件，则返回第一个匹配的节点。如果没有发现匹配的节点，则返回 `null`。
 
@@ -112,7 +112,7 @@ document.querySelectorAll('DIV, A, SCRIPT')
 
 最后，这两个方法除了定义在 `document` 对象上，还定义在元素节点上，即在元素节点上也可以调用。
 
-### 3.4 document.getElementsByTagName()
+### 3.4.`document.getElementsByTagName()`
 
 `document.getElementsByTagName` 方法搜索 HTML 标签名，返回符合条件的元素。它的返回值是一个 `HTMLCollection` 实例，可以实时反映 HTML 文档的变化。如果没有任何匹配的元素，就返回一个空集。
 
@@ -132,7 +132,7 @@ p // HTMLCollection(12) [html,head,meta...]
 
 注意，元素节点本身也定义了 `getElementsByTagName` 方法，返回该元素的后代元素中符合条件的元素。也就是说，这个方法不仅可以在 `document` 对象上调用，也可以在任何元素节点上调用。
 
-### .3.5 document.getElementsByClassName()
+### .3.5.`document.getElementsByClassName()`
 
 `document.getElementsByClassName` 方法也返回一个 `HTMLCollection` 实例，包括了所有 `class` 名字符合指定条件的元素，元素的变化实时反映在返回结果中。
 
@@ -150,7 +150,7 @@ var elements = document.getElementsByClassName('foo bar')
 
 与 `getElementsByTagName` 方法一样，`getElementsByClassName` 方法不仅可以在 `document` 对象上调用，也可以在任何元素节点上调用。
 
-### 3.6 document.getElementsByName()
+### 3.6.`document.getElementsByName()`
 
 `document.getElementsByName` 方法用于选择拥有 `name` 属性的 HTML 元素（比如 `<form>`、`<radio>`、`<img>`、`<frame>`、`<embed>` 和 `<object>` 等），返回一个`NodeList` 实例，因为 `name` 属性相同的元素可能不止一个。
 
@@ -160,7 +160,7 @@ var forms = document.getElementsByName('form')
 forms[0].tagName // "FORM"
 ```
 
-### 3.7 document.getElementById()
+### 3.7.`document.getElementById()`
 
 `document.getElementById` 方法返回匹配指定 `id` 属性的元素节点。如果没有发现匹配的节点，则返回 `null`。
 
@@ -177,7 +177,7 @@ document.querySelector('#myElement')
 
 另外，这个方法只能在 `document` 对象上使用，不能在其他元素节点上使用。
 
-### 3.8 document.elementFromPoint/elementsFromPoint()
+### 3.8.`document.elementFromPoint/elementsFromPoint()`
 
 `document.elementFromPoint` 方法返回位于页面指定位置最上层的元素节点。
 
@@ -198,7 +198,7 @@ document.elementsFromPoint(12, 12)
 
 > 边界线上，属于父元素
 
-### 3.9 document.caretPositionFromPoint()
+### 3.9.`document.caretPositionFromPoint()`
 
 `document.caretPositionFromPoint()` 返回一个 CaretPosition 对象，包含了指定坐标点在节点对象内部的位置信息。CaretPosition 对象就是光标插入点的概念，用于确定光标点在文本对象内部的具体位置。
 
@@ -213,7 +213,7 @@ document.elementsFromPoint(12, 12)
 
 ---
 
-### 3.10 document.createElement()
+### 3.10.`document.createElement()`
 
 `document.createElement` 方法用来生成元素节点，并返回该节点。
 
@@ -231,7 +231,7 @@ let di = document.createElement('di')
 di // <di></di>
 ```
 
-### 3.11 document.createTextNode()
+### 3.11.`document.createTextNode()`
 
 `document.createTextNode` 方法用来生成文本节点（Text 实例），并返回该节点。它的参数是文本节点的内容。
 
@@ -268,7 +268,7 @@ div.innerHTML = profileLink
 // <a href="" onmouseover="alert('derp')" "">Bob</a>
 ```
 
-### 3.12 document.createAttribute()
+### 3.12.`document.createAttribute()`
 
 `document.createAttribute` 方法生成一个新的属性节点（Attr 实例），并返回它。
 
@@ -285,19 +285,19 @@ node.setAttributeNode(a)
 node.setAttribute('my_attrib', 'newVal')
 ```
 
-### 3.13 document.createComment()
+### 3.13.`document.createComment()`
 
 `document.createComment` 方法生成一个新的注释节点，并返回该节点。
 
 `document.createComment` 方法的参数是一个字符串，会成为注释节点的内容。
 
-### 3.14 document.createDocumentFragment()
+### 3.14.`document.createDocumentFragment()`
 
 `document.createDocumentFragment` 方法生成一个空的文档片段对象（`DocumentFragment` 实例）。
 
 `DocumentFragment` 是一个存在于内存的 DOM 片段，不属于当前文档，常常用来生成一段较复杂的 DOM 结构，然后再插入当前文档。这样做的好处在于，因为 `DocumentFragment` 不属于当前文档，对它的任何改动，都不会引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现。
 
-### 3.15 document.createEvent()
+### 3.15.`document.createEvent()`
 
 `document.createEvent` 方法生成一个事件对象（`Event` 实例），该对象可以被 `element.dispatchEvent` 方法使用，触发指定事件。
 
@@ -316,7 +316,7 @@ document.addEventListener(
 document.dispatchEvent(event)
 ```
 
-### 3.16 document.addEventListener/removeEventListener/dispatchEvent()
+### 3.16.`document.addEventListener/removeEventListener/dispatchEvent()`
 
 这三个方法用于处理 `document` 节点的事件，它们都继承自 `EventTarget` 接口。
 
@@ -332,13 +332,13 @@ var event = new Event('click')
 document.dispatchEvent(event)
 ```
 
-### 3.17 document.hasFocus()
+### 3.17.`document.hasFocus()`
 
 `document.hasFocus` 方法返回一个布尔值，表示当前文档之中是否有元素被激活或获得焦点。
 
 > 注意，有焦点的文档必定被**激活**（active），反之不成立，激活的文档未必有焦点。比如，用户点击按钮，从当前窗口跳出一个新窗口，该新窗口就是激活的，但是不拥有焦点。
 
-### 3.18 document.adoptNode/importNode()
+### 3.18.`document.adoptNode/importNode()`
 
 `document.adoptNode` 方法将某个节点及其子节点，从原来所在的文档或 `DocumentFragment` 里面移除，归属当前 `document` 对象，返回插入后的新节点。插入的节点对象的 `ownerDocument` 属性，会变成当前的 `document` 对象，而 `parentNode` 属性是 `null`。
 
@@ -364,7 +364,7 @@ var newNode = document.importNode(oldNode, true)
 document.getElementById('container').appendChild(newNode)
 ```
 
-### 3.19 document.createNodeIterator()
+### 3.19.`document.createNodeIterator()`
 
 `document.createNodeIterator` 方法返回一个子节点遍历器。
 
@@ -420,7 +420,7 @@ currentNode === previousNode // true
 
 `pars[0] === document.body // true`
 
-### 3.20 document.createTreeWalker()
+### 3.20.`document.createTreeWalker()`
 
 `document.createTreeWalker` 方法返回一个 DOM 的子树遍历器。它与 `document.createNodeIterator` 方法基本是类似的，区别在于它返回的是 `TreeWalker` 实例，后者返回的是 `NodeIterator` 实例。另外，它的第一个节点不是根节点。
 
@@ -439,6 +439,6 @@ while (treeWalker.nextNode()) {
 }
 ```
 
-### 3.21 document.getSelection()
+### 3.21.`document.getSelection()`
 
 这个方法指向 `window.getSelection()`。

@@ -12,9 +12,9 @@ p.nodeType; // 1
 
 `Element` 对象继承了 `Node` 接口，因此 `Node` 的属性和方法在 `Element` 对象都存在。此外，不同的 HTML 元素对应的元素节点是不一样的，浏览器使用不同的构造函数，生成不同的元素节点，比如 `<a>` 元素的节点对象由 `HTMLAnchorElement` 构造函数生成，`<button>` 元素的节点对象由 `HTMLButtonElement` 构造函数生成。因此，元素节点不是一种对象，而是一组对象，这些对象除了继承 `Element` 的属性和方法，还有各自构造函数的属性和方法。
 
-## 1. 实例属性
+## 1.实例属性
 
-### 1.1. 元素特性的相关属性
+### 1.1.元素特性的相关属性
 
 1).Element.id
 
@@ -81,7 +81,7 @@ document.documentElement.lang; // "en"
 
 `Element.title` 属性用来读写当前元素的 HTML 属性 `title`。该属性通常用来指定，鼠标悬浮时弹出的文字提示框。
 
-### 1.2. 元素状态的相关属性
+### 1.2.元素状态的相关属性
 
 1).Element.hidden
 
@@ -491,9 +491,9 @@ el.nextElementSibling;
 
 `Element.previousElementSibling` 属性返回当前元素节点的前一个同级元素节点，如果没有则返回 `null`。
 
-## 2. 实例方法
+## 2.实例方法
 
-### 2.1 属性相关方法
+### 2.1.属性相关方法
 
 以下方法用来操作当前节点的属性。
 
@@ -691,7 +691,7 @@ if (el.matches(".someClass")) {
 }
 ```
 
-### 2.8. 事件相关方法
+### 2.8.事件相关方法
 
 以下三个方法与 `Element` 节点的事件相关。这些方法都继承自 `EventTarget` 接口，详见相关章节。
 
