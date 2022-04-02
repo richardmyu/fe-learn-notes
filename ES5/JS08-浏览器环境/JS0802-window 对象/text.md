@@ -1,6 +1,6 @@
 # window 对象
 
-## 1. 概述
+## 1.概述
 
 在浏览器中，`window` 对象指当前的浏览器窗口。它也是所有对象的顶层对象。
 
@@ -11,13 +11,13 @@ var a = 1;
 window.a; // 1
 ```
 
-上面代码中，变量 a 是一个全局变量，但是实质上它是 `window` 对象的属性。声明一个全局变量，就是为 `window` 对象的同名属性赋值。
+上面代码中，变量 `a` 是一个全局变量，但是实质上它是 `window` 对象的属性。声明一个全局变量，就是为 `window` 对象的同名属性赋值。
 
-从语言设计的角度看，所有变量都是 `window` 对象的属性，其实不是很合理。因为 `window` 对象有自己的实体含义，不适合当作最高一层的顶层对象。这个设计失误与 JavaScript 语言匆忙的设计过程有关，最早的设想是语言内置的对象越少越好，这样可以提高浏览器的性能。因此，语言设计者 Brendan Eich 就把 `window` 对象当作顶层对象，所有未声明就赋值的变量都自动变成 window 对象的属性。这种设计使得编译阶段无法检测出未声明变量，但到了今天已经没有办法纠正了。
+从语言设计的角度看，所有变量都是 `window` 对象的属性，其实不是很合理。因为 `window` 对象有自己的实体含义，不适合当作最高一层的顶层对象。这个设计失误与 JavaScript 语言匆忙的设计过程有关，最早的设想是语言内置的对象越少越好，这样可以提高浏览器的性能。因此，语言设计者 Brendan Eich 就把 `window` 对象当作顶层对象，所有未声明就赋值的变量都自动变成 `window` 对象的属性。这种设计使得编译阶段无法检测出未声明变量，但到了今天已经没有办法纠正了。
 
 ## 2.window 对象的属性
 
-### 2.1 window.window，window.name
+### 2.1.`window.window`，`window.name`
 
 `window` 对象的 `window` 属性指向自身。
 
@@ -35,13 +35,13 @@ console.log(window.name);
 
 该属性只能保存字符串，且当浏览器窗口关闭后，所保存的值就会消失。因此局限性比较大，但是与 `<iframe>` 窗口通信时，非常有用。
 
-### 2.2 window.location
+### 2.2.`window.location`
 
 `window.location` 返回一个 `location` 对象，用于获取窗口当前的 URL 信息。它等同于 `document.location` 对象。
 
 `window.location === document.location // true`
 
-### 2.3 window.closed，window.opener
+### 2.3.`window.closed`，`window.opener`
 
 `window.closed` 属性返回一个布尔值，表示窗口是否关闭。
 
@@ -65,7 +65,7 @@ if (popup !== null && !popup.closed) {
 
 通过 `opener` 属性，可以获得父窗口的的全局变量和方法，比如 `window.opener.propertyName` 和 `window.opener.functionName()`。但这只限于两个窗口属于同源的情况，且其中一个窗口由另一个打开。
 
-### 2.4 window.frames，window.length
+### 2.4.`window.frames`，`window.length`
 
 `window.frames` 属性返回一个类似数组的对象，成员为页面内所有框架窗口，包括 `frame` 元素和 `iframe` 元素。`window.frames[0]` 表示页面中第一个框架窗口。
 
@@ -83,11 +83,11 @@ if (popup !== null && !popup.closed) {
 
 `window.frames.length` 与 `window.length` 应该是相等的。
 
-### 2.5 window.screenX，window.screenY
+### 2.5.`window.screenX`，`window.screenY`
 
 `window.screenX` 和 `window.screenY` 属性，返回浏览器窗口左上角相对于当前屏幕左上角（(0, 0)）的水平距离和垂直距离，单位为像素。
 
-### 2.6 window.innerHeight，window.innerWidth
+### 2.6.`window.innerHeight`，`window.innerWidth`
 
 `window.innerHeight` 和 `window.innerWidth` 属性，返回网页在当前窗口中可见部分的高度和宽度，即“视口”（viewport），单位为像素。
 
@@ -95,21 +95,21 @@ if (popup !== null && !popup.closed) {
 
 注意，这两个属性值包括滚动条的高度和宽度。
 
-### 2.7 window.outerHeight，window.outerWidth
+### 2.7.`window.outerHeight`，`window.outerWidth`
 
 `window.outerHeight` 和 `window.outerWidth` 属性返回浏览器窗口的高度和宽度，包括浏览器菜单和边框，单位为像素。
 
-### 2.8 window.pageXOffset，window.pageYOffset
+### 2.8.`window.pageXOffset`，`window.pageYOffset`
 
 `window.pageXOffset` 属性返回页面的水平滚动距离，`window.pageYOffset` 属性返回页面的垂直滚动距离，单位都为像素。
 
 举例来说，如果用户向下拉动了垂直滚动条 75 像素，那么 `window.pageYOffset` 就是 75。用户水平向右拉动水平滚动条 200 像素，`window.pageXOffset` 就是 200。
 
-## 3.navigator 对象
+## 3.`navigator` 对象
 
 `window` 对象的 `navigator` 属性，指向一个包含浏览器信息的对象。
 
-### 3.1 navigator.userAgent
+### 3.1.`navigator.userAgent`
 
 `navigator.userAgent` 属性返回浏览器的 `User-Agent` 字符串，标示浏览器的厂商和版本信息。
 
@@ -138,11 +138,11 @@ if (/mobi/i.test(ua)) {
 
 `/mobi|android|touch|mini/i.test(ua)`
 
-### 3.2 navigator.plugins
+### 3.2.`navigator.plugins`
 
 `navigator.plugins` 属性返回一个类似数组的对象，成员是浏览器安装的插件，比如 Flash、ActiveX 等。
 
-### 3.3 navigator.platform
+### 3.3.`navigator.platform`
 
 `navigator.platform` 属性返回用户的操作系统信息。
 
@@ -151,17 +151,17 @@ navigator.platform;
 // "Linux x86_64"
 ```
 
-### 3.4 navigator.onLine
+### 3.4.`navigator.onLine`
 
 `navigator.onLine` 属性返回一个布尔值，表示用户当前在线还是离线。
 
 `navigator.onLine // true`
 
-### 3.5 navigator.geolocation
+### 3.5.`navigator.geolocation`
 
 `navigator.geolocation` 返回一个 Geolocation 对象，包含用户地理位置的信息。
 
-### 3.6 navigator.javaEnabled()，navigator.cookieEnabled
+### 3.6.`navigator.javaEnabled()`，`navigator.cookieEnabled`
 
 javaEnabled 方法返回一个布尔值，表示浏览器是否能运行 Java Applet 小程序。
 
@@ -173,7 +173,7 @@ javaEnabled 方法返回一个布尔值，表示浏览器是否能运行 Java Ap
 
 注意，这个返回值与是否储存某个网站的 `Cookie` 无关。用户可以设置某个网站不得储存 `Cookie`，这时 `cookieEnabled` 返回的还是 true。
 
-## 4.window.screen 对象
+## 4.`window.screen` 对象
 
 `window.screen` 对象包含了显示设备的信息。
 
@@ -205,9 +205,9 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 `screen.colorDepth` 属性返回屏幕的颜色深度，一般为 16（表示 16-bit）或 24（表示 24-bit）。
 
-## 5.window 对象的方法
+## 5.`window` 对象的方法
 
-### 5.1 window.moveTo()，window.moveBy()
+### 5.1.`window.moveTo()`，`window.moveBy()`
 
 `window.moveTo` 方法用于移动浏览器窗口到指定位置。它接受两个参数，分别是窗口左上角距离屏幕左上角的水平距离和垂直距离，单位为像素。
 
@@ -221,7 +221,7 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 上面代码将窗口向右移动 25 像素、向下移动 50 像素。
 
-### 5.2 window.scrollTo()，window.scrollBy()
+### 5.2.`window.scrollTo()`，`window.scrollBy()`
 
 `window.scrollTo` 方法用于将网页的指定位置，滚动到浏览器左上角。它的参数是相对于整张网页的横坐标和纵坐标。它有一个别名 `window.scroll`。
 
@@ -233,7 +233,7 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 上面代码用于将网页向下滚动一屏。
 
-### 5.3 window.open(), window.close()
+### 5.3.`window.open()`, `window.close()`
 
 `window.open` 方法用于新建另一个浏览器窗口，并且返回该窗口对象。
 
@@ -243,23 +243,13 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 `open` 方法一共可以接受四个参数。
 
----
-
 - 第一个参数：字符串，表示新窗口的网址。如果省略，默认网址就是 `about:blank`。
-
----
-
+>
 - 第二个参数：字符串，表示新窗口的名字。如果该名字的窗口已经存在，则跳到该窗口，不再新建窗口。如果省略，就默认使用 `_blank`，表示新建一个没有名字的窗口。
-
----
-
+>
 - 第三个参数：字符串，内容为逗号分隔的键值对，表示新窗口的参数，比如有没有提示栏、工具条等等。如果省略，则默认打开一个完整 UI 的新窗口。
-
----
-
+>
 - 第四个参数：布尔值，表示第一个参数指定的网址，是否应该替换 `history` 对象之中的当前网址记录，默认值为 false。显然，这个参数只有在第二个参数指向已经存在的窗口时，才有意义。
-
----
 
 下面是一个例子。
 
@@ -273,7 +263,7 @@ var popup = window.open(
 
 上面代码表示，打开的新窗口高度和宽度都为 200 像素，没有地址栏和滚动条，但有状态栏，允许用户调整大小。
 
-注意，如果在第三个参数中设置了一部分参数，其他没有被设置的 yes/no 参数都会被设成 no，只有 `titlebar` 和关闭按钮除外（它们的值默认为 yes）。
+注意，如果在第三个参数中设置了一部分参数，其他没有被设置的 `yes/no` 参数都会被设成 `no`，只有 `titlebar` 和关闭按钮除外（它们的值默认为 `yes`）。
 
 另外，`open` 方法的第二个参数虽然可以指定已经存在的窗口，但是不等于可以任意控制其他窗口。为了防止被不相干的窗口控制，浏览器只有在两个窗口同源，或者目标窗口被当前网页打开的情况下，才允许 `open` 方法指向该窗口。
 
@@ -308,7 +298,7 @@ if (popup === null) {
 
 该方法只对顶层窗口有效，`iframe` 框架之中的窗口使用该方法无效。
 
-### 5.4 window.print()
+### 5.4.`window.print()`
 
 `print` 方法会跳出打印对话框，同用户点击菜单里面的“打印”命令效果相同。
 
@@ -328,15 +318,15 @@ if (typeof window.print === "function") {
 }
 ```
 
-### 5.5 window.getComputedStyle()
+### 5.5.`window.getComputedStyle()`
 
 `getComputedStyle` 方法接受一个 HTML 元素作为参数，返回一个包含该 HTML 元素的最终样式信息的对象。
 
-### 5.6 window.matchMedia()
+### 5.6.`window.matchMedia()`
 
 `window.matchMedia` 方法用来检查 CSS 的 `mediaQuery` 语句。
 
-### 5.7 window.focus()
+### 5.7.`window.focus()`
 
 `focus` 方法会激活指定当前窗口，使其获得焦点。
 
@@ -352,7 +342,7 @@ if (popup !== null && !popup.closed) {
 
 当前窗口获得焦点时，会触发 `focus` 事件；当前窗口失去焦点时，会触发 `blur` 事件。
 
-### 5.8 window.getSelection()
+### 5.8.`window.getSelection()`
 
 `window.getSelection` 方法返回一个 `Selection` 对象，表示用户现在选中的文本。
 
@@ -362,21 +352,17 @@ if (popup !== null && !popup.closed) {
 
 `var selectedText = selObj.toString();`
 
-## 6. 多窗口操作
+## 6.多窗口操作
 
 由于网页可以使用 `iframe` 元素，嵌入其他网页，因此一个网页之中会形成多个窗口。另一情况是，子网页之中又嵌入别的网页，形成多级窗口。
 
-### 6.1 窗口的引用
+### 6.1.窗口的引用
 
 各个窗口之中的脚本，可以引用其他窗口。浏览器提供了一些特殊变量，用来返回其他窗口。
 
----
-
-- top：顶层窗口，即最上层的那个窗口
-- parent：父窗口
-- self：当前窗口，即自身
-
----
+- `top`：顶层窗口，即最上层的那个窗口
+- `parent`：父窗口
+- `self`：当前窗口，即自身
 
 下面代码可以判断，当前窗口是否为顶层窗口。
 
@@ -393,19 +379,15 @@ window.top === window.self;
 
 与这些变量对应，浏览器还提供一些特殊的窗口名，供 `open` 方法、`<a>` 标签、`<form>` 标签等引用。
 
----
-
-\_top：顶层窗口
-\_parent：父窗口
-\_blank：新窗口
-
----
+- `_top`：顶层窗口
+- `_parent`：父窗口
+- `_blank`：新窗口
 
 下面代码就表示在顶层窗口打开链接。
 
 `<a href="somepage.html" target="_top">Link</a>`
 
-### 6.2 iframe 标签
+### 6.2.`iframe` 标签
 
 对于 `iframe` 嵌入的窗口，`document.getElementById` 方法可以拿到该窗口的 DOM 节点，然后使用 `contentWindow` 属性获得 `iframe` 节点包含的 `window` 对象，或者使用 `contentDocument` 属性获得包含的 `document` 对象。
 
@@ -442,7 +424,7 @@ f1Window.frameElement === f1Element; // true
 window.frameElement === null; // true
 ```
 
-### 6.3 frames 属性
+### 6.3.`frames` 属性
 
 `window` 对象的 `frames` 属性返回一个类似数组的对象，成员是所有子窗口的 `window` 对象。可以使用这个属性，实现窗口之间的互相引用。比如，`frames[0]` 返回第一个子窗口，`frames[1].frames[2]` 返回第二个子窗口内部的第三个子窗口，`parent.frames[1]` 返回父窗口的第二个子窗口。
 
@@ -458,11 +440,11 @@ frames.myframe === myFrame; // true
 
 另外，`name` 属性的值会自动成为子窗口的名称，可以用在 `window.open` 方法的第二个参数，或者 `<a>` 和 `<frame>` 标签的 `target` 属性。
 
-## 7. 事件
+## 7.事件
 
 `window` 对象可以接收以下事件。
 
-### 7.1 load 事件和 onload 属性
+### 7.1.`load` 事件和 `onload` 属性
 
 `load` 事件发生在文档在浏览器窗口加载完毕时。`window.onload` 属性可以指定这个事件的回调函数。
 
@@ -478,7 +460,7 @@ window.onload = function() {
 
 上面代码在网页加载完毕后，获取指定元素并进行处理。
 
-### 7.2 error 事件和 onerror 属性
+### 7.2.`error` 事件和 `onerror` 属性
 
 浏览器脚本发生错误时，会触发 `window` 对象的 `error` 事件。我们可以通过 `window.onerror` 属性对该事件指定回调函数。
 
@@ -490,15 +472,11 @@ window.onerror = function(message, filename, lineno, colno, error) {
 
 由于历史原因，`window` 的 `error` 事件的回调函数不接受错误对象作为参数，而是一共可以接受五个参数，它们的含义依次如下。
 
----
-
-- a. 出错信息
-- b. 出错脚本的网址
-- c. 行号
-- d. 列号
-- e. 错误对象
-
----
+1. 出错信息
+2. 出错脚本的网址
+3. 行号
+4. 列号
+5. 错误对象
 
 > 老式浏览器只支持前三个参数。
 
@@ -531,27 +509,19 @@ onerror.num = 0;
 
 网页 URL 的合法字符分成两类。
 
----
+- **URL 元字符**：分号（`;`），逗号（`,`），斜杠（`/`），问号（`?`），冒号（`:`），at（`@`），`&`，等号（`=`），加号（`+`），美元符号（`$`），井号（`#`）
+- **语义字符**：a-z，A-Z，0-9，连词号（`-`），下划线（`_`），点（`.`），感叹号（`!`），波浪线（`~`），星号（`*`），单引号（`\`），圆括号（`()`）
 
-- URL 元字符：分号（`;`），逗号（`,`），斜杠（`/`），问号（`?`），冒号（`:`），at（`@`），`&`，等号（`=`），加号（`+`），美元符号（`$`），井号（`#`）
-- 语义字符：a-z，A-Z，0-9，连词号（`-`），下划线（`_`），点（`.`），感叹号（`!`），波浪线（`~`），星号（`*`），单引号（`\`），圆括号（`()`）
-
----
-
-除了以上字符，其他字符出现在 URL 之中都必须转义，规则是根据操作系统的默认编码，将每个字节转为百分号（`%`）加上两个大写的十六进制字母。比如，`UTF-8` 的操作系统上，`http://www.example.com/q=春节 ` 这个 URL 之中，汉字“春节”不是 URL 的合法字符，所以被浏览器自动转成 `http://www.example.com/q=%E6%98%A5%E8%8A%82`。其中，“春”转成了 `%E6%98%A5`，“节”转成了 “`%E8%8A%82`”。这是因为“春”和”节“的 UTF-8 编码分别是 `E6 98 A5` 和 `E8 8A 82`，将每个字节前面加上百分号，就构成了** URL 编码**。
+除了以上字符，其他字符出现在 URL 之中都必须转义，规则是根据操作系统的默认编码，将每个字节转为百分号（`%`）加上两个大写的十六进制字母。比如，`UTF-8` 的操作系统上，`http://www.example.com/q=春节` 这个 URL 之中，汉字“春节”不是 URL 的合法字符，所以被浏览器自动转成 `http://www.example.com/q=%E6%98%A5%E8%8A%82`。其中，“春”转成了 `%E6%98%A5`，“节”转成了 “`%E8%8A%82`”。这是因为“春”和”节“的 UTF-8 编码分别是 `E6 98 A5` 和 `E8 8A 82`，将每个字节前面加上百分号，就构成了 **URL 编码**。
 
 JavaScript 提供四个 URL 的编码/解码方法。
-
----
 
 - `encodeURI()`
 - `encodeURIComponent()`
 - `decodeURI()`
 - `decodeURIComponent()`
 
----
-
-### 8.1 encodeURI
+### 8.1.`encodeURI`
 
 `encodeURI` 方法的参数是一个字符串，代表整个 URL。它会将元字符和语义字符之外的字符，都进行转义。
 
@@ -560,7 +530,7 @@ encodeURI("http://www.example.com/q=春节");
 // "http://www.example.com/q=%E6%98%A5%E8%8A%82"
 ```
 
-### 8.2 encodeURIComponent
+### 8.2.`encodeURIComponent`
 
 `encodeURIComponent` 只转除了语义字符之外的字符，元字符也会被转义。因此，它的参数通常是 URL 的路径或参数值，而不是整个 URL。
 
@@ -573,7 +543,7 @@ encodeURIComponent("http://www.example.com/q=春节");
 
 上面代码中，`encodeURIComponent` 会连 URL 元字符一起转义，所以通常只用它转 URL 的片段。
 
-### 8.3 decodeURI
+### 8.3.`decodeURI`
 
 `decodeURI` 用于还原转义后的 URL。它是 `encodeURI` 方法的逆运算。
 
@@ -582,13 +552,13 @@ decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
 // "http://www.example.com/q=春节"
 ```
 
-### 8.4 decodeURIComponent
+### 8.4.`decodeURIComponent`
 
 `decodeURIComponent` 用于还原转义后的 URL 片段。它是 `encodeURIComponent` 方法的逆运算。
 
 `decodeURIComponent('%E6%98%A5%E8%8A%82')// "春节"`
 
-## 9.alert()，prompt()，confirm()
+## 9.`alert()`，`prompt()`，`confirm()`
 
 `alert()`、`prompt()`、`confirm()` 都是浏览器与用户互动的全局方法。它们会弹出不同的对话框，要求用户做出回应。
 
@@ -626,13 +596,9 @@ var result = prompt('您的年龄？', 25)
 
 `prompt` 方法的返回值是一个字符串（有可能为空）或者 `null`，具体分成三种情况。
 
----
-
 - 用户输入信息，并点击“确定”，则用户输入的信息就是返回值。
 - 用户没有输入信息，直接点击“确定”，则输入框的默认值就是返回值。
 - 用户点击了“取消”（或者按了 Esc 按钮），则返回值是 `null`。
-
----
 
 `prompt` 方法的第二个参数是可选的，但是如果不提供的话，IE 浏览器会在输入框中显示 `undefined`。因此，最好总是提供第二个参数，作为输入框的默认值。
 

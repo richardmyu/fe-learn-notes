@@ -1,6 +1,6 @@
 # history 对象
 
-## 1. 概述
+## 1.概述
 
 浏览器窗口有一个 `history` 对象，用来保存浏览历史。
 
@@ -8,13 +8,9 @@
 
 `history` 对象提供了一系列方法，允许在浏览历史之间移动。
 
----
-
 - `back()`：移动到上一个访问页面，等同于浏览器的后退键。
 - `forward()`：移动到下一个访问页面，等同于浏览器的前进键。
 - `go()`：接受一个整数作为参数，移动到该整数指定的页面，比如 `go(1)` 相当于 `forward()`，`go(-1)` 相当于 `back()`。
-
----
 
 ```js
 history.back();
@@ -36,7 +32,7 @@ document.getElementById("backLink").onclick = function() {
 
 > 注意，返回上一页时，页面通常是从浏览器缓存之中加载，而不是重新要求服务器发送新的网页。
 
-## 2.history.pushState()
+## 2.`history.pushState()`
 
 HTML5 为 `history` 对象添加了两个新方法，`history.pushState()` 和 `history.replaceState()`，用来在浏览历史中添加和修改记录。
 
@@ -52,13 +48,9 @@ if (!!(window.history && history.pushState)) {
 
 `history.pushState` 方法接受三个参数，依次为：
 
----
-
-- `state`：一个与指定网址相关的状态对象，`popstate` 事件触发时，该对象会传入回调函数。如果不需要这个对象，此处可以填 `null`。
-- `title`：新页面的标题，但是所有浏览器目前都忽略这个值，因此这里可以填 `null`。
-- `url`：新的网址，必须与当前页面处在同一个域。浏览器的地址栏将显示这个网址。
-
----
+1. `state`：一个与指定网址相关的状态对象，`popstate` 事件触发时，该对象会传入回调函数。如果不需要这个对象，此处可以填 `null`。
+2. `title`：新页面的标题，但是所有浏览器目前都忽略这个值，因此这里可以填 `null`。
+3. `url`：新的网址，必须与当前页面处在同一个域。浏览器的地址栏将显示这个网址。
 
 假定当前网址是 `example.com/1.html`，我们使用 `pushState` 方法在浏览记录（`history` 对象）中添加一个新记录。
 
@@ -80,7 +72,7 @@ history.pushState(null, null, "https://twitter.com/hello");
 
 上面代码中，`pushState` 想要插入一个跨域的网址，导致报错。这样设计的目的是，防止恶意代码让用户以为他们是在另一个网站上。
 
-## 3.history.replaceState()
+## 3.`history.replaceState()`
 
 `history.replaceState` 方法的参数与 `pushState` 方法一模一样，区别是它修改浏览历史中当前纪录。
 
@@ -101,7 +93,7 @@ history.go(2);
 // url 显示为 http://example.com/example.html?page=3
 ```
 
-## 4.history.state 属性
+## 4.`history.state` 属性
 
 `history.state` 属性返回当前页面的 `state` 对象。
 
@@ -112,7 +104,7 @@ history.state;
 // { page: 1 }
 ```
 
-## 5.popstate 事件
+## 5.`popstate` 事件
 
 每当同一个文档的浏览历史（即 `history` 对象）出现变化时，就会触发 `popstate` 事件。
 
@@ -153,8 +145,6 @@ var searchParams = new URLSearchParams(paramsString);
 
 `URLSearchParams` 有以下方法，用来操作某个参数。
 
----
-
 - `has()`：返回一个布尔值，表示是否具有某个参数
 - `get()`：返回指定参数的第一个值
 - `getAll()`：返回一个数组，成员是指定参数的所有值
@@ -162,8 +152,6 @@ var searchParams = new URLSearchParams(paramsString);
 - `delete()`：删除指定参数
 - `append()`：在查询字符串之中，追加一个键值对
 - `toString()`：返回整个查询字符串
-
----
 
 ```js
 var paramsString = "q=URLUtils.searchParams&topic=api";
@@ -189,13 +177,9 @@ searchParams.toString(); // "q=URLUtils.searchParams&foo=2&foo=3"
 
 `URLSearchParams` 还有三个方法，用来遍历所有参数。
 
----
-
 - `keys()`：遍历所有参数名
 - `values()`：遍历所有参数值
 - `entries()`：遍历所有参数的键值对
-
----
 
 上面三个方法返回的都是 `Iterator` 对象。
 

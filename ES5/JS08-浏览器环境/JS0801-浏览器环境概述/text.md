@@ -6,21 +6,17 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
 网页中嵌入 JavaScript 代码，主要有四种方法。
 
----
-
-- `<script>` 标签：代码嵌入网页
-- `<script>` 标签：加载外部脚本
-- 事件属性：代码写入 HTML 元素的事件处理属性，比如 `onclick` 或者 `onmouseover`
-- URL 协议：URL 支持以 `javascript:` 协议的方式，执行 JavaScript 代码
-
----
+1. `<script>` 标签：代码嵌入网页
+2. `<script>` 标签：加载外部脚本
+3. 事件属性：代码写入 HTML 元素的事件处理属性，比如 `onclick` 或者 `onmouseover`
+4. URL 协议：URL 支持以 `javascript:` 协议的方式，执行 JavaScript 代码
 
 > 伪协议不同于因特网上所真实存在的协议，如 `http://`，`https://`，`ftp://`，而是为关联应用程序而使用的。如：`tencent://`（关联 QQ)，`data:`（用 base64 编码来在浏览器端输出二进制文件），还有就是 `javascript:`。
 > `javascript:` 这个特殊的协议类型声明了 URL 的主体是任意的 javascript 代码，它由 javascript 的解释器运行。
 
 后两种方法用得很少，常用的是前两种方法。由于内容（HTML 代码）和行为代码（JavaScript）应该分离，所以第一种方法应当谨慎使用。
 
-### 1.1 script 标签：代码嵌入网页
+### 1.1.`script` 标签：代码嵌入网页
 
 通过 `<script>` 标签，可以直接将 JavaScript 代码嵌入网页。
 
@@ -28,12 +24,8 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
 `<script>` 标签有一个 `type` 属性，用来指定脚本类型。对 JavaScript 脚本来说，`type` 属性可以设为两种值。
 
----
-
 - `text/javascript`：这是默认值，也是历史上一贯设定的值。如果你省略 `type` 属性，默认就是这个值。对于老式浏览器，设为这个值比较好。
 - `application/javascript`：对于较新的浏览器，建议设为这个值。
-
----
 
 `<script type="application/javascript">console.log('Hello World');</script>`
 
@@ -47,7 +39,7 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 </script>
 ```
 
-上面的代码，浏览器不会执行，也不会显示它的内容，因为不认识它的 `type` 属性。但是，这个 `<script>` 节点依然存在于 DOM 之中，可以使用 `<script>` 节点的 text 属性读出它的内容。
+上面的代码，浏览器不会执行，也不会显示它的内容，因为不认识它的 `type` 属性。但是，这个 `<script>` 节点依然存在于 DOM 之中，可以使用 `<script>` 节点的 `text` 属性读出它的内容。
 
 ```js
 document.getElementById("myData").text;
@@ -56,7 +48,7 @@ document.getElementById("myData").text;
 // "
 ```
 
-### 1.2 script 标签：加载外部脚本
+### 1.2.`script` 标签：加载外部脚本
 
 `<script>` 标签也可以指定加载外部的脚本文件。
 
@@ -87,7 +79,7 @@ document.getElementById("myData").text;
 
 上面代码中，script 标签有一个 `integrity` 属性，指定了外部脚本 `/assets/application.js` 的 `SHA256` 签名。一旦有人改了这个脚本，导致 `SHA256` 签名不匹配，浏览器就会拒绝加载。
 
-### 1.3 事件属性
+### 1.3.事件属性
 
 某些 HTML 元素的事件属性（比如 `onclick` 和 `onmouseover`），可以写入 JavaScript 代码。当指定事件发生时，就会调用这些代码。
 
@@ -95,7 +87,7 @@ document.getElementById("myData").text;
 
 上面的事件属性代码只有一个语句。如果有多个语句，用分号分隔即可。
 
-### 1.4 URL 协议
+### 1.4.URL 协议
 
 URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript 代码。
 
@@ -105,9 +97,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 如果 JavaScript 代码返回一个字符串，浏览器就会新建一个文档，展示这个字符串的内容，原有文档的内容都会消失。
 
-```html
-<a href="javascript:new Date().toLocaleTimeString();">What time is it?</a>
-```
+`<a href="javascript:new Date().toLocaleTimeString();">What time is it?</a>`
 
 上面代码中，用户点击链接以后，会打开一个新文档，里面有当前时间。
 
@@ -123,21 +113,17 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 `javascript:` 协议的常见用途是书签脚本 `Bookmarklet`。由于浏览器的书签保存的是一个网址，所以 `javascript:` 网址也可以保存在里面，用户选择这个书签的时候，就会在当前页面执行这个脚本。为了防止书签替换掉当前文档，可以在脚本最后返回 `void 0`。???
 
-## 2.script 标签
+## 2.`script` 标签
 
-### 2.1 工作原理
+### 2.1.工作原理
 
 浏览器加载 JavaScript 脚本，主要通过 `<script>` 标签完成。正常的网页加载流程是这样的。
 
----
-
-- a. 浏览器一边下载 HTML 网页，一边开始解析
-- b. 解析过程中，发现 `<script>` 标签
-- c. 暂停解析，网页渲染的控制权转交给 JavaScript 引擎
-- d. 如果 `<script>` 标签引用了外部脚本，就下载该脚本，否则就直接执行
-- e. 执行完毕，控制权交还渲染引擎，恢复往下解析 HTML 网页
-
----
+1. 浏览器一边下载 HTML 网页，一边开始解析
+2. 解析过程中，发现 `<script>` 标签
+3. 暂停解析，网页渲染的控制权转交给 JavaScript 引擎
+4. 如果 `<script>` 标签引用了外部脚本，就下载该脚本，否则就直接执行
+5. 执行完毕，控制权交还渲染引擎，恢复往下解析 HTML 网页
 
 加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是 JavaScript 可以修改 DOM（比如使用 `document.write` 方法），所以必须把控制权让给它，否则会导致复杂的线程竞赛的问题。
 
@@ -151,7 +137,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 还有一种解决方法是设定 `DOMContentLoaded` 事件的回调函数。
 
-```js
+```html
 <head>
   <script>
     document.addEventListener(
@@ -172,7 +158,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 但是，如果将脚本放在页面底部，就可以完全按照正常的方式写，上面两种方式都不需要。
 
-```js
+```html
 <body>
   <!-- 其他代码  -->
   <script>
@@ -183,7 +169,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 如果有多个 `script` 标签，比如下面这样。
 
-```js
+```html
 <script src="a.js"></script>
 <script src="b.js"></script>
 ```
@@ -198,7 +184,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 此外，对于来自同一个域名的资源，比如脚本文件、样式表文件、图片文件等，浏览器一般最多同时下载六个（IE11 允许同时下载 13 个）。如果是来自不同域名的资源，就没有这个限制。所以，通常把静态文件放在不同的域名之下，以加快下载速度。
 
-### 2.2 defer 属性
+### 2.2.`defer` 属性
 
 为了解决脚本文件下载阻塞网页渲染的问题，一个方法是加入 `defer` 属性。
 
@@ -211,20 +197,16 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 `defer` 的运行流程如下。
 
----
-
-- a. 浏览器开始解析 HTML 网页
-- b. 解析过程中，发现带有 `defer` 属性的 `script` 标签
-- c. 浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
-- d. 浏览器完成解析 HTML 网页，此时再执行下载的脚本
-
----
+1. 浏览器开始解析 HTML 网页
+2. 解析过程中，发现带有 `defer` 属性的 `script` 标签
+3. 浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
+4. 浏览器完成解析 HTML 网页，此时再执行下载的脚本
 
 有了 `defer` 属性，浏览器下载脚本文件的时候，不会阻塞页面渲染。下载的脚本文件在 `DOMContentLoaded` 事件触发前执行（即刚刚读取完 `</html>` 标签）。
 
 对于内置而不是加载外部脚本的 `script` 标签，以及动态生成的 `script` 标签，`defer` 属性不起作用。另外，使用 `defer` 加载的外部脚本不应该使用 `document.write` 方法。(？？？)
 
-### 2.3 async 属性
+### 2.3.`async` 属性
 
 解决“阻塞效应”的另一个方法是加入 `async` 属性。
 
@@ -235,15 +217,11 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 `async` 属性的作用是，使用另一个进程下载脚本，下载时不会阻塞渲染。
 
----
-
-- a. 浏览器开始解析 HTML 网页
-- b. 解析过程中，发现带有 `async` 属性的 `script` 标签
-- c. 浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
-- d. 脚本下载完成，浏览器暂停解析 HTML 网页，开始执行下载的脚本
-- e. 脚本执行完毕，浏览器恢复解析 HTML 网页
-
----
+1. 浏览器开始解析 HTML 网页
+2. 解析过程中，发现带有 `async` 属性的 `script` 标签
+3. 浏览器继续往下解析 HTML 网页，同时并行下载 `script` 标签中的外部脚本
+4. 脚本下载完成，浏览器暂停解析 HTML 网页，开始执行下载的脚本
+5. 脚本执行完毕，浏览器恢复解析 HTML 网页
 
 `async` 属性可以保证脚本下载的同时，浏览器继续渲染。需要注意的是，一旦采用这个属性，就无法保证脚本的执行顺序。哪个脚本先下载结束，就先执行那个脚本。另外，使用 `async` 属性的脚本文件中，不应该使用 `document.write` 方法。
 
@@ -251,7 +229,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 一般来说，如果脚本之间没有依赖关系，就使用 `async` 属性，如果脚本之间有依赖关系，就使用 `defer` 属性。如果同时使用 `async` 和 `defer` 属性，后者不起作用（会立即下载执行。)，浏览器行为由 `async` 属性决定。
 
-### 2.4 脚本的动态加载
+### 2.4.脚本的动态加载
 
 除了静态的 `script` 标签，还可以动态生成 `script` 标签，然后加入页面，从而实现脚本的动态加载。
 
@@ -313,7 +291,7 @@ function loadScript(src, done) {
 
 此外，动态嵌入还有一个地方需要注意。动态嵌入必须等待 CSS 文件加载完成后，才会去下载外部脚本文件。静态加载就不存在这个问题，`script` 标签指定的外部脚本文件，都是与 CSS 文件同时并发下载的。
 
-### 2.5 加载使用的协议
+### 2.5.加载使用的协议
 
 如果不指定协议，浏览器默认采用 HTTP 协议下载。
 
@@ -327,17 +305,15 @@ function loadScript(src, done) {
 
 `<script src="//example.js"></script>`
 
-## 3. 浏览器的组成
+## 3.浏览器的组成
 
-浏览器的核心是两部分：渲染引擎和 JavaScript 解释器（又称 JavaScript 引擎）。
+浏览器的核心是两部分：**渲染引擎** 和 **JavaScript 解释器**（又称 JavaScript 引擎）。
 
-### 3.1 渲染引擎
+### 3.1.渲染引擎
 
 渲染引擎的主要作用是，将网页代码渲染为用户视觉可以感知的平面文档。
 
 不同的浏览器有不同的渲染引擎。
-
----
 
 - Firefox：Gecko 引擎
 - Safari：WebKit 引擎
@@ -346,26 +322,20 @@ function loadScript(src, done) {
 - IE: Trident 引擎
 - Edge: EdgeHTML 引擎
 
----
-
 渲染引擎处理网页，通常分成四个阶段。
 
----
-
-- a. 解析代码：HTML 代码解析为 DOM，CSS 代码解析为 CSSOM（CSS Object Model）
-- b. 对象合成：将 DOM 和 CSSOM 合成一棵渲染树（render tree）
-- c. 布局：计算出渲染树的布局（layout）
-- d. 绘制：将渲染树绘制到屏幕
-
----
+1. 解析代码：HTML 代码解析为 DOM，CSS 代码解析为 CSSOM（CSS Object Model）
+2. 对象合成：将 DOM 和 CSSOM 合成一棵渲染树（render tree）
+3. 布局：计算出渲染树的布局（layout）
+4. 绘制：将渲染树绘制到屏幕
 
 以上四步并非严格按顺序执行，往往第一步还没完成，第二步和第三步就已经开始了。所以，会看到这种情况：网页的 HTML 代码还没下载完，但浏览器已经显示出内容了。
 
-### 3.2 重流和重绘
+### 3.2.重流和重绘
 
-渲染树转换为网页布局，称为**布局流**（flow）；布局显示到页面的这个过程，称为**绘制**（paint）。它们都具有阻塞效应，并且会耗费很多时间和计算资源。
+渲染树转换为网页布局，称为 **布局流**（flow）；布局显示到页面的这个过程，称为 **绘制**（paint）。它们都具有阻塞效应，并且会耗费很多时间和计算资源。
 
-页面生成以后，脚本操作和样式表操作，都会触发**重流**（reflow）和**重绘**（repaint）。用户的互动，也会触发，比如设置了鼠标悬停（`a:hover`）效果、页面滚动、在输入框中输入文本、改变窗口大小等等。
+页面生成以后，脚本操作和样式表操作，都会触发 **重流**（reflow）和 **重绘**（repaint）。用户的互动，也会触发，比如设置了鼠标悬停（`a:hover`）效果、页面滚动、在输入框中输入文本、改变窗口大小等等。
 
 重流和重绘并不一定一起发生，**重流必然导致重绘，重绘不一定需要重流**。比如改变元素颜色，只会导致重绘，而不会导致重流；改变元素的布局，则会导致重绘和重流。
 
@@ -384,18 +354,14 @@ foo.style.marginTop = "30px";
 
 下面是一些优化技巧。
 
----
-
-- a. 读取 DOM 或者写入 DOM，尽量写在一起，不要混杂
-- b. 缓存 DOM 信息
-- c. 不要一项一项地改变样式，而是使用 `CSS class` 一次性改变样式
-- d. 使用 `document fragment` 操作 DOM (<a href="./index.html">index.html</a>)
-- e. 动画时使用 `absolute` 定位或 `fixed` 定位，这样可以减少对其他元素的影响
-- f. 只在必要时才显示元素
-- g. 使用 `window.requestAnimationFrame()`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流
-- e. 使用虚拟 DOM（virtual DOM）库
-
----
+- 读取 DOM 或者写入 DOM，尽量写在一起，不要混杂
+- 缓存 DOM 信息
+- 不要一项一项地改变样式，而是使用 `CSS class` 一次性改变样式
+- 使用 `document fragment` 操作 DOM (<a href="./index.html">index.html</a>)
+- 动画时使用 `absolute` 定位或 `fixed` 定位，这样可以减少对其他元素的影响
+- 只在必要时才显示元素
+- 使用 `window.requestAnimationFrame()`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流
+- 使用虚拟 DOM（virtual DOM）库
 
 下面是一个 `window.requestAnimationFrame()` 对比效果的例子。
 
@@ -420,30 +386,24 @@ function doubleHeight(element) {
 all_my_elements.forEach(doubleHeight);
 ```
 
-### 3.3 JavaScript 引擎
+### 3.3.JavaScript 引擎
 
 JavaScript 引擎的主要作用是，读取网页中的 JavaScript 代码，对其处理后运行。
 
 JavaScript 是一种解释型语言，也就是说，它不需要编译，由解释器实时运行。这样的好处是运行和修改都比较方便，刷新页面就可以重新解释；缺点是每次运行都要调用解释器，系统开销较大，运行速度慢于编译型语言。
 
-为了提高运行速度，目前的浏览器都将 JavaScript 进行一定程度的编译，生成类似字节码（bytecode）的中间代码，以提高运行速度。
+为了提高运行速度，目前的浏览器都将 JavaScript 进行一定程度的编译，生成类似字节码的中间代码，以提高运行速度。
 
 早期，浏览器内部对 JavaScript 的处理过程如下：
 
----
+1. 读取代码，进行 **词法分析**（Lexical analysis），将代码分解成 **词元**（token）。
+2. 对词元进行 **语法分析**（parsing），将代码整理成 “**语法树**”（syntax tree）。
+3. 使用“翻译器”（translator），将代码转为字节码（bytecode）。
+4. 使用“字节码解释器”（bytecode interpreter），将字节码转为机器码。
 
-- a. 读取代码，进行词法分析（Lexical analysis），将代码分解成词元（token）。
-- b. 对词元进行语法分析（parsing），将代码整理成“语法树”（syntax tree）。
-- c. 使用“翻译器”（translator），将代码转为字节码（bytecode）。
-- d. 使用“字节码解释器”（bytecode interpreter），将字节码转为机器码。
+逐行解释将字节码转为机器码，是很低效的。为了提高运行速度，现代浏览器改为采用 “**即时编译**”（Just In Time compiler，缩写 JIT），即字节码只在运行时编译，用到哪一行就编译哪一行，并且把编译结果缓存（inline cache）。通常，一个程序被经常用到的，只是其中一小部分代码，有了缓存的编译结果，整个程序的运行速度就会显著提升。不同的浏览器有不同的编译策略。有的浏览器只编译最经常用到的部分，比如循环的部分；有的浏览器索性省略了字节码的翻译步骤，直接编译成机器码，比如 chrome 浏览器的 V8 引擎。
 
----
-
-逐行解释将字节码转为机器码，是很低效的。为了提高运行速度，现代浏览器改为采用“**即时编译**”（Just In Time compiler，缩写 JIT），即字节码只在运行时编译，用到哪一行就编译哪一行，并且把编译结果缓存（inline cache）。通常，一个程序被经常用到的，只是其中一小部分代码，有了缓存的编译结果，整个程序的运行速度就会显著提升。不同的浏览器有不同的编译策略。有的浏览器只编译最经常用到的部分，比如循环的部分；有的浏览器索性省略了字节码的翻译步骤，直接编译成机器码，比如 chrome 浏览器的 V8 引擎。
-
-字节码不能直接运行，而是运行在一个虚拟机（Virtual Machine）之上，一般也把虚拟机称为 JavaScript 引擎。因为 JavaScript 运行时未必有字节码，所以 JavaScript 虚拟机并不完全基于字节码，而是部分基于源码，即只要有可能，就通过 JIT（just in time）编译器直接把源码编译成机器码运行，省略字节码步骤。这一点与其他采用虚拟机（比如 Java）的语言不尽相同。这样做的目的，是为了尽可能地优化代码、提高性能。下面是目前最常见的一些 JavaScript 虚拟机：
-
----
+字节码不能直接运行，而是运行在一个 **虚拟机**（Virtual Machine）之上，一般也把虚拟机称为 JavaScript 引擎。因为 JavaScript 运行时未必有字节码，所以 JavaScript 虚拟机并不完全基于字节码，而是部分基于源码，即只要有可能，就通过 JIT（just in time）编译器直接把源码编译成机器码运行，省略字节码步骤。这一点与其他采用虚拟机（比如 Java）的语言不尽相同。这样做的目的，是为了尽可能地优化代码、提高性能。下面是目前最常见的一些 JavaScript 虚拟机：
 
 - Chakra(Microsoft Internet Explorer)
 - Nitro/JavaScript Core (Safari)
