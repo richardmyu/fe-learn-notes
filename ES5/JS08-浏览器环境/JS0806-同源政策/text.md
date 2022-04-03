@@ -1,6 +1,6 @@
 # 同源政策
 
-浏览器安全的基石是**同源政策**（same-origin policy）。
+浏览器安全的基石是 **同源政策**（same-origin policy）。
 
 ## 1. 概述
 
@@ -10,17 +10,13 @@
 
 最初，它的含义是指，A 网页设置的 `Cookie`，B 网页不能打开，除非这两个网页“同源”。所谓“同源”指的是”三个相同“。
 
----
-
 - 协议相同
 - 域名相同
 - 端口相同
 
----
-
 举例来说，`http://www.example.com/dir/page.html` 这个网址，协议是 `http://`，域名是 `www.example.com`，端口是 `80`（默认端口可以省略），它的同源情况如下。
 
-```js
+```sh
 http://www.example.com/dir2/other.html：同源
 http://example.com/dir/other.html：不同源（域名不同）
 http://v2.www.example.com/dir/other.html：不同源（域名不同）
@@ -28,7 +24,7 @@ http://www.example.com:81/dir/other.html：不同源（端口不同）
 https://www.example.com/dir/page.html：不同源（协议不同）
 ```
 
-### 1.2 目的
+### 1.2.目的
 
 同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。
 
@@ -36,40 +32,31 @@ https://www.example.com/dir/page.html：不同源（协议不同）
 
 由此可见，同源政策是必需的，否则 `Cookie` 可以共享，互联网就毫无安全可言了。
 
-### 1.3 限制范围
+### 1.3.限制范围
 
 随着互联网的发展，同源政策越来越严格。目前，如果非同源，共有三种行为受到限制。
-
----
 
 - 无法读取非同源网页的 `Cookie`、`LocalStorage` 和 `IndexedDB`。
 - 无法接触非同源网页的 DOM。
 - 无法向非同源地址发送 AJAX 请求（可以发送，但浏览器会拒绝接受响应）。
 
----
-
 另外，通过 JavaScript 脚本可以拿到其他窗口的 `window` 对象。如果是非同源的网页，目前允许一个窗口可以接触其他网页的 `window` 对象的九个属性和四个方法。
 
----
-
-- `window.closed`
-- `window.frames`
-- `window.length`
-- `window.location`
-- `window.opener`
-- `window.parent`
-- `window.self`
-- `window.top`
-- `window.window`
-
----
-
-- `window.blur()`
-- `window.close()`
-- `window.focus()`
-- `window.postMessage()`
-
----
+- 属性
+  - `window.closed`
+  - `window.frames`
+  - `window.length`
+  - `window.location`
+  - `window.opener`
+  - `window.parent`
+  - `window.self`
+  - `window.top`
+  - `window.window`
+- 方法
+  - `window.blur()`
+  - `window.close()`
+  - `window.focus()`
+  - `window.postMessage()`
 
 上面的九个属性之中，只有 `window.location` 是可读写的，其他八个全部都是只读。
 
@@ -104,7 +91,7 @@ B 网页就可以读到这个 `Cookie`。
 
 这样的话，二级域名和三级域名不用做任何设置，都可以读取这个 `Cookie`。
 
-## 3.iframe
+## 3.`iframe`
 
 `iframe` 元素可以在当前网页之中，嵌入其他网页。每个 `iframe` 元素形成自己的窗口，即有自己的 `window` 对象。`iframe` 窗口之中的脚本，可以获得父窗口和子窗口。但是，只有在同源的情况下，父窗口和子窗口才能通信；如果跨域，就无法拿到对方的 DOM。
 
@@ -130,16 +117,12 @@ window.parent.document.body;
 
 对于完全不同源的网站，目前有两种方法，可以解决跨域窗口的通信问题。
 
----
-
 - 片段识别符（fragment identifier）
 - 跨文档通信 API（Cross-document messaging）
 
----
+### 3.1.片段识别符
 
-### 3.1 片段识别符
-
-片段标识符（fragment identifier）指的是，URL 的 `#` 号后面的部分，比如 `http://example.com/x.html#fragment` 的 `#fragment`。如果只是改变片段标识符，页面不会重新刷新。
+**片段标识符**（fragment identifier）指的是，URL 的 `#` 号后面的部分，比如 `http://example.com/x.html#fragment` 的 `#fragment`。如果只是改变片段标识符，页面不会重新刷新。
 
 父窗口可以把信息，写入子窗口的片段标识符。
 
@@ -165,9 +148,9 @@ function checkMessage() {
 
 `parent.location.href = target + '#' + hash;`
 
-### 3.2 window.postMessage()
+### 3.2.`window.postMessage()`
 
-上面的这种方法属于破解，HTML5 为了解决这个问题，引入了一个全新的 API：**跨文档通信 API（Cross-document messaging）**。
+上面的这种方法属于破解，HTML5 为了解决这个问题，引入了一个全新的 API：**跨文档通信** API（Cross-document messaging）。
 
 这个 API 为 window 对象新增了一个 `window.postMessage` 方法，允许跨窗口通信，不论这两个窗口是否同源。举例来说，父窗口 `aaa.com` 向子窗口 `bbb.com` 发消息，调用 `postMessage` 方法就可以了。
 
@@ -203,13 +186,9 @@ window.addEventListener(
 
 `message` 事件的参数是事件对象 `event`，提供以下三个属性。
 
----
-
 - `event.source`：发送消息的窗口
 - `event.origin`: 消息发向的网址
 - `event.data`: 消息内容
-
----
 
 下面的例子是，子窗口通过 `event.source` 属性引用父窗口，然后发送消息。
 
@@ -236,7 +215,7 @@ function receiveMessage(event) {
 }
 ```
 
-### 3.3 LocalStorage
+### 3.3.`LocalStorage`
 
 通过 `window.postMessage`，读写其他窗口的 `LocalStorage` 也成为了可能。
 
@@ -311,15 +290,11 @@ window.onmessage = function(e) {
 
 除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。
 
----
-
 - JSONP
 - WebSocket
 - CORS
 
----
-
-### 4.1 JSONP
+### 4.1.JSONP
 
 JSONP 是服务器与客户端跨源通信的常用方法。最大特点就是简单适用，老式浏览器全部支持，服务端改造非常小。
 
@@ -356,13 +331,13 @@ foo({
 
 由于 `<script>` 元素请求的脚本，直接作为代码运行。这时，只要浏览器定义了 `foo` 函数，该函数就会立即调用。作为参数的 JSON 数据被视为 JavaScript 对象，而不是字符串，因此避免了使用 `JSON.parse` 的步骤。
 
-### 4.2 WebSocket
+### 4.2.WebSocket
 
 `WebSocket` 是一种通信协议，使用 `ws://（非加密）` 和 `wss://（加密）` 作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。
 
 下面是一个例子，浏览器发出的 WebSocket 请求的头信息（摘自维基百科）。
 
-```js
+```sh
 GET /chat HTTP/1.1
 Host: server.example.com
 Upgrade: websocket
@@ -377,7 +352,7 @@ Origin: http://example.com
 
 正是因为有了 `Origin` 这个字段，所以 `WebSocket` 才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。
 
-```js
+```sh
 HTTP/1.1 101 Switching Protocols
 Upgrade: websocket
 Connection: Upgrade
@@ -387,4 +362,4 @@ Sec-WebSocket-Protocol: chat
 
 ### 4.3 CORS
 
-`CORS` 是**跨源资源分享（Cross-Origin Resource Sharing）**的缩写。它是 W3C 标准，属于跨源 AJAX 请求的根本解决方法。相比 JSONP 只能发 GET 请求，CORS 允许任何类型的请求。
+`CORS` 是 **跨源资源分享**（Cross-Origin Resource Sharing）的缩写。它是 W3C 标准，属于跨源 AJAX 请求的根本解决方法。相比 JSONP 只能发 GET 请求，CORS 允许任何类型的请求。

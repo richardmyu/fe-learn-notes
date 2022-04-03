@@ -1,25 +1,21 @@
 # AJAX
 
-AJAX(Async Javascript and XML)。浏览器与服务器之间，采用 HTTP 协议通信。用户在浏览器地址栏键入一个网址，或者通过网页表单向服务器提交内容，这时浏览器就会向服务器发出 HTTP 请求。
+AJAX (Async Javascript and XML)。浏览器与服务器之间，采用 HTTP 协议通信。用户在浏览器地址栏键入一个网址，或者通过网页表单向服务器提交内容，这时浏览器就会向服务器发出 HTTP 请求。
 
 1999 年，微软公司发布 IE 浏览器 5.0 版，第一次引入新功能：允许 JavaScript 脚本向服务器发起 HTTP 请求。这个功能当时并没有引起注意，直到 2004 年 Gmail 发布和 2005 年 Google Map 发布，才引起广泛重视。2005 年 2 月，AJAX 这个词第一次正式提出，指围绕这个功能进行开发的一整套做法。从此，AJAX 成为脚本发起 HTTP 通信的代名词，W3C 也在 2006 年发布了它的国际标准。
 
 具体来说，AJAX 包括以下几个步骤。
 
----
-
-- a. 创建 AJAX 对象
-- b. 发出 HTTP 请求
-- c. 接收服务器传回的数据
-- d. 更新网页数据
-
----
+1. 创建 AJAX 对象
+2. 发出 HTTP 请求
+3. 接收服务器传回的数据
+4. 更新网页数据
 
 概括起来，就是一句话，AJAX 通过原生的 `XMLHttpRequest` 对象发出 HTTP 请求，得到服务器返回的数据后，再进行处理。
 
 AJAX 可以是同步请求，也可以是异步请求。但是，大多数情况下，特指异步请求。因为同步的 Ajax 请求，对浏览器有“堵塞效应”。
 
-## 1.XMLHttpRequest 对象
+## 1.`XMLHttpRequest` 对象
 
 `XMLHttpRequest` 对象用来在浏览器与服务器之间传送数据。
 
@@ -104,33 +100,17 @@ URL 拼接查询参数：
 xhr.send(null);
 ```
 
-## 2.XMLHttpRequest 实例的属性
+## 2.`XMLHttpRequest` 实例的属性
 
-### 2.1 readyState
+### 2.1.`readyState`
 
 `readyState` 是一个只读属性，用一个整数和对应的常量，表示 `XMLHttpRequest` 请求当前所处的状态。
 
----
-
-- 0，对应常量 `UNSENT`，表示 `XMLHttpRequest` 实例已经生成，但是 `open()` 方法还没有被调用。
-
----
-
-- 1，对应常量 `OPENED`，表示 `send()` 方法还没有被调用，`open()` 执行后的状态，仍然可以使用 `setRequestHeader()`，设定 HTTP 请求的头信息。
-
----
-
-- 2，对应常量 `HEADERS_RECEIVED`，表示 `send()` 方法已经执行，并且头信息和状态码已经收到。
-
----
-
-- 3，对应常量 `LOADING`，表示正在接收服务器传来的 body 部分的数据，如果 `responseType` 属性是 `text` 或者空字符串，`responseText` 就会包含已经收到的部分信息。
-
----
-
-- 4，对应常量 `DONE`，表示服务器数据已经完全接收，或者本次接收已经失败了。
-
----
+- `0`：对应常量 `UNSENT`，表示 `XMLHttpRequest` 实例已经生成，但是 `open()` 方法还没有被调用。
+- `1`：对应常量 `OPENED`，表示 `send()` 方法还没有被调用，`open()` 执行后的状态，仍然可以使用 `setRequestHeader()`，设定 HTTP 请求的头信息。
+- `2`：对应常量 `HEADERS_RECEIVED`，表示 `send()` 方法已经执行，并且头信息和状态码已经收到。
+- `3`：对应常量 `LOADING`，表示正在接收服务器传来的 body 部分的数据，如果 `responseType` 属性是 `text` 或者空字符串，`responseText` 就会包含已经收到的部分信息。
+- `4`：对应常量 `DONE`，表示服务器数据已经完全接收，或者本次接收已经失败了。
 
 在通信过程中，每当发生状态变化的时候，`readyState` 属性的值就会发生改变。这个值每一次变化，都会触发 `readyStateChange` 事件。
 
@@ -144,7 +124,7 @@ if (ajax.readyState == 4) {
 
 上面代码表示，只有 `readyState` 变为 4 时，才算确认请求已经成功，其他值都表示请求还在进行中。
 
-### 2.2 onreadystatechange
+### 2.2.`onreadystatechange`
 
 `onreadystatechange` 属性指向一个回调函数，当 `readystatechange` 事件发生的时候，这个回调函数就会调用，并且 `XMLHttpRequest` 实例的 `readyState` 属性也会发生变化。
 
@@ -165,13 +145,13 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.send();
 ```
 
-### 2.3 response
+### 2.3.`response`
 
 `response` 属性为只读，返回接收到的数据体（即 body 部分）。它的类型可以是 `ArrayBuffer`、`Blob`、`Document`、`JSON` 对象、或者一个字符串，这由 `XMLHttpRequest.responseType` 属性的值决定。
 
 如果本次请求没有成功或者数据不完整，该属性就会等于 `null`。
 
-### 2.4 responseType
+### 2.4.`responseType`
 
 `responseType` 属性用来指定服务器返回数据（`xhr.response`）的类型。
 
@@ -223,7 +203,7 @@ xhr.send();
 
 XHR2 支持 Ajax 的返回类型为文档，即 `xhr.responseType=”document”`。这意味着，对于那些打开 CORS 的网站，我们可以直接用 Ajax 抓取网页，然后不用解析 HTML 字符串，直接对 XHR 回应进行 DOM 操作。
 
-### 2.5 responseText
+### 2.5.`responseText`
 
 `responseText` 属性返回从服务器接收到的字符串，该属性为只读。如果本次请求没有成功或者数据不完整，该属性就会等于 `null`。
 
@@ -234,7 +214,7 @@ var data = ajax.responseText;
 data = JSON.parse(data);
 ```
 
-### 2.6 responseXML
+### 2.6.`responseXML`
 
 `responseXML` 属性返回从服务器接收到的 `Document` 对象，该属性为只读。如果本次请求没有成功，或者数据不完整，或者不能被解析为 XML 或 HTML，该属性等于 `null`。
 
@@ -255,25 +235,21 @@ var chapters = data.getElementsByTagName("chapter");
 
 如果服务器返回的数据，没有明示 `Content-Type` 头信息等于 `text/xml`，可以使用 `overrideMimeType()` 方法，指定 `XMLHttpRequest` 对象将返回的数据解析为 XML。
 
-### 2.7 status
+### 2.7.`status`
 
 `status` 属性为只读属性，表示本次请求所得到的 HTTP 状态码，它是一个整数。一般来说，如果通信成功的话，这个状态码是 200。
 
----
-
-- 200, OK，访问正常
-- 301, Moved Permanently，永久移动/永久重定向
-- 302, Move temporarily，暂时移动/临时重定向或临时转义（服务器的负载均衡）
-- 304, Not Modified，未修改/读取缓存（多次进行同一请求，改走缓存，以减轻服务器的访问压力）
-- 307, Temporary Redirect，暂时重定向
-- 400: 请求参数错误
-- 401, Unauthorized，未授权/权限错误
-- 403, Forbidden，禁止访问
-- 404, Not Found，未发现指定网址/请求地址不存在
-- 500, Internal Server Error，服务器发生错误
-- 503: 服务器崩溃/超负荷
-
----
+- 200：OK，访问正常
+- 301：Moved Permanently，永久移动/永久重定向
+- 302：Move temporarily，暂时移动/临时重定向或临时转义（服务器的负载均衡）
+- 304：Not Modified，未修改/读取缓存（多次进行同一请求，改走缓存，以减轻服务器的访问压力）
+- 307：Temporary Redirect，暂时重定向
+- 400：请求参数错误
+- 401：Unauthorized，未授权/权限错误
+- 403：Forbidden，禁止访问
+- 404：Not Found，未发现指定网址/请求地址不存在
+- 500：Internal Server Error，服务器发生错误
+- 503：服务器崩溃/超负荷
 
 > 基本上，只有 2xx 和 304 的状态码，表示服务器返回是正常状态。
 
@@ -287,11 +263,11 @@ if (ajax.readyState == 4) {
 }
 ```
 
-### 2.8 statusText
+### 2.8.`statusText`
 
 `statusText` 属性为只读属性，返回一个字符串，表示服务器发送的状态提示。不同于 `status` 属性，该属性包含整个状态信息，比如”200 OK“。
 
-### 2.9 timeout
+### 2.9.`timeout`
 
 `timeout` 属性等于一个整数，表示多少毫秒后，如果请求仍然没有得到结果，就会自动终止。如果该属性等于 0，就表示没有时间限制。
 
@@ -315,7 +291,7 @@ if (ajax.readyState == 4) {
 }
 ```
 
-### 2.10 事件监听接口
+### 2.10.事件监听接口
 
 `XMLHttpRequest` 第一版，只能对 `onreadystatechange` 这一个事件指定回调函数。该事件对所有情况作出响应。 `XMLHttpRequest` 第二版允许对更多的事件指定回调函数。
 
@@ -345,7 +321,7 @@ xhr.onerror = function() {
 
 注意，如果发生网络错误（比如服务器无法连通），`onerror` 事件无法获取报错信息，所以只能显示报错。
 
-### 2.11 withCredentials
+### 2.11.`withCredentials`
 
 `withCredentials` 属性是一个布尔值，表示跨域请求时，用户信息（比如 `Cookie` 和认证的 HTTP 头信息）是否会包含在请求之中，默认为 `false`。即向 `example.com` 发出跨域请求时，不会发送 `example.com` 设置在本机上的 `Cookie`（如果有的话）。
 
@@ -359,9 +335,9 @@ xhr.onerror = function() {
 
 `.withCredentials` 属性打开的话，不仅会发送 `Cookie`，还会设置远程主机指定的 `Cookie`。注意，此时你的脚本还是遵守同源政策，无法 从 `document.cookie` 或者 HTTP 回应的头信息之中，读取这些 `Cookie`。
 
-## 3.XMLHttpRequest 实例的方法
+## 3.`XMLHttpRequest` 实例的方法
 
-### 3.1 abort()
+### 3.1.`abort()`
 
 `abort` 方法用来终止已经发出的 HTTP 请求。
 
@@ -377,11 +353,11 @@ var ajaxAbortTimer = setTimeout(function() {
 
 上面代码在发出 5 秒之后，终止一个 AJAX 请求。
 
-### 3.2 getAllResponseHeaders()
+### 3.2.`getAllResponseHeaders()`
 
 `getAllResponseHeaders` 方法返回服务器发来的所有 HTTP 头信息。格式为字符串，每个头信息之间使用 CRLF 分隔，如果没有受到服务器回应，该属性返回 `null`。
 
-### 3.3 getResponseHeader()
+### 3.3.`getResponseHeader()`
 
 `getResponseHeader` 方法返回 HTTP 头信息指定字段的值，如果还没有收到服务器回应或者指定字段不存在，则该属性为 `null`。
 
@@ -398,7 +374,7 @@ oReq.send();
 
 如果有多个字段同名，则它们的值会被连接为一个字符串，每个字段之间使用“逗号+空格”分隔。
 
-### 3.4 open()
+### 3.4.`open()`
 
 `XMLHttpRequest` 对象的 `open` 方法用于指定发送 HTTP 请求的参数，它的使用格式如下，一共可以接受五个参数。
 
@@ -412,19 +388,15 @@ void open(
 );
 ```
 
----
-
-- `method`：表示 HTTP 动词，比如“GET”、“POST”、“PUT”和“DELETE”。
+- `method`：表示 HTTP 动词，比如“`GET`”、“`POST`”、“`PUT`”和“`DELETE`”。
 - `url`: 表示请求发送的网址。
 - `async`: 格式为布尔值，默认为 `true`，表示请求是否为异步。如果设为 `false`，则 `send()` 方法只有等到收到服务器返回的结果，才会有返回值。
 - `user`：表示用于认证的用户名，默认为空字符串。
 - `password`：表示用于认证的密码，默认为空字符串。
 
----
-
 > 如果对使用过 `open()` 方法的请求，再次使用这个方法，等同于调用 `abort()`。
 
-下面发送 POST 请求的例子。
+下面发送 `POST`` 请求的例子。
 
 ```js
 xhr.open("POST", encodeURI("someURL"));
@@ -433,7 +405,7 @@ xhr.onload = function() {};
 xhr.send(encodeURI("dataString"));
 ```
 
-上面方法中，`open` 方法向指定 URL 发出 POST 请求，`send` 方法送出实际的数据。
+上面方法中，`open` 方法向指定 URL 发出 `POST` 请求，`send` 方法送出实际的数据。
 
 下面是一个同步 AJAX 请求的例子。
 
@@ -447,9 +419,9 @@ if (request.status === 200) {
 }
 ```
 
-### 3.5 send()
+### 3.5.`send()`
 
-`send` 方法用于实际发出 HTTP 请求。如果不带参数，就表示 HTTP 请求只包含头信息，也就是只有一个 URL，典型例子就是 GET 请求；如果带有参数，就表示除了头信息，还带有包含具体数据的信息体，典型例子就是 POST 请求。
+`send` 方法用于实际发出 HTTP 请求。如果不带参数，就表示 HTTP 请求只包含头信息，也就是只有一个 URL，典型例子就是 `GET` 请求；如果带有参数，就表示除了头信息，还带有包含具体数据的信息体，典型例子就是 `POST` 请求。
 
 ```js
 ajax.open('GET'
@@ -463,9 +435,9 @@ ajax.open('GET', 'http://www.example.com/somepage.php', true);
 ajax.send(data);
 ```
 
-上面代码中，GET 请求的参数，可以作为查询字符串附加在 URL 后面，也可以作为 `send` 方法的参数。
+上面代码中，`GET` 请求的参数，可以作为查询字符串附加在 URL 后面，也可以作为 `send` 方法的参数。
 
-下面是发送 POST 请求的例子。
+下面是发送 `POST` 请求的例子。
 
 ```js
 var data =
@@ -596,7 +568,7 @@ var blob = new Blob([content], { type: "text/xml" });
 formData.append("webmasterfile", blob);
 ```
 
-### 3.6 setRequestHeader()
+### 3.6.`setRequestHeader()`
 
 `setRequestHeader` 方法用于设置 HTTP 头信息。该方法必须在 `open()` 之后、`send()` 之前调用。如果该方法多次调用，设定同一个字段，则每一次调用的值会被合并成一个单一的值发送。
 
@@ -608,7 +580,7 @@ xhr.send(JSON.stringify(data));
 
 上面代码首先设置头信息 `Content-Type`，表示发送 JSON 格式的数据；然后设置 `Content-Length`，表示数据长度；最后发送 JSON 数据。
 
-### 3.7 overrideMimeType()
+### 3.7.`overrideMimeType()`
 
 该方法用来指定服务器返回数据的 MIME 类型。该方法必须在 `send()` 之前调用。
 
@@ -649,15 +621,15 @@ xhr.responseType = "arraybuffer";
 xhr.send();
 ```
 
-## 4.XMLHttpRequest 实例的事件
+## 4.`XMLHttpRequest` 实例的事件
 
-### 4.1 readyStateChange 事件
+### 4.1.`readyStateChange` 事件
 
 `readyState` 属性的值发生改变，就会触发 `readyStateChange` 事件。
 
 我们可以通过 `onReadyStateChange` 属性，指定这个事件的回调函数，对不同状态进行不同处理。尤其是当状态变为 4 的时候，表示通信成功，这时回调函数就可以处理服务器传送回来的数据。
 
-### 4.2 progress 事件
+### 4.2.`progress` 事件
 
 上传文件时，`XMLHTTPRequest` 对象的 `upload` 属性有一个 `progress`，会不断返回上传的进度。
 
@@ -688,7 +660,7 @@ function upload(blobOrFile) {
 upload(new Blob(['hello world'], {type: 'text/plain'}));
 ```
 
-### 4.3 load 事件、error 事件、abort 事件
+### 4.3.`load` 事件、`error` 事件、`abort` 事件
 
 `load` 事件表示服务器传来的数据接收完毕，`error` 事件表示请求出错，`abort` 事件表示请求被中断。
 
@@ -724,7 +696,7 @@ function transferCanceled(evt) {
 }
 ```
 
-### 4.4 loadend 事件
+### 4.4.`loadend` 事件
 
 `abort`、`load` 和 `error` 这三个事件，会伴随一个 `loadend` 事件，表示请求结束，但不知道其是否成功。
 
@@ -740,23 +712,26 @@ function loadEnd(e) {
 
 1). 传递参数的方式
 
-- `get` 请求的参数放置在 URL 上，通过 "`？参数=值&参数=值 `" 的形式传递，`xhr.open("get","url")`；
+- `get` 请求的参数放置在 URL 上，通过 "`？参数=值&参数=值`" 的形式传递，`xhr.open("get","url")`；
 - `post` 请求的参数放置在请求主体中，`xhr.send('参数=值&参数=值')`
 
-  2). 参数大小限制
-  浏览器对 URL 大小有限制，超出部分会自动截取；`post` 的请求主体没有大小限制（实际操作中会有一定程度上的限制，过大的请求数据会分次请求，以保证请求速度）；
+2). 参数大小限制
 
-  3). 安全性
-  `get` 请求的参数显示在 URL 上，安全性极低；一般考虑安全性时，会使用 `post` 请求
+- 浏览器对 URL 大小有限制，超出部分会自动截取；`post` 的请求主体没有大小限制（实际操作中会有一定程度上的限制，过大的请求数据会分次请求，以保证请求速度）；
 
-  4). 缓存
-  `get` 请求的 URL 问号传参很容易走缓存，一般在 URL 后面拼接一个时间戳，来防止缓存；`post` 请求不会走缓存；
+3). 安全性
 
-## 6. 文件上传
+- `get` 请求的参数显示在 URL 上，安全性极低；一般考虑安全性时，会使用 `post` 请求
+
+4). 缓存
+
+- `get` 请求的 URL 问号传参很容易走缓存，一般在 URL 后面拼接一个时间戳，来防止缓存；`post` 请求不会走缓存；
+
+## 6.文件上传
 
 HTML 网页的 `<form>` 元素能够以四种格式，向服务器发送数据。
 
-1). 使用 POST 方法，将 `enctype` 属性设为 `application/x-www-form-urlencoded`，这是默认方法。
+1). 使用 `POST` 方法，将 `enctype` 属性设为 `application/x-www-form-urlencoded`，这是默认方法。
 
 ```js
 <form
@@ -766,7 +741,7 @@ HTML 网页的 `<form>` 元素能够以四种格式，向服务器发送数据�
 />
 ```
 
-2). 使用 POST 方法，将 `enctype` 属性设为 `text/plain`。
+2). 使用 `POST` 方法，将 `enctype` 属性设为 `text/plain`。
 
 ```js
 <form
@@ -777,7 +752,7 @@ HTML 网页的 `<form>` 元素能够以四种格式，向服务器发送数据�
 />
 ```
 
-3). 使用 POST 方法，将 `enctype` 属性设为 `multipart/form-data`。
+3). 使用 `POST` 方法，将 `enctype` 属性设为 `multipart/form-data`。
 
 ```js
 <form
@@ -788,7 +763,7 @@ HTML 网页的 `<form>` 元素能够以四种格式，向服务器发送数据�
 />
 ```
 
-4). 使用 GET 方法，`enctype` 属性将被忽略。
+4). 使用 `GET` 方法，`enctype` 属性将被忽略。
 
 ```js
 <form
@@ -798,11 +773,9 @@ HTML 网页的 `<form>` 元素能够以四种格式，向服务器发送数据�
 />
 ```
 
-某个表单有两个字段，分别是 foo 和 baz，其中 foo 字段的值等于 bar，baz 字段的值一个分为两行的字符串。上面四种方法，都可以将这个表单发送到服务器。
+某个表单有两个字段，分别是 `foo` 和 `baz`，其中 `foo` 字段的值等于 `bar`，`baz` 字段的值一个分为两行的字符串。上面四种方法，都可以将这个表单发送到服务器。
 
----
-
-第一种方法是默认方法，POST 发送，`Encoding type` 为 `application/x-www-form-urlencoded`。
+第一种方法是默认方法，`POST` 发送，`Encoding type` 为 `application/x-www-form-urlencoded`。
 
 ```js
 Content-Type: application/x-www-form-urlencoded
@@ -810,9 +783,7 @@ Content-Type: application/x-www-form-urlencoded
 foo=bar&baz=The+first+line.&#37;0D%0AThe+second+line.%0D%0A
 ```
 
----
-
-第二种方法是 POST 发送，`Encoding type` 为 `text/plain`。
+第二种方法是 `POST` 发送，`Encoding type` 为 `text/plain`。
 
 ```js
 Content-Type: text/plain
@@ -822,9 +793,7 @@ baz=The first line.
 The second line.
 ```
 
----
-
-第三种方法是 POST 发送，`Encoding type` 为 `multipart/form-data`。
+第三种方法是 `POST` 发送，`Encoding type` 为 `multipart/form-data`。
 
 ```js
 Content-Type: multipart/form-data; boundary=---------------------------314911788813839
@@ -842,9 +811,7 @@ The second line.
 -----------------------------314911788813839--
 ```
 
----
-
-第四种方法是 GET 请求。
+第四种方法是 `GET` 请求。
 
 `?foo=bar&baz=The%20first%20line.%0AThe%20second%20line.`
 
