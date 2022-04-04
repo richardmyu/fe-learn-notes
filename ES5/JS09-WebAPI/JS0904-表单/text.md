@@ -1,6 +1,6 @@
 # 表单
 
-## 1. 表单元素
+## 1.表单元素
 
 `input`、`textarea`、`password`、`select` 等元素都可以通过 `value` 属性取到它们的值。
 
@@ -174,8 +174,6 @@ input.addEventListener("blur", function() {
 
 每一个表单元素都有一个 `validity` 对象，具有以下属性。
 
----
-
 - `valid`：如果该元素通过验证，则为 `true`。
 - `valueMissing`：如果用户没填必填项，则为 `true`。
 - `typeMismatch`：如果填入的格式不正确（比如 Email 地址），则为 `true`。
@@ -187,8 +185,6 @@ input.addEventListener("blur", function() {
 - `stepMismatch`：如果不匹配步长（step），则返回 `true`。
 - `badInput`：如果不能转为值，则为 `true`。
 - `customError`：如果该栏有自定义错误，则为 `true`。
-
----
 
 `setCustomValidity` 方法用于自定义错误信息，该提示信息也反映在输入框的 `validationMessage` 属性中。如果将 `setCustomValidity` 设为空字符串，则意味该项目验证通过。
 

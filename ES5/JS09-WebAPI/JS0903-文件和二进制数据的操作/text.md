@@ -2,24 +2,20 @@
 
 [TOC]
 
-历史上，JavaScript 无法处理二进制数据。如果一定要处理的话，只能使用 `charCodeAt()` 方法，一个个字节地从文字编码转成二进制数据，还有一种办法是将二进制数据转成 Base64 编码，再进行处理。这两种方法不仅速度慢，而且容易出错。ECMAScript 5 引入了 Blob 对象，允许直接操作二进制数据。
+历史上，JavaScript 无法处理二进制数据。如果一定要处理的话，只能使用 `charCodeAt()` 方法，一个个字节地从文字编码转成二进制数据，还有一种办法是将二进制数据转成 Base64 编码，再进行处理。这两种方法不仅速度慢，而且容易出错。ECMAScript 5 引入了 `Blob` 对象，允许直接操作二进制数据。
 
-Blob 对象是一个代表二进制数据的基本对象，在它的基础上，又衍生出一系列相关的 API，用来操作文件。
-
----
+`Blob` 对象是一个代表二进制数据的基本对象，在它的基础上，又衍生出一系列相关的 API，用来操作文件。
 
 - `File` 对象：负责处理那些以文件形式存在的二进制数据，也就是操作本地文件；
 - `FileList` 对象：`File` 对象的网页表单接口；
 - `FileReader` 对象：负责将二进制数据读入内存内容；
 - `URL` 对象：用于对二进制数据生成 `URL`。
 
----
-
 ## 1.`ArrayBuffer`
 
 与其他语言相比，JavaScript 中的二进制数据是以非标准方式实现的。
 
-基本的二进制对象是 ArrayBuffer —— 对固定长度的连续内存空间的引用。
+基本的二进制对象是 `ArrayBuffer` —— 对固定长度的连续内存空间的引用。
 
 ```js
 let buffer = new ArrayBuffer(16); // 创建一个长度为 16 的 buffer
@@ -34,9 +30,9 @@ alert(buffer.byteLength); // 16
 > 它正好占用了内存中的那么多空间。
 > 要访问单个字节，需要另一个“视图”对象，而不是 `buffer[index]`。
 
-ArrayBuffer 是一个内存区域。它里面存储了什么？无从判断。只是一个原始的字节序列。
+`ArrayBuffer` 是一个内存区域。它里面存储了什么？无从判断。只是一个原始的字节序列。
 
-如要操作 ArrayBuffer，我们需要使用“视图”对象。
+如要操作 `ArrayBuffer`，我们需要使用“视图”对象。
 
 ```js
 let buffer = new ArrayBuffer(16); // 创建一个长度为 16 的 buffer
@@ -57,7 +53,7 @@ for(let num of view) {
 }
 ```
 
-视图对象本身并不存储任何东西。它是一副“眼镜”，透过它来解释存储在 ArrayBuffer 中的字节。
+视图对象本身并不存储任何东西。它是一副“眼镜”，透过它来解释存储在 `ArrayBuffer` 中的字节。
 
 例如：
 
@@ -66,7 +62,7 @@ for(let num of view) {
 - `Uint32Array` —— 将每 4 个字节视为一个 0 到 4294967295 之间的整数。这称为 “32 位无符号整数”。
 - `Float64Array` —— 将每 8 个字节视为一个 5.0x10-324 到 1.8x10308 之间的浮点数。
 
-因此，一个 16 字节 ArrayBuffer 中的二进制数据可以解释为 16 个“小数字”，或 8 个更大的数字（每个数字 2 个字节），或 4 个更大的数字（每个数字 4 个字节），或 2 个高精度的浮点数（每个数字 8 个字节）。
+因此，一个 16 字节 `ArrayBuffer` 中的二进制数据可以解释为 16 个“小数字”，或 8 个更大的数字（每个数字 2 个字节），或 4 个更大的数字（每个数字 4 个字节），或 2 个高精度的浮点数（每个数字 8 个字节）。
 
 ![https://zh.javascript.info//article/arraybuffer-binary-arrays/arraybuffer-views.svg](https://zh.javascript.info//article/arraybuffer-binary-arrays/arraybuffer-views.svg)
 
@@ -92,11 +88,11 @@ new TypedArray(length);
 new TypedArray();
 ```
 
-1. 如果给定的是 `ArrayBuffer` 参数，则会在其上创建视图。
+1).如果给定的是 `ArrayBuffer` 参数，则会在其上创建视图。
 
 可选，可以给定起始位置 `byteOffset`（默认为 0）以及 `length`（默认至 buffer 的末尾），这样视图将仅涵盖 `buffer` 的一部分。
 
-2. 如果给定的是 `Array`，或任何类数组对象，则会创建一个相同长度的类型化数组，并复制其内容。
+2).如果给定的是 `Array`，或任何类数组对象，则会创建一个相同长度的类型化数组，并复制其内容。
 
 可以使用它来预填充数组的数据：
 
@@ -106,7 +102,7 @@ alert( arr.length ); // 4，创建了相同长度的二进制数组
 alert( arr[1] ); // 1，用给定值填充了 4 个字节（无符号 8 位整数）
 ```
 
-3. 如果给定的是另一个 `TypedArray`，也是如此：创建一个相同长度的类型化数组，并复制其内容。如果需要的话，数据在此过程中会被转换为新的类型。
+3).如果给定的是另一个 `TypedArray`，也是如此：创建一个相同长度的类型化数组，并复制其内容。如果需要的话，数据在此过程中会被转换为新的类型。
 
 ```js
 let arr16 = new Uint16Array([1, 1000]);
@@ -115,7 +111,7 @@ alert( arr8[0] ); // 1
 alert( arr8[1] ); // 232，试图复制 1000，但无法将 1000 放进 8 位字节中。
 ```
 
-4. 对于数字参数 `length` —— 创建类型化数组以包含这么多元素。它的字节长度将是 `length` 乘以单个 `TypedArray.BYTES_PER_ELEMENT` 中的字节数：
+4).对于数字参数 `length` —— 创建类型化数组以包含这么多元素。它的字节长度将是 `length` 乘以单个 `TypedArray.BYTES_PER_ELEMENT` 中的字节数：
 
 ```js
 let arr = new Uint16Array(4); // 为 4 个整数创建类型化数组
@@ -123,7 +119,7 @@ alert( Uint16Array.BYTES_PER_ELEMENT ); // 每个整数 2 个字节
 alert( arr.byteLength ); // 8（字节中的大小）
 ```
 
-5. 不带参数的情况下，创建长度为零的类型化数组。
+5).不带参数的情况下，创建长度为零的类型化数组。
 
 可以直接创建一个 TypedArray，而无需提及 ArrayBuffer。但是，视图离不开底层的 ArrayBuffer，因此，除第一种情况（已提供 ArrayBuffer）外，其他所有情况都会自动创建 ArrayBuffer。
 
@@ -356,16 +352,12 @@ reader.abort();
 
 `FileReader` 对象采用异步方式读取文件，可以为一系列事件指定回调函数。
 
----
-
 - `onabort` 方法：读取中断或调用 `reader.abort()` 方法时触发。
 - `onerror` 方法：读取出错时触发。
 - `onload` 方法：读取成功后触发。
 - `onloadend` 方法：读取完成后触发，不管是否成功。触发顺序排在 `onload` 或 `onerror` 后面。
 - `onloadstart` 方法：读取将要开始时触发。
 - `onprogress` 方法：读取过程中周期性触发。
-
----
 
 下面的代码是如何展示文本文件的内容。
 
@@ -430,7 +422,7 @@ function updateProgress(evt) {
 
 读取大文件的时候，可以利用 `Blob` 对象的 `slice` 方法，将大文件分成小段，逐一读取，这样可以加快处理速度。
 
-## 7. 综合实例：显示用户选取的本地图片
+## 7.综合实例：显示用户选取的本地图片
 
 假设有一个表单，用于用户选取图片。
 
@@ -513,6 +505,7 @@ img.height = 60;
 img.onload = function(e) {
   window.URL.revokeObjectURL(this.src);
 };
+
 body.appendChild(img);
 var info = document.createElement("span");
 info.innerHTML = files[i].name + ": " + files[i].size + " bytes";

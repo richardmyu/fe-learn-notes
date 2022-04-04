@@ -1,6 +1,6 @@
 # 概述
 
-## 1. 元素与变量名
+## 1.元素与变量名
 
 ### 1.1.`id` 属性
 
@@ -58,8 +58,6 @@ console.log(document.querySelector("#navigator"));
 
 由于历史原因，以下 HTML 元素的 `name` 属性，也会成为全局变量。
 
----
-
 - `<applet>`
 - `<area>`
 - `<embed>`
@@ -69,8 +67,6 @@ console.log(document.querySelector("#navigator"));
 - `<iframe>`
 - `<img>`
 - `<object>`
-
----
 
 ```js
 // HTML 代码为
@@ -121,7 +117,7 @@ document.xx === xx; // true
 
 表单主要用于收集用户的输入，送到服务器或者在前端处理。
 
-### 2.1. 选中表单元素
+### 2.1.选中表单元素
 
 如果 `<form>` 元素带有 `name` 或者 `id` 属性，这个元素节点会自动成为 `window` 和 `document` 的属性，并且可以从 `document.forms` 上取到。`<form name="myForm">` 节点用下面几种方法可以拿到。
 
@@ -178,16 +174,12 @@ for (var i = 0; i < methods.length; i++) {
 
 `<form>` 元素对应的 DOM 节点是一个 Form 对象。这个对象除了上一小节提到的 `elements` 属性，还有以下属性，分别对应元素标签中的同名属性。
 
----
+- `action`
+- `encoding`
+- `method`
+- `target`
 
-- action
-- encoding
-- method
-- target
-
----
-
-Form 对象还有两个属性，可以指定事件的回调函数。
+`Form` 对象还有两个属性，可以指定事件的回调函数。
 
 - `onsubmit`：提交表单前调用，只要返回 `false`，就会取消提交。可以在这个函数里面，校验用户的输入。该函数只会在用户提交表单时调用，脚本调用 `submit()` 方法是不会触发这个函数的。
 - `onreset`：重置表单前调用，只要返回 `false`，就会取消表单重置。该函数只能由真实的 `reset` 按钮触发，脚本调用 `reset()` 方法并不会触发这个函数。
@@ -199,23 +191,19 @@ Form 对象还有两个属性，可以指定事件的回调函数。
 </form>
 ```
 
-Form 对象的方法主要是下面两个。
+`Form` 对象的方法主要是下面两个。
 
 - `submit()`：将表单数据提交到服务器
 - `reset()`：重置表单数据
 
-### 2.3. 表单控件对象
+### 2.3.表单控件对象
 
 表单包含了各种控件，每个控件都是一个对象。它们都包含了以下四个属性。
-
----
 
 - `type`：表示控件的类型，对于 `<input>` 元素、`<button>` 元素等于这些标签的 `type` 属性，对于其他控件，`<select>` 为 `select-one`，`<select multiple>` 为 `select-multiple`，`<textarea>` 为 `textarea`。该属性只读。
 - `form`：指向包含该控件的表单对象，如果该控件不包含在表单之中，则返回 `null`。该属性只读。
 - `name`：返回控件标签的 `name` 属性。该属性只读。
 - `value`：返回或设置该控件的值，这个值会被表单提交到服务器。该属性可读写。 才会 `form` 属性有一个特别的应用，就是在控件的事件回调函数里面，`this` 指向事件所在的控件对象，所以 `this.form` 就指向控件所在的表单，`this.form.x` 就指向其他控件元素，里面的 `x` 就是该控件的 `name` 属性或 `id` 属性的值。
-
----
 
 表单控件之中，只要是按钮，都有 `onclick` 属性，用来指定用户点击按钮时的回调函数；其他的控件一般都有 `onchange` 属性，控件值发生变化，并且该控件失去焦点时调用。单选框（`Radio` 控件）和多选框（`Checkbox` 控件）可以同时设置 `onchange` 和 `onclick` 属性。
 
@@ -264,14 +252,10 @@ element.options.length;
 
 `<option>` 元素用于在下拉列表（`<select>`）中生成下拉选项。每个下拉选项就是一个 `Option` 对象，它有以下属性。
 
----
-
 - `selected`：返回一个布尔值，表示用户是否选中该选项。
 - `text`：返回该下拉选项的显示的文本。该属性可读写，可用来显示向用户显示的文本。
 - `value`：返回该下拉选项的值，即向服务器发送的那个值。该属性可读写。
 - `defaultSelected`：返回一个布尔值，表示这个下拉选项是否默认选中。
-
----
 
 浏览器提供 `Option` 构造函数，用来生成下拉列表的选项对象。利用这个函数，可以用脚本生成下拉选项，然后放入 `Select.options` 对象里面，从而自动生成下拉列表。
 
@@ -338,8 +322,6 @@ myImage.addEventListener("onload", function() {
 
 表格有一些特殊的 DOM 操作方法。
 
----
-
 - `insertRow()`：在指定位置插入一个新行（`tr`）。
 - `deleteRow()`：在指定位置删除一行（`tr`）。
 - `insertCell()`：在指定位置插入一个单元格（`td`）。
@@ -348,8 +330,6 @@ myImage.addEventListener("onload", function() {
 - `deleteCaption()`：删除标题。
 - `createTHead()`：插入表头。
 - `deleteTHead()`：删除表头。
-
----
 
 下面是使用 JavaScript 生成表格的一个例子。
 
@@ -385,8 +365,6 @@ document.body.appendChild(table);
 
 `table` 元素有以下属性：
 
----
-
 - `caption`：标题。
 - `tHead`：表头。
 - `tFoot`：表尾。
@@ -394,13 +372,9 @@ document.body.appendChild(table);
 - `rows.cells`：每一行的单元格对象，该属性只读。
 - `tBodies`：表体，该属性只读。
 
----
-
 ## 5.`audio` 元素，`video` 元素
 
 `audio` 元素和 `video` 元素加载音频和视频时，以下事件按次序发生。
-
----
 
 - `loadstart`：开始加载音频和视频。
 - `durationchange`：音频和视频的 `duration` 属性（时长）发生变化时触发，即已经知道媒体文件的长度。如果没有指定音频和视频文件，`duration` 属性等于 `NaN`。如果播放流媒体文件，没有明确的结束时间，`duration` 属性等于 `Inf`（`Infinity`）。
@@ -410,27 +384,25 @@ document.body.appendChild(table);
 - `canplay`：浏览器准备好播放，即使只有几帧，`readyState` 属性变为 `CAN_PLAY`。
 - `canplaythrough`：浏览器认为可以不缓冲（`buffering`）播放时触发，即当前下载速度保持不低于播放速度，`readyState` 属性变为 `CAN_PLAY_THROUGH`。
 
----
-
 除了上面这些事件，`audio` 元素和 `video` 元素还支持以下事件。
 
-|     事件     |                                  触发条件                                  |
-| :----------: | :------------------------------------------------------------------------: |
-|    abort     |                                  播放中断                                  |
-|   emptied    |       媒体文件加载后又被清空，比如加载后又调用 `load` 方法重新加载。       |
-|    ended     |                                  播放结束                                  |
-|    error     |               发生错误。该元素的 `error` 属性包含更多信息。                |
-|    pause     |                                  播放暂停                                  |
-|     play     |                             暂停后重新开始播放                             |
-|   playing    |           开始播放，包括第一次播放、暂停后播放、结束后重新播放。           |
-|  ratechange  |                                播放速率改变                                |
-|    seeked    |                                搜索操作结束                                |
-|   seeking    |                                搜索操作开始                                |
-|   stalled    |           浏览器开始尝试读取媒体文件，但是没有如预期那样获取数据           |
-|   suspend    |          加载文件停止，有可能是播放结束，也有可能是其他原因的暂停          |
-|  timeupdate  |                 网页元素的 `currentTime` 属性改变时触发。                  |
-| volumechange |                        音量改变时触发（包括静音）。                        |
-|   waiting    | 由于另一个操作（比如搜索）还没有结束，导致当前操作（比如播放）不得不等待。 |
+|      事件      |                                  触发条件                                  |
+| :------------: | :------------------------------------------------------------------------: |
+|    `abort`     |                                  播放中断                                  |
+|   `emptied`    |       媒体文件加载后又被清空，比如加载后又调用 `load` 方法重新加载。       |
+|    `ended`     |                                  播放结束                                  |
+|    `error`     |               发生错误。该元素的 `error` 属性包含更多信息。                |
+|    `pause`     |                                  播放暂停                                  |
+|     `play`     |                             暂停后重新开始播放                             |
+|   `playing`    |           开始播放，包括第一次播放、暂停后播放、结束后重新播放。           |
+|  `ratechange`  |                                播放速率改变                                |
+|    `seeked`    |                                搜索操作结束                                |
+|   `seeking`    |                                搜索操作开始                                |
+|   `stalled`    |           浏览器开始尝试读取媒体文件，但是没有如预期那样获取数据           |
+|   `suspend`    |          加载文件停止，有可能是播放结束，也有可能是其他原因的暂停          |
+|  `timeupdate`  |                 网页元素的 `currentTime` 属性改变时触发。                  |
+| `volumechange` |                        音量改变时触发（包括静音）。                        |
+|   `waiting`    | 由于另一个操作（比如搜索）还没有结束，导致当前操作（比如播放）不得不等待。 |
 
 ## 6.`tabindex` 属性
 
