@@ -1,38 +1,38 @@
 # javascript 运行机制
 
-## 一。线程与进程
+## 1.线程与进程
 
-### 1. 概念
+### 1.1.概念
 
 官方的说法是：进程是 CPU 资源分配的最小单位；线程是 CPU 调度的最小单位。
 
-### 2. 进程与线程
+### 1.2.进程与线程
 
-#### 2.1. 进程
+#### 1.2.1.进程
 
 进程是 cpu 资源分配的最小单位（是能拥有资源和独立运行的最小单位）。
 
-#### 2.2. 线程
+#### 1.2.2.线程
 
 线程是 cpu 调度的最小单位（线程是建立在进程的基础上的一次程序运行单位，一个进程中可以有多个线程）。
 
-### 3. 多进程与多线程
+### 1.3.多进程与多线程
 
-#### 3.1. 多进程
+#### 1.3.1.多进程
 
 在同一个时间里，同一个计算机系统中如果允许两个或两个以上的进程处于运行状态。多进程带来的好处是明显的，比如你可以听歌的同时，打开编辑器敲代码，编辑器和听歌软件的进程之间丝毫不会相互干扰。
 
-#### 3.2. 多线程
+#### 1.3.2.多线程
 
 程序中包含多个执行流，即在一个程序中可以同时运行多个不同的线程来执行不同的任务，也就是说允许单个程序创建多个并行执行的线程来完成各自的任务。
 
-#### 3.3.JavaScript 是单线程
+#### 1.3.3.JavaScript 是单线程
 
 JavaScript 语言的一大特点就是单线程。JavaScript 的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript 的主要用途是与用户互动，以及操作 DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。
 
 为了利用多核 CPU 的计算能力，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制，且不得操作 DOM。所以，这个新标准并没有改变 JavaScript 单线程的本质。
 
-#### 3.4. 浏览器是多进程
+#### 1.3.4.浏览器是多进程
 
 > **Browser 进程**：浏览器的主进程（负责协调、主控），只有一个。作用有
 
@@ -50,9 +50,9 @@ JavaScript 语言的一大特点就是单线程。JavaScript 的单线程，与�
 >
 > **浏览器渲染进程**（浏览器内核）（Renderer 进程，内部是多线程的）：默认每个 Tab 页面一个进程，互不影响。主要作用为
 >
-> > 页面渲染，脚本执行，事件处理等
+>> 页面渲染，脚本执行，事件处理等
 
-**浏览器多进程的优势**
+- **浏览器多进程的优势**
 
 - 避免单个 page crash 影响整个浏览器
   >
@@ -62,63 +62,63 @@ JavaScript 语言的一大特点就是单线程。JavaScript 的单线程，与�
   >
 - 方便使用沙盒模型隔离插件等进程，提高浏览器稳定性
 
-## 二。浏览器内核
+## 2.浏览器内核
 
 可以这样理解，页面的渲染，JS 的执行，事件的循环，都在渲染进程内进行。
 
-### 1. 渲染进程的线程
+### 2.1.渲染进程的线程
 
 > **GUI 渲染线程**
 >
-> > 负责渲染浏览器界面，解析 HTML，CSS，构建 DOM 树和 RenderObject 树，布局和绘制等。
-> >
-> > 当界面需要重绘（Repaint）或由于某种操作引发回流 (reflow) 时，该线程就会执行
-> >
-> > 注意，GUI 渲染线程与 JS 引擎线程是互斥的，当 JS 引擎执行时 GUI 线程会被挂起（相当于被冻结了），GUI 更新会被保存在一个队列中等到 JS 引擎空闲时立即被执行。
+>> 负责渲染浏览器界面，解析 HTML，CSS，构建 DOM 树和 RenderObject 树，布局和绘制等。
+>>
+>> 当界面需要重绘（Repaint）或由于某种操作引发回流 (reflow) 时，该线程就会执行。
+>>
+>> 注意，GUI 渲染线程与 JS 引擎线程是互斥的，当 JS 引擎执行时 GUI 线程会被挂起（相当于被冻结了），GUI 更新会被保存在一个队列中等到 JS 引擎空闲时立即被执行。
 
 ---
 
 > **JS 引擎线程**（也称为 JS 内核，负责处理 Javascript 脚本程序。例如 V8 引擎）
 >
-> > 负责解析 Javascript 脚本，运行代码。
-> >
-> > 一直等待着任务队列中任务的到来，然后加以处理，一个 Tab 页（renderer 进程）中无论什么时候都只有一个 JS 线程在运行 JS 程序
-> >
-> > 同样注意，GUI 渲染线程与 JS 引擎线程是互斥的，所以如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞。
+>> 负责解析 Javascript 脚本，运行代码。
+>>
+>> 一直等待着任务队列中任务的到来，然后加以处理，一个 Tab 页（renderer 进程）中无论什么时候都只有一个 JS 线程在运行 JS 程序
+>>
+>> 同样注意，GUI 渲染线程与 JS 引擎线程是互斥的，所以如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞。
 
 ---
 
 > **事件触发线程**
 >
-> > 归属于浏览器而不是 JS 引擎，用来控制事件循环
-> >
-> > 当 JS 引擎执行代码块如 setTimeOut 时（也可来自浏览器内核的其他线程，如鼠标点击、AJAX 异步请求等），会将对应任务添加到事件线程中
-> >
-> > 当对应的事件符合触发条件被触发时，该线程会把事件添加到待处理队列的队尾，等待 JS 引擎的处理
-> >
-> > 注意，由于 JS 的单线程关系，所以这些待处理队列中的事件都得排队等待 JS 引擎处理（当 JS 引擎空闲时才会去执行）
+>> 归属于浏览器而不是 JS 引擎，用来控制事件循环
+>>
+>> 当 JS 引擎执行代码块如 setTimeOut 时（也可来自浏览器内核的其他线程，如鼠标点击、AJAX 异步请求等），会将对应任务添加到事件线程中
+>>
+>> 当对应的事件符合触发条件被触发时，该线程会把事件添加到待处理队列的队尾，等待 JS 引擎的处理
+>>
+>> 注意，由于 JS 的单线程关系，所以这些待处理队列中的事件都得排队等待 JS 引擎处理（当 JS 引擎空闲时才会去执行）
 
 ---
 
 > **定时触发器线程**
 >
-> > 传说中的 setInterval 与 setTimeout 所在线程
-> >
-> > 浏览器定时计数器并不是由 JavaScript 引擎计数的，（因为 JavaScript 引擎是单线程的，如果处于阻塞线程状态就会影响记计时的准确）
-> >
-> > 因此通过单独线程来计时并触发定时（计时完毕后，添加到事件队列中，等待 JS 引擎空闲后执行）
-> >
-> > 注意，W3C 在 HTML 标准中规定，规定要求 setTimeout 中低于 4ms 的时间间隔算为 4ms。
+>> 传说中的 setInterval 与 setTimeout 所在线程
+>>
+>> 浏览器定时计数器并不是由 JavaScript 引擎计数的，（因为 JavaScript 引擎是单线程的，如果处于阻塞线程状态就会影响记计时的准确）
+>>
+>> 因此通过单独线程来计时并触发定时（计时完毕后，添加到事件队列中，等待 JS 引擎空闲后执行）
+>>
+>> 注意，W3C 在 HTML 标准中规定，规定要求 setTimeout 中低于 4ms 的时间间隔算为 4ms。
 
 ---
 
 > **异步 http 请求线程**
 >
-> > 在 XMLHttpRequest 在连接后是通过浏览器新开一个线程请求
-> >
-> > 将检测到状态变更时，如果设置有回调函数，异步线程就产生状态变更事件，将这个回调再放入事件队列中。再由 JavaScript 引擎执行。
+>> 在 `XMLHttpRequest` 在连接后是通过浏览器新开一个线程请求
+>>
+>> 将检测到状态变更时，如果设置有回调函数，异步线程就产生状态变更事件，将这个回调再放入事件队列中。再由 JavaScript 引擎执行。
 
-### 2.Browser 进程和 Renderer 进程的通信过程
+### 2.2.Browser 进程和 Renderer 进程的通信过程
 
 打开任务管理器，然后打开一个浏览器，就可以看到：任务管理器中出现了两个进程（一个是主控进程，一个则是打开 Tab 页的渲染进程）， 然后在这前提下，看下整个的过程：
 
@@ -126,23 +126,23 @@ JavaScript 语言的一大特点就是单线程。JavaScript 的单线程，与�
 >
 > 2.Renderer 进程的 Renderer 接口收到消息，简单解释后，交给 GUI 渲染线程，然后开始渲染
 >
-> > GUI 渲染线程接收请求，加载网页并渲染网页，这其中可能需要 Browser 进程获取资源和需要 GPU 进程来帮助渲染
-> >
-> > 当然可能会有 JS 线程操作 DOM（这样可能会造成回流并重绘）
-> >
-> > 最后 Render 进程将结果传递给 Browser 进程
+>> GUI 渲染线程接收请求，加载网页并渲染网页，这其中可能需要 Browser 进程获取资源和需要 GPU 进程来帮助渲染
+>>
+>> 当然可能会有 JS 线程操作 DOM（这样可能会造成回流并重绘）
+>>
+>> 最后 Render 进程将结果传递给 Browser 进程
 >
 > 3.Browser 进程接收到结果并将结果绘制出来
 
-### 3. 线程之间的关系
+### 2.3.线程之间的关系
 
-#### 3.1.GUI 渲染线程与 JS 引擎线程互斥
+#### 2.3.1.GUI 渲染线程与 JS 引擎线程互斥
 
 由于 JavaScript 是可操纵 DOM 的，如果在修改这些元素属性同时渲染界面（即 JS 线程和 UI 线程同时运行），那么渲染线程前后获得的元素数据就可能不一致了。
 
 因此为了防止渲染出现不可预期的结果，浏览器设置 GUI 渲染线程与 JS 引擎为互斥的关系，当 JS 引擎执行时 GUI 线程会被挂起， GUI 更新则会被保存在一个队列中等到 JS 引擎线程空闲时立即被执行。
 
-#### 3.2.JS 阻塞页面加载
+#### 2.3.2.JS 阻塞页面加载
 
 从上述的互斥关系，可以推导出，JS 如果执行时间过长就会阻塞页面。
 
@@ -150,7 +150,7 @@ JavaScript 语言的一大特点就是单线程。JavaScript 的单线程，与�
 
 所以，要尽量避免 JS 执行时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。
 
-#### 3.3.WebWorker
+#### 2.3.3.WebWorker
 
 前文中有提到 JS 引擎是单线程的，而且 JS 执行时间过长会阻塞页面，那么 JS 就真的对 cpu 密集型计算无能为力么？
 
@@ -176,7 +176,7 @@ MDN 的官方解释是：
 
 而且注意下，JS 引擎是单线程的，这一点的本质仍然未改变，Worker 可以理解是浏览器给 JS 引擎开的外挂，专门用来解决那些大量计算问题。
 
-#### 3.4.WebWorker 与 SharedWorker
+#### 2.3.4.WebWorker 与 SharedWorker
 
 - WebWorker 只属于某个页面，不会和其他页面的 Render 进程（浏览器内核进程）共享
   >
@@ -188,7 +188,7 @@ MDN 的官方解释是：
 
 SharedWorker 由独立的进程管理，WebWorker 只是属于 render 进程下的一个线程。本质上就是进程和线程的区别。
 
-## 三。任务队列
+## 3.任务队列
 
 一个 JavaScript 运行时包含了一个待处理的消息队列。每一个消息都关联着一个用以处理这个消息的函数。
 
@@ -196,23 +196,23 @@ SharedWorker 由独立的进程管理，WebWorker 只是属于 render 进程下�
 
 函数的处理会一直进行到执行栈再次为空为止；然后事件循环将会处理队列中的下一个消息（如果还有的话）。
 
-### 1. 概念
+### 3.1.概念
 
 任务可以分成两种，一种是**同步任务**（synchronous），另一种是**异步任务**（asynchronous）。同步任务指的是，在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；异步任务指的是，不进入主线程、而进入"**任务队列**"（task queue）的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。
 
 > 具体来说，JavaScript 运行环境的运行机制（不是 JavaScript 的运行机制）大体如下：
 >
-> > 1. 所有同步任务都在主线程上执行，形成一个**执行栈**（execution context stack）。
->
-> > 2. 主线程之外，还存在一个**事件 (/任务）队列**（Event queue）。只要异步任务有了运行结果，就在"事件队列"之中放置一个事件。
->
-> > 3. 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"事件队列"，进入执行栈，开始执行。
->
-> > 4. 主线程不断重复上面的第三步。
+>> 1.所有同步任务都在主线程上执行，形成一个**执行栈**（execution context stack）。
+>>
+>> 2.主线程之外，还存在一个**事件 (/任务）队列**（Event queue）。只要异步任务有了运行结果，就在"事件队列"之中放置一个事件。
+>>
+>> 3.一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"事件队列"，进入执行栈，开始执行。
+>>
+>> 4.主线程不断重复上面的第三步。
 
 ![event-loop](https://dailc.github.io/staticResource/blog/basicKnowledge/singlethreadeventloop/js_event_loop2.png)
 
-### 2. 事件和回调函数
+### 3.2.事件和回调函数
 
 ~~"任务队列"中的事件，除了 IO 设备的事件以外，还包括一些用户产生的事件（比如鼠标点击、页面滚动等等）。只要指定过回调函数，这些事件发生时就会进入"任务队列"，等待主线程读取。~~
 
@@ -226,7 +226,7 @@ SharedWorker 由独立的进程管理，WebWorker 只是属于 render 进程下�
 
 先产生的事件，先被处理。永远在主线程上，没有返回主线程之说。某些事件也不是必须要在规定的时间执行，有时候没办法在规定的时间执行。
 
-### 3. 浏览器的 Event Loop
+### 3.3.浏览器的 Event Loop
 
 ~~主线程从"任务队列"中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为** Event Loop**（事件循环）。~~
 
@@ -236,7 +236,7 @@ SharedWorker 由独立的进程管理，WebWorker 只是属于 render 进程下�
 
 即如果某个事件绑定了两个处理器，那么第二个处理器会在第一个处理器执行完毕后，才开始执行。在这个事件的所有处理器都执行完毕之前，事件循环不会去检查是否有新的事件触发。在单个线程中，一切都是有顺序地一个一个地执行的！
 
-事件驱动的的实现过程主要靠**事件循环**（Event Loop）完成。进程启动后就进入主循环。主循环的过程就是不停的从事件队列里读取事件。如果事件有关联的 handle（也就是注册的 callback)，就执行 handle。一个事件并不一定有 callback。
+事件驱动的的实现过程主要靠 **事件循环**（Event Loop）完成。进程启动后就进入主循环。主循环的过程就是不停的从事件队列里读取事件。如果事件有关联的 handle（也就是注册的 callback)，就执行 handle。一个事件并不一定有 callback。
 
 ![https://img-blog.csdn.net/20160922091924733](https://img-blog.csdn.net/20160922091924733)
 
@@ -277,11 +277,11 @@ console.log("代码执行结束");
 // 定时器开始啦
 ```
 
-**多个运行时互相通信节**
+- **多个运行时互相通信节**
 
 一个 web worker 或者一个跨域的 iframe 都有自己的栈，堆和消息队列。两个不同的运行时只能通过 postMessage 方法进行通信。如果另一个运行时侦听 message 事件，则此方法会向该运行时添加消息。
 
-### 4. 任务
+### 3.4.任务
 
 不同的任务源会被分配到不同的 Task 队列中，任务源可以分为 **微任务**（microtask） 和 **宏任务**（macrotask）。在 ES6 规范中，microtask 称为 **jobs**，macrotask 称为 **task**。
 
@@ -322,7 +322,7 @@ console.log("代码执行结束");
 
 > 定时器并不是特例。到达时间点后，会形成一个事件（timeout 事件）。不同的是一般事件是靠底层系统或者线程池之类的产生事件，但定时器事件是靠事件循环不停检查系统时间来判定是否到达时间点来产生事件
 
-#### 4.1.microtask 的执行时机
+#### 3.4.1.microtask 的执行时机
 
 Tasks 被列入队列，于是浏览器能从它的内部转移到 Javascript/DOM 领地，并且确使这些 tasks 按序执行。**在 tasks 之间，浏览器可以更新渲染**。
 
@@ -397,7 +397,7 @@ outer.addEventListener("click", onClick);
 
 `click()` 让事件同步触发，所以调用 `.click()` 的代码仍然在事件回调之间的栈内。microtasks 不会中断执行当中的（mid-execution）代码。这意味着 microtasks 队列在事件回调之间不处理，而是在它们之后处理。
 
-#### 4.2.requestAnimationFrame
+#### 3.4.2.requestAnimationFrame
 
 在一些文章中将 requestAnimationFrame 划分为 task，理由是假如你在 requestAnimationFrame 的 callback 中注册了 microtask 任务，你会发现该 microtask 任务会在 requestAnimationFrame 的 callback 结束后立刻执行。
 
@@ -423,7 +423,7 @@ requestAnimationFrame(() => {
 
 > 起初我认为规范明摆着表明 eventloop 由执行 task、执行 microtask、UI render 三部分构成，从属于 render 阶段的 requestAnimationFrame 说是 task 怎么不大合适。但是多检索了一下，发现 W3C 工作组在 2015 年 9 月 22 日的一篇工作笔记《Timing control for script-based animations》 中提到了 animation task source 这一概念，在该文中，确实将 animation frame request callback list 中的 callback 作为 task 处理。另外，在 zone.js 中也将 requestAnimationFrame 划进 macrotask 分类中。但 whatwg 规范中对 requestAnimationFrame callback 未明确出现任何 task 相关字眼，由于 whatwg 和 w3c 的分歧，我对 requestAnimationFrame 是否该划分为 task 存保留意见。
 
-#### 4.3.requestAnimationFrame callback 的执行时机
+#### 3.4.3.requestAnimationFrame callback 的执行时机
 
 执行 requestAnimationFrame callback 是 UI Render 的其中一步。
 
@@ -467,18 +467,18 @@ function block(time) {
 
 > 总结：
 >
-> > tasks 按序执行，浏览器会在 tasks 之间执行渲染。
+> tasks 按序执行，浏览器会在 tasks 之间执行渲染。
 >
-> > microtasks 按序执行，在下面情况时执行：
-> >
-> > > 在每个回调之后，只要没有其它代码正在运行 (mid-execution)。
-> > > 在每个 task 的末尾。
+> microtasks 按序执行，在下面情况时执行：
+>
+>> 1.在每个回调之后，只要没有其它代码正在运行 (mid-execution)。
+>> 2.在每个 task 的末尾。
 
-## 四。Node.js 的 Event Loop
+## 4.Node.js 的 Event Loop
 
 事件循环是 Node.js 处理非阻塞 I/O 操作的机制——尽管 JavaScript 是单线程处理的——当有可能的时候，它们会把操作转移到系统内核中去。
 
-### 1. 事件轮询机制解析
+### 4.1.事件轮询机制解析
 
 An event loop must continually run through the following steps for as long as it exists:
 
@@ -507,19 +507,19 @@ An event loop must continually run through the following steps for as long as it
 
 当 Node.js 启动后，它会初始化事件轮询；处理已提供的输入脚本（或丢入 REPL，本文不涉及到），它可能会调用一些异步的 API 函数调用，安排任务处理事件，或者调用 `process.nextTick()`，然后开始处理事件循环。
 
-**阶段 (phase) 概述**
-
-- timers：执行 `setTimeout()` 和 `setInterval()` 中到期的 callback。
+- **阶段 (phase) 概述**
   >
-- I/O callbacks：上一轮循环中有少数的 I/O callback 会被延迟到这一轮的这一阶段执行。
+  - timers：执行 `setTimeout()` 和 `setInterval()` 中到期的 callback。
   >
-- idle, prepare：仅系统内部使用
+  - I/O callbacks：上一轮循环中有少数的 I/O callback 会被延迟到这一轮的这一阶段执行。
   >
-- poll：最为重要的阶段，执行 I/O callback，在适当的条件下会阻塞在这个阶段
+  - idle, prepare：仅系统内部使用
   >
-- check：执行 `setImmediate()` 的 callback。
+  - poll：最为重要的阶段，执行 I/O callback，在适当的条件下会阻塞在这个阶段
   >
-- close callbacks：执行 close 事件的 callback，如：`socket.on('close', ...)`。
+  - check：执行 `setImmediate()` 的 callback。
+  >
+  - close callbacks：执行 close 事件的 callback，如：`socket.on('close', ...)`。
 
 event loop 的每一次循环都需要依次经过上述的阶段。每个阶段都有自己的 callback 队列，每当进入某个阶段，都会从所属的队列中取出 callback 来执行，当队列为空或者被执行 callback 的数量达到系统的最大数量时，进入下一阶段。这六个阶段都执行完毕称为一轮循环。
 
@@ -548,17 +548,17 @@ event loop 的每一次循环都需要依次经过上述的阶段。每个阶段
 
 由于这些操作中的任何一个都可能计划 更多的 操作，并且在 轮询 阶段处理的新事件由内核排队，因此在处理轮询事件时，轮询事件可以排队。因此，长时间运行回调可以允许轮询阶段运行大量长于计时器的阈值。
 
-### 2. 阶段的详细概述
+### 4.2.阶段的详细概述
 
-#### 2.1.timers
+#### 4.2.1.timers
 
 在 timer 阶段其实使用一个最小堆而不是队列来保存所有元素（其实也可以理解，因为 timeout 的 callback 是按照超时时间的顺序来调用的，并不是先进先出的队列逻辑），然后循环取出所有到期的 callback 执行。
 
-#### 2.2.I/O callbacks
+#### 4.2.2.I/O callbacks
 
 根据 libuv 的文档，一些应该在上轮循环 poll 阶段执行的 callback，因为某些原因不能执行，就会被延迟到这一轮的循环的 I/O callbacks 阶段执行。换句话说这个阶段执行的 callbacks 是上轮残留的。
 
-#### 2.3.poll
+#### 4.2.3.poll
 
 poll 阶段的任务就是阻塞等待监听的事件来临，然后执行对应的 callback，其中阻塞是带有超时时间的，以下几种情况都会使得超时时间为 0
 
@@ -591,7 +591,7 @@ poll 阶段有两个重要的功能：
 
 一旦 poll 队列为空，事件循环将检查 已达到时间阈值的计时器。如果一个或多个计时器已准备就绪，则事件循环将绕回计时器阶段以执行这些计时器的回调。
 
-#### 2.4.check
+#### 4.2.4.check
 
 此阶段允许人员在轮询阶段完成后立即执行回调。如果轮询阶段变为空闲状态，并且脚本已排队使用 `setImmediate()`，则事件循环可能继续到 检查 阶段而不是等待。
 
@@ -599,11 +599,11 @@ poll 阶段有两个重要的功能：
 
 通常，在执行代码时，事件循环最终会命中轮询阶段，等待传入连接、请求等。但是，如果回调已计划为 `setImmediate()`，并且轮询阶段变为空闲状态，则它将结束并继续到检查阶段而不是等待轮询事件。
 
-#### 2.5.close callbacks
+#### 4.2.5.close callbacks
 
 如果套接字或处理函数突然关闭（例如 `socket.destroy()`），则 'close' 事件将在这个阶段发出。否则它将通过 `process.nextTick()` 发出。
 
-### 3.setImmediate() 对比 setTimeout()
+### 4.3.`setImmediate()` 对比 `setTimeout()`
 
 `setImmediate()` 和 `setTimeout()` 很类似，但何时调用行为完全不同。
 
@@ -651,7 +651,7 @@ fs.readFile(__filename, () => {
 
 使用 `setImmediate()` 超过 `setTimeout()` 的主要优点是 `setImmediate()` 在任何计时器（如果在 I/O 周期内）都将始终执行，而不依赖于存在多少个计时器。
 
-### 4.process.nextTick()
+### 4.4.`process.nextTick()`
 
 `process.nextTick()` 在技术上不是事件循环的一部分。相反，无论事件循环的当前阶段如何，都将在当前操作完成后处理 nextTickQueue。这里的一个操作被视作为一个从 C++ 底层处理开始过渡，并且处理需要执行的 JavaScript 代码。
 
@@ -673,7 +673,7 @@ someAsyncApiCall(() => {
 bar = 1;
 ```
 
-#### 4.1.process.nextTick() 对比 setImmediate()
+#### 4.4.1.`process.nextTick()` 对比 `setImmediate()`
 
 就用户而言我们有两个类似的调用，但它们的名称令人费解。
 
@@ -684,7 +684,7 @@ bar = 1;
 
 > 我们建议开发人员在所有情况下都使用 `setImmediate()`，因为它更容易被推理（并且它导致代码与更广泛的环境，如浏览器 JS 所兼容。）
 
-#### 4.2. 为什么要使用 process.nextTick()
+#### 4.4.2.为什么要使用 `process.nextTick()`
 
 主要有两个原因：
 
@@ -692,7 +692,7 @@ bar = 1;
    >
 2. 有时在调用堆栈已解除但在事件循环继续之前，必须允许回调运行。
 
-### 5. 轮询机制在浏览器和 Node 中的区别
+### 4.5.轮询机制在浏览器和 Node 中的区别
 
 浏览器和 Node 环境下，microtask 任务队列的执行时机不同
 
@@ -703,7 +703,9 @@ bar = 1;
 >
 > 事实上，不是所有的事件都放置在一个队列里。不同的事件，放置在不同的队列。当我们没有使用定时器时，则完全不用关心定时器事件这个队列。当我们进行定时器调用时，首先会设置一个定时器 watcher。事件循环的过程中，会去调用该 watcher，检查它的事件队列上是否产生事件（比对时间的方式）。当我们进行磁盘 IO 的时候，则首先设置一个 io watcher，磁盘 IO 完成后，会在该 io watcher 的事件队列上添加一个事件。事件循环的过程中从该 watcher 上处理事件。处理完已有的事件后，处理下一个 watcher。检查完所有 watcher 后，进入下一轮检查，对某类事件不关心时，则没有相关 watcher。
 
-## 参考：
+---
+
+参考：
 
 [Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
 
