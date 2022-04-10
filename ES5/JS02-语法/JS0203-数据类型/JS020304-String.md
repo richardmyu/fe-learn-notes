@@ -4,8 +4,6 @@
 
 ## 1.`length` 属性
 
-1).string.length
-
 `string.length` 属性是一个只读的整数，指明指定字符串中的字符个数。字符串的 `length` 属性不会在 `for-in` 循环中枚举，也不可用通过 `delete` 操作符删除。
 
 ```js
@@ -28,7 +26,7 @@ str.length;
 
 > 任何字符串的长度都可以通过访问其 `length` 属性取得。如果字符中包含双字节字符，那么 `length` 属性可能不会精确返回字符数目。
 
-## 2. 字符字面量
+## 2.字符字面量
 
 `String` 类型用于表示由零个或多个 16 位 `Unicode` 字符组成的字符序列，即字符串。如果要在单引号字符串的内部，使用单引号，就必须在内部的单引号前面加上反斜杠，用来转义。
 
@@ -120,9 +118,9 @@ str; //a b c
 "a"; //a
 ```
 
-## 3. 字符串的特点
+## 3.字符串的特点
 
-ECMAScript 中的字符串是不可变的，也就是说，字符一旦创建，他们的值就不可能改变。
+ECMAScript 中的字符串是 *不可变* 的，也就是说，字符一旦创建，他们的值就不可能改变。
 
 要改变某个变量保存的字符串，首先销毁原来的字符串，然后再引用包含新值的字符串填充该变量。这个过程是在后台发生的，而这也是在某些旧版本浏览器（低于 1.0 的 Firefox、IE6 等）中拼接字符串时速度很慢的原因。
 
@@ -132,7 +130,7 @@ str[0] = "b";
 str; //'asdf'
 ```
 
-## 4. 转换为字符串
+## 4.转换为字符串
 
 要把一个值转换为一个字符串有两种方式。第一种是使用几乎每个值都有的 `toString` 方法，这个方法唯一要做的就是返回相应值的字符串表现。
 
@@ -144,7 +142,7 @@ str; //'asdf'
 
 > 要把某个值转换为字符串，可以使用加号操作符把它与一个字符串加在一起。
 
-- **`toString`**
+- **1.`toString`**
 
 ```js
 var num = 123;
@@ -173,15 +171,13 @@ num.toString("16"); //7b
 true.toString(); //'true'
 ```
 
-`String` 函数遵循以下转换规则：
+- **2.`String`**
 
----
+`String` 函数遵循以下转换规则：
 
 - 如果值有 `toString` 方法，则调用该方法并返回相应的结果；
 - 如果值是 `null`，则返回 `null`；
 - 如果值是 `undefined`，则返回 `undefined`；
-
----
 
 ```js
 String({ name: "hh" }); //[object Object]
@@ -201,56 +197,3 @@ String(true); //'true'
 > 2.`toString` 对数值类型参数，可以选择传入一个 2 - 36 之间的数作为基数，输出其对应进制数；
 >
 > 3.`null` 和 `undefined` 不具有 `toString` 方法，会调用 `String` 方法；
-
-更多 demo 见 <a href="./demo/string.html" target="_blank">string.html</a>
-
-## 5. 字符集
-
-JavaScript 使用 Unicode 字符集。JavaScript 引擎内部，所有字符都用 Unicode 表示。
-
-JavaScript 不仅以 Unicode 储存字符，还允许直接在程序中使用 Unicode 码点表示字符，即将字符写成 `\uxxxx` 的形式，其中 `xxxx` 代表该字符的 Unicode 码点。
-
-解析代码的时候，JavaScript 会自动识别一个字符是字面形式表示，还是 `Unicode` 形式表示。输出给用户的时候，所有字符都会转成字面形式。
-
-每个字符在 JavaScript 内部都是以 16 位（即 2 个字节）的 UTF-16 格式储存。也就是说，JavaScript 的单位字符长度固定为 16 位长度，即 2 个字节。
-
-但是，UTF-16 有两种长度：对于码点在 `U+0000` 到 `U+FFFF` 之间的字符，也称为基本平面（缩写 BMP），长度为 16 位（即 2 个字节）；对于码点在 `U+10000` 到 `U+10FFFF` 之间的字符，辅助平面（缩写 SMP），长度为 32 位（即 4 个字节），而且前两个字节在 `0xD800` 到 `0xDBFF` 之间，后两个字节在 `0xDC00` 到 `0xDFFF` 之间。
-
-JavaScript 对 `UTF-16` 的支持是不完整的，由于历史原因，只支持两字节的字符，不支持四字节的字符。这是因为 JavaScript 第一版发布的时候，Unicode 的码点只编到 `U+FFFF`，因此两字节足够表示了。后来，Unicode 纳入的字符越来越多，出现了四字节的编码。但是，JavaScript 的标准此时已经定型了，统一将字符长度限制在两字节，导致无法识别四字节的字符。
-
-总结一下，对于码点在 `U+10000` 到 `U+10FFFF` 之间的字符，JavaScript 总是认为它们是两个字符（`length` 属性为 2）。所以处理的时候，必须把这一点考虑在内，也就是说，JavaScript 返回的字符串长度可能是不正确的。
-
-```js
-var str1 = "\u1234\u1235";
-var str2 = "\u22234\u22235";
-str1, str1.length; //ሴስ 2
-str2, str2.length; //∣4∣5 4
-```
-
-## 6.Base64 转码
-
-有时，文本里面包含一些不可打印的符号，比如 ASCII 码 0 到 31 的符号都无法打印出来，这时可以使用 Base64 编码，将它们转成可以打印的字符。另一个场景是，有时需要以文本格式传递二进制数据，那么也可以使用 Base64 编码。
-
-所谓 Base64 就是一种**编码方法**，可以将任意值转成 `0～9、A～Z、a-z、+` 和 `/` 这 64 个字符组成的可打印字符。使用它的主要目的，不是为了加密，而是 **为了不出现特殊字符**，简化程序的处理。
-
-JavaScript 原生提供两个 Base64 相关的方法。
-
-- `btoa()`：任意值转为 Base64 编码
-- `atob()`：Base64 编码转为原来的值
-
-```js
-btoa("i mess you"); //aSBtZXNzIHlvdQ==
-atob("aSBtZXNzIHlvdQ=="); //i mess you
-```
-
-> 注意，这两个方法不适合非 ASCII 码的字符，会报错。
-
-要将非 ASCII 码字符转为 Base64 编码，必须中间插入一个转码环节，再使用这两个方法。
-
-```js
-btoa(encodeURIComponent("分分合合"));
-// "JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"
-
-decodeURIComponent(atob("JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"));
-// 分分合合
-```
