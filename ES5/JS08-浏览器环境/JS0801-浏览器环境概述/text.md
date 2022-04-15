@@ -50,17 +50,17 @@ document.getElementById("myData").text;
 
 ### 1.2.`script` 标签：加载外部脚本
 
-`<script>` 标签也可以指定加载外部的脚本文件。
+`<script>` 标签也可以指定加载外部的脚本文件：
 
 `<script src="example.js"></script>`
 
-如果脚本文件使用了非英语字符，还应该注明编码。
+如果脚本文件使用了非英语字符，还应该注明编码：
 
 `<script charset="utf-8" src="example.js"></script>`
 
 所加载的脚本必须是纯的 JavaScript 代码，不能有 HTML 代码和 `<script>` 标签。
 
-加载外部脚本和直接添加代码块，这两种方法不能混用。下面代码的 `console.log` 语句直接被忽略。
+加载外部脚本和直接添加代码块，这两种方法不能混用。下面代码的 `console.log` 语句直接被忽略：
 
 ```html
 <script charset="utf-8" src="example.js">
@@ -68,7 +68,7 @@ document.getElementById("myData").text;
 </script>
 ```
 
-为了防止攻击者篡改外部脚本，`script` 标签允许设置一个 `integrity` 属性，写入该外部脚本的 `Hash` 签名，用来验证脚本的一致性。
+为了防止攻击者篡改外部脚本，`script` 标签允许设置一个 `integrity` 属性，写入该外部脚本的 `Hash` 签名，用来验证脚本的一致性：
 
 ```html
 <script
@@ -89,19 +89,19 @@ document.getElementById("myData").text;
 
 ### 1.4.URL 协议
 
-URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript 代码。
+URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript 代码：
 
 `<a href="javascript:alert('Hello')"></a>`
 
 浏览器的地址栏也可以执行 `javascript:` 协议。将 `javascript:alert('Hello')` 放入地址栏，按回车键，就会跳出提示框。
 
-如果 JavaScript 代码返回一个字符串，浏览器就会新建一个文档，展示这个字符串的内容，原有文档的内容都会消失。
+如果 JavaScript 代码返回一个字符串，浏览器就会新建一个文档，展示这个字符串的内容，原有文档的内容都会消失：
 
 `<a href="javascript:new Date().toLocaleTimeString();">What time is it?</a>`
 
 上面代码中，用户点击链接以后，会打开一个新文档，里面有当前时间。
 
-如果返回的不是字符串，那么浏览器不会新建文档，也不会跳转。
+如果返回的不是字符串，那么浏览器不会新建文档，也不会跳转：
 
 ```html
 <a href="javascript:console.log(new Date().toLocaleTimeString())">
@@ -135,7 +135,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 将脚本文件都放在网页尾部加载，还有一个好处。在 DOM 结构生成之前就调用 DOM，JavaScript 会报错，如果脚本都在网页尾部加载，就不存在这个问题，因为这时 DOM 肯定已经生成了。
 
-还有一种解决方法是设定 `DOMContentLoaded` 事件的回调函数。
+还有一种解决方法是设定 `DOMContentLoaded` 事件的回调函数：
 
 ```html
 <head>
@@ -293,15 +293,15 @@ function loadScript(src, done) {
 
 ### 2.5.加载使用的协议
 
-如果不指定协议，浏览器默认采用 HTTP 协议下载。
+如果不指定协议，浏览器默认采用 HTTP 协议下载：
 
 `<script src="example.js"></script>`
 
-上面的 `example.js` 默认就是采用 HTTP 协议下载，如果要采用 HTTPS 协议下载，必需写明（假定服务器支持）。
+上面的 `example.js` 默认就是采用 HTTP 协议下载，如果要采用 HTTPS 协议下载，必需写明（假定服务器支持）：
 
 `<script src="https://example.js"></script>`
 
-但是有时我们会希望，根据页面本身的协议来决定加载协议，这时可以采用下面的写法。
+但是有时我们会希望，根据页面本身的协议来决定加载协议，这时可以采用下面的写法：
 
 `<script src="//example.js"></script>`
 
