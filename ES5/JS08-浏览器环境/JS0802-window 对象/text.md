@@ -2,9 +2,7 @@
 
 ## 1.概述
 
-在浏览器中，`window` 对象指当前的浏览器窗口。它也是所有对象的顶层对象。
-
-“顶层对象”指的是最高一层的对象，所有其他对象都是它的下属。JavaScript 规定，浏览器环境的所有全局变量，都是 `window` 对象的属性。
+在浏览器中，`window` 对象指当前的浏览器窗口。它也是所有对象的顶层对象。“顶层对象”指的是最高一层的对象，所有其他对象都是它的下属。JavaScript 规定，浏览器环境的所有全局变量，都是 `window` 对象的属性。
 
 ```js
 var a = 1;
@@ -17,7 +15,7 @@ window.a; // 1
 
 ## 2.window 对象的属性
 
-### 2.1.`window.window`，`window.name`
+### 2.1.`window.window` 和 `window.name`
 
 `window` 对象的 `window` 属性指向自身。
 
@@ -39,9 +37,14 @@ console.log(window.name);
 
 `window.location` 返回一个 `location` 对象，用于获取窗口当前的 URL 信息。它等同于 `document.location` 对象。
 
-`window.location === document.location // true`
+```js
+console.log(window.location);
+// Location {ancestorOrigins: DOMStringList, href: 'https://mail.qq.com/cgi-bin/frame_html?sid=I64y85tkpdGKmBJw&r=67426be7a7c186674e5206673f7cca61', origin: 'https://mail.qq.com', protocol: 'https:', host: 'mail.qq.com', …}
 
-### 2.3.`window.closed`，`window.opener`
+window.location === document.location // true
+```
+
+### 2.3.`window.closed` 和 `window.opener`
 
 `window.closed` 属性返回一个布尔值，表示窗口是否关闭。
 
@@ -115,7 +118,7 @@ if (popup !== null && !popup.closed) {
 
 下面是 Chrome 浏览器的 `userAgent`。
 
-```js
+```sh
 navigator.userAgent;
 // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
 ```
