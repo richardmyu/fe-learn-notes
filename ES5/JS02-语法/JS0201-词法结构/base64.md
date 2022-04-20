@@ -160,8 +160,6 @@ decodeURIComponent(atob("JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"));
 // 分分合合
 ```
 
-## 5.`encodeURIComponent` 和 `decodeURIComponent`
-
 ---
 
 参考：
@@ -173,5 +171,3 @@ decodeURIComponent(atob("JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"));
 5.[Data URLs](https://developer.mozilla.org/zh-CN/docs/web/http/basics_of_http/data_uris)
 6.[UTF-7编码](https://www.jianshu.com/p/f599a4f289e7)
 7.[UTF-7](https://datatracker.ietf.org/doc/html/rfc2152)
-8.[encodeURIComponent()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
-9.[decodeURIComponent()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
