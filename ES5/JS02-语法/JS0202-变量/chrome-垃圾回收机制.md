@@ -113,11 +113,11 @@ V8 中的垃圾收集器（Garbage Collector），它的工作是：跟踪内存
 
 ### 2.1. 新生代空间与 Minor GC
 
-由于新空间中的垃圾回收很频繁，因此它的处理方式必须非常的快，采用的 Scavenge 算法。
+由于新空间中的垃圾回收很频繁，因此它的处理方式必须非常的快，在分代的基础上，新生代中的对象主要通过 Scavenge 算法进行垃圾回收。
 
 > **Scavenge 算法**
->> 由 C.J. Cheney 在 1970 年在论文 [A nonrecursive list compacting algorithm](https://dl.acm.org/citation.cfm?doid=362790.362798) 提出。Scavenge 是一种复制算法，新生代空间会被一分为二划分成两个相等大小的 from-space 和 to-space。它的工作方式是将 from space 中存活的对象复制出来，然后移动它们到 to space 中或者被提升到老生代空间中，对于 from space 中没有存活的对象将会被释放。完成这些复制后在将 from space 和 to space 进行互换。
-> Scavenge 算法非常快适合少量内存的垃圾回收，但是它有很大的空间开销，对于新生代少量内存是可以接受的。
+>> 在 Scavenge 的具体实现中，主要采用了 Cheney 算法。Cheney 算法由 C.J. Cheney 在 1970 年在论文 [A nonrecursive list compacting algorithm](https://dl.acm.org/citation.cfm?doid=362790.362798) 提出。Scavenge 是一种复制算法，新生代空间会被一分为二划分成两个相等大小的 from-space 和 to-space。它的工作方式是将 from space 中存活的对象复制出来，然后移动它们到 to space 中或者被提升到老生代空间中，对于 from space 中没有存活的对象将会被释放。完成这些复制后在将 from space 和 to space 进行互换。
+> Scavenge 算法非常快适合少量内存的垃圾回收，但是它有很大的空间开销，对于新生代少量内存是可以接受的。Scavenge 是典型的牺牲空间换取时间的算法，无法大规模地应用到所有的垃圾回收中，但非常适合应用在新生代中。
 
 ![https://github.com/qufei1993/Nodejs-Roadmap/blob/master/docs/nodejs/img/scavenge.png?raw=true](https://github.com/qufei1993/Nodejs-Roadmap/blob/master/docs/nodejs/img/scavenge.png?raw=true)
 
@@ -134,8 +134,8 @@ Minor GC 是针对新生区进行垃圾回收。Minor GC 的总体思路：（�
 
 新生代空间在垃圾回收满足一定条件（是否经历过 Scavenge 回收、to space 的内存占比）会被晋升到老生代空间中，在老生代空间中的对象都已经至少经历过一次或者多次的回收所以它们的存活概率会更大。在使用 Scavenge 算法则会有两大缺点：
 
-- 一是将会重复的复制存活对象使得效率低下；
-- 二是对于空间资源的浪费；
+- 将会重复的复制存活对象使得效率低下；
+- 对于空间资源的浪费；
 
 所以在老生代空间中采用了 Mark-Sweep（标记清除） 和 Mark-Compact（标记整理） 算法，思路为：
 
@@ -143,21 +143,42 @@ Minor GC 是针对新生区进行垃圾回收。Minor GC 的总体思路：（�
 - **清除**（Sweeping）：垃圾收集器遍历堆并记下未标记为活动的对象的内存地址。现在，该空间在空闲列表中被标记为空闲，可用于存储其他对象；
 - **压缩**（Compacting）：将所有存活的对象移到一起，以减少碎片化，并提高为新对象分配内存的性能；
 
-#### 2.2.1.Mark-Sweep
+#### 2.2.1. 晋升
 
-Mark-Sweep 处理时分为标记、清除两个步骤，与 Scavenge 算法只复制存活对象相反的是，在老生代空间中由于存活对象占多数，Mark-Sweep 在标记阶段遍历堆中的所有对象，仅标记存活对象，把未标记的死对象清除，这时一次标记清除就已经完成了。
+对象从新生代中移动到老生代中的过程称为 **晋升**。
+
+from-space 空间中的存活对象在复制到 to-space 空间之前需要进行检查，在一定条件下，需要将存活周期长的对象移动到老生代中，也就是完成对象的晋升。
+
+晋升条件主要有两个：
+
+- 对象是否经历过一次 Scavenge 回收
+- to-space 空间已经使用超过 25%
+
+设置 25% 这个限制值得原因是当这次 Scavenge 回收完成后，这个 to-space 空间将变成 from-space 空间，接下来的内存分配将在这个空间中进行，如果占比过高，会影响后续的内存分配。
+
+#### 2.2.2.Mark-Sweep
+
+Mark-Sweep 处理时分为 *标记*、*清除* 两个步骤，与 Scavenge 算法只复制存活对象相反的是，在老生代空间中由于存活对象占多数，Mark-Sweep 在标记阶段遍历堆中的所有对象，仅标记存活对象，把未标记的死对象清除，这时一次标记清除就已经完成了。
 
 ![https://github.com/qufei1993/Nodejs-Roadmap/blob/master/docs/nodejs/img/mark-sweep.png?raw=true](https://github.com/qufei1993/Nodejs-Roadmap/blob/master/docs/nodejs/img/mark-sweep.png?raw=true)
 
-但是还遗留一个问题，被清除的对象遍布于各内存地址，产生很多内存碎片。
+Mark-Sweep 最大的问题是在进行一次标记清除回收后，内存空间会出现不连续的状态。这种内存碎片会对后续的内存分配造成问题，因为很可能出现需要分配一个大对象的情况，这时所有的碎片空间都无法完成此次分配，就会提前触发垃圾回收，而这次回收是不必要的。
 
-#### 2.2.2.Mark-Compact
+#### 2.2.3.Mark-Compact
 
 在老生代空间中为了解决 Mark-Sweep 算法的内存碎片问题，引入了 Mark-Compact（标记整理算法），其在工作过程中将活着的对象往一端移动，这时内存空间是紧凑的，移动完成之后，直接清理边界之外的内存。
 
 ![https://github.com/qufei1993/Nodejs-Roadmap/blob/master/docs/nodejs/img/mark-compact.png?raw=true](https://github.com/qufei1993/Nodejs-Roadmap/blob/master/docs/nodejs/img/mark-compact.png?raw=true)
 
-#### 2.2.3.Stop-The-World
+3 中主要垃圾回收算法的简单对比：
+
+| 回收算法     | Mark-Sweep   | Mark-Compact | Scavenge           |
+| ------------ | ------------ | ------------ | ------------------ |
+| 速度         | 中等         | 最慢         | 最快               |
+| 空间开销     | 少（有碎片） | 少（无碎片） | 双倍空间（无碎片） |
+| 是否移动对象 | 否           | 是           | 否                 |
+
+#### 2.2.4.Stop-The-World
 
 由于垃圾回收是在 JavaScript 引擎中进行的，而 Mark-Compact 算法在执行过程中需要移动对象，而当活动对象较多的时候，它的执行速度不可能很快，为了避免 JavaScript 应用逻辑和垃圾回收器的内存资源竞争导致的不一致性问题，垃圾回收器会将 JavaScript 应用暂停，这个过程，被称为 **全停顿**（stop-the-world）。
 
@@ -165,11 +186,15 @@ Mark-Sweep 处理时分为标记、清除两个步骤，与 Scavenge 算法只�
 
 ### 2.3.Orinoco
 
-orinoco 为 V8 的垃圾回收器的项目代号，为了提升用户体验，解决全停顿问题，它利用了增量标记、懒性清理、并发、并行来降低主线程挂起的时间。
+> orinoco 为 V8 的垃圾回收器的项目代号，为了提升用户体验，解决全停顿问题，它利用了增量标记、懒性清理、并发、并行来降低主线程挂起的时间。
+
+为了降低全堆垃圾回收带来的停顿时间，V8 先从标记阶段入手，将原本要一口气停顿完成的动作改成增量标记，也就是拆分为许多小“步进”，每做完一“步进”就让 JavaScript 应用逻辑执行一小会儿，垃圾回收和应用逻辑交替执行直到标记阶段完成。
 
 #### 2.3.1.Incremental marking
 
 为了降低全堆垃圾回收的停顿时间，**增量标记**（Incremental marking）将原本的标记全堆对象拆分为一个一个任务，让其穿插在 JavaScript 应用逻辑之间执行，它允许堆的标记时的 5~10ms 的停顿。增量标记在堆的大小达到一定的阈值时启用，启用之后每当一定量的内存分配后，脚本的执行就会停顿并进行一次增量标记。
+
+> V8 在经过增量标记的改进后，垃圾回收的最大停顿时间可以减少到原本的 1/6 左右。
 
 #### 2.3.2.Lazy sweeping
 
@@ -190,11 +215,11 @@ orinoco 为 V8 的垃圾回收器的项目代号，为了提升用户体验，�
 
 ### 2.4.V8 当前垃圾回收机制
 
-2011 年，V8 应用了增量标记机制。直至 2018 年，Chrome64 和 Node.js V10 启动并发标记（Concurrent），同时在并发的基础上添加并行（Parallel）技术，使得垃圾回收时间大幅度缩短。
+2011 年，V8 应用了增量标记机制。直至 2018 年，Chrome64 和 Node.js V10 启动并发标记，同时在并发的基础上添加并行技术，使得垃圾回收时间大幅度缩短。
 
 #### 2.4.1. 副垃圾回收器
 
-V8 在新生代垃圾回收中，使用并行（parallel）机制，在整理排序阶段，也就是将活动对象从 from-to 复制到 space-to 的时候，启用多个辅助线程，并行的进行整理。由于多个线程竞争一个新生代的堆的内存资源，可能出现有某个活动对象被多个线程进行复制操作的问题，为了解决这个问题，V8 在第一个线程对活动对象进行复制并且复制完成后，都必须去维护复制这个活动对象后的指针转发地址，以便于其他协助线程可以找到该活动对象后可以判断该活动对象是否已被复制。
+V8 在新生代垃圾回收中，使用并行机制，在整理排序阶段，也就是将活动对象从 from-to 复制到 space-to 的时候，启用多个辅助线程，并行的进行整理。由于多个线程竞争一个新生代的堆的内存资源，可能出现有某个活动对象被多个线程进行复制操作的问题，为了解决这个问题，V8 在第一个线程对活动对象进行复制并且复制完成后，都必须去维护复制这个活动对象后的指针转发地址，以便于其他协助线程可以找到该活动对象后可以判断该活动对象是否已被复制。
 
 #### 2.4.2. 主垃圾回收器
 
@@ -212,3 +237,9 @@ V8 在老生代垃圾回收中，如果堆中的内存大小超过某个阈值�
 4.[深入理解 Chrome V8 垃圾回收机制](https://juejin.cn/post/6876638765025067015)
 5.[Trash talk: the Orinoco garbage collector](https://v8.dev/blog/trash-talk)
 6.[Chrome 浏览器垃圾回收机制与内存泄漏分析](https://www.cnblogs.com/LuckyWinty/p/11739573.html)
+7.[理解 Node.js 的 GC 机制](https://www.cnblogs.com/chaohangz/p/10963565.html)
+
+<!-- TODO:  三色标记法与读写屏障-->
+[写屏障](https://luolanmeet.github.io/jvm-note/content/part2/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/%E5%86%99%E5%B1%8F%E9%9A%9C.html)
+[三色标记法与读写屏障](https://www.jianshu.com/p/12544c0ad5c1)
+[Golang三色标记+混合写屏障GC模式全分析](https://zhuanlan.zhihu.com/p/334999060)
