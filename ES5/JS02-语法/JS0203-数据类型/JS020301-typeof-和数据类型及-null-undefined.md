@@ -1,10 +1,14 @@
 # `typeof` 和数据类型及 `null` 和 `undefined`
 
-ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字符串，布尔值，函数和对象，以及 `undefined` 和 `null`。尽管 JavaScript 有多种变量类型，然而不同于 C/C++，C# 或 Java，它并不是一种强类型语言。在强类型语言中，声明变量是需要指定变量的类型。在 JavaScript 中只需要使用关键字 `var`，而不必指定变量类型。因此， JavaScript 不是强类型语言。
+计算机程序的运行需要对值（value）进行操作。在编程语言中，能够表示并操作的值的类型称作 **数据类型**（type），编程语言最基本的特性就是能够支持多种数据类型。当程序需要将值保存起来以备将来使用时，便将其赋值给一个 **变量**（variable）。变量是一个值的符号名称，可以通过名称来获得对值的引用。
+
+尽管 JavaScript 有多种变量类型，然而不同于 C/C++，C# 或 Java，它并不是一种强类型语言。在强类型语言中，声明变量是需要指定变量的类型。在 JavaScript 中只需要使用关键字 `var`，而不必指定变量类型。因此， JavaScript 不是强类型语言。
+
+JavaScript 的数据类型分为两类：原始类型（primitive type）和对象类型（object type）。
 
 ## 1.`typeof` 操作符
 
-`typeof` 用来检测给定变量或表达式的数据类型。对一个值使用 `typeof` 操作符可能返回以下某个字符串：
+鉴于 ECMAScript 是松散类型的，因此需要有一种手段来检测给定变量的数据类型--`typeof` 用来检测给定变量或表达式的数据类型。对一个值使用 `typeof` 操作符可能返回以下某个字符串：
 
 - `undefined` 该值未定义
 - `boolean` 该值是布尔值
@@ -13,7 +17,7 @@ ECMAScript 的数据类型具有动态性。JavaScript 的类型有数字，字�
 - `object` 该值是对象或者 `null`
 - `function` 该值是函数
 
-> 如果检测表达式，要注意 `typeof` 的优先级仅次于括号运算符，并且不能检测 递增/递减表达式
+> 如果检测表达式，要注意 `typeof` 的优先级仅次于括号运算符，并且不能检测 递增/递减 表达式。
 
 ```js
 s; // ReferenceError: v is not defined
@@ -24,9 +28,7 @@ s = "lalala";
 typeof s; //string
 ```
 
-上面代码中，变量 `s` 没有用 `var` 命令声明，直接使用就会报错。但是，放在 `typeof` 后面，就不报错了，而是返回 `undefined`。
-
-实际编程中，这个特点通常用在判断语句。
+上面代码中，变量 `s` 没有用 `var` 命令声明，直接使用就会报错。但是，放在 `typeof` 后面，就不报错了，而是返回 `undefined`。实际编程中，这个特点通常用在判断语句。
 
 ```js
 // 错误的写法
@@ -51,7 +53,7 @@ if (typeof s === "undefined") {
 
 ### 2.1.基本数据类型（值类型）
 
-由简单的结构组成
+由简单的结构组成：
 
 1).`number` 数字
 
@@ -61,7 +63,7 @@ if (typeof s === "undefined") {
 
 4).`null` 空对象指针
 
-5).`undefined` 未定义（即由于目前没有定义，所以此处暂时没有任何值）
+5).`undefined` 未定义
 
 6).`Symbol`
 
@@ -69,13 +71,13 @@ if (typeof s === "undefined") {
 
 ### 2.2.引用数据类型（地址类型）
 
-结构相对复杂
+结构相对复杂：
 
 1).`object` 对象数据类型
 
 2).`function` 函数数据类型
 
-引用类型的值（对象）是引用类型的一个实例。在 ECMAScript 中，**引用类型** 是一种数据结构，用于将数据和功能组织在一起。它也常被称为 **类**，但这并不妥当。尽管从技术上讲，ECMAScript 是一门面向对象的语言，但它不具备传统的面向对象语言所支持的类和接口等基本结构。引用类型有时也被称为 **对象定义**，因为它描述的是一类对象所具有的属性和方法。
+引用类型的值（对象）是引用类型的一个实例。在 ECMAScript 中，**引用类型** 是一种数据结构，用于将数据和功能组织在一起。它也常被称为 *类*，但这并不妥当。尽管从技术上讲，ECMAScript 是一门面向对象的语言，但它不具备传统的面向对象语言所支持的类和接口等基本结构。引用类型有时也被称为 **对象定义**，因为它描述的是一类对象所具有的属性和方法。
 
 对象是某个特定引用类型的实例。新对象是使用 `new` 操作符后跟一个构造函数来创建的。构造函数本身就是一个函数，只不过该函数是出于用来创建新对象而定义的。
 
@@ -94,7 +96,7 @@ if (typeof s === "undefined") {
 - a：定义了一个变量；
 - b：开辟了一个新空间，并把属性名和属性值存储在这个空间中，有相应的空间地址；
 - c：把空间地址给这个变量（不是直接给值），变量并没有存储这个值，而是存储这个值的引用空间地址；
-- d：接下来我们把这个地址传递给新变量，此时两个变量操作的是同一空间，当其中一个变量改变，另一个变量也会改变（因为引用空间里的值发生改变）。
+- d：接下来把这个地址传递给新变量，此时两个变量操作的是同一空间，当其中一个变量改变，另一个变量也会改变（因为引用空间里的值发生改变）。
 
 ## 3.`null` and `undefined`
 
@@ -148,19 +150,17 @@ f(); // undefined
 
 `null` 的用 `typeof` 操作符检测的类型是 `object`，这是由于历史原因造成的。1995 年的 JavaScript 语言第一版，只设计了五种数据类型（对象、整数、浮点数、字符串和布尔值），没考虑 `null`，只把它当作 `object` 的一种特殊值。后来 `null` 独立出来，作为一种单独的数据类型，为了兼容以前的代码，`typeof null` 返回 `object` 就没法改变了。
 
-如果定义的变量准备用来保存一个对象，那么最好将该变量初始化为 `null` 而不是其他值。这样只要直接检测 `null` 值就可以知道相应的变量是否保存了一个对象的引用。
-
-只要在意保存对象还没有真正的保存对象，就应该明确地让该变量保存 `null` 值。这样不仅可以体现 `null` 作为空对象指针的惯例，而且有助于区分 `null` 和 `undefined`。
+如果定义的变量准备用来保存一个对象，那么最好将该变量初始化为 `null` 而不是其他值。这样只要直接检测 `null` 值就可以知道相应的变量是否保存了一个对象的引用。只要在意保存对象还没有真正的保存对象，就应该明确地让该变量保存 `null` 值。这样不仅可以体现 `null` 作为空对象指针的惯例，而且有助于区分 `null` 和 `undefined`。
 
 `null` 表示空值，即该处的值现在为空。调用函数时，某个参数未设置任何值，这时就可以传入 `null`，表示该参数为空。比如，某个函数接受引擎抛出的错误作为参数，如果运行过程中未出错，那么这个参数就会传入 `null`，表示未发生错误。
 
 `null`、`undefined` 和空对象的区别：
 
 ```js
-console.dir(null); //null
-console.dir(undefined); //undefined
+console.dir(null); // null
+console.dir(undefined); // undefined
 console.dir({});
-//Object
+// Object
 // __proto__:
 //   constructor
 //   hasOwnProperty
@@ -172,14 +172,19 @@ console.dir({});
 //   ...
 
 // Number
-Number(null); //0
-Number(undefined); //NaN
-Number({}); //NaN
+Number(null); // 0
+Number(undefined); // NaN
+Number({}); // NaN
 
 // Boolean
-Boolean(null); //false
-Boolean(undefined); //false
-Boolean({}); //true
+Boolean(null); // false
+Boolean(undefined); // false
+Boolean({}); // true
+
+// String
+String(null); // 'null'
+String(undefined); // 'undefined'
+String({}); // '[object Object]'
 ```
 
 ### 3.3.`null` 和 `undefined`
@@ -204,9 +209,9 @@ Number(undefined); // NaN
 
 在 JavaScript 里，`null` 和 `undefined` 都表示不存在的数据，并且 `undefined` 也是从 `null` 中继承而来；主要区别如下：
 
-1).`null` 和 `undefined` 都是表示没有的、不存在的值。他们在进行逻辑转换时都是 false，这两个值进行 (`==`) 比较是 true；
+1).`null` 和 `undefined` 都是表示没有的、不存在的值。他们在进行逻辑转换时都是 `false`，这两个值进行 (`==`) 比较是 `true`；
 
-2).`null` 表示空引用，它是 `object` 类型 (typeof 检测）；`undefined` 表示未定义，是 `undefined` 类型；
+2).`null` 表示空引用，它是 `object` 类型 ( `typeof` 检测）；`undefined` 表示未定义，是 `undefined` 类型；
 
 3). 如果一个变量的值是 `null`，那么必须主动给它赋值 `null`；如果这个对象以后要用，但是现在还没有值，一般情况下，会给它一个 `null` 值；
 
@@ -214,4 +219,4 @@ Number(undefined); // NaN
 
 5). 对属性来说，如果原来没有这个属性，根本就不存在这个属性，那么他的值就是 `undefined`。（对象的属性不需要定义，如果不存在也可以直接读取，不会报错，而会给出一个 `undefined` 的值出来）；
 
-6). 在函数（方法）里，如果必须返回值，但是值又计算不出来，那就返回一个 `null`（这是规范，不是语法规定，js 遵循）；但是没有返回值的函数，它的返回值都是 `undefined`。
+6). 在函数（方法）里，如果必须返回值，但是值又计算不出来，那就返回一个 `null`（这是规范，不是语法规定）；但是没有返回值的函数，它的返回值都是 `undefined`。
