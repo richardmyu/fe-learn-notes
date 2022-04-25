@@ -29,14 +29,23 @@ React 还可以使用 Node 进行服务器渲染，或使用 React Native 开发
 ### 2.1.CDN
 
 ```html
-  <!-- 加载 React。-->
-  <!-- 注意：部署时，将 "development.js" 替换为 "production.min.js"。-->
+  <!-- 加载 React -->
+  <!-- 注意：部署时，将 "development.js" 替换为 "production.min.js" -->
   <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
-  <!-- 加载我们的 React 组件。-->
+  <!-- 2022-04-25 updated -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <!-- or -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- case1:  -->
+  <!-- 加载我们的 React 组件 -->
   <script src="xxx.js"></script>
 
+  <!-- case2: JSX -->
   <!-- 尝试 JSX -->
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
