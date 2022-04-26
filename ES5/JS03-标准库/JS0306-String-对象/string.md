@@ -30,18 +30,24 @@ String(1, 2); //'1'
 
 ## 2.静态方法
 
-### 2.1.`String.fromCharCode`
+### 2.1.`String.fromCharCode()`
 
 该方法的参数是一个或多个数值，代表 Unicode 码点，返回值是这些码点组成的字符串。
+
+- **语法**
+
+`String.fromCharCode(num1[, ...[, numN]])`
 
 ```js
 String.fromCharCode(); // ""
 String.fromCharCode(97); // "a"
-String.fromCharCode(104, 101, 108, 108, 111);
-// "hello"
+String.fromCharCode(104, 101, 108, 108, 111); // "hello"
+String.fromCharCode(189, 43, 190, 61); // ½+¾=
 ```
 
-该方法不支持 Unicode 码点大于 `0xFFFF` 的字符，即传入的参数不能大于 `0xFFFF`（即十进制的 65535）。这是因为 `String.fromCharCode` 发现参数值大于 `0xFFFF`，就会忽略多出的位。
+- **参数**
+
+该方法不支持 Unicode 码点大于 `0xFFFF` 的字符，即传入的参数不能大于 `0xFFFF`（即十进制的 65535），大于 `0xFFFF` 的数字将被截断，不进行有效性检查。
 
 这种现象的根本原因在于，码点大于 `0xFFFF` 的字符占用四个字节，而 JavaScript 默认支持两个字节的字符。这种情况下，必须把 `0x20BB7` 拆成两个字符表示。
 
@@ -53,6 +59,20 @@ String.fromCharCode(0xd842, 0xdfb7).repeat(3);
 // "𠮷𠮷𠮷"
 ```
 
+- **返回值**
+
+一个长度为 N 的字符串，由 N 个指定的 Unicode 码点组成。注意，该方法返回一个字符串，而不是一个 `String` 对象。
+
+#### 2.1.1.补充字符
+
+在 UTF-16 中，绝大部分常用的字符可以用一个 16 位的值表示（即一个代码单元）。然而，有一类字符叫 Base Multilingual Plane (BMP)，是所有可寻址的 Unicode 码点的 1/17th。剩下的码点，从范围 `65536` (`0x010000`) 到 `1114111` (`0x10FFFF`) 被称之为 **补充字符**。在 UTF-16 中，补充字符也叫 **代理**（surrogates），用两个 16 位代码单元表示，它是有目的被保留下来的。两个代理形成一个有效组合，也叫 **代理对**，可以用来表示一个补充字符。
+
+因为 `fromCharCode()` 只作用于 16 位的值 (跟 `\u` 转义序列一样)，为了返回一个补充字符，一个代理对是必须的。例如，`String.fromCharCode(0xD83C, 0xDF03)` 和 `\uD83C\uDF03` 返回码点 `U+1F303` "Night with Stars"。
+
+```js
+String.fromCharCode(0xD83C, 0xDF03) === '\uD83C\uDF03' // true
+```
+
 ## 3.实例属性
 
 ### 3.1.`string.length`
@@ -61,17 +81,16 @@ String.fromCharCode(0xd842, 0xdfb7).repeat(3);
 
 ```js
 var str = "明月几时有";
-str.length; //5
+str.length; // 5
 // 操作 length 不起作用，但是也不报错
 str.length = 2;
-str.length; //5
+str.length; // 5
 
+// 但是严格模式下，会报错的
 ("use strict");
 var str = "明月几时有";
 str.length; //5
 str.length = 2;
-
-// 但是严格模式下，会报错的
 str.length;
 //TypeError: Cannot assign to read only property 'length' of string '明月几时有'
 ```
@@ -86,31 +105,158 @@ str.length;
 
 访问字符串中特定的字符，这两个方法都接收一个参数，即字符索引；
 
-#### 4.1.1.`string.charAt(n)`
+#### 4.1.1.`string.charAt(index)`
 
-以单字符串的形式返回给定索引位置的字符；如果参数为负数，或大于等于字符串的长度，`charAt` 返回空字符串。
+以单字符串的形式返回给定索引位置的字符。
 
 > JavaScript 没有字符数据类型。
 
-#### 4.1.2.`string.charCodeAt(n)`
-
-返回字符串指定位置的 Unicode 码点（十进制表示），相当于 `String.fromCharCode()` 的逆操作。
-
-- 返回值：字符/字符编码
-- 参数类型：字符索引
-- 参数：只有一个参数
-  - a. 不传参数，`charAt()` 返回首字符，`charCodeAt()` 返回首字符的码点；
-  - b. 若传入参数是负数或大于等于字符长度，`charAt()` 会返回空字符；而 `charCodeAt()` 会返回 `NaN`。
+- **语法**
 
 ```js
-var str = "abcd";
-str.charAt(0); //a
-str.charCodeAt(0); //97
-String.fromCharCode(str.charCodeAt(0)); //a
+str.charAt(index)
 ```
 
-> 注意，`charCodeAt` 方法返回的 Unicode 码点不会大于 65536（`0xFFFF`），也就是说，只返回两个字节的字符的码点。
-> 如果遇到码点大于 65536 的字符（四个字节的字符），必需连续使用两次 `charCodeAt`，不仅读入 `charCodeAt(i)`，还要读入 `charCodeAt(i+1)`，将两个值放在一起，才能得到准确的字符。
+- **参数**
+
+  - `index`：一个介于 0 和字符串长度减 1 之间的整数(0 ~ `str.length` - 1)。
+    - 如果没有提供索引，默认将使用 0；
+    - 如果指定的 `index` 值超出了该范围，则返回一个空字符串；
+
+- **示例**
+
+修复 `charAt` 以支持非基本多文种平面（BMP）字符：
+
+```js
+function fixedCharAt (str, idx) {
+  var ret = '';
+  str += '';
+  var end = str.length;
+
+  var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+  while ((surrogatePairs.exec(str)) != null) {
+    var li = surrogatePairs.lastIndex;
+    if (li - 2 < idx) {
+      idx++;
+    } else {
+      break;
+    }
+  }
+
+  if (idx >= end || idx < 0) {
+    return '';
+  }
+
+  ret += str.charAt(idx);
+
+  if (/[\uD800-\uDBFF]/.test(ret) && /[\uDC00-\uDFFF]/.test(str.charAt(idx+1))) {
+    // Go one further, since one of the "characters" is part of a surrogate pair
+    ret += str.charAt(idx+1);
+  }
+  return ret;
+}
+```
+
+#### 4.1.2.`string.charCodeAt(index)`
+
+charCodeAt() 方法返回 0 到 65535 之间的整数，表示给定索引处的 UTF-16 代码单元。
+
+UTF-16 编码单元匹配能用一个 UTF-16 编码单元表示的 Unicode 码点。如果遇到码点大于 65536 的字符（四个字节的字符），必需连续使用两次 `charCodeAt`，不仅读入 `charCodeAt(i)`，还要读入 `charCodeAt(i+1)`，将两个值放在一起，才能得到准确的字符，或者改为获取 `codePointAt(i)` 的值。
+
+- **语法**
+
+```js
+str.charCodeAt(index)
+```
+
+- **参数**
+
+  - `index`：一个大于等于 0，小于字符串长度的整数。如果不是一个数值，则默认为 0。
+
+- **返回值**
+
+  - 指定 `index` 处字符的 UTF-16 代码单元值的一个数字；
+    - 不传参数，返回首字符的码点；
+    - 如果指定的 `index` 值超出了该范围，则会返回 `NaN`。
+
+```js
+"ABC".charCodeAt(0); // 65
+"ABC".charCodeAt(1); // 66
+"ABC".charCodeAt(2); // 67
+"ABC".charCodeAt(3); // NaN
+```
+
+- **示例**
+
+使用 `charCodeAt()` 修复字符串中出现的未知的非基本多语言范围（非 BMP，non-Basic-Multilingual-Plane）字符：
+
+```js
+// 这段代码可以被用在 for 循环和其他类似语句中
+// 当在指定引索之前不确定是否有非 BMP 字符存在时
+function fixedCharCodeAt (str, idx) {
+    // ex. fixedCharCodeAt ('\uD800\uDC00', 0); // 65536
+    // ex. fixedCharCodeAt ('\uD800\uDC00', 1); // false
+    idx = idx || 0;
+    var code = str.charCodeAt(idx);
+    var hi, low;
+
+    // High surrogate (could change last hex to 0xDB7F to treat high
+    // private surrogates as single characters)
+    if (0xD800 <= code && code <= 0xDBFF) {
+        hi = code;
+        low = str.charCodeAt(idx+1);
+        if (isNaN(low)) {
+            throw 'High surrogate not followed by low surrogate in fixedCharCodeAt()';
+        }
+        return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
+    }
+    if (0xDC00 <= code && code <= 0xDFFF) { // Low surrogate
+        // We return false to allow loops to skip this iteration since should have
+        // already handled high surrogate above in the previous iteration
+        return false;
+        /*hi = str.charCodeAt(idx-1);
+        low = code;
+        return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;*/
+    }
+    return code;
+}
+```
+
+使用 `charCodeAt()` 修复字符串中出现的已知的非BMP字符：
+
+```js
+function knownCharCodeAt (str, idx) {
+    str += '';
+    var code,
+        end = str.length;
+
+    var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+    while ((surrogatePairs.exec(str)) != null) {
+        var li = surrogatePairs.lastIndex;
+        if (li - 2 < idx) {
+            idx++;
+        }
+        else {
+            break;
+        }
+    }
+
+    if (idx >= end || idx < 0) {
+        return NaN;
+    }
+
+    code = str.charCodeAt(idx);
+
+    var hi, low;
+    if (0xD800 <= code && code <= 0xDBFF) {
+        hi = code;
+        low = str.charCodeAt(idx+1);
+        // Go one further, since one of the "characters" is part of a surrogate pair
+        return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
+    }
+    return code;
+}
+```
 
 ### 4.2.字符串操作方法
 
