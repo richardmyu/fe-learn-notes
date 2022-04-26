@@ -1,6 +1,6 @@
 # String 对象
 
-## 1. 概述
+## 1.概述
 
 `String` 对象是 JavaScript 原生提供的三个包装对象之一，用来生成字符串对象。
 
@@ -28,7 +28,7 @@ String(undefined); //'undefined'
 String(1, 2); //'1'
 ```
 
-## 2. 静态方法
+## 2.静态方法
 
 ### 2.1.`String.fromCharCode`
 
@@ -53,25 +53,46 @@ String.fromCharCode(0xd842, 0xdfb7).repeat(3);
 // "𠮷𠮷𠮷"
 ```
 
-## 3. 实例属性
+## 3.实例属性
 
 ### 3.1.`string.length`
 
-字符串实例的 `length` 属性返回字符串的长度。
+`string.length` 属性是一个只读的整数，指明指定字符串中的字符个数。字符串的 `length` 属性不会在 `for-in` 循环中枚举，也不可用通过 `delete` 操作符删除。
 
-## 4. 实例方法
+```js
+var str = "明月几时有";
+str.length; //5
+// 操作 length 不起作用，但是也不报错
+str.length = 2;
+str.length; //5
 
-### 4.1. 字符方法
+("use strict");
+var str = "明月几时有";
+str.length; //5
+str.length = 2;
+
+// 但是严格模式下，会报错的
+str.length;
+//TypeError: Cannot assign to read only property 'length' of string '明月几时有'
+```
+
+字符串可以被视为字符数组，因此可以使用数组的方括号运算符，用来返回某个位置的字符（位置编号从 0 开始）。如果方括号中的数字超过字符串的长度，或者方括号中根本不是数字，则返回 `undefined`。
+
+> 任何字符串的长度都可以通过访问其 `length` 属性取得。如果字符中包含双字节字符，那么 `length` 属性可能不会精确返回字符数目。
+
+## 4.实例方法
+
+### 4.1.字符方法
 
 访问字符串中特定的字符，这两个方法都接收一个参数，即字符索引；
 
-1).`string.charAt(n)`
+#### 4.1.1.`string.charAt(n)`
 
 以单字符串的形式返回给定索引位置的字符；如果参数为负数，或大于等于字符串的长度，`charAt` 返回空字符串。
 
 > JavaScript 没有字符数据类型。
 
-2).`string.charCodeAt(n)`
+#### 4.1.2.`string.charCodeAt(n)`
 
 返回字符串指定位置的 Unicode 码点（十进制表示），相当于 `String.fromCharCode()` 的逆操作。
 
@@ -91,9 +112,9 @@ String.fromCharCode(str.charCodeAt(0)); //a
 > 注意，`charCodeAt` 方法返回的 Unicode 码点不会大于 65536（`0xFFFF`），也就是说，只返回两个字节的字符的码点。
 > 如果遇到码点大于 65536 的字符（四个字节的字符），必需连续使用两次 `charCodeAt`，不仅读入 `charCodeAt(i)`，还要读入 `charCodeAt(i+1)`，将两个值放在一起，才能得到准确的字符。
 
-### 4.2. 字符串操作方法
+### 4.2.字符串操作方法
 
-1).`string.concat(value,...)`
+#### 4.2.1.`string.concat(value,...)`
 
 用于将一个或多个字符串按照顺序拼接到原字符串的末尾；
 
@@ -104,7 +125,7 @@ String.fromCharCode(str.charCodeAt(0)); //a
   - b. 若传入的参数不是字符串形式，则会转换为字符串参与拼接；
   - c. 若写成变量的形式，会在全局查找该变量，并将该变量的值代入，若在全局找不到该变量，则会报错；
 
-2).**`string.slice(start[,end])`**
+#### 4.2.2.`string.slice(start[,end])`
 
 复制字符串中从索引 `start` 到索引 `end`（包括 `start`, 不包括 `end`) 的字符
 
@@ -118,7 +139,7 @@ String.fromCharCode(str.charCodeAt(0)); //a
   - e. 如果第二个参数大于字符串的 `length` 的，默认是查找到最后
   - f. 如果参数是负值，将传入的负值与字符串的长度相加，遵循以上规则再进行复制（也可以看做从尾部倒数开始）；
 
-3).**`string.substring(start[,end])`**
+#### 4.2.3.`string.substring(start[,end])`
 
 复制字符串中从索引 start 到索引 end（包括 start, 不包括 end) 的字符
 
@@ -132,7 +153,7 @@ String.fromCharCode(str.charCodeAt(0)); //a
   - e. 如果第二个参数超过字符长度，则默认复制到最后；
   - f. 如果参数是负值，将所有负值转换为 0，遵循以上规则再进行复制；
 
-4).`string.substr(start[,length])`
+#### 4.2.4.`string.substr(start[,length])`
 
 复制字符串中从索引 n 开始查找 m 个字符
 
@@ -145,11 +166,11 @@ String.fromCharCode(str.charCodeAt(0)); //a
   - d. 如果第二个参数超过字符长度，则默认复制到最后；
   - e. 参数是负值：若第一个参数是负值，则加上字符串的长度；若第二个参数是负值，则将其变为 0，返回空字符串；
 
-### 4.3. 字符串位置方法
+### 4.3.字符串位置方法
 
 > **区分大小写**
 
-1).**`string.indexOf(substring[,start])`**
+#### 4.3.1.`string.indexOf(substring[,start])`
 
 在字符串中从前往后搜索，判断某个字符在不在这个字符串中（只在乎第一次出现），找不到子字符串则返回 -1；
 
@@ -161,7 +182,7 @@ String.fromCharCode(str.charCodeAt(0)); //a
   - c. 第二个参数，指定开始搜索的位置，默认为 0；
   - d. 若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入 `str.length`；
 
-2).**`string.lastIndexOf(substring[,start])`**
+#### 4.3.2.`string.lastIndexOf(substring[,start])`
 
 在字符串中从后往前搜索，判断某个字符在不在这个字符串中（只在乎第一次匹配），找不到子字符串则返回 -1；
 
@@ -175,9 +196,9 @@ String.fromCharCode(str.charCodeAt(0)); //a
 
 > 对于 `indexOf()` 与 `lastIndexOf()`，若是查找空字符且指定了第二个参数时，则其返回值为第二个参数的值（如果没有就是 0），注意当第二个参数的值大于字符长度时，返回值为字符长度，若是负数则返回 0。
 
-### 4.4. 空格处理
+### 4.4.空格处理
 
-1).`string.trim()`
+#### 4.4.1.`string.trim()`
 
 创建一个字符串的副本；删除前置及后缀的所有空格，然后返回结果；不修改原字符串；
 
@@ -186,7 +207,7 @@ String.fromCharCode(str.charCodeAt(0)); //a
 
 > 该方法去除的不仅是空格，还包括制表符（`\t`、`\v`）、换行符（`\n`）和回车符（`\r`）。
 
-### 4.5. 字符串大小写转换方法
+### 4.5.字符串大小写转换方法
 
 1).`string.toUpperCase()`
 2).`string.toLowerCase()`
@@ -201,9 +222,9 @@ String.fromCharCode(str.charCodeAt(0)); //a
 
 > 对于 `toLocaleLowerCase()` 和 `toLocaleUpperCase()` 传入参数为 `null` 或 `undefined` 会报错：`Uncaught TypeError: Cannot convert undefined or null to object at String.toLocaleLowerCase (native)`
 
-### 4.6. 字符串的模式匹配方法
+### 4.6.字符串的模式匹配方法
 
-1).**`string.match(str/reg)`**
+#### 4.6.1.`string.match(str/reg)`
 
 找到一个或多个正则表达式的匹配结果（在字符串上调用这个方法，本质上与调用 `RegExp` 的 `exec()` 方法相同）。
 
@@ -233,7 +254,7 @@ s.match(/(en)/);
 
 > 注意：对于全局匹配，`match()` 不会提供有关捕获组的信息，也不会记录每个匹配的子串在 `string` 中的位置。若想在全局搜索时获取这些信息，可以使用 `RegExp.exec()`。
 
-2).`string.search(str/reg)`
+#### 4.6.2.`string.search(str/reg)`
 
 根据正则表达式在 string 中寻找匹配的字符串；
 
@@ -243,9 +264,9 @@ s.match(/(en)/);
 
 `search()` 不执行全局匹配，会忽略 “`g`” 标志。也会忽略 `regexp` 的 `lastIndex` 属性，总是从开头位置开始搜索，这意味着它总是返回第一个匹配子串的位置。
 
-### 4.7. 字符串的替换
+### 4.7.字符串的替换
 
-1).**`string.replace(regexp[,replacement])`**
+#### 4.7.1.`string.replace(regexp[,replacement])`
 
 替换给定正则表达式匹配的（一个或多个）子表达式；
 
@@ -260,9 +281,9 @@ s.match(/(en)/);
 
 > 更具体的用法见 `RegExp` 的相关章节。
 
-### 4.8. 字符串变数组
+### 4.8.字符串变数组
 
-1).**`string.split(delimiter[,limit])`**
+#### 4.8.1.`string.split(delimiter[,limit])`
 
 基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放到一个数组中
 
@@ -291,9 +312,9 @@ s.split("", 2); //["s", "1"]
 > IE8 及之前版本会忽略捕获组。ECMCA-262 规定应该把捕获组的内容拼接到结果数组中。IE 能正确地在结果中包含捕获组；
 > Firefox3.6 及之前版本在捕获组为捕获到匹配项时，会在结果中包含空字符；ECMCA-262 规定没有匹配项的捕获组在结果数组中应该用 `undefined` 表示；
 
-### 4.9. 字符串比较
+### 4.9.字符串比较
 
-1).`string.localeCompare(target)`
+#### 4.9.1.`string.localeCompare(target)`
 
 根据本地默认的排序比较两个字符串（逐个比较），
 
@@ -307,46 +328,3 @@ s.split("", 2); //["s", "1"]
 方法的最大特点，就是会考虑自然语言的顺序。举例来说，正常情况下，大写的英文字母小于小写字母。因为 JavaScript 采用的是 `Unicode` 码点比较，B 的码点是 66，而 a 的码点是 9。但是，`localeCompare` 方法会考虑自然语言的排序情况，将 B 排在 a 的前面。
 
 `localeCompare` 还可以有第二个参数，指定所使用的语言（默认是英语），然后根据该语言的规则进行比较。
-
-### 4.10.ES6 新方法
-
-1).**`string.includes(string)`**
-
-判断某个字符或子字符串在不在某个字符串中
-
-- 返回值：true/false，有就是 true，没有就是 false；
-- 参数类型：`string`（非字符类型被强制转换为字符）
-- 参数：一个
-  - a. 输入多个参数不报错，但只有第一个参数有效；
-  - b. 不传参数则无法匹配，就会返回 false；
-
-2).**`string.repeat(n)`**
-
-将字符串重复 n 次
-
-- 返回值：重复后的新字符串；
-- 参数类型：非负数值
-- 参数：只有一个参数
-  - a. 若参数是小数：只取整数部分（即向下取整）
-  - b. 若参数是负数，则报错
-
-3). 扩展运算符（`...`）
-
-扩展运算符；在字符中的作用类似 `split()`
-
-- 返回值：
-  - a. 单个字符串，没有中括号的情况下产生一连串的单字符串；
-  - b. 若有中括号，会将单字符串放进一个数组返回；用小括号包裹会报错
-
-```js
-var str = "meih";
-...str; //m e i h
-...(str + "a"); //m e i h a
-[...str]; //["m", "e", "i", "h"]
-
-//可以将类数组转换为数组；
-function f1() {
-  [...arguments];
-}
-f1(1, 2, 3, 4); //[1, 2, 3, 4]
-```
