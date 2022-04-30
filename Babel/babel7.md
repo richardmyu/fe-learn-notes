@@ -46,7 +46,7 @@ let fun = function () {
 
 编译成功。
 
-## 3. 配置文件 .babelrc
+## 3.配置文件 `.babelrc`
 
 随着各种新插件的加入，我们的命令行参数会越来越长。
 
@@ -250,6 +250,6 @@ npx babel-node app.js
 
 ---
 
-**参考：**
+参考：
 
 [babel 7 教程](https://blog.zfanw.com/babel-js/)
