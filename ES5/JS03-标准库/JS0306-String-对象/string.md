@@ -30,7 +30,7 @@ String(1, 2); //'1'
 
 ## 2.静态方法
 
-### 2.1.`String.fromCharCode()`
+### 2.1.`String.fromCharCode`
 
 该方法的参数是一个或多个数值，代表 Unicode 码点，返回值是这些码点组成的字符串。
 
@@ -105,16 +105,16 @@ str.length;
 
 访问字符串中特定的字符，这两个方法都接收一个参数，即字符索引；
 
-#### 4.1.1.`string.charAt(index)`
+#### 4.1.1.`string.charAt`
 
-以单字符串的形式返回给定索引位置的字符。
+返回给定索引位置的字符。
 
 > JavaScript 没有字符数据类型。
 
 - **语法**
 
 ```js
-str.charAt(index)
+string.charAt(index)
 ```
 
 - **参数**
@@ -157,16 +157,16 @@ function fixedCharAt (str, idx) {
 }
 ```
 
-#### 4.1.2.`string.charCodeAt(index)`
+#### 4.1.2.`string.charCodeAt`
 
-charCodeAt() 方法返回 0 到 65535 之间的整数，表示给定索引处的 UTF-16 代码单元。
+`charCodeAt` 方法返回 0 到 65535 之间的整数，表示给定索引处的 UTF-16 代码单元。
 
 UTF-16 编码单元匹配能用一个 UTF-16 编码单元表示的 Unicode 码点。如果遇到码点大于 65536 的字符（四个字节的字符），必需连续使用两次 `charCodeAt`，不仅读入 `charCodeAt(i)`，还要读入 `charCodeAt(i+1)`，将两个值放在一起，才能得到准确的字符，或者改为获取 `codePointAt(i)` 的值。
 
 - **语法**
 
 ```js
-str.charCodeAt(index)
+string.charCodeAt(index)
 ```
 
 - **参数**
@@ -188,7 +188,7 @@ str.charCodeAt(index)
 
 - **示例**
 
-使用 `charCodeAt()` 修复字符串中出现的未知的非基本多语言范围（非 BMP，non-Basic-Multilingual-Plane）字符：
+使用 `charCodeAt` 修复字符串中出现的未知的非基本多语言范围（非 BMP，non-Basic-Multilingual-Plane）字符：
 
 ```js
 // 这段代码可以被用在 for 循环和其他类似语句中
@@ -222,7 +222,7 @@ function fixedCharCodeAt (str, idx) {
 }
 ```
 
-使用 `charCodeAt()` 修复字符串中出现的已知的非BMP字符：
+使用 `charCodeAt` 修复字符串中出现的已知的非BMP字符：
 
 ```js
 function knownCharCodeAt (str, idx) {
@@ -260,30 +260,51 @@ function knownCharCodeAt (str, idx) {
 
 ### 4.2.字符串操作方法
 
-#### 4.2.1.`string.concat(value,...)`
+#### 4.2.1.`string.concat`
 
-用于将一个或多个字符串按照顺序拼接到原字符串的末尾；
+将一个或多个字符串与原字符串连接合并（从原字符串的后面拼接），形成一个新的字符串并返回；*`concat` 方法并不影响原字符串*。
 
-- 返回值：返回一个新字符串；
-- 参数类型：`String`
-- 参数：
-  - a. 可以接受任意多参数，也就是说可以拼接任意多个字符串；实际更多用"`+`"，简便易行（特别是拼接多个）；
-  - b. 若传入的参数不是字符串形式，则会转换为字符串参与拼接；
-  - c. 若写成变量的形式，会在全局查找该变量，并将该变量的值代入，若在全局找不到该变量，则会报错；
+- **语法**
 
-#### 4.2.2.`string.slice(start[,end])`
+```js
+string.concat(value, ...)
+```
 
-复制字符串中从索引 `start` 到索引 `end`（包括 `start`, 不包括 `end`) 的字符
+- **参数**
+  - 可以接受任意多参数，也就是说可以拼接任意多个字符串；
+  - 若传入的参数不是字符串形式，则会自动转换为字符串；
 
-- 返回值：复制出来的新字符串
-- 参数类型：数值
-- 参数：
-  - a. 不传参数表示全部查找，等价于克隆
-  - b. 只传一个参数的时候：从索引 start 一直查找到最后
-  - c. 第二个参数指定复制截止的位置（本身不复制）
-  - d. 如果第二个参数比第一个参数小，为空字符串；
-  - e. 如果第二个参数大于字符串的 `length` 的，默认是查找到最后
-  - f. 如果参数是负值，将传入的负值与字符串的长度相加，遵循以上规则再进行复制（也可以看做从尾部倒数开始）；
+> `concat` 可以用来拼接任意多个字符串，但实际上更多用"`+/+=`"。
+
+- **返回值**
+  - 一个新的字符串，包含参数所提供的连接字符串。
+
+#### 4.2.2.`string.slice`
+
+提取某个字符串的一部分，并返回一个新的字符串，*且不会改动原字符串*。
+
+- **语法**
+
+```js
+string.slice(beginIndex[, endIndex])
+```
+
+- **参数**
+  - `beginIndex`
+    从该索引（以 0 为基数）处开始提取原字符串中的字符。如果值为负数，会被当做 `strLength + beginIndex` 看待，这里的 `strLength` 是字符串的长度（从另一个方面看，可以认为取倒数第 `-beginIndex` 位）。
+  - `endIndex`
+    可选。在该索引（以 0 为基数）处结束提取字符串（此位本身不复制）。如果省略该参数，`slice` 会一直提取到字符串末尾。如果该参数为负数，则被看作是 `strLength + endIndex`。
+
+- **返回值**
+  - 返回一个从原字符串中提取出来的新字符串
+
+```js
+var str = 'The morning is upon us.'; // str 的长度 length 是 23
+str.slice(1, 8); // he morn
+str.slice(12); // is upon us.
+str.slice(-3); // us.
+str.slice(-3, -1); // us
+```
 
 #### 4.2.3.`string.substring(start[,end])`
 
@@ -474,3 +495,9 @@ s.split("", 2); //["s", "1"]
 方法的最大特点，就是会考虑自然语言的顺序。举例来说，正常情况下，大写的英文字母小于小写字母。因为 JavaScript 采用的是 `Unicode` 码点比较，B 的码点是 66，而 a 的码点是 9。但是，`localeCompare` 方法会考虑自然语言的排序情况，将 B 排在 a 的前面。
 
 `localeCompare` 还可以有第二个参数，指定所使用的语言（默认是英语），然后根据该语言的规则进行比较。
+
+- **语法**
+
+- **参数**
+
+- **返回值**
