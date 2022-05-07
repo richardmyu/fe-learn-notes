@@ -64,7 +64,7 @@ String.fromCharCode(0xd842, 0xdfb7).repeat(3);
 
 在 UTF-16 中，绝大部分常用的字符可以用一个 16 位的值表示（即一个代码单元）。然而，有一类字符叫 Base Multilingual Plane (BMP)，是所有可寻址的 Unicode 码点的 1/17th。剩下的码点，从范围 `65536` (`0x010000`) 到 `1114111` (`0x10FFFF`) 被称之为 **补充字符**。在 UTF-16 中，补充字符也叫 **代理**（surrogates），用两个 16 位代码单元表示，它是有目的被保留下来的。两个代理形成一个有效组合，也叫 **代理对**，可以用来表示一个补充字符。
 
-因为 `fromCharCode()` 只作用于 16 位的值 (跟 `\u` 转义序列一样)，为了返回一个补充字符，一个代理对是必须的。例如，`String.fromCharCode(0xD83C, 0xDF03)` 和 `\uD83C\uDF03` 返回码点 `U+1F303` "Night with Stars"。
+因为 `fromCharCode` 只作用于 16 位的值 (跟 `\u` 转义序列一样)，为了返回一个补充字符，一个代理对是必须的。例如，`String.fromCharCode(0xD83C, 0xDF03)` 和 `\uD83C\uDF03` 返回码点 `U+1F303` "Night with Stars"。
 
 ```js
 String.fromCharCode(0xD83C, 0xDF03) === '\uD83C\uDF03' // true
@@ -351,7 +351,7 @@ string.substr(start[, length])
 
 - **参数**
   - `start`
-    - 开始提取字符的位置。如果忽略 `start` 或
+    - 开始提取字符的位置。如果忽略 `start` 或 `start` 为 0，则提取字符一直到字符串末尾。
     - 如果 `start` 为正值，且大于或等于字符串的长度，则 `substr` 返回一个空字符串。
     - 如果 `start` 为负值，则 `substr` 把它作为从字符串末尾开始的一个字符索引。
     - 如果 `start` 为负值且 `abs(start)` 大于字符串的长度，则 `substr` 使用 0 作为开始提取的索引。
@@ -361,14 +361,21 @@ string.substr(start[, length])
     - 如果 `length` 为 0 或负值，则 `substr` 返回一个空字符串。
 
 ```js
-
+var str = "hello world!";
+str.substr(); // 'hello world!'
+str.substr(6); // 'world!'
+str.substr(12); // ''
+str.substr(-6); //  'world!'
+str.substr(-13); // 'hello world!'
+str.substr(6, 2); // 'wo'
+str.substr(6, -4); // ''
 ```
 
 ### 4.3.字符串位置方法
 
 > **区分大小写**
 
-#### 4.3.1.`string.indexOf(substring[,start])`
+#### 4.3.1.`string.indexOf`
 
 - **语法**
 
@@ -387,7 +394,7 @@ string.substr(start[, length])
   - c. 第二个参数，指定开始搜索的位置，默认为 0；
   - d. 若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入 `str.length`；
 
-#### 4.3.2.`string.lastIndexOf(substring[,start])`
+#### 4.3.2.`string.lastIndexOf`
 
 - **语法**
 
@@ -406,11 +413,11 @@ string.substr(start[, length])
   - c. 第二个参数，指定开始搜索的位置，默认为 `str.length`；
   - d. 若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入 `str.length`；
 
-> 对于 `indexOf()` 与 `lastIndexOf()`，若是查找空字符且指定了第二个参数时，则其返回值为第二个参数的值（如果没有就是 0），注意当第二个参数的值大于字符长度时，返回值为字符长度，若是负数则返回 0。
+> 对于 `indexOf` 与 `lastIndexOf`，若是查找空字符且指定了第二个参数时，则其返回值为第二个参数的值（如果没有就是 0），注意当第二个参数的值大于字符长度时，返回值为字符长度，若是负数则返回 0。
 
 ### 4.4.空格处理
 
-#### 4.4.1.`string.trim()`
+#### 4.4.1.`string.trim`
 
 - **语法**
 
@@ -427,22 +434,22 @@ string.substr(start[, length])
 
 ### 4.5.字符串大小写转换方法
 
-1).`string.toUpperCase()`
-2).`string.toLowerCase()`
-3).`string.toLocaleLowerCase()`
-4).`string.toLocaleUpperCase()`
+1).`string.toUpperCase`
+2).`string.toLowerCase`
+3).`string.toLocaleLowerCase`
+4).`string.toLocaleUpperCase)`
 
-> `toUpperCase()` 和 `toLowerCase()` 借鉴 `Java.lang.String` 中的同名方法；
-> `toLocaleLowerCase()` 和 `toLocaleUpperCase()` 是针对特定地区的实现；
+> `toUpperCase` 和 `toLowerCase` 借鉴 `Java.lang.String` 中的同名方法；
+> `toLocaleLowerCase` 和 `toLocaleUpperCase` 是针对特定地区的实现；
 
 - 返回值：新字符串
 - 没有参数，传参不报错，但是无效
 
-> 对于 `toLocaleLowerCase()` 和 `toLocaleUpperCase()` 传入参数为 `null` 或 `undefined` 会报错：`Uncaught TypeError: Cannot convert undefined or null to object at String.toLocaleLowerCase (native)`
+> 对于 `toLocaleLowerCase` 和 `toLocaleUpperCase` 传入参数为 `null` 或 `undefined` 会报错：`Uncaught TypeError: Cannot convert undefined or null to object at String.toLocaleLowerCase (native)`
 
 ### 4.6.字符串的模式匹配方法
 
-#### 4.6.1.`string.match(str/reg)`
+#### 4.6.1.`string.match`
 
 - **语法**
 
@@ -450,7 +457,7 @@ string.substr(start[, length])
 
 - **返回值**
 
-找到一个或多个正则表达式的匹配结果（在字符串上调用这个方法，本质上与调用 `RegExp` 的 `exec()` 方法相同）。
+找到一个或多个正则表达式的匹配结果（在字符串上调用这个方法，本质上与调用 `RegExp` 的 `exec` 方法相同）。
 
 - 返回值：一个数组或 `null`；
 - 参数类型：正则表达式/`RegExp` 对象
@@ -470,15 +477,15 @@ s.match(/(en)/);
 //["e", "e", index: 2, input: "green yellow"]
 ```
 
-如果参数没有 “`g`” 标志，`match()` 将只进行一次匹配。
+如果参数没有 “`g`” 标志，`match` 将只进行一次匹配。
 
 如果没有匹配结果，则返回 `null`；若有匹配结果，第一项是匹配项，之后每一项保存正则表达式圆括号子表达式匹配的字符串（若有），倒数第二项是匹配项的首字符的索引；最后一项是原字符；
 
-如果参数有 “`g`” 标志，则 `match()` 进行一次全局搜索。全局匹配返回的数组和非全局匹配返回的数组内容很不一样。在全局匹配的情况下，数组元素包含 `string` 中每一个匹配子串，同时返回的数组没有 `index` 和 `input` 属性。
+如果参数有 “`g`” 标志，则 `match` 进行一次全局搜索。全局匹配返回的数组和非全局匹配返回的数组内容很不一样。在全局匹配的情况下，数组元素包含 `string` 中每一个匹配子串，同时返回的数组没有 `index` 和 `input` 属性。
 
-> 注意：对于全局匹配，`match()` 不会提供有关捕获组的信息，也不会记录每个匹配的子串在 `string` 中的位置。若想在全局搜索时获取这些信息，可以使用 `RegExp.exec()`。
+> 注意：对于全局匹配，`match` 不会提供有关捕获组的信息，也不会记录每个匹配的子串在 `string` 中的位置。若想在全局搜索时获取这些信息，可以使用 `RegExp.exec`。
 
-#### 4.6.2.`string.search(str/reg)`
+#### 4.6.2.`string.search`
 
 - **语法**
 
@@ -492,11 +499,11 @@ s.match(/(en)/);
 - 参数类型：正则表达式/`RegExp` 对象
 - 参数：只接受一个参数
 
-`search()` 不执行全局匹配，会忽略 “`g`” 标志。也会忽略 `regexp` 的 `lastIndex` 属性，总是从开头位置开始搜索，这意味着它总是返回第一个匹配子串的位置。
+`search` 不执行全局匹配，会忽略 “`g`” 标志。也会忽略 `regexp` 的 `lastIndex` 属性，总是从开头位置开始搜索，这意味着它总是返回第一个匹配子串的位置。
 
 ### 4.7.字符串的替换
 
-#### 4.7.1.`string.replace(regexp[,replacement])`
+#### 4.7.1.`string.replace`
 
 - **语法**
 
@@ -519,7 +526,7 @@ s.match(/(en)/);
 
 ### 4.8.字符串变数组
 
-#### 4.8.1.`string.split(delimiter[,limit])`
+#### 4.8.1.`string.split`
 
 - **语法**
 
@@ -550,13 +557,13 @@ s.split(""); //["s", "1", ",", "s", "2", ",", "s", "3"]
 s.split("", 2); //["s", "1"]
 ```
 
-> 对 `split()` 中正则的支持因浏览器而异。尽管对于简单模式没有声明差别，但对于未发现匹配项以及带有捕获组的模式，匹配的行为就大相径庭了。差别如下：
+> 对 `split` 中正则的支持因浏览器而异。尽管对于简单模式没有声明差别，但对于未发现匹配项以及带有捕获组的模式，匹配的行为就大相径庭了。差别如下：
 > IE8 及之前版本会忽略捕获组。ECMCA-262 规定应该把捕获组的内容拼接到结果数组中。IE 能正确地在结果中包含捕获组；
 > Firefox3.6 及之前版本在捕获组为捕获到匹配项时，会在结果中包含空字符；ECMCA-262 规定没有匹配项的捕获组在结果数组中应该用 `undefined` 表示；
 
 ### 4.9.字符串比较
 
-#### 4.9.1.`string.localeCompare(target)`
+#### 4.9.1.`string.localeCompare`
 
 - **语法**
 
