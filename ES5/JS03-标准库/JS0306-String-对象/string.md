@@ -38,30 +38,27 @@ String(1, 2); //'1'
 
 `String.fromCharCode(num1[, ...[, numN]])`
 
+- **参数**
+  - 该方法不支持 Unicode 码点大于 `0xFFFF` 的字符，即传入的参数不能大于 `0xFFFF`（即十进制的 65535），大于 `0xFFFF` 的数字将被截断，不进行有效性检查。
+
+> 这种现象的根本原因在于，码点大于 `0xFFFF` 的字符占用四个字节，而 JavaScript 默认支持两个字节的字符。这种情况下，必须把大于 `0xFFFF` 的字符，例如 `0x20BB7` 拆成两个字符来表示。
+
+- **返回值**
+  - 一个长度为 N 的字符串，由 N 个指定的 Unicode 码点组成。注意，该方法返回一个字符串，而不是一个 `String` 对象。
+
 ```js
 String.fromCharCode(); // ""
 String.fromCharCode(97); // "a"
 String.fromCharCode(104, 101, 108, 108, 111); // "hello"
 String.fromCharCode(189, 43, 190, 61); // ½+¾=
-```
 
-- **参数**
-
-该方法不支持 Unicode 码点大于 `0xFFFF` 的字符，即传入的参数不能大于 `0xFFFF`（即十进制的 65535），大于 `0xFFFF` 的数字将被截断，不进行有效性检查。
-
-这种现象的根本原因在于，码点大于 `0xFFFF` 的字符占用四个字节，而 JavaScript 默认支持两个字节的字符。这种情况下，必须把 `0x20BB7` 拆成两个字符表示。
-
-```js
+//  码点大于 `0xFFFF` 的字符
 String.fromCharCode(0xd842, 0xdfb7);
 // "𠮷"
 
 String.fromCharCode(0xd842, 0xdfb7).repeat(3);
 // "𠮷𠮷𠮷"
 ```
-
-- **返回值**
-
-一个长度为 N 的字符串，由 N 个指定的 Unicode 码点组成。注意，该方法返回一个字符串，而不是一个 `String` 对象。
 
 #### 2.1.1.补充字符
 
@@ -172,10 +169,6 @@ string.charCodeAt(index)
 - **参数**
 
   - `index`：一个大于等于 0，小于字符串长度的整数。如果不是一个数值，则默认为 0。
-
-- **返回值**
-
-  - 指定 `index` 处字符的 UTF-16 代码单元值的一个数字；
     - 不传参数，返回首字符的码点；
     - 如果指定的 `index` 值超出了该范围，则会返回 `NaN`。
 
@@ -276,8 +269,13 @@ string.concat(value, ...)
 
 > `concat` 可以用来拼接任意多个字符串，但实际上更多用"`+/+=`"。
 
-- **返回值**
-  - 一个新的字符串，包含参数所提供的连接字符串。
+```js
+var str = "hi";
+str.concat(); // 'hi'
+str.concat(', '); // 'hi, '
+str.concat(', ', 'i am'); // 'hi, i am'
+str.concat(', ', 'i am', ' jack'); // 'hi, i am jack'
+```
 
 #### 4.2.2.`string.slice`
 
@@ -295,49 +293,89 @@ string.slice(beginIndex[, endIndex])
   - `endIndex`
     可选。在该索引（以 0 为基数）处结束提取字符串（此位本身不复制）。如果省略该参数，`slice` 会一直提取到字符串末尾。如果该参数为负数，则被看作是 `strLength + endIndex`。
 
-- **返回值**
-  - 返回一个从原字符串中提取出来的新字符串
-
 ```js
-var str = 'The morning is upon us.'; // str 的长度 length 是 23
-str.slice(1, 8); // he morn
-str.slice(12); // is upon us.
-str.slice(-3); // us.
-str.slice(-3, -1); // us
+var str = "hello world!";
+str.slice(); // 'hello world!'
+str.slice(6); // 'world!'
+str.slice(-6); // 'world!'
+str.slice(6, 8); // 'wo'
+str.slice(6, -4); // 'wo'
+str.slice(6, -10); // ''
 ```
 
-#### 4.2.3.`string.substring(start[,end])`
+#### 4.2.3.`string.substring`
 
-复制字符串中从索引 start 到索引 end（包括 start, 不包括 end) 的字符
+返回一个字符串在开始索引到结束索引之间的一个子集, 或从开始索引直到字符串的末尾的一个子集。
 
-- 返回值：查找出的新的字符串
-- 参数类型：数值
-- 参数：
-  - a. 不传参数表示全部查找
-  - b. 只传一个参数的时候：从索引 n 一直查找到最后
-  - c. 第二个参数指定复制截止的位置（本身不复制）
-  - d. 如果第二个参数比第一个参数小，互换位置再执行查找；
-  - e. 如果第二个参数超过字符长度，则默认复制到最后；
-  - f. 如果参数是负值，将所有负值转换为 0，遵循以上规则再进行复制；
+- **语法**
 
-#### 4.2.4.`string.substr(start[,length])`
+```js
+string.substring(indexStart[, indexEnd])
+```
 
-复制字符串中从索引 n 开始查找 m 个字符
+- **参数**
 
-- 返回值：查找出的新的字符串
-- 参数类型：数值
-- 参数：
-  - a. 不传参数表示全部查找
-  - b. 如果只有一个参数：从索引 n 一直查找到最后；
-  - c. 第二个参数指定复制字符的长度
-  - d. 如果第二个参数超过字符长度，则默认复制到最后；
-  - e. 参数是负值：若第一个参数是负值，则加上字符串的长度；若第二个参数是负值，则将其变为 0，返回空字符串；
+- `indexStart`
+  - 需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
+- `indexEnd`
+  - 可选。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
+  - 如果 `indexStart` 等于 `indexEnd`，`substring` 返回一个空字符串。
+  - 如果省略 `indexEnd`，`substring` 提取字符一直到字符串末尾。
+  - 如果任一参数小于 0 或为 `NaN`，则被当作 0。
+  - 如果任一参数大于 `stringName.length`，则被当作 `stringName.length`。
+  - 如果 `indexStart` 大于 `indexEnd`，则 `substring` 的执行效果等价于调换两个参数。
+
+```js
+var str = "hello world!";
+
+str.substring(); // 'hello world!'
+str.substring(6); // 'world!'
+str.substring(6, 8); // 'wo'
+str.substring(2, 2); // ''
+str.substring(-2, 2); // 'he'
+str.substring(6, 12); // 'world!'
+str.substring(3, 0); // 'hel'
+```
+
+#### 4.2.4.`string.substr`
+
+> 警告：尽管 `String.prototype.substr` 没有严格被废弃 (as in "removed from the Web standards"), 但它被认作是遗留的函数并且可以的话应该避免使用。它并非 JavaScript 核心语言的一部分，未来将可能会被移除掉。如果可以的话，使用 `substring` 替代它.
+
+返回一个字符串中从指定位置开始到指定字符数的字符。
+
+- **语法**
+
+```js
+string.substr(start[, length])
+```
+
+- **参数**
+  - `start`
+    - 开始提取字符的位置。如果忽略 `start` 或
+    - 如果 `start` 为正值，且大于或等于字符串的长度，则 `substr` 返回一个空字符串。
+    - 如果 `start` 为负值，则 `substr` 把它作为从字符串末尾开始的一个字符索引。
+    - 如果 `start` 为负值且 `abs(start)` 大于字符串的长度，则 `substr` 使用 0 作为开始提取的索引。
+  - `length`
+    - 可选。提取的字符数。
+    - 如果忽略 `length`，则 `substr` 提取字符，直到字符串末尾。
+    - 如果 `length` 为 0 或负值，则 `substr` 返回一个空字符串。
+
+```js
+
+```
 
 ### 4.3.字符串位置方法
 
 > **区分大小写**
 
 #### 4.3.1.`string.indexOf(substring[,start])`
+
+- **语法**
+
+- **参数**
+
+- **返回值**
+
 
 在字符串中从前往后搜索，判断某个字符在不在这个字符串中（只在乎第一次出现），找不到子字符串则返回 -1；
 
@@ -350,6 +388,13 @@ str.slice(-3, -1); // us
   - d. 若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入 `str.length`；
 
 #### 4.3.2.`string.lastIndexOf(substring[,start])`
+
+- **语法**
+
+- **参数**
+
+- **返回值**
+
 
 在字符串中从后往前搜索，判断某个字符在不在这个字符串中（只在乎第一次匹配），找不到子字符串则返回 -1；
 
@@ -366,6 +411,12 @@ str.slice(-3, -1); // us
 ### 4.4.空格处理
 
 #### 4.4.1.`string.trim()`
+
+- **语法**
+
+- **参数**
+
+- **返回值**
 
 创建一个字符串的副本；删除前置及后缀的所有空格，然后返回结果；不修改原字符串；
 
@@ -392,6 +443,12 @@ str.slice(-3, -1); // us
 ### 4.6.字符串的模式匹配方法
 
 #### 4.6.1.`string.match(str/reg)`
+
+- **语法**
+
+- **参数**
+
+- **返回值**
 
 找到一个或多个正则表达式的匹配结果（在字符串上调用这个方法，本质上与调用 `RegExp` 的 `exec()` 方法相同）。
 
@@ -423,6 +480,12 @@ s.match(/(en)/);
 
 #### 4.6.2.`string.search(str/reg)`
 
+- **语法**
+
+- **参数**
+
+- **返回值**
+
 根据正则表达式在 string 中寻找匹配的字符串；
 
 - 返回值：返回字符串中第一个匹配项的索引；如果找不到匹配项，则返回 -1；
@@ -434,6 +497,12 @@ s.match(/(en)/);
 ### 4.7.字符串的替换
 
 #### 4.7.1.`string.replace(regexp[,replacement])`
+
+- **语法**
+
+- **参数**
+
+- **返回值**
 
 替换给定正则表达式匹配的（一个或多个）子表达式；
 
@@ -451,6 +520,12 @@ s.match(/(en)/);
 ### 4.8.字符串变数组
 
 #### 4.8.1.`string.split(delimiter[,limit])`
+
+- **语法**
+
+- **参数**
+
+- **返回值**
 
 基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放到一个数组中
 
@@ -483,6 +558,12 @@ s.split("", 2); //["s", "1"]
 
 #### 4.9.1.`string.localeCompare(target)`
 
+- **语法**
+
+- **参数**
+
+- **返回值**
+
 根据本地默认的排序比较两个字符串（逐个比较），
 
 - 返回值：
@@ -495,9 +576,3 @@ s.split("", 2); //["s", "1"]
 方法的最大特点，就是会考虑自然语言的顺序。举例来说，正常情况下，大写的英文字母小于小写字母。因为 JavaScript 采用的是 `Unicode` 码点比较，B 的码点是 66，而 a 的码点是 9。但是，`localeCompare` 方法会考虑自然语言的排序情况，将 B 排在 a 的前面。
 
 `localeCompare` 还可以有第二个参数，指定所使用的语言（默认是英语），然后根据该语言的规则进行比较。
-
-- **语法**
-
-- **参数**
-
-- **返回值**
