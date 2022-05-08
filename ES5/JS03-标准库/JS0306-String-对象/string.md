@@ -289,9 +289,12 @@ string.slice(beginIndex[, endIndex])
 
 - **参数**
   - `beginIndex`
-    从该索引（以 0 为基数）处开始提取原字符串中的字符。如果值为负数，会被当做 `strLength + beginIndex` 看待，这里的 `strLength` 是字符串的长度（从另一个方面看，可以认为取倒数第 `-beginIndex` 位）。
+    - 从该索引（以 0 为基数）处开始提取原字符串中的字符。
+    - 如果值为负数，会被当做 `strLength + beginIndex` 看待，这里的 `strLength` 是字符串的长度（从另一个方面看，可以认为取倒数第 `-beginIndex` 位）。
   - `endIndex`
-    可选。在该索引（以 0 为基数）处结束提取字符串（此位本身不复制）。如果省略该参数，`slice` 会一直提取到字符串末尾。如果该参数为负数，则被看作是 `strLength + endIndex`。
+    - 可选。在该索引（以 0 为基数）处结束提取字符串（此位本身不复制）。
+    - 如果省略该参数，`slice` 会一直提取到字符串末尾。
+    - 如果该参数为负数，则被看作是 `strLength + endIndex`。
 
 ```js
 var str = "hello world!";
@@ -377,43 +380,95 @@ str.substr(6, -4); // ''
 
 #### 4.3.1.`string.indexOf`
 
+返回调用它的 `String` 对象中 *第一次出现* 的指定值的索引，从指定位置进行搜索。如果未找到该值，则返回 -1。
+
 - **语法**
 
+```js
+string.indexOf(searchValue [, fromIndex])
+```
+
 - **参数**
+  - `searchValue`
+    - 要被查找的字符串值。如果没有提供确切地提供字符串，`searchValue` 会被 [强制设置为 `"undefined"`](https://tc39.es/ecma262/#sec-tostring)， 然后在当前字符串中查找这个值。
+    - 如果忽略该参数，则返回 -1。
+    - 若被查找的字符串 `searchValue` 是一个空字符串，将会产生“奇怪”的结果：
+      - 如果 `fromIndex` 值为空，或者 `fromIndex` 值小于被查找的字符串的长度且大于 0，则返回值和 `fromIndex` 值一样；
+      - 如果 `fromIndex` 值为负数，则返回 0；
+      - 如果 `fromIndex` 值大于等于字符串的长度，将会直接返回字符串的长度；
+  - `fromIndex` (可选)
+    - 数字表示开始查找的位置。可以是任意整数，默认值为 0。如果 `fromIndex` 的值小于 0，或者大于等于 `str.length`，那么查找分别从 0 和 `str.length` 开始。
 
-- **返回值**
+```js
+var str = "hello world!";
+str.indexOf(); // -1
+str.indexOf(6); // -1
+str.indexOf(undefined); // -1
+str.indexOf(null); // -1
+str.indexOf('l'); // 2
+str.indexOf('l', -1); // 2
+str.indexOf('l', 5); // 9
+str.indexOf('l', 12); // -1
 
+// 特别的
+'undefined'.indexOf(); // 0
+'undefined'.indexOf(undefined); // 0
 
-在字符串中从前往后搜索，判断某个字符在不在这个字符串中（只在乎第一次出现），找不到子字符串则返回 -1；
-
-- 返回值：指定字符的索引或者 -1；
-- 参数类型：字符（非字符类型被转化为字符）/数值
-- 参数：
-  - a. 不传参数，默认为找不到子字符串，返回 -1；
-  - b. 第一个参数指定搜索的字符（包括空格和符号）；
-  - c. 第二个参数，指定开始搜索的位置，默认为 0；
-  - d. 若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入 `str.length`；
+// 更特别的
+str.indexOf(''); // 0
+str.indexOf('', 2); // 2
+str.indexOf('', -3); // 0
+str.indexOf('', 9); // 9
+str.indexOf('', 13); // 12
+str.indexOf('', undefined); // 0
+```
 
 #### 4.3.2.`string.lastIndexOf`
 
+返回调用 `String` 对象的指定值 *最后一次出现* 的索引，在一个字符串中的指定位置 `fromIndex` 处从后向前搜索。如果没找到这个特定值则返回-1 。
+
 - **语法**
 
+```js
+string.lastIndexOf(searchValue[, fromIndex])
+```
+
 - **参数**
+  - `searchValue`
+    - 一个字符串，表示被查找的值。
+    - 如果 `searchValue` 是空字符串，则返回 `fromIndex`。
+    - 如果忽略该参数，则返回 -1。
+  - `fromIndex` (可选)
+    - 待匹配字符串 `searchValue` 的开头一位字符从 `str` 的第 `fromIndex` 位开始向左回向查找。`fromIndex` 默认值是 `+Infinity`。
+    - 如果 `fromIndex >= str.length`，则会搜索整个字符串。
+    - 如果 `fromIndex < 0`，则等同于 `fromIndex === 0`。
 
-- **返回值**
+```js
+var str = "hello world!";
 
+str.lastIndexOf(); // -1
+str.lastIndexOf(6); // -1
+str.lastIndexOf(undefined); // -1
+str.lastIndexOf(null); // -1
+str.lastIndexOf('l'); // 9
+str.lastIndexOf('l', -1); // -1
+str.lastIndexOf('l', 5); // 3
+str.lastIndexOf('l', 12); // 9
 
-在字符串中从后往前搜索，判断某个字符在不在这个字符串中（只在乎第一次匹配），找不到子字符串则返回 -1；
+// 特别的
+'undefined'.lastIndexOf(); // 0
+'undefined'.lastIndexOf(undefined); // 0
 
-- 返回值：指定字符的索引或者 -1；
-- 参数类型：字符（非字符类型被转化为字符）/数值
-- 参数：
-  - a. 不传参数，默认为找不到子字符串，返回 -1；
-  - b. 第一个参数指定搜索的字符（包括空格和符号）；
-  - c. 第二个参数，指定开始搜索的位置，默认为 `str.length`；
-  - d. 若第二个参数小于 0，视为输入 0；若大于等于字符长度，视为输入 `str.length`；
+// 更特别的
+str.lastIndexOf(''); // 12
+str.lastIndexOf('', 2); // 2
+str.lastIndexOf('', -3); // 0
+str.lastIndexOf('', 9); // 9
+str.lastIndexOf('', 14); // 12
+str.lastIndexOf('', undefined); //12
+```
 
-> 对于 `indexOf` 与 `lastIndexOf`，若是查找空字符且指定了第二个参数时，则其返回值为第二个参数的值（如果没有就是 0），注意当第二个参数的值大于字符长度时，返回值为字符长度，若是负数则返回 0。
+> 注意：`str.indexOf` 和 `str.lastIndexOf` 对于 `searchValue` 为空字符串的时候，大体相同，唯有没有 `fromIndex` 时，`str.indexOf` 返回 0，而 `str.lastIndexOf` 返回 `str.length`，需留意：前者 `fromIndex` 默认值为 0，而后者 `fromIndex` 默认值为 `+Infinity`。
 
 ### 4.4.空格处理
 
