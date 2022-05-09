@@ -474,18 +474,110 @@ str.lastIndexOf('', undefined); //12
 
 #### 4.4.1.`string.trim`
 
+从一个字符串的两端删除空白字符，并不影响原字符串本身。在这个上下文中的空白字符是所有的空白字符 (space, tab, no-break space 等) 以及所有行终止符字符（如 LF，CR 等）。
+
 - **语法**
 
-- **参数**
+```js
+string.trim()
+```
 
-- **返回值**
+```js
+'[' + ' hi'.trim() + ']'; // '[hi]'
+'[' + ' hi '.trim() + ']'; // '[hi]'
+'[' + 'hi '.trim() + ']'; // '[hi]'
+'[' + '\nhi'.trim() + ']'; // '[hi]'
+'[' + '\rhi'.trim() + ']'; // '[hi]'
+'[' + '\t\v\rhi'.trim() + ']'; // '[hi]'
+```
 
-创建一个字符串的副本；删除前置及后缀的所有空格，然后返回结果；不修改原字符串；
+- **兼容**
 
-- 返回值：新字符串
-- 没有参数，传参不报错，但是无效
+```js
+// 如果 trim 不存在，可以在所有代码前执行下面代码
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  };
+}
+```
 
-> 该方法去除的不仅是空格，还包括制表符（`\t`、`\v`）、换行符（`\n`）和回车符（`\r`）。
+#### 4.4.2.`string.trimStart`
+
+移除原字符串左端的连续空白符并返回一个新字符串，并不会直接修改原字符串本身。`trimLeft` 是此方法的别名。
+
+> 为了与 `String.prototype.padStart` 等函数保持一致，标准方法名称为 `trimStart`。 但是，出于 Web 兼容性原因，`trimLeft` 仍然是 `trimStart` 的别名。在某些引擎中，这意味着：
+> `String.prototype.trimLeft.name === "trimStart";`
+
+- **语法**
+
+```js
+str.trimStart();
+// or
+str.trimLeft();
+```
+
+```js
+'[' + ' hi'.trimStart() + ']'; // '[hi]'
+'[' + ' hi '.trimStart() + ']'; // '[hi ]'
+'[' + '\n\vhi'.trimStart() + ']'; // '[hi']
+```
+
+- **Polyfill**
+
+```js
+// https://github.com/FabioVergani/js-Polyfill_String-trimStart
+
+(function (w) {
+  var String = w.String, Proto = String.prototype;
+
+  (function (o, p) {
+    if (p in o ? o[p] ? false : true : true) {
+      var r = /^\s+/;
+      o[p] = o.trimLeft || function () {
+        return this.replace(r, '')
+      }
+    }
+  })(Proto, 'trimStart');
+
+})(window);
+
+
+/*
+// ES6:
+(w => {
+  const String = w.String, Proto = String.prototype;
+
+  ((o, p) => {
+    if (p in o ? o[p] ? false : true : true) {
+      const r = /^\s+/;
+      o[p] = o.trimLeft || function () {
+        return this.replace(r, '')
+      }
+    }
+  })(Proto, 'trimStart');
+
+})(window);
+*/
+```
+
+#### 4.4.3.`string.trimEnd`
+
+移除原字符串右端的连续空白符并返回一个新字符串，并不会直接修改原字符串本身。`trimRight` 是此方法的别名。
+
+- **语法**
+
+```js
+str.trimEnd();
+// or
+str.trimRight();
+```
+
+```js
+'[' + 'hi '.trimEnd() + ']'; // '[hi']
+'[' + ' hi '.trimEnd() + ']'; // '[ hi]'
+'[' + 'hi\n\v'.trimEnd() + ']'; // '[hi]'
+```
 
 ### 4.5.字符串大小写转换方法
 
