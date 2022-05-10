@@ -46,6 +46,8 @@ String(1, 2); //'1'
 - **返回值**
   - 一个长度为 N 的字符串，由 N 个指定的 Unicode 码点组成。注意，该方法返回一个字符串，而不是一个 `String` 对象。
 
+- **实例**
+
 ```js
 String.fromCharCode(); // ""
 String.fromCharCode(97); // "a"
@@ -172,6 +174,8 @@ string.charCodeAt(index)
     - 不传参数，返回首字符的码点；
     - 如果指定的 `index` 值超出了该范围，则会返回 `NaN`。
 
+- **实例**
+
 ```js
 "ABC".charCodeAt(0); // 65
 "ABC".charCodeAt(1); // 66
@@ -269,6 +273,8 @@ string.concat(value, ...)
 
 > `concat` 可以用来拼接任意多个字符串，但实际上更多用"`+/+=`"。
 
+- **实例**
+
 ```js
 var str = "hi";
 str.concat(); // 'hi'
@@ -295,6 +301,8 @@ string.slice(beginIndex[, endIndex])
     - 可选。在该索引（以 0 为基数）处结束提取字符串（此位本身不复制）。
     - 如果省略该参数，`slice` 会一直提取到字符串末尾。
     - 如果该参数为负数，则被看作是 `strLength + endIndex`。
+
+- **实例**
 
 ```js
 var str = "hello world!";
@@ -327,6 +335,8 @@ string.substring(indexStart[, indexEnd])
   - 如果任一参数小于 0 或为 `NaN`，则被当作 0。
   - 如果任一参数大于 `stringName.length`，则被当作 `stringName.length`。
   - 如果 `indexStart` 大于 `indexEnd`，则 `substring` 的执行效果等价于调换两个参数。
+
+- **实例**
 
 ```js
 var str = "hello world!";
@@ -363,6 +373,8 @@ string.substr(start[, length])
     - 如果忽略 `length`，则 `substr` 提取字符，直到字符串末尾。
     - 如果 `length` 为 0 或负值，则 `substr` 返回一个空字符串。
 
+- **实例**
+
 ```js
 var str = "hello world!";
 str.substr(); // 'hello world!'
@@ -398,6 +410,8 @@ string.indexOf(searchValue [, fromIndex])
       - 如果 `fromIndex` 值大于等于字符串的长度，将会直接返回字符串的长度；
   - `fromIndex` (可选)
     - 数字表示开始查找的位置。可以是任意整数，默认值为 0。如果 `fromIndex` 的值小于 0，或者大于等于 `str.length`，那么查找分别从 0 和 `str.length` 开始。
+
+- **实例**
 
 ```js
 var str = "hello world!";
@@ -443,6 +457,8 @@ string.lastIndexOf(searchValue[, fromIndex])
     - 如果 `fromIndex >= str.length`，则会搜索整个字符串。
     - 如果 `fromIndex < 0`，则等同于 `fromIndex === 0`。
 
+- **实例**
+
 ```js
 var str = "hello world!";
 
@@ -482,6 +498,8 @@ str.lastIndexOf('', undefined); //12
 string.trim()
 ```
 
+- **实例**
+
 ```js
 '[' + ' hi'.trim() + ']'; // '[hi]'
 '[' + ' hi '.trim() + ']'; // '[hi]'
@@ -516,6 +534,8 @@ str.trimStart();
 // or
 str.trimLeft();
 ```
+
+- **实例**
 
 ```js
 '[' + ' hi'.trimStart() + ']'; // '[hi]'
@@ -573,6 +593,8 @@ str.trimEnd();
 str.trimRight();
 ```
 
+- **实例**
+
 ```js
 '[' + 'hi '.trimEnd() + ']'; // '[hi']
 '[' + ' hi '.trimEnd() + ']'; // '[ hi]'
@@ -581,18 +603,80 @@ str.trimRight();
 
 ### 4.5.字符串大小写转换方法
 
-1).`string.toUpperCase`
-2).`string.toLowerCase`
-3).`string.toLocaleLowerCase`
-4).`string.toLocaleUpperCase)`
+#### 4.5.1.`string.toUpperCase` 和 `string.toLowerCase`
 
-> `toUpperCase` 和 `toLowerCase` 借鉴 `Java.lang.String` 中的同名方法；
+将调用该方法的字符串转为大写或小写形式并返回（如果调用该方法的值不是字符串类型会被强制转换）。
+
+> `toUpperCase` 和 `toLowerCase` 借鉴 `Java.lang.String` 中的同名方法。
+
+- **语法**
+
+```js
+string.toUpperCase()
+
+string.toLowerCase()
+```
+
+- **TypeError**
+
+在 `null` 或 `undefined` 类型上调用：
+
+```js
+null.toUpperCase();
+// TypeError: Cannot read properties of null(reading 'toUpperCase')
+```
+
+- **实例**
+
+```js
+'alphabet'.toUpperCase(); // 'ALPHABET'
+'ALPHABET'.toLowerCase(); // 'alphabet'
+```
+
+#### 4.5.2.`string.toLocaleLowerCase` 和 `string.toLocaleUpperCase)`
+
+根据任何指定区域语言环境设置的大小写映射，返回调用字符串被转换为大写或小写的格式。
+
 > `toLocaleLowerCase` 和 `toLocaleUpperCase` 是针对特定地区的实现；
 
-- 返回值：新字符串
-- 没有参数，传参不报错，但是无效
+- **语法**
 
-> 对于 `toLocaleLowerCase` 和 `toLocaleUpperCase` 传入参数为 `null` 或 `undefined` 会报错：`Uncaught TypeError: Cannot convert undefined or null to object at String.toLocaleLowerCase (native)`
+```js
+string.toLocaleUpperCase()
+string.toLocaleUpperCase(locale)
+string.toLocaleUpperCase([locale, locale, ...])
+
+string.toLocaleLowerCase()
+string.toLocaleLowerCase(locale)
+string.toLocaleLowerCase([locale, locale, ...])
+```
+
+- **参数**
+  - `locale` (可选)
+    - 参数 `locale` 指明要转换成大写或小写格式的特定语言区域。如果以一个数组 Array 形式给出多个 `locales`, 最合适的地区将被选出来应用。默认的 `locale` 是主机环境的当前区域(locale)设置。
+
+- **Exceptions**
+  - `RangeError`：
+  - `RangeError`：
+
+```js
+'\u0130'.toLocaleLowerCase('en-US'); // i
+'\u0130'.toLocaleLowerCase('en-USB');
+// RangeError: Incorrect locale information provided
+
+'\u0130'.toLocaleLowerCase([250]);
+// TypeError: Language ID should be string or object
+```
+
+- **实例**
+
+```js
+'Gesäß'.toLocaleUpperCase(); // 'GESÄSS'
+'i\u0307'.toLocaleUpperCase('lt-LT'); // 'I'
+
+'\u0130'.toLocaleLowerCase('tr') === 'i';    // true
+'\u0130'.toLocaleLowerCase('en-US') === 'i'; // false
+```
 
 ### 4.6.字符串的模式匹配方法
 
