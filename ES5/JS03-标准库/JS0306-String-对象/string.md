@@ -904,6 +904,33 @@ s.split("", 2); // ["s", "1"]
 > IE8 及之前版本会忽略捕获组。ECMCA-262 规定应该把捕获组的内容拼接到结果数组中。IE 能正确地在结果中包含捕获组；
 > Firefox3.6 及之前版本在捕获组为捕获到匹配项时，会在结果中包含空字符；ECMCA-262 规定没有匹配项的捕获组在结果数组中应该用 `undefined` 表示；
 
+- **示例**
+
+```js
+/*
+* 移出字符串中的空格
+* 查找“0 或多个空白符接着的分号，再接着 0 或多个空白符”模式的字符串
+* 找到后，就将空白符从字符串中移除，nameList 是 split 的返回数组。
+*/
+
+var names = "Harry Trump ;Fred Barney; Helen Rigby ; Bill Abel ;Chris Hand ";
+
+var re = /\s*(?:;|$)\s*/;
+var nameList = names.split(re);
+
+console.log(nameList);
+/*
+[
+  'Harry Trump',
+  'Fred Barney',
+  'Helen Rigby',
+  'Bill Abel',
+  'Chris Hand',
+  ''
+]
+*/
+```
+
 ### 4.9.字符串比较
 
 #### 4.9.1.`string.localeCompare`
