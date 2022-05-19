@@ -53,33 +53,83 @@ Math.SQRT2; // 1.4142135623730951
 
 - **语法**
 
-‵
-
-
+```js
+Math.abs(x);
+```
 
 - **参数**
+  - 一个数值；
+  - 传入一个非数字形式的字符串或者 `undefined/empty` 变量，将返回 `NaN`；
+  - 传入 `null` 将返回 `0`；
 
-- **返回值**
+- **实例**
 
-返回参数的绝对值。传入一个非数字形式的字符串或者 `undefined/empty` 变量，将返回 `NaN`。传入 `null` 将返回 `0`。
+```js
+Math.abs(); // NaN
 
-### 2.2.`Math.min` 和 `Math.max`
+Math.abs(-2); // 2
+Math.abs(null); // 0
+Math.abs(undefined); // NaN
 
-用于返回一组数中的最大值或最小值，可以接收任意多的数值参数。如果参数为空，`Math.min` 返回 `Infinity`, `Math.max` 返回 `-Infinity`。
+Math.abs(''); // 0
+Math.abs('-1'); // 1
+Math.abs('string'); // NaN
+
+Math.abs(true); // 1
+
+Math.abs([]); // 0
+Math.abs([2]); // 2
+Math.abs([1,2]); // NaN
+
+Math.abs({}); // NaN
+```
+
+### 2.2.`Math.max` 和 `Math.min`
+
+用于返回一组数中的最大值或最小值。
+
+- **语法**
+
+```js
+Math.max(value1[,value2, ...]);
+Math.min(value1[,value2, ...]);
+```
+
+- **参数**
+  - `value1, value2, ...`
+    - 一组数值;
+    - 如果给定的参数中至少有一个参数无法被转换成数字，则会返回 `NaN`；
+    - 如果没有参数，则结果为 `-Infinity` 或 `Infinity`。
+
+- **示例**
 
 ```js
 // 若要找到数组中的最大/最小值，可以使用 apply() 方法
 //关键在于，把 Math 对象作为 apply() 的第一个参数，正确的设置 this，然后，可以将任何数组当做第二个参数；
 
-var values = [1, 3, 2, 6, 12];
-var max = Math.max.apply(Math, values);
-console.log(max); //12
+var ary = [1, 3, 2, 6, 12], max, min;
+max = Math.max.apply(Math, ary);
+// or
+// max = Math.max(...ary);
+console.log(max); // 12
 
-var min = Math.min.apply(Math, values);
-console.log(min); //1
+min = Math.min.apply(Math, ary);
+// or
+// min = Math.min(...ary);
+console.log(min); // 1
 ```
 
 ### 2.3. 取整方法
+
+- **语法**
+
+```js
+Math.abs(x);
+```
+
+- **参数**
+
+- **实例**
 
 1).`Math.ceil()` 执行向上舍入
 2).`Math.floor()` 执行向下舍入
