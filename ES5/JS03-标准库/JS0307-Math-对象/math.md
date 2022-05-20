@@ -119,21 +119,25 @@ min = Math.min.apply(Math, ary);
 console.log(min); // 1
 ```
 
-### 2.3. 取整方法
+### 2.3.取整方法
+
+| 方法名         | 功能         |
+| -------------- | ------------ |
+| `Math.ceil()`  | 执行向上舍入 |
+| `Math.floor()` | 执行向下舍入 |
+| `Math.round()` | 执行标准舍入 |
 
 - **语法**
 
 ```js
-Math.abs(x);
+Math.ceil(x);
+Math.floor(x);
+Math.round(x);
 ```
 
 - **参数**
 
 - **实例**
-
-1).`Math.ceil()` 执行向上舍入
-2).`Math.floor()` 执行向下舍入
-3).`Math.round()` 执行标准舍入
 
 > `Math.round()` 对于 `-n.5` 一律取值为 `-n`;
 
