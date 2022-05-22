@@ -121,11 +121,23 @@ console.log(min); // 1
 
 ### 2.3.取整方法
 
+`Math.ceil()` 函数返回大于或等于一个给定数字的最小整数。
+
+`Math.floor()` 返回小于或等于一个给定数字的最大整数。
+
+`Math.round()` 函数返回一个数字四舍五入后最接近的整数。
+
 | 方法名         | 功能         |
 | -------------- | ------------ |
 | `Math.ceil()`  | 执行向上舍入 |
 | `Math.floor()` | 执行向下舍入 |
 | `Math.round()` | 执行标准舍入 |
+
+> **对于 `Math.round()`**：
+> 如果参数的小数部分大于 0.5，则舍入到相邻的绝对值更大的整数；
+> 如果参数的小数部分小于 0.5，则舍入到相邻的绝对值更小的整数；
+> 如果参数的小数部分恰好等于 0.5，则舍入到相邻的在正无穷（+∞）方向上的整数。
+> 注意，与很多其他语言中的 `round()` 函数不同，`Math.round()` 并不总是舍入到远离 0 的方向（尤其是在负数的小数部分恰好等于 0.5 的情况下）。
 
 - **语法**
 
@@ -135,11 +147,69 @@ Math.floor(x);
 Math.round(x);
 ```
 
-- **参数**
-
 - **实例**
 
-> `Math.round()` 对于 `-n.5` 一律取值为 `-n`;
+```js
+Math.ceil(); // NaN
+Math.floor(); // NaN
+Math.round(); // NaN
+
+Math.ceil(''); // 0
+Math.floor(''); // 0
+Math.round(''); // 0
+
+Math.ceil('3.14'); // 4
+Math.floor('3.14'); // 3
+Math.round('3.14'); // 3
+
+Math.ceil([]); // 0
+Math.floor([]); // 0
+Math.round([]); // 0
+
+Math.ceil([3.1415]); // 4
+Math.floor([3.1415]); // 3
+Math.round([3.1415]); // 3
+
+Math.ceil({}); // 0
+Math.floor({}); // 0
+Math.round({}); // 0
+
+Math.ceil(null); // 0
+Math.floor(null); // 0
+Math.round(null); // 0
+
+Math.ceil(undefined); // 0
+Math.floor(undefined); // 0
+Math.round(undefined); // 0
+
+Math.ceil(NaN); // 0
+Math.floor(NaN); // 0
+Math.round(NaN); // 0
+
+Math.ceil(1.3); // 2
+Math.floor(1.3); // 1
+Math.round(1.3); // 1
+
+Math.ceil(1.5); // 2
+Math.floor(1.5); // 1
+Math.round(1.5); // 2
+
+Math.ceil(1.7); // 2
+Math.floor(1.7); // 1
+Math.round(1.7); // 2
+
+Math.ceil(-1.3); // -1
+Math.floor(-1.3); // -2
+Math.round(-1.3); // -1
+
+Math.ceil(-1.5); // -1
+Math.floor(-1.5); // -2
+Math.round(-1.5); // -1
+
+Math.ceil(-1.7); // -1
+Math.floor(-1.7); // -2
+Math.round(-1.7); // -2
+```
 
 ### 2.4.`Math.random`
 
