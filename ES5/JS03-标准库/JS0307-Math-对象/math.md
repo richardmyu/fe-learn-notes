@@ -40,6 +40,8 @@ Math.SQRT2; // 1.4142135623730951
 
 #### 2.1.1.`Math.abs`
 
+返回指定数字的绝对值。
+
 - **语法**
 
 ```js
@@ -220,7 +222,7 @@ Math.round(-1.7); // -2
 Math.trunc(-1.7); // -1
 ```
 
-#### 2.1.4.浮点数
+#### 2.1.4.`Math.fround`
 
 `Math.fround()` 可以将任意的数字转换为离它最近的单精度浮点数形式的数字。
 
@@ -286,7 +288,7 @@ Math.fround = Math.fround || (function (array) {
 })(new Float32Array(1));
 ```
 
-### 2.4.`Math.random`
+#### 2.1.5.`Math.random`
 
 返回一个浮点数，伪随机数在范围从 0 到 1（不包括 1）。
 
@@ -329,9 +331,76 @@ function getRandomIntInclusive(min, max) {
 }
 ```
 
-### 2.5.幂积
+#### 2.1.6.`Math.clz32`
 
-#### 2.5.1.`Math.pow`
+返回一个数字在转换成 32 无符号整形数字的二进制形式后，开头的 0 的个数，比如 1000000 转换成 32 位无符号整形数字的二进制形式后是 00000000000011110100001001000000，开头的 0 的个数是 12 个，则 `Math.clz32(1000000)` 返回 12。
+
+> 这个函数主要用于那些编译目标为 JS 语言的系统中，比如 Emscripten。
+
+- **语法**
+
+```js
+Math.clz32 (x)
+```
+
+- **参数**
+  - x
+    - 一个数字；
+    - 如果 `x` 不是数字类型，则它首先会被转换成数字类型，然后再转成 32 位无符号整形数字；
+    - 如果转换后的 32 位无符号整形数字是 0，则返回 32，因为此时所有位上都是 0；
+    - `NaN`，`Infinity`，`-Infinity` 这三个数字转成 32 位无符号整形数字后都是 0；
+
+- **实例**
+
+```js
+Math.clz32(1)                // 31
+Math.clz32(1000)             // 22
+Math.clz32()                 // 32
+
+[NaN, Infinity, -Infinity, 0, -0, null, undefined, "foo", {}, []].filter(function (n) {
+  return Math.clz32(n) !== 32
+})                           // []
+Math.clz32(true)             // 31
+Math.clz32(3.5)              // 30
+```
+
+#### 2.1.7.`Math.imul`
+
+将两个参数分别转换为 32 位整数，相乘后返回 32 位结果，类似 C 语言的 32 位整数相乘。
+
+> `Math.imul` 可以进行类似 C 语言的 32 位整数相乘。该特性对于一些项目比如 Emscripten 很有用。
+> 如果使用 JavaScript 浮点数做为 `imul` 的参数，会有性能损失。这是因为相乘前 `imul` 会将浮点数转换为整数，相乘后会将整数重新转换为浮点数，这两步转换的开销是比较大的。
+> `imul` 存在的原因是在 AsmJS(目前为止唯一一种环境)下它是快速的。AsmJS 使 JIST-optimizers 更容易实现 JavaScript 内部的整数。
+> 现代浏览器中，唯一能体现出 `imul` 性能优越的场景是两个 `Number` 内部以整数的形式相乘(仅在 AsmJS 下可行)。
+
+- **语法**
+
+```js
+Math.imul(a, b)
+```
+
+- **参数**
+  - `a`
+    被乘数；
+  - `b`
+    乘数；
+
+- **返回值**
+  - 类似 C 语言 32 位整数相乘的结果。
+
+- **实例**
+
+```js
+Math.imul(2, 4) // 8
+Math.imul(-1, 8) // -8
+Math.imul(-2, -2) // 4
+Math.imul(0xffffffff, 5) //-5
+Math.imul(0xfffffffe, 5) //-10
+```
+
+### 2.2.幂积
+
+#### 2.2.1.`Math.pow`
 
 返回基数（base）的指数（exponent）次幂，即 `base^exponent`。
 
@@ -358,7 +427,7 @@ Math.pow(2, null); // 1
 Math.pow(2, []); // 1
 ```
 
-#### 2.5.2.`Math.exp`
+#### 2.2.2.`Math.exp`
 
 返回 `e^x`，`x` 表示参数，`e` 是欧拉常数（Euler's constant），自然对数的底数。
 
@@ -380,7 +449,7 @@ Math.exp(0);  // 1
 Math.exp(1);  // 2.718281828459045
 ```
 
-#### 2.5.3.`Math.expm1`
+#### 2.2.3.`Math.expm1`
 
 返回 `e^x - 1`。
 
@@ -403,9 +472,9 @@ Math.expm1("-38") // -1
 Math.expm1("foo") // NaN
 ```
 
-### 2.6.开方
+### 2.3.开方
 
-#### 2.6.1.`Math.sqrt`
+#### 2.3.1.`Math.sqrt`
 
 返回一个数的平方根。
 
@@ -432,7 +501,7 @@ Math.sqrt(-1); // NaN
 Math.sqrt(-0); // -0
 ```
 
-#### 2.6.2.`Math.cbrt`
+#### 2.3.2.`Math.cbrt`
 
 返回一个数的立方根。
 
@@ -460,9 +529,41 @@ Math.cbrt(null); // 0
 Math.cbrt(2);  // 1.2599210498948734
 ```
 
-### 2.7.对数
+#### 2.3.3.`Math.hypot`
 
-### 2.7.1.`Math.log`
+返回所有参数的平方和的平方根。
+
+- **语法**
+
+```js
+Math.hypot([value1[,value2, ...]])
+```
+
+- **参数**
+  - `value1`, `value2`, ...
+    - 任意个数字；
+    - 如果不传入任何参数，则返回 `+`0；
+    - 如果参数列表中有至少一个参数不能被转换为数字，则返回 `NaN`；
+    - 如果只传入一个参数，`Math.hypot(x)` 等同于 `Math.abs(x)`；
+
+- **返回值**
+  - 将所提供的参数求平方和后开平方根。
+
+- **实例**
+
+```js
+Math.hypot(3, 4);        // 5
+Math.hypot(3, 4, 5);     // 7.0710678118654755
+Math.hypot();            // 0
+Math.hypot(NaN);         // NaN
+Math.hypot(3, 4, 'foo'); // NaN, +'foo' => NaN
+Math.hypot(3, 4, '5');   // 7.0710678118654755, +'5' => 5
+Math.hypot(-3);          // 3, the same as Math.abs(-3)
+```
+
+### 2.4.对数
+
+### 2.4.1.`Math.log`
 
 返回一个数的自然对数。
 
@@ -486,7 +587,7 @@ Math.log(1); // 0
 Math.log(10); // 2.302585092994046
 ```
 
-### 2.7.2.`Math.log2`
+### 2.4.2.`Math.log2`
 
 返回一个数字以 2 为底的对数。
 
@@ -513,7 +614,7 @@ Math.log2("1024")// 10
 Math.log2("foo") // NaN
 ```
 
-### 2.7.3.`Math.log10`
+### 2.4.3.`Math.log10`
 
 返回一个数字以 10 为底的对数。
 
@@ -540,7 +641,7 @@ Math.log10(-2)   // NaN
 Math.log10("foo")// NaN
 ```
 
-### 2.7.4.`Math.log1p`
+### 2.4.4.`Math.log1p`
 
 返回一个数字加 1 后的自然对数 (底为 E), 即 `log(x+1)`。
 
@@ -566,25 +667,204 @@ Math.log1p(-2)        // NaN
 Math.log1p("foo")     // NaN
 ```
 
-### 2.8.三角函数
+### 2.5.三角函数和反三角函数
 
-Math 对象还提供一系列三角函数方法。
+#### 2.5.1.三角函数
+
+`Math.sin()` 函数返回一个数值的正弦值。
+
+`Math.cos()` 函数返回一个数值的余弦值。
+
+`Math.tan()` 函数返回一个数值的正切值。
 
 - **语法**
 
 ```js
-
+Math.sin(x)
+Math.cos(x)
+Math.tan(x)
 ```
 
 - **参数**
+  - x
+    - 一个数值，表示一个角（单位：弧度）。
 
 - **示例**
 
-- `Math.sin()`：返回参数的正弦（参数为弧度值）
-- `Math.cos()`：返回参数的余弦（参数为弧度值）
-- `Math.tan()`：返回参数的正切（参数为弧度值）
-- `Math.asin()`：返回参数的反正弦（返回值为弧度值）
-- `Math.acos()`：返回参数的反余弦（返回值为弧度值）
-- `Math.atan()`：返回参数的反正切（返回值为弧度值）
+```js
+Math.sin(0); // 0
+Math.sin(1); // 0.8414709848078965
+Math.sin(Math.PI / 2); // 1
 
-### 2.9.双曲函数
+Math.cos(0); // 1
+Math.cos(1); // 0.5403023058681398
+Math.cos(Math.PI); // -1
+Math.cos(2 * Math.PI); // 1
+
+Math.tan(0); // 0
+Math.tan(1); // 1.5574077246549023
+Math.tan(Math.PI / 2); // 16331239353195370
+Math.tan(Math.PI / 4); // 0.9999999999999999
+Math.tan(Math.PI); // -1.2246467991473532e-16
+```
+
+#### 2.5.2.反三角函数
+
+`Math.asin()` 方法返回一个数值的反正弦（单位为弧度）。
+
+`Math.acos()` 返回一个数的反余弦值（单位为弧度）。
+
+`Math.atan()` 函数返回一个数值的反正切（以弧度为单位）。
+
+- **语法**
+
+```js
+Math.asin(x)
+Math.acos(x)
+Math.atan(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+    - 对于 `Math.asin(x)` 和 `Math.acos(x)`，若参数小于 -1 或大于 1 的参数值，返回 `NaN`；
+
+- **示例**
+
+```js
+Math.asin(-2);  // NaN
+Math.asin(-1);  // -1.5707963267948966 (-pi/2)
+Math.asin(0);   // 0
+Math.asin(0.5); // 0.5235987755982989
+Math.asin(1);   // 1.570796326794897 (pi/2)
+Math.asin(2);   // NaN
+
+Math.acos(-2);  // NaN
+Math.acos(-1);  // 3.141592653589793
+Math.acos(0);   // 1.5707963267948966
+Math.acos(0.5); // 1.0471975511965979
+Math.acos(1);   // 0
+Math.acos(2);   // NaN
+
+Math.atan(1);  // 0.7853981633974483
+Math.atan(0);  // 0
+```
+
+### 2.6.双曲函数和反双曲函数
+
+#### 2.6.1.双曲函数
+
+`Math.sinh()` 函数返回一个数字(单位为角度)的双曲正弦值。
+
+`Math.cosh()` 函数返回一个数字(单位为角度)的双曲余弦值。
+
+`Math.tanh()` 函数返回一个数字(单位为角度)的双曲正切值。
+
+- **语法**
+
+```js
+Math.sinh(x)
+Math.cosh(x)
+Math.tanh(x)
+```
+
+- **参数**
+  - x
+    - 任意数字 (单位为度)；
+
+- **示例**
+
+```js
+Math.sinh(0)      // 0
+Math.sinh(1)      // 1.1752011936438014
+Math.sinh("-1")   // -1.1752011936438014
+Math.sinh("foo")  // NaN
+
+Math.cosh(0);  // 1
+Math.cosh(1);  // 1.5430806348152437
+Math.cosh(-1); // 1.5430806348152437
+
+Math.tanh(0);        // 0
+Math.tanh(Infinity); // 1
+Math.tanh(1);        // 0.7615941559557649
+```
+
+#### 2.6.2.反双曲函数
+
+`Math.asinh()` 函数返回一个数值的反双曲正弦值。
+
+`Math.acosh()` 函数返回一个数值的反双曲余弦值。
+
+`Math.atanh()` 函数返回一个数值的反双曲正切值。
+
+- **语法**
+
+```js
+Math.asinh(x)
+Math.acosh(x)
+Math.atanh(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+    - 当参数小于 1 时，`Math.acosh()` 将返回 `NaN`；
+    - 对于大于 1 或是小于 －1 的值，`Math.atanh()` 将返回 `NaN`；
+
+- **示例**
+
+```js
+Math.asinh(1);  // 0.881373587019543
+Math.asinh(0);  // 0
+
+Math.acosh(-1);  // NaN
+Math.acosh(0);   // NaN
+Math.acosh(0.5); // NaN
+Math.acosh(1);   // 0
+Math.acosh(2);   // 1.3169578969248166
+
+Math.atanh(-2);  // NaN
+Math.atanh(-1);  // -Infinity
+Math.atanh(0);   // 0
+Math.atanh(0.5); // 0.5493061443340548
+Math.atanh(1);   // Infinity
+Math.atanh(2);   // NaN
+```
+
+### 2.7.`Math.atan2`
+
+返回从原点 (0,0) 到 (x,y) 点的线段与 x 轴正方向之间的平面角度(弧度值)。
+
+`atan2` 方法返回一个 `-pi` 到 `pi` 之间的数值，表示点 (x, y) 对应的偏移角度。这是一个逆时针角度，以弧度为单位，正X轴和点 (x, y) 与原点连线 之间。
+
+> 注意此函数接受的参数：先传递 y 坐标，然后是 x 坐标。
+> `atan2` 接受单独的 ``x` 和 `y` 参数，而 `atan` 接受两个参数的比值。
+
+- **语法**
+
+```js
+Math.atan2(y, x)
+```
+
+- **参数**
+  - y, x
+    - 数值
+
+- **实例**
+
+```js
+Math.atan2(90, 15); // 1.4056476493802699
+Math.atan2(15, 90); // 0.16514867741462683
+
+Math.atan2( ±0, -0); // ±PI
+Math.atan2( ±0, +0); // ±0
+Math.atan2( ±0, -x); // ±PI for x > 0
+Math.atan2( ±0, x); // ±0 for x > 0
+Math.atan2(-y, ±0); // -PI/2 for y > 0
+Math.atan2(y, ±0);  // PI/2 for y > 0
+Math.atan2( ±y, -Infinity); // ±PI for finite y > 0
+Math.atan2( ±y, +Infinity); // ±0 for finite y > 0
+Math.atan2( ±Infinity, x); // ±PI/2 for finite x
+Math.atan2( ±Infinity, -Infinity); // ±3*PI/4
+Math.atan2( ±Infinity, +Infinity); // ±PI/4
+```
