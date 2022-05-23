@@ -213,33 +213,281 @@ Math.round(-1.7); // -2
 
 ### 2.4.`Math.random`
 
-1).`Math.random()`，返回一个大于等于 0，小于 1 的伪随机数。
+返回一个浮点数，伪随机数在范围从 0 到 1（不包括 1）。
 
-2).`Math.random()*(m-n)+n`，获得 n 到 m 之间的伪随机数（小数）；
+> 值域：[0, 1)。
+> **备注**：`Math.random()` 不能提供像密码一样安全的随机数字。不要使用它们来处理有关安全的事情。使用 [Web Crypto API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Crypto_API) 来代替，和更精确的 [`window.crypto.getRandomValues()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Crypto/getRandomValues) 方法。
 
-3).`Math.floor(Math.randow()*(max-min+1))+min;` 任意范围随机整数
+- **语法**
 
-### 2.5.`Math.pow`
+```js
+Math.random()
+```
 
-返回以第一个参数为底数、第二个参数为幂的指数值。
+- **示例**
+
+注意，由于 JavaScript 中的数字是 IEEE 754 浮点数字，具有 **最近舍入**（ round-to-nearest-even）的行为，因此以下函数的范围 (不包括 `Math.random()` 本身) 并不准确。如果选择了非常大的边界 (`2^53` 或更高)，在极罕见的情况下会计算通常-排除（usually-excluded）的上界。（注：round-to-nearest-even 采用最近舍入的去偶数舍入的方式，对 .5 的舍入上，采用取偶数的方式）
+
+```js
+// 得到一个大于等于 0，小于 1 之间的随机数
+function getRandom() {
+  return Math.random();
+}
+
+// 得到一个两数之间的随机数
+// 这个值不小于 min（有可能等于），并且小于（不等于）max。
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+// 这个值不小于 min （如果 min 不是整数，则不小于 min 的向上取整数），且小于（不等于）max。
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; // 不含最大值，含最小值
+}
+
+// 得到一个两数之间的随机整数，包括两个数在内
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; // 含最大值，含最小值
+}
+```
+
+### 2.5.幂积
+
+#### 2.5.1.`Math.pow`
+
+返回基数（base）的指数（exponent）次幂，即 `base^exponent`。
+
+- **语法**
+
+```js
+Math.pow(base, exponent)
+```
+
+- **参数**
+  - `base`
+    - 基数
+  - `exponent`
+    - 指数
+
+- **实例**
+
+```js
+Math.pow(2, 10); // 1024
+Math.pow(2, -10); // 0.0009765625
+
+Math.pow(2, '10'); // 1024
+Math.pow(2, null); // 1
+Math.pow(2, []); // 1
+```
+
+#### 2.5.2.`Math.exp`
+
+返回 `e^x`，`x` 表示参数，`e` 是欧拉常数（Euler's constant），自然对数的底数。
+
+- **语法**
+
+```js
+Math.exp(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+
+- **示例**
+
+```js
+Math.exp(-1); // 0.36787944117144233
+Math.exp(0);  // 1
+Math.exp(1);  // 2.718281828459045
+```
+
+#### 2.5.3.`Math.expm1`
+
+返回 `e^x - 1`。
+
+- **语法**
+
+```js
+Math.expm1(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+
+- **示例**
+
+```js
+Math.expm1(1)     // 1.7182818284590453
+Math.expm1(-38)   // -1
+Math.expm1("-38") // -1
+Math.expm1("foo") // NaN
+```
 
 ### 2.6.`Math.sqrt`
 
-返回参数值的平方根。如果参数是一个负值，则返回 `NaN`。
+返回一个数的平方根。
 
-### 2.7.`Math.log`
+- **语法**
 
-返回以 e 为底的自然对数值。
+```js
+Math.sqrt(x)
+```
 
-如果要计算以 10 为底的对数，可以先用 `Math.log` 求出自然对数，然后除以 `Math.LN10`；求以 2 为底的对数，可以除以 `Math.LN2`。
+- **参数**
+  - x
+    - 一个数值；
+    - 如果参数为负值，则返回 `NaN`；
+
+- **示例**
+
+```js
+Math.sqrt(9); // 3
+Math.sqrt(2); // 1.414213562373095
+
+Math.sqrt(1);  // 1
+Math.sqrt(0);  // 0
+Math.sqrt(-1); // NaN
+Math.sqrt(-0); // -0
+```
+
+### 2.7.对数
+
+### 2.7.1.`Math.log`
+
+返回一个数的自然对数。
+
+- **语法**
+
+```js
+Math.log(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+    - 如果参数为负值，则返回 `NaN`；
+
+- **示例**
+
+```js
+Math.log(-1); // NaN, out of range
+Math.log(0); // -Infinity
+Math.log(1); // 0
+Math.log(10); // 2.302585092994046
+```
+
+### 2.7.2.`Math.log2`
+
+返回一个数字以 2 为底的对数。
+
+- **语法**
+
+```js
+Math.log2(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+    - 如果参数为负值，则返回 `NaN`；
+
+- **示例**
+
+```js
+Math.log2(2)     // 1
+Math.log2(1024)  // 10
+Math.log2(1)     // 0
+Math.log2(0)     // -Infinity
+Math.log2(-2)    // NaN
+Math.log2("1024")// 10
+Math.log2("foo") // NaN
+```
+
+### 2.7.3.`Math.log10`
+
+返回一个数字以 10 为底的对数。
+
+- **语法**
+
+```js
+Math.log10(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+    - 如果参数为负值，则返回 `NaN`；
+
+- **示例**
+
+```js
+Math.log10(10)   // 1
+Math.log10(100)  // 2
+Math.log10("100")// 2
+Math.log10(1)    // 0
+Math.log10(0)    // -Infinity
+Math.log10(-2)   // NaN
+Math.log10("foo")// NaN
+```
+
+### 2.7.4.`Math.log1p`
+
+返回一个数字加 1 后的自然对数 (底为 E), 即 `log(x+1)`。
+
+- **语法**
+
+```js
+Math.log1p(x)
+```
+
+- **参数**
+  - x
+    - 一个数值；
+    - 如果参数的值小于 -1，则返回 `NaN`；
+
+- **示例**
+
+```js
+Math.log1p(Math.E-1)  // 1
+Math.log1p(0)         // 0
+Math.log1p("0")       // 0
+Math.log1p(-1)        // -Infinity
+Math.log1p(-2)        // NaN
+Math.log1p("foo")     // NaN
+```
 
 ### 2.8.`Math.exp`
+
+- **语法**
+
+```js
+
+```
+
+- **参数**
+
+- **示例**
 
 返回常数 e 的参数次方。
 
 ### 2.10. 三角函数方法
 
 Math 对象还提供一系列三角函数方法。
+
+- **语法**
+
+```js
+
+```
+
+- **参数**
+
+- **示例**
 
 - `Math.sin()`：返回参数的正弦（参数为弧度值）
 - `Math.cos()`：返回参数的余弦（参数为弧度值）
