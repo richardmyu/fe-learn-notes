@@ -2,7 +2,7 @@
 
 ## 1.概述
 
-JavaScript 的所有其他对象都继承自 `Object` 对象，即那些对象都是 `Object` 的实例。
+在JavaScript中，几乎所有的对象都是 `Object` 类型的实例，它们都会从 `Object.prototype` 继承属性和方法，虽然大部分属性都会被 *覆盖*（shadowed）或者说被 *重写*（overridden）。除此之外，`Object` 还可以被故意的创建，但是这个对象并不是一个“真正的对象”（例如：通过 `Object.create(null)`），或者通过一些手段改变对象，使其不再是一个“真正的对象”（比如说: `Object.setPrototypeOf`）。
 
 `Object` 对象的原生方法分成两类：`Object` 本身的方法与 `Object` 的实例方法。
 
