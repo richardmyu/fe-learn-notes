@@ -140,7 +140,7 @@ Object.getOwnPropertyNames(obj).length; // 2
 
 > 一般情况下，几乎总是使用 `Object.keys` 方法，遍历数组的属性。
 
-### 4.2. 其他方法
+### 4.2.其他方法
 
 1). 对象属性模型的相关方法
 
