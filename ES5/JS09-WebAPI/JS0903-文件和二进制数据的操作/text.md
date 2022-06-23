@@ -24,7 +24,7 @@ alert(buffer.byteLength); // 16
 
 它会分配一个 16 字节的连续内存空间，并用 0 进行预填充。
 
-> **ArrayBuffer 不是某种东西的数组**
+> *ArrayBuffer 不是某种东西的数组*
 > ArrayBuffer 与 Array 没有任何共同之处：
 > 它的长度是固定的，我们无法增加或减少它的长度。
 > 它正好占用了内存中的那么多空间。
@@ -58,9 +58,9 @@ for(let num of view) {
 例如：
 
 - `Uint8Array` —— 将 ArrayBuffer 中的每个字节视为 0 到 255 之间的单个数字（每个字节是 8 位，因此只能容纳那么多）。这称为 “8 位无符号整数”。
-- `Uint16Array` —— 将每 2 个字节视为一个 0 到 65535 之间的整数。这称为 “16 位无符号整数”。
-- `Uint32Array` —— 将每 4 个字节视为一个 0 到 4294967295 之间的整数。这称为 “32 位无符号整数”。
-- `Float64Array` —— 将每 8 个字节视为一个 5.0x10-324 到 1.8x10308 之间的浮点数。
+- `Uint16Array` —— 将每 2 个字节视为一个 `0` 到 `65535` 之间的整数。这称为 “16 位无符号整数”。
+- `Uint32Array` —— 将每 4 个字节视为一个 `0` 到 `4294967295` 之间的整数。这称为 “32 位无符号整数”。
+- `Float64Array` —— 将每 8 个字节视为一个 `5.0x10-324` 到 `1.8x10308` 之间的浮点数。
 
 因此，一个 16 字节 `ArrayBuffer` 中的二进制数据可以解释为 16 个“小数字”，或 8 个更大的数字（每个数字 2 个字节），或 4 个更大的数字（每个数字 4 个字节），或 2 个高精度的浮点数（每个数字 8 个字节）。
 
@@ -68,9 +68,9 @@ for(let num of view) {
 
 ### 1.1.`TypedArray`
 
-所有这些视图（`Uint8Array`，`Uint32Array` 等）的通用术语是 TypedArray。它们都享有同一组方法和属性。
+所有这些视图（`Uint8Array`，`Uint32Array` 等）的通用术语是 `TypedArray`。它们都享有同一组方法和属性。
 
-> 注意，没有名为 TypedArray 的构造器，它只是表示 ArrayBuffer 上的视图之一的通用总称术语：`Int8Array`，`Uint8Array` 及其他。
+> 注意，没有名为 `TypedArray` 的构造器，它只是表示 `ArrayBuffer` 上的视图之一的通用总称术语：`Int8Array`，`Uint8Array` 及其他。
 
 当看到 `new TypedArray` 之类的内容时，它表示 `new Int8Array`、`new Uint8Array` 及其他中之一。
 
@@ -90,7 +90,7 @@ new TypedArray();
 
 1).如果给定的是 `ArrayBuffer` 参数，则会在其上创建视图。
 
-可选，可以给定起始位置 `byteOffset`（默认为 0）以及 `length`（默认至 buffer 的末尾），这样视图将仅涵盖 `buffer` 的一部分。
+可选，可以给定起始位置 `byteOffset`（默认为 0）以及 `length`（默认至 `buffer` 的末尾），这样视图将仅涵盖 `buffer` 的一部分。
 
 2).如果给定的是 `Array`，或任何类数组对象，则会创建一个相同长度的类型化数组，并复制其内容。
 
@@ -121,12 +121,12 @@ alert( arr.byteLength ); // 8（字节中的大小）
 
 5).不带参数的情况下，创建长度为零的类型化数组。
 
-可以直接创建一个 TypedArray，而无需提及 ArrayBuffer。但是，视图离不开底层的 ArrayBuffer，因此，除第一种情况（已提供 ArrayBuffer）外，其他所有情况都会自动创建 ArrayBuffer。
+可以直接创建一个 `TypedArray`，而无需提及 `ArrayBuffer`。但是，视图离不开底层的 `ArrayBuffer`，因此，除第一种情况（已提供 `ArrayBuffer`）外，其他所有情况都会自动创建 `ArrayBuffer`。
 
 如要访问 ArrayBuffer，可以用以下属性：
 
-- `arr.buffer` —— 引用 ArrayBuffer。
-- `arr.byteLength` —— ArrayBuffer 的长度。
+- `arr.buffer` —— 引用 `ArrayBuffer`。
+- `arr.byteLength` —— `ArrayBuffer` 的长度。
 
 因此，总是可以从一个视图转到另一个视图：
 
@@ -147,22 +147,22 @@ let arr16 = new Uint16Array(arr8.buffer);
 
 > 没有 `int8` 或类似的单值类型
 > 请注意，尽管有类似 `Int8Array` 这样的名称，但 JavaScript 中并没有像 `int`，或 `int8` 这样的单值类型。
-> 这是合乎逻辑的，因为 `Int8Array` 不是这些单值的数组，而是 ArrayBuffer 上的视图。
+> 这是合乎逻辑的，因为 `Int8Array` 不是这些单值的数组，而是 `ArrayBuffer` 上的视图。
 
 ## 2.`Blob` 对象
 
-**Blob**（Binary Large Object）对象代表了一段二进制数据，提供了一系列操作接口。其他操作二进制数据的 API（比如 File 对象），都是建立在 Blob 对象基础上的，继承了它的属性和方法。
+**Blob**（Binary Large Object）对象代表了一段二进制数据，提供了一系列操作接口。其他操作二进制数据的 API（比如 `File` 对象），都是建立在 `Blob` 对象基础上的，继承了它的属性和方法。
 
-生成 Blob 对象有两种方法：一种是使用 Blob 构造函数，另一种是对现有的 Blob 对象使用 `slice` 方法切出一部分。
+生成 `Blob` 对象有两种方法：一种是使用 `Blob` 构造函数，另一种是对现有的 `Blob` 对象使用 `slice` 方法切出一部分。
 
-（1）Blob 构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。
+（1）`Blob` 构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。
 
 ```js
 var htmlParts = ['<a id="a"><b id="b">hey!</b></a>'];
 var myBlob = new Blob(htmlParts, { type: "text/xml" });
 ```
 
-下面是一个利用 Blob 对象，生成可下载文件的例子。
+下面是一个利用 `Blob` 对象，生成可下载文件的例子。
 
 ```js
 var blob = new Blob(["Hello World"]);
@@ -177,11 +177,11 @@ body.appendChild(a);
 
 上面的代码生成了一个超级链接，点击后提示下载文本文件 `hello-world.txt`，文件内容为 “Hello World”。
 
-（2）Blob 对象的 `slice` 方法，将二进制数据按照字节分块，返回一个新的 Blob 对象。
+（2）`Blob` 对象的 `slice` 方法，将二进制数据按照字节分块，返回一个新的 `Blob` 对象。
 
 `var newBlob = oldBlob.slice(startingByte, endindByte);`
 
-下面是一个使用 XMLHttpRequest 对象，将大文件分割上传的例子。
+下面是一个使用 `XMLHttpRequest` 对象，将大文件分割上传的例子。
 
 ```js
 function upload(blobOrFile) {
@@ -211,7 +211,7 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 })();
 ```
 
-（3）Blob 对象有两个只读属性：
+（3）`Blob` 对象有两个只读属性：
 
 - `size`：二进制数据的大小，单位为字节。
 - `type`：二进制数据的 MIME 类型，全部为小写，如果类型未知，则该值为空字符串。
@@ -222,7 +222,7 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 
 ## 4.`FileList` 对象
 
-FileList 对象针对表单的 `file` 控件。当用户通过 `file` 控件选取文件后，这个控件的 `files` 属性值就是 FileList 对象。它在结构上类似于数组，包含用户选取的多个文件。
+`FileList` 对象针对表单的 `file` 控件。当用户通过 `file` 控件选取文件后，这个控件的 `files` 属性值就是 `FileList` 对象。它在结构上类似于数组，包含用户选取的多个文件。
 
 `<input type="file" id="input" onchange="console.log(this.files.length)" multiple />`
 
@@ -230,7 +230,7 @@ FileList 对象针对表单的 `file` 控件。当用户通过 `file` 控件选�
 
 `var selected_file = document.getElementById('input').files[0];`
 
-采用拖放方式，也可以得到 FileList 对象。
+采用拖放方式，也可以得到 `FileList` 对象。
 
 ```js
 var dropZone = document.getElementById("drop_zone");
@@ -246,11 +246,11 @@ function handleFileSelect(evt) {
 }
 ```
 
-上面代码的 `handleFileSelect` 是拖放事件的回调函数，它的参数 `evt` 是一个事件对象，该参数的 `dataTransfer.files` 属性就是一个 FileList 对象，里面包含了拖放的文件。
+上面代码的 `handleFileSelect` 是拖放事件的回调函数，它的参数 `evt` 是一个事件对象，该参数的 `dataTransfer.files` 属性就是一个 `FileList` 对象，里面包含了拖放的文件。
 
 ## 5.File API
 
-File API 提供 File 对象，它是 FileList 对象的成员，包含了文件的一些元信息，比如文件名、上次改动时间、文件大小和文件类型。
+File API 提供 `File` 对象，它是 `FileList` 对象的成员，包含了文件的一些元信息，比如文件名、上次改动时间、文件大小和文件类型。
 
 ```js
 var selected_file = document.getElementById("input").files[0];
@@ -260,17 +260,13 @@ var fileSize = selected_file.size;
 var fileType = selected_file.type;
 ```
 
-File 对象的属性值如下。
-
----
+`File` 对象的属性值如下。
 
 - `name`：文件名，该属性只读。
 - `size`：文件大小，单位为字节，该属性只读。
 - `type`：文件的 MIME 类型，如果分辨不出类型，则为空字符串，该属性只读。
 - `lastModified`：文件的上次修改时间，格式为时间戳。
 - `lastModifiedDate`：文件的上次修改时间，格式为 `Date` 对象实例。
-
----
 
 ```js
 $("#upload-file")[0].files[0];
@@ -285,18 +281,14 @@ $("#upload-file")[0].files[0];
 
 ## 6.FileReader API
 
-FileReader API 用于读取文件，即把文件内容读入内存。它的参数是 File 对象或 Blob 对象。
+FileReader API 用于读取文件，即把文件内容读入内存。它的参数是 `File` 对象或 `Blob` 对象。
 
 对于不同类型的文件，FileReader 提供不同的方法读取文件。
-
----
 
 - `readAsBinaryString(Blob|File)`：返回二进制字符串，该字符串每个字节包含一个 0 到 255 之间的整数。
 - `readAsText(Blob|File, opt_encoding)`：返回文本字符串。默认情况下，文本编码格式是 ’UTF-8’，可以通过可选的格式参数，指定其他编码格式的文本。
 - `readAsDataURL(Blob|File)`：返回一个基于 `Base64` 编码的 `data-uri` 对象。
 - `readAsArrayBuffer(Blob|File)`：返回一个 `ArrayBuffer` 对象。
-
----
 
 `readAsText` 方法用于读取文本文件，它的第一个参数是 `File` 或 `Blob` 对象，第二个参数是前一个参数的编码方法，如果省略就默认为 `UTF-8` 编码。该方法是异步方法，一般监听 `onload` 件，用来确定文件是否加载结束，方法是判断 `FileReader` 实例的 `result` 属性是否有值。其他三种读取方法，用法与 `readAsText` 方法类似。
 
