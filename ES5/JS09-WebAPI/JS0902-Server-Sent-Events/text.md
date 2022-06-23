@@ -153,7 +153,7 @@ source.addEventListener(
 
 上面代码中，浏览器对 SSE 的 `foo` 事件进行监听。如何实现服务器发送 `foo` 事件，请看下文。
 
-### 3.9.`close()` 方法
+### 3.9.`close` 方法
 
 `close` 方法用于关闭 SSE 连接。
 
@@ -223,7 +223,7 @@ data: }\n\n
 
 ### 4.3.`id` 字段
 
-数据标识符用 id 字段表示，相当于每一条数据的编号。
+数据标识符用 `id` 字段表示，相当于每一条数据的编号。
 
 ```js
 id: msg1\n
@@ -234,7 +234,7 @@ data: message\n\n
 
 ### 4.4.`event` 字段
 
-`event` 字段表示自定义的事件类型，默认是 `message` 事件。浏览器可以用 `addEventListener()` 监听该事件。
+`event` 字段表示自定义的事件类型，默认是 `message` 事件。浏览器可以用 `addEventListener` 监听该事件。
 
 ```js
 event: foo\n
