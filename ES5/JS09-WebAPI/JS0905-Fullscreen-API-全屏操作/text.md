@@ -6,7 +6,7 @@ The API allows a single element to be viewed full-screen. Unlike pressing F11 to
 
 全屏 API 没有它自己的接口实现。相反，它提供了一些其他接口以供实现全屏所需的方法、属性、事件处理函数。
 
-只有包含在顶层文档内部的标准 HTML 元素、svg 元素和 math 元素， 以及拥有 `allowfullscreen` 属性的 iframe 的内部元素可以进入全屏模式。 这意味着在 iframe 内部的元素，以及 object 的内部元素不能进入全屏模式。
+只有包含在顶层文档内部的标准 HTML 元素、`svg` 元素和 `math` 元素， 以及拥有 `allowfullscreen` 属性的 `iframe` 的内部元素可以进入全屏模式。 这意味着在 `iframe` 内部的元素，以及 `object` 的内部元素不能进入全屏模式。
 
 ## 0. 基础
 
@@ -26,11 +26,11 @@ The API allows a single element to be viewed full-screen. Unlike pressing F11 to
 
 ## 1. 方法
 
-全屏 API 在 Document 和 Element 接口中增加了一些方法，可用于允许打开关闭全屏模式。
+全屏 API 在 `Document` 和 `Element` 接口中增加了一些方法，可用于允许打开关闭全屏模式。
 
 ### 1.1.`element.requestFullscreen`
 
-`Element.requestFullscreen()` 方法用于发出 异步请求 使元素进入全屏模式。
+`Element.requestFullscreen` 方法用于发出 异步请求 使元素进入全屏模式。
 
 调用此 API 并不能保证元素一定能够进入全屏模式。
 
@@ -43,9 +43,8 @@ The API allows a single element to be viewed full-screen. Unlike pressing F11 to
 > 注意：这个方法只能在用户交互或者设备方向改变的时候调用，否则将会失败。
 
 - **参数**
-
-- options
-  - 一个 `FullscreenOptions` 对象提供切换到全屏模式的控制选项。目前，唯一的选项是 `navigationUI`，这控制了是否在元素处于全屏模式时显示导航条 UI。默认值是"`auto`"，表明这将由浏览器来决定是否显示导航条。
+  - `options`
+    - 一个 `FullscreenOptions` 对象提供切换到全屏模式的控制选项。目前，唯一的选项是 `navigationUI`，这控制了是否在元素处于全屏模式时显示导航条 UI。默认值是"`auto`"，表明这将由浏览器来决定是否显示导航条。
 
 - **返回值**
   - 在完成切换全屏模式后，返回一个 Promise。
@@ -133,7 +132,7 @@ var fullscreenElement =
 
 ### 2.2.`document.fullscreenEnabled`
 
-`fullscreenEnabled` 属性提供了启用全屏模式的可能性。当它的值是 false 的时候，表示全屏模式不可用（可能的原因有 "`fullscreen`" 特性不被允许，或全屏模式不被支持等 ）。
+`fullscreenEnabled` 属性提供了启用全屏模式的可能性。当它的值是 `false` 的时候，表示全屏模式不可用（可能的原因有 "`fullscreen`" 特性不被允许，或全屏模式不被支持等 ）。
 
 ```js
 var fullscreenEnabled =
@@ -153,21 +152,21 @@ if (fullscreenEnabled) {
 
 #### 2.3.1.`Document.onfullscreenchange`
 
-`fullscreenchange` 事件的处理程序，当进入全屏或退出全屏时，事件将被发送到 Document 上。此处理程序仅在整个文档全屏模式更改时有效。
+`fullscreenchange` 事件的处理程序，当进入全屏或退出全屏时，事件将被发送到 `Document` 上。此处理程序仅在整个文档全屏模式更改时有效。
 
 #### 2.3.2.`Document.onfullscreenerror`
 
-`fullscreenerror` 事件的处理程序，当进入全屏或退出全屏出错时，事件将被发送到 Document 上，仅对整个稳定的全屏模式更改出错时候有效。
+`fullscreenerror` 事件的处理程序，当进入全屏或退出全屏出错时，事件将被发送到 `Document` 上，仅对整个稳定的全屏模式更改出错时候有效。
 
 ### 2.4.`Element` 上的事件处理程序
 
 #### 2.4.1.`Element.onfullscreenchange`
 
-`fullscreenchange` 事件的处理程序，当指定的 Element 进入退出全屏程序时，事件将被发送到该指定的 Element 上。
+`fullscreenchange` 事件的处理程序，当指定的 `Element` 进入退出全屏程序时，事件将被发送到该指定的 Element 上。
 
 #### 2.4.2.`Element.onfullscreenerror`
 
-`fullscreenerror` 事件的处理程序，当指定 Element 改变全屏模式时候出现错误，该事件将被发送到指定的 Element 上。
+`fullscreenerror` 事件的处理程序，当指定 `Element` 改变全屏模式时候出现错误，该事件将被发送到指定的 Element 上。
 
 > 注意：这些事件处理函数特性不可以当成 HTML 内容属性来使用。换句话说，你无法在 HTML 内容中为 `fullscreenchange` 和 `fullscreenerror` 指定事件处理程序，你必须通过 JavaScript 代码添加它们。
 
@@ -180,11 +179,11 @@ if (fullscreenEnabled) {
 
 - `fullscreenchange`
   >
-  - 当全屏或退出全屏时发送消息给（监听的）的 Document 或 Element 。
+  - 当全屏或退出全屏时发送消息给（监听的）的 `Document` 或 `Element`。
 >
 - `fullscreenerror`
   >
-  - 当全屏或退出全屏是发生了错误时，将错误消息发送给（监听的）的 Document 或 Element 。
+  - 当全屏或退出全屏是发生了错误时，将错误消息发送给（监听的）的 `Document` 或 `Element`。
 
 你并不总是可以进入全屏模式。例如 `<iframe>` 元素具有 `allowfullscreen` 属性，可选择是否将其内容以全屏模式显示。另外，几种特定的内容，比如窗体插件（windowed plug-ins），不能以全屏模式显示。
 
