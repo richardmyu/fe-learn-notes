@@ -1,6 +1,6 @@
 # SVG 图像
 
-## 1. 概述
+## 1.概述
 
 SVG 是一种基于 XML 语法的图像格式，全称是**可缩放矢量图**（Scalable Vector Graphics）。其他图像格式都是基于像素的，SVG 则是属于对图像的数学描述，所以它本质上是文本文件，体积较小，且不管放大多少倍都不会失真。
 
@@ -49,7 +49,7 @@ SVG 文件还可以转为 BASE64 编码，然后作为 Data URI 写入网页。
 
 `<img src="data:image/svg+xml;base64,[data]">`
 
-## 2. 语法
+## 2.语法
 
 ### 2.1.`<svg>` 标签
 
@@ -107,13 +107,9 @@ SVG 代码都放在顶层标签 `<svg>` 之中。下面是一个例子。
 
 SVG 的 `CSS` 属性与网页元素有所不同。
 
----
-
 - `fill`：填充色
 - `stroke`：描边色
 - `stroke-width`：边框宽度
-
----
 
 ### 2.3.`<line>` 标签
 
@@ -223,13 +219,9 @@ SVG 的 `CSS` 属性与网页元素有所不同。
 
 `<path>` 的 `d` 属性表示绘制顺序，它的值是一个长字符串，每个字母表示一个绘制动作，后面跟着坐标。
 
----
-
 - `M`：移动到（moveto）
 - `L`：画直线到（lineto）
 - `Z`：闭合路径
-
----
 
 ### 2.9.`<text>` 标签
 
@@ -349,15 +341,11 @@ SVG 的 `CSS` 属性与网页元素有所不同。
 
 `<animate>` 的属性含义如下。
 
----
-
 - `attributeName`：发生动画效果的属性名。
 - `from`：单次动画的初始值。
 - `to`：单次动画的结束值。
 - `dur`：单次动画的持续时间。
 - `repeatCount`：动画的循环模式。
-
----
 
 可以在多个属性上面定义动画。
 
@@ -444,7 +432,7 @@ mycircle.addEventListener(
 
 上面代码指定，如果点击图形，就改写 `circle` 元素的 `r` 属性。
 
-### 3.2. 获取 SVG DOM
+### 3.2.获取 SVG DOM
 
 使用 `<object>`、`<iframe>`、`<embed>` 标签插入 SVG 文件，可以获取 SVG DOM。
 
@@ -456,7 +444,7 @@ var svgEmbed = document.getElementById("embed").getSVGDocument();
 
 注意，如果使用 `<img>` 标签插入 SVG 文件，就无法获取 SVG DOM。
 
-### 3.3. 读取 SVG 源码
+### 3.3.读取 SVG 源码
 
 由于 SVG 文件就是一段 XML 文本，因此可以通过读取 XML 代码的方式，读取 SVG 源码。
 
