@@ -10,20 +10,39 @@
 
 ```html
 <div>
-<label for="os">Operating System</label>
-<select name="os" id="os">
-    <option>Choose</option>
-    <optgroup label="Windows">
-        <option value="7 Home Basic">7 Home Basic</option>
-        <option value="7 Home Premium">7 Home Premium</option>
-        <option value="7 Professional">7 Professional</option>
-        <option value="7 Ultimate">7 Ultimate</option>
-        <option value="Vista">Vista</option>
-        <option value="XP">XP</option>
-    </optgroup>
-<select>
+  <label for="os">Operating System</label>
+  <select name="os" id="os">
+      <option>Choose</option>
+      <optgroup label="Windows">
+          <option value="7 Home Basic">7 Home Basic</option>
+          <option value="7 Home Premium">7 Home Premium</option>
+          <option value="7 Professional">7 Professional</option>
+          <option value="7 Ultimate">7 Ultimate</option>
+          <option value="Vista">Vista</option>
+          <option value="XP">XP</option>
+      </optgroup>
+  <select>
 </div>
 ```
+
+---
+
+<div>
+  <label for="os">Operating System</label>
+  <select name="os" id="os">
+      <option>Choose</option>
+      <optgroup label="Windows">
+          <option value="7 Home Basic">7 Home Basic</option>
+          <option value="7 Home Premium">7 Home Premium</option>
+          <option value="7 Professional">7 Professional</option>
+          <option value="7 Ultimate">7 Ultimate</option>
+          <option value="Vista">Vista</option>
+          <option value="XP">XP</option>
+      </optgroup>
+  <select>
+</div>
+
+---
 
 可以通过 `value` 属性取到用户选择的值。
 
