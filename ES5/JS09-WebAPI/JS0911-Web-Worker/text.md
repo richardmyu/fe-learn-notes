@@ -1,6 +1,6 @@
 # Web Worker
 
-## 1. 概述
+## 1.概述
 
 JavaScript 语言采用的是单线程模型，也就是说，所有任务只能在一个线程上完成，一次只能做一件事。前面的任务没做完，后面的任务只能等着。随着电脑计算能力的增强，尤其是多核 CPU 的出现，单线程带来很大的不便，无法充分发挥计算机的计算能力。
 
@@ -10,44 +10,44 @@ Web Worker 的作用，就是为 JavaScript 创造多线程环境，允许主线
 
 Web Worker 有以下几个使用注意点。
 
-### 1.1. 同源限制
+### 1.1.同源限制
 
-分配给 Worker 线程运行的脚本文件，必须与主线程的脚本文件同源。
+分配给 `Worker` 线程运行的脚本文件，必须与主线程的脚本文件同源。
 
 ### 1.2.DOM 限制
 
 `Worker` 线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用 `document`、`window`、`parent` 这些对象。但是，`Worker` 线程可以 `navigator` 对象和 `location` 对象。
 
-### 1.3. 通信联系
+### 1.3.通信联系
 
 `Worker` 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成。
 
-### 1.4. 脚本限制
+### 1.4.脚本限制
 
-`Worker` 线程不能执行 `alert()` 方法和 `confirm()` 方法，但可以使用 `XMLHttpRequest` 对象发出 AJAX 请求。
+`Worker` 线程不能执行 `alert` 方法和 `confirm` 方法，但可以使用 `XMLHttpRequest` 对象发出 AJAX 请求。
 
-### 1.5. 文件限制
+### 1.5.文件限制
 
 `Worker` 线程无法读取本地文件，即不能打开本机的文件系统（`file://`），它所加载的脚本，必须来自网络。
 
-## 2. 基本用法
+## 2.基本用法
 
-### 2.1. 主线程
+### 2.1.主线程
 
-主线程采用 `new` 命令，调用 `Worker()` 构造函数，新建一个 `Worker` 线程。
+主线程采用 `new` 命令，调用 `Worker` 构造函数，新建一个 `Worker` 线程。
 
 `var worker = new Worker('work.js');`
 
-`Worker()` 构造函数的参数是一个脚本文件，该文件就是 `Worker` 线程所要执行的任务。由于 `Worker` 不能读取本地文件，所以这个脚本必须来自网络。如果下载没有成功（比如 404 错误），`Worker` 就会默默地失败。
+`Worker` 构造函数的参数是一个脚本文件，该文件就是 `Worker` 线程所要执行的任务。由于 `Worker` 不能读取本地文件，所以这个脚本必须来自网络。如果下载没有成功（比如 404 错误），`Worker` 就会默默地失败。
 
-然后，主线程调用 `worker.postMessage()` 方法，向 `Worker` 发消息。
+然后，主线程调用 `worker.postMessage` 方法，向 `Worker` 发消息。
 
 ```js
 worker.postMessage("Hello World");
 worker.postMessage({ method: "echo", args: ["Work"] });
 ```
 
-`worker.postMessage()` 方法的参数，就是主线程传给 `Worker` 的数据。它可以是各种数据类型，包括二进制数据。
+`worker.postMessage` 方法的参数，就是主线程传给 `Worker` 的数据。它可以是各种数据类型，包括二进制数据。
 
 接着，主线程通过 `worker.onmessage` 指定监听函数，接收子线程发回来的消息。
 
@@ -105,7 +105,7 @@ addEventListener(
 );
 ```
 
-除了使用 `self.addEventListener()` 指定监听函数，也可以使用 `self.onmessage` 指定。监听函数的参数是一个事件对象，它的 `data` 属性包含主线程发来的数据。`self.postMessage()` 方法用来向主线程发送消息。
+除了使用 `self.addEventListener` 指定监听函数，也可以使用 `self.onmessage` 指定。监听函数的参数是一个事件对象，它的 `data` 属性包含主线程发来的数据。`self.postMessage` 方法用来向主线程发送消息。
 
 根据主线程发来的数据，`Worker` 线程可以调用不同的方法，下面是一个例子。
 
@@ -130,11 +130,11 @@ self.addEventListener(
 );
 ```
 
-上面代码中，`self.close()` 用于在 `Worker` 内部关闭自身。
+上面代码中，`self.close` 用于在 `Worker` 内部关闭自身。
 
 ### 2.3.Worker 加载脚本
 
-`Worker` 内部如果要加载其他脚本，有一个专门的方法 `importScripts()`。
+`Worker` 内部如果要加载其他脚本，有一个专门的方法 `importScripts`。
 
 `importScripts('script1.js');`
 
@@ -142,7 +142,7 @@ self.addEventListener(
 
 `importScripts('script1.js', 'script2.js');`
 
-### 2.4. 错误处理
+### 2.4.错误处理
 
 主线程可以监听 `Worker` 是否发生错误。如果发生错误，`Worker` 会触发主线程的 `error` 事件。
 
@@ -161,7 +161,7 @@ worker.addEventListener("error", function(event) {
 
 `Worker` 内部也可以监听 `error` 事件。
 
-### 2.5. 关闭 Worker
+### 2.5.关闭 Worker
 
 使用完毕，为了节省系统资源，必须关闭 `Worker`。
 
@@ -173,11 +173,11 @@ worker.terminate();
 self.close();
 ```
 
-## 3. 数据通信
+## 3.数据通信
 
 前面说过，主线程与 `Worker` 之间的通信内容，可以是文本，也可以是对象。需要注意的是，这种通信是拷贝关系，即是传值而不是传址，`Worker` 对通信内容的修改，不会影响到主线程。事实上，浏览器内部的运行机制是，先将通信内容串行化，然后把串行化后的字符串发给 `Worker`，后者再将它还原。
 
-主线程与 `Worker` 之间也可以交换二进制数据，比如 File、Blob、ArrayBuffer 等类型，也可以在线程之间发送。下面是一个例子。
+主线程与 `Worker` 之间也可以交换二进制数据，比如 `File`、`Blob`、`ArrayBuffer` 等类型，也可以在线程之间发送。下面是一个例子。
 
 ```js
 // 主线程
@@ -212,7 +212,7 @@ var ab = new ArrayBuffer(1);
 worker.postMessage(ab, [ab]);
 ```
 
-## 4. 同页面的 Web Worker
+## 4.同页面的 Web Worker
 
 通常情况下，`Worker` 载入的是一个单独的 JavaScript 脚本文件，但是也可以载入与主线程在同一个网页的代码。
 
@@ -244,7 +244,7 @@ worker.onmessage = function(e) {
 
 上面代码中，先将嵌入网页的脚本代码，转成一个二进制对象，然后为这个二进制对象生成 URL，再让 `Worker` 加载这个 URL。这样就做到了，主线程和 `Worker` 的代码都在同一个网页上面。
 
-## 5. 实例：Worker 线程完成轮询
+## 5.实例：Worker 线程完成轮询
 
 有时，浏览器需要轮询服务器状态，以便第一时间得知状态改变。这个工作可以放在 `Worker` 里面。
 
@@ -282,7 +282,7 @@ pollingWorker.postMessage('init');
 
 上面代码中，`Worker` 每秒钟轮询一次数据，然后跟缓存做比较。如果不一致，就说明服务端有了新的变化，因此就要通知主线程。
 
-## 6. 实例：Worker 新建 Worker
+## 6.实例：Worker 新建 Worker
 
 `Worker` 线程内部还能再新建 `Worker` 线程。下面的例子是将一个计算密集的任务，分配到 10 个 `Worker`。
 
@@ -353,13 +353,13 @@ function work() {
 
 ## 7.API
 
-### 7.1. 主线程
+### 7.1.主线程
 
-浏览器原生提供 `Worker()` 构造函数，用来供主线程生成 `Worker` 线程。
+浏览器原生提供 `Worker` 构造函数，用来供主线程生成 `Worker` 线程。
 
 `var myWorker = new Worker(jsUrl, options);`
 
-`Worker()` 构造函数，可以接受两个参数。第一个参数是脚本的网址（必须遵守同源政策），该参数是必需的，且只能加载 JS 脚本，否则会报错。第二个参数是配置对象，该对象可选。它的一个作用就是指定 `Worker` 的名称，用来区分多个 `Worker` 线程。
+`Worker` 构造函数，可以接受两个参数。第一个参数是脚本的网址（必须遵守同源政策），该参数是必需的，且只能加载 JS 脚本，否则会报错。第二个参数是配置对象，该对象可选。它的一个作用就是指定 `Worker` 的名称，用来区分多个 `Worker` 线程。
 
 ```js
 // 主线程
@@ -369,14 +369,14 @@ var myWorker = new Worker("worker.js", { name: "myWorker" });
 self.name; // myWorker
 ```
 
-`Worker()` 构造函数返回一个 `Worker` 线程对象，用来供主线程操作 `Worker`。`Worker` 线程对象的属性和方法如下。
+`Worker` 构造函数返回一个 `Worker` 线程对象，用来供主线程操作 `Worker`。`Worker` 线程对象的属性和方法如下。
 
 ---
 
 - `Worker.onerror`：指定 `error` 事件的监听函数。
 - `Worker.onmessage`：指定 `message` 事件的监听函数，发送过来的数据在 `Event.data` 属性中。
 - `Worker.onmessageerror` ：指定 `messageerror` 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
-- `Worker.postMessage()`：向 `Worker` 线程发送消息。
+- `Worker.postMessage`：向 `Worker` 线程发送消息。
 - `Worker.terminate(`)：立即终止 `Worker` 线程。
 
 ---
@@ -398,13 +398,11 @@ Web Worker 有自己的全局对象，不是主线程的 `window`，而是一个
 
 ---
 
-## 8. 存档：Service Worker
+## 8.存档：Service Worker
 
 Service worker 是一个在浏览器后台运行的脚本，与网页不相干，专注于那些不需要网页或用户互动就能完成的功能。它主要用于操作离线缓存。
 
 Service Worker 有以下特点。
-
----
 
 - 属于 JavaScript Worker，不能直接接触 DOM，通过 `postMessage` 接口与页面通信。
 - 不需要任何页面，就能执行。
@@ -413,8 +411,6 @@ Service Worker 有以下特点。
 - 只在 HTTPs 协议下可用，这是因为它能拦截网络请求，所以必须保证请求是安全的。
 - 可以拦截发出的网络请求，从而控制页面的网路通信。
 - 内部大量使用 `Promise`。
-
----
 
 Service worker 的常见用途。
 
@@ -456,13 +452,9 @@ navigator.serviceWorker.register("/path/to/serviceworker.js", {
 
 登记成功后，浏览器执行下面步骤。
 
----
-
 - 下载资源（Download）
 - 安装（Install）
 - 激活（Activate）
-
----
 
 安装和激活，主要通过事件来判断。
 
@@ -490,9 +482,8 @@ self.addEventListener("fetch", function(event) {
 
 `fetch` 事件会在两种情况下触发。
 
-用户访问 Service worker 范围内的网页。
-这些网页发出的任何网络请求（页面本身、CSS、JS、图像、XHR 等等），即使这些请求是发向另一个域。但是，`iframe` 和 `<object>` 标签发出的请求不会被拦截。
-`fetch` 事件的 `event` 对象的 `request` 属性，返回一个对象，包含了所拦截的网络请求的所有信息，比如 URL、请求方法和 HTTP 头信息。
+1. 用户访问 Service worker 范围内的网页。这些网页发出的任何网络请求（页面本身、CSS、JS、图像、XHR 等等），即使这些请求是发向另一个域。但是，`iframe` 和 `<object>` 标签发出的请求不会被拦截。
+2. `fetch` 事件的 `event` 对象的 `request` 属性，返回一个对象，包含了所拦截的网络请求的所有信息，比如 URL、请求方法和 HTTP 头信息。
 
 Service worker 的强大之处，在于它会拦截请求，并会返回一个全新的回应。
 

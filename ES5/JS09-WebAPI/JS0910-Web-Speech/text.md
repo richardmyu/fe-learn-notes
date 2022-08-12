@@ -1,6 +1,9 @@
 # Web Speech
 
-## 1. 概述
+> **Experimental: 这是一个实验中的功能**
+> [Web Speech API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Speech_API)
+
+## 1.概述
 
 这个 API 用于浏览器接收语音输入。
 
@@ -29,7 +32,7 @@ var SpeechRecognition =
 
 为了将来的兼容性考虑，上面的代码列出了所有浏览器的前缀。但是实际上，目前只有 `window.webkitSpeechRecognition` 是可用的。
 
-确定浏览器支持以后，新建一个 SpeechRecognition 的实例对象。
+确定浏览器支持以后，新建一个 `SpeechRecognition` 的实例对象。
 
 ```js
 if (SpeechRecognition) {
@@ -40,9 +43,9 @@ if (SpeechRecognition) {
 
 `maxAlternatives` 属性等于 5，表示最多返回 5 个语音匹配结果。
 
-## 3. 事件
+## 3.事件
 
-目前，该 API 部署了 11 个事件。下面对其中的 3 个定义回调函数（假定 speak 是语音输入框）。
+目前，该 API 部署了 11 个事件。下面对其中的 3 个定义回调函数（假定 `speak` 是语音输入框）。
 
 ```js
 var speak = \$('#speak');
@@ -79,4 +82,4 @@ recognition.onresult = function(event) {
 };
 ```
 
-`result` 事件回调函数的参数，是一个 SpeechRecognitionEvent 对象。它的 `results` 属性就是语音匹配的结果，是一个数组，按照匹配度排序，最匹配的结果排在第一位。该数组的每一个成员是 SpeechRecognitionResult 对象，该对象的 `transcript` 属性是实际匹配的文本，`confidence` 属性是可信度（在 0 与 1 之间）。
+`result` 事件回调函数的参数，是一个 `SpeechRecognitionEvent` 对象。它的 `results` 属性就是语音匹配的结果，是一个数组，按照匹配度排序，最匹配的结果排在第一位。该数组的每一个成员是 `SpeechRecognitionResult` 对象，该对象的 `transcript` 属性是实际匹配的文本，`confidence` 属性是可信度（在 0 与 1 之间）。
