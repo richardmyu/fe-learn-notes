@@ -64,7 +64,7 @@ if (popup !== null && !popup.closed) {
 
 `window.open().opener === window // true`
 
-上面表达式会打开一个新窗口，然后返回 true。
+上面表达式会打开一个新窗口，然后返回 `true`。
 
 通过 `opener` 属性，可以获得父窗口的的全局变量和方法，比如 `window.opener.propertyName` 和 `window.opener.functionName()`。但这只限于两个窗口属于同源的情况，且其中一个窗口由另一个打开。
 
@@ -125,7 +125,7 @@ navigator.userAgent;
 
 通过 `userAgent` 属性识别浏览器，不是一个好办法。因为必须考虑所有的情况（不同的浏览器，不同的版本），非常麻烦，而且无法保证未来的适用性，更何况各种上网设备层出不穷，难以穷尽。所以，现在一般不再识别浏览器了，而是使用“功能识别”方法，即逐一测试当前浏览器是否支持要用到的 JavaScript 功能。
 
-不过，通过 `userAgent` 可以大致准确地识别手机浏览器，方法就是测试是否包含 mobi 字符串。
+不过，通过 `userAgent` 可以大致准确地识别手机浏览器，方法就是测试是否包含 `mobi` 字符串。
 
 ```js
 var ua = navigator.userAgent.toLowerCase();
@@ -162,7 +162,7 @@ navigator.platform;
 
 ### 3.5.`navigator.geolocation`
 
-`navigator.geolocation` 返回一个 Geolocation 对象，包含用户地理位置的信息。
+`navigator.geolocation` 返回一个 `Geolocation` 对象，包含用户地理位置的信息。
 
 ### 3.6.`navigator.javaEnabled()`，`navigator.cookieEnabled`
 
@@ -236,7 +236,7 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 上面代码用于将网页向下滚动一屏。
 
-### 5.3.`window.open()`, `window.close()`
+### 5.3.`window.open`, `window.close`
 
 `window.open` 方法用于新建另一个浏览器窗口，并且返回该窗口对象。
 
@@ -252,7 +252,7 @@ if (screen.width <= 800 && screen.height <= 600) {
 >
 - 第三个参数：字符串，内容为逗号分隔的键值对，表示新窗口的参数，比如有没有提示栏、工具条等等。如果省略，则默认打开一个完整 UI 的新窗口。
 >
-- 第四个参数：布尔值，表示第一个参数指定的网址，是否应该替换 `history` 对象之中的当前网址记录，默认值为 false。显然，这个参数只有在第二个参数指向已经存在的窗口时，才有意义。
+- 第四个参数：布尔值，表示第一个参数指定的网址，是否应该替换 `history` 对象之中的当前网址记录，默认值为 `false`。显然，这个参数只有在第二个参数指向已经存在的窗口时，才有意义。
 
 下面是一个例子。
 
@@ -285,7 +285,7 @@ w.alert("已经打开新窗口");
 w.location = "http://example.com";
 ```
 
-上面代码先打开一个新窗口，然后在该窗口弹出一个对话框，再将网址导向 example.com。
+上面代码先打开一个新窗口，然后在该窗口弹出一个对话框，再将网址导向 `example.com`。
 
 由于 `open` 这个方法很容易被滥用，许多浏览器默认都不允许脚本自动新建窗口。只允许在用户点击链接或按钮，脚本做出反应，弹出新窗口。因此，有必要检查一下打开新窗口是否成功。
 
@@ -301,7 +301,7 @@ if (popup === null) {
 
 该方法只对顶层窗口有效，`iframe` 框架之中的窗口使用该方法无效。
 
-### 5.4.`window.print()`
+### 5.4.`window.print`
 
 `print` 方法会跳出打印对话框，同用户点击菜单里面的“打印”命令效果相同。
 
@@ -321,15 +321,15 @@ if (typeof window.print === "function") {
 }
 ```
 
-### 5.5.`window.getComputedStyle()`
+### 5.5.`window.getComputedStyle`
 
 `getComputedStyle` 方法接受一个 HTML 元素作为参数，返回一个包含该 HTML 元素的最终样式信息的对象。
 
-### 5.6.`window.matchMedia()`
+### 5.6.`window.matchMedia`
 
 `window.matchMedia` 方法用来检查 CSS 的 `mediaQuery` 语句。
 
-### 5.7.`window.focus()`
+### 5.7.`window.focus`
 
 `focus` 方法会激活指定当前窗口，使其获得焦点。
 
@@ -345,7 +345,7 @@ if (popup !== null && !popup.closed) {
 
 当前窗口获得焦点时，会触发 `focus` 事件；当前窗口失去焦点时，会触发 `blur` 事件。
 
-### 5.8.`window.getSelection()`
+### 5.8.`window.getSelection`
 
 `window.getSelection` 方法返回一个 `Selection` 对象，表示用户现在选中的文本。
 
@@ -515,14 +515,14 @@ onerror.num = 0;
 - **URL 元字符**：分号（`;`），逗号（`,`），斜杠（`/`），问号（`?`），冒号（`:`），at（`@`），`&`，等号（`=`），加号（`+`），美元符号（`$`），井号（`#`）
 - **语义字符**：a-z，A-Z，0-9，连词号（`-`），下划线（`_`），点（`.`），感叹号（`!`），波浪线（`~`），星号（`*`），单引号（`\`），圆括号（`()`）
 
-除了以上字符，其他字符出现在 URL 之中都必须转义，规则是根据操作系统的默认编码，将每个字节转为百分号（`%`）加上两个大写的十六进制字母。比如，`UTF-8` 的操作系统上，`http://www.example.com/q=春节` 这个 URL 之中，汉字“春节”不是 URL 的合法字符，所以被浏览器自动转成 `http://www.example.com/q=%E6%98%A5%E8%8A%82`。其中，“春”转成了 `%E6%98%A5`，“节”转成了 “`%E8%8A%82`”。这是因为“春”和”节“的 UTF-8 编码分别是 `E6 98 A5` 和 `E8 8A 82`，将每个字节前面加上百分号，就构成了 **URL 编码**。
+除了以上字符，其他字符出现在 URL 之中都必须转义，规则是根据操作系统的默认编码，将每个字节转为百分号（`%`）加上两个大写的十六进制字母。比如，UTF-8 的操作系统上，`http://www.example.com/q=春节` 这个 URL 之中，汉字“春节”不是 URL 的合法字符，所以被浏览器自动转成 `http://www.example.com/q=%E6%98%A5%E8%8A%82`。其中，“春”转成了 `%E6%98%A5`，“节”转成了 “`%E8%8A%82`”。这是因为“春”和”节“的 UTF-8 编码分别是 `E6 98 A5` 和 `E8 8A 82`，将每个字节前面加上百分号，就构成了 **URL 编码**。
 
 JavaScript 提供四个 URL 的编码/解码方法。
 
-- `encodeURI()`
-- `encodeURIComponent()`
-- `decodeURI()`
-- `decodeURIComponent()`
+- `encodeURI`
+- `encodeURIComponent`
+- `decodeURI`
+- `decodeURIComponent`
 
 ### 8.1.`encodeURI`
 
@@ -561,11 +561,11 @@ decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
 
 `decodeURIComponent('%E6%98%A5%E8%8A%82')// "春节"`
 
-## 9.`alert()`，`prompt()`，`confirm()`
+## 9.`alert`，`prompt`，`confirm`
 
-`alert()`、`prompt()`、`confirm()` 都是浏览器与用户互动的全局方法。它们会弹出不同的对话框，要求用户做出回应。
+`alert`、`prompt`、`confirm` 都是浏览器与用户互动的全局方法。它们会弹出不同的对话框，要求用户做出回应。
 
-需要注意的是，`alert()`、`prompt()`、`confirm()` 这三个方法弹出的对话框，都是浏览器统一规定的式样，是无法定制的。
+需要注意的是，`alert`、`prompt`、`confirm` 这三个方法弹出的对话框，都是浏览器统一规定的式样，是无法定制的。
 
 1).`alert`
 

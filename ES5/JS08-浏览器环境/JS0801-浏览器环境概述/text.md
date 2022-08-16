@@ -24,7 +24,7 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
 `<script>` 标签有一个 `type` 属性，用来指定脚本类型。对 JavaScript 脚本来说，`type` 属性可以设为两种值。
 
-- `text/javascript`：这是默认值，也是历史上一贯设定的值。如果你省略 `type` 属性，默认就是这个值。对于老式浏览器，设为这个值比较好。
+- `text/javascript`：这是默认值，也是历史上一贯设定的值。如果省略 `type` 属性，默认就是这个值。对于老式浏览器，设为这个值比较好。
 - `application/javascript`：对于较新的浏览器，建议设为这个值。
 
 `<script type="application/javascript">console.log('Hello World');</script>`
@@ -111,7 +111,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 上面代码中，用户点击链接后，网页不会跳转，只会在控制台显示当前时间。
 
-`javascript:` 协议的常见用途是书签脚本 `Bookmarklet`。由于浏览器的书签保存的是一个网址，所以 `javascript:` 网址也可以保存在里面，用户选择这个书签的时候，就会在当前页面执行这个脚本。为了防止书签替换掉当前文档，可以在脚本最后返回 `void 0`。???
+`javascript:` 协议的常见用途是书签脚本 `Bookmarklet`。由于浏览器的书签保存的是一个网址，所以 `javascript:` 网址也可以保存在里面，用户选择这个书签的时候，就会在当前页面执行这个脚本。为了防止书签替换掉当前文档，可以在脚本最后返回 `void 0`。
 
 ## 2.`script` 标签
 
@@ -152,7 +152,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 另一种解决方法是，使用 `<script>` 标签的 `onload` 属性。当 `<script>` 标签指定的外部脚本文件下载和解析完成，会触发一个 `load` 事件，可以把所需执行的代码，放在这个事件的回调函数里面。（会报错的。)
 
-> 如果放到 head 部分，会报错；放到 body ，则可以获取到自身及自身之前；
+> 如果放到 `head` 部分，会报错；放到 `body`，则可以获取到自身及自身之前；
 
 `<script src="jquery.min.js" onload="console.log(document.body.innerHTML)"></script>`
 
@@ -243,7 +243,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 这种方法的好处是，动态生成的 `script` 标签不会阻塞页面渲染，也就不会造成浏览器假死。但是问题在于，这种方法无法保证脚本的执行顺序，哪个脚本文件先下载完成，就先执行哪个。
 
-如果想避免这个问题，可以设置 `async` 属性为 false。
+如果想避免这个问题，可以设置 `async` 属性为 `false`。
 
 ```js
 ["a.js", "b.js"].forEach(function(src) {
@@ -271,7 +271,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 })();
 ```
 
-上面代码中，`async` 属性设为 true，是因为加载的脚本没有互相依赖关系。而且，这样就不会造成堵塞。
+上面代码中，`async` 属性设为 `true`，是因为加载的脚本没有互相依赖关系。而且，这样就不会造成堵塞。
 
 如果想为动态加载的脚本指定回调函数，可以使用下面的写法。
 
