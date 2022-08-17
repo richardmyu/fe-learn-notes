@@ -32,9 +32,9 @@ document.getElementById("backLink").onclick = function() {
 
 > 注意，返回上一页时，页面通常是从浏览器缓存之中加载，而不是重新要求服务器发送新的网页。
 
-## 2.`history.pushState()`
+## 2.`history.pushState`
 
-HTML5 为 `history` 对象添加了两个新方法，`history.pushState()` 和 `history.replaceState()`，用来在浏览历史中添加和修改记录。
+HTML5 为 `history` 对象添加了两个新方法，`history.pushState` 和 `history.replaceState`，用来在浏览历史中添加和修改记录。
 
 ```js
 if (!!(window.history && history.pushState)) {
@@ -72,7 +72,7 @@ history.pushState(null, null, "https://twitter.com/hello");
 
 上面代码中，`pushState` 想要插入一个跨域的网址，导致报错。这样设计的目的是，防止恶意代码让用户以为他们是在另一个网站上。
 
-## 3.`history.replaceState()`
+## 3.`history.replaceState`
 
 `history.replaceState` 方法的参数与 `pushState` 方法一模一样，区别是它修改浏览历史中当前纪录。
 
@@ -145,13 +145,13 @@ var searchParams = new URLSearchParams(paramsString);
 
 `URLSearchParams` 有以下方法，用来操作某个参数。
 
-- `has()`：返回一个布尔值，表示是否具有某个参数
-- `get()`：返回指定参数的第一个值
-- `getAll()`：返回一个数组，成员是指定参数的所有值
-- `set()`：设置指定参数
-- `delete()`：删除指定参数
-- `append()`：在查询字符串之中，追加一个键值对
-- `toString()`：返回整个查询字符串
+- `has`：返回一个布尔值，表示是否具有某个参数
+- `get`：返回指定参数的第一个值
+- `getAll`：返回一个数组，成员是指定参数的所有值
+- `set`：设置指定参数
+- `delete`：删除指定参数
+- `append`：在查询字符串之中，追加一个键值对
+- `toString`：返回整个查询字符串
 
 ```js
 var paramsString = "q=URLUtils.searchParams&topic=api";
@@ -177,9 +177,9 @@ searchParams.toString(); // "q=URLUtils.searchParams&foo=2&foo=3"
 
 `URLSearchParams` 还有三个方法，用来遍历所有参数。
 
-- `keys()`：遍历所有参数名
-- `values()`：遍历所有参数值
-- `entries()`：遍历所有参数的键值对
+- `keys`：遍历所有参数名
+- `values`：遍历所有参数值
+- `entries`：遍历所有参数的键值对
 
 上面三个方法返回的都是 `Iterator` 对象。
 
