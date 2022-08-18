@@ -4,9 +4,10 @@
 
 这个 API 的作用是，使得网页可以在浏览器端储存数据。它分成两类：`sessionStorage` 和 `localStorage`。
 
-`sessionStorage` 保存的数据用于浏览器的一次会话，当会话结束（通常是该窗口关闭），数据被清空；`localStorage` 保存的数据长期存在，下一次访问该网站的时候，网页可以直接读取以前保存的数据。除了保存期限的长短不同，这两个对象的属性和方法完全一样。
+`sessionStorage` 保存的数据用于浏览器的一次会话，当会话结束（通常是该窗口关闭），数据被清空；`localStorage` 保存的数据长期存在，下一次访问该网站的时候，网页可以直接读取以前保存的数据。除了保存期限的长短不同，这两个对象的属性和方法完全一样。它们很像 `cookie` 机制的强化版，能够动用大得多的存储空间。
 
-它们很像 `cookie` 机制的强化版，能够动用大得多的存储空间。目前，每个域名的存储上限视浏览器而定，Chrome 是 2.5MB，Firefox 和 Opera 是 5MB，IE 是 10MB。其中，Firefox 的存储空间由一级域名决定，而其他浏览器没有这个限制。也就是说，在 Firefox 中，`a.example.com` 和 `b.example.com` 共享 5MB 的存储空间。另外，与 `Cookie` 一样，它们也受同域限制。某个网页存入的数据，只有同域下的网页才能读取。
+> 目前，每个域名的存储上限视浏览器而定，Chrome 是 2.5MB，Firefox 和 Opera 是 5MB，IE 是 10MB。其中，Firefox 的存储空间由一级域名决定，而其他浏览器没有这个限制。也就是说，在 Firefox 中，`a.example.com` 和 `b.example.com` 共享 5MB 的存储空间。
+> 另外，与 `Cookie` 一样，它们也受同域限制。某个网页存入的数据，只有同域下的网页才能读取。
 
 通过检查 `window` 对象是否包含 `sessionStorage` 和 `localStorage` 属性，可以确定浏览器是否支持这两个对象。
 

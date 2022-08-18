@@ -10,7 +10,7 @@ Cookie 主要用来分辨两个请求是否来自同一个浏览器，以及用�
 - 个性化：保存用户的偏好，比如网页的字体大小、背景色等等。
 - 追踪：记录和分析用户行为。
 
-有些开发者使用 Cookie 作为客户端储存。这样做虽然可行，但是并不推荐，因为 Cookie 的设计目标并不是这个，它的容量很小（4KB），缺乏数据操作接口，而且会影响性能。客户端储存应该使用 `Web storage API` 和 `IndexedDB`。
+> 有些开发者使用 Cookie 作为客户端储存。这样做虽然可行，但是并不推荐，因为 Cookie 的设计目标并不是这个，它的容量很小（4KB），缺乏数据操作接口，而且会影响性能。客户端储存应该使用 `Web storage API` 和 `IndexedDB`。
 
 Cookie 包含以下几方面的信息。
 
@@ -82,7 +82,9 @@ Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
 
 `Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly`
 
-如果服务器想改变一个早先设置的 Cookie，必须同时满足四个条件：Cookie 的 `key`、`domain`、`path` 和 `secure` 都匹配。举例来说，如果原始的 Cookie 是用如下的 `Set-Cookie` 设置的。
+如果服务器想改变一个早先设置的 Cookie，必须同时满足四个条件：Cookie 的 `key`、`domain`、`path` 和 `secure` 都匹配。
+
+举例来说，如果原始的 Cookie 是用如下的 `Set-Cookie` 设置的。
 
 `Set-Cookie: key1=value1; domain=example.com; path=/blog`
 
