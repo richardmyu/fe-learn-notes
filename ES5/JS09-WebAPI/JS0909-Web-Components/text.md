@@ -1,25 +1,23 @@
 # Web Components
 
-## 1. 概述
+## 1.概述
 
-各种网站往往需要一些相同的模块，比如日历、调色板等等，这种模块就被称为“**组件**”（component）。Web Component 就是网页组件式开发的技术规范。
+各种网站往往需要一些相同的模块，比如日历、调色板等等，这种模块就被称为 “**组件**”（component）。Web Component 就是网页组件式开发的技术规范。
 
 采用组件进行网站开发，有很多优点。
 
-（1）管理和使用非常容易。加载或卸载组件，只要添加或删除一行代码就可以了。
+1. 管理和使用非常容易。加载或卸载组件，只要添加或删除一行代码就可以了。
 
 ```js
 <link rel="import" href="my-dialog.htm">
 <my-dialog heading="A Dialog">Lorem ipsum</my-dialog>
 ```
 
-上面代码加载了一个对话框组件。
+2. 定制非常容易。组件往往留出接口，供使用者设置常见属性，比如上面代码的 `heading` 属性，就是用来设置对话框的标题。
 
-（2）定制非常容易。组件往往留出接口，供使用者设置常见属性，比如上面代码的 `heading` 属性，就是用来设置对话框的标题。
+3. 组件是模块化编程思想的体现，非常有利于代码的重用。标准格式的模块，可以跨平台、跨框架使用，构建、部署和与其他 UI 元素互动都有统一做法。
 
-（3）组件是模块化编程思想的体现，非常有利于代码的重用。标准格式的模块，可以跨平台、跨框架使用，构建、部署和与其他 UI 元素互动都有统一做法。
-
-（4）组件提供了 HTML、CSS、JavaScript 封装的方法，实现了与同一页面上其他代码的隔离。
+4. 组件提供了 HTML、CSS、JavaScript 封装的方法，实现了与同一页面上其他代码的隔离。
 
 未来的网站开发，可以像搭积木一样，把组件合在一起，就组成了一个网站。这是非常诱人的。
 
@@ -27,7 +25,7 @@ Web Components 不是单一的规范，而是一系列的技术组成，包括 `
 
 ## 2.`template` 标签
 
-### 2.1. 基本用法
+### 2.1.基本用法
 
 `template` 标签表示网页中某些重复出现的部分的代码模板。它存在于 DOM 之中，但是在页面中不可见。
 
@@ -68,14 +66,14 @@ template.content.querySelector(".profile__social").textContent =
 document.body.appendChild(template.content);
 ```
 
-上面的代码是将模板直接插入 DOM，更好的做法是克隆 template 节点，然后将克隆的节点插入 DOM。这样做可以多次使用模板。
+上面的代码是将模板直接插入 DOM，更好的做法是克隆 `template` 节点，然后将克隆的节点插入 DOM。这样做可以多次使用模板。
 
 ```js
 var clone = document.importNode(template.content, true);
 document.body.appendChild(clone);
 ```
 
-接受 `template` 插入的元素，叫做**宿主元素**（host）。在 `template` 之中，可以对宿主元素设置样式。
+接受 `template` 插入的元素，叫做 **宿主元素**（host）。在 `template` 之中，可以对宿主元素设置样式。
 
 ```html
 <template>
@@ -90,7 +88,7 @@ document.body.appendChild(clone);
 </template>
 ```
 
-### 2.2.`document.importNode()`
+### 2.2.`document.importNode`
 
 `document.importNode` 方法用于克隆外部文档的 DOM 节点。
 
@@ -204,7 +202,7 @@ var XFooExtended = document.registerElement("x-foo-extended", {
 
 总之，如果 A 元素继承了 B 元素。那么，B 元素的 `is` 属性，可以指定 B 元素是 A 元素的一个实例。
 
-### 3.2. 添加属性和方法
+### 3.2.添加属性和方法
 
 自定义元素的强大之处，就是可以在它上面定义新的属性和方法。
 
@@ -241,20 +239,14 @@ var XFoo = document.registerElement("x-foo", {
 });
 ```
 
-### 3.3. 回调函数
+### 3.3.回调函数
 
 自定义元素的原型有一些属性，用来指定回调函数，在特定事件发生时触发。
-
----
 
 - `createdCallback`：实例生成时触发
 - `attachedCallback`：实例插入 HTML 文档时触发
 - `detachedCallback`：实例从 HTML 文档移除时触发
 - `attributeChangedCallback(attrName, oldVal, newVal)`：实例的属性发生改变时（添加、移除、更新）触发
-
----
-
-下面是一个例子。
 
 ```js
 var proto = Object.create(HTMLElement.prototype);
@@ -295,7 +287,9 @@ var XFoo = document.registerElement("x-foo-with-markup", {
 
 ## 4.Shadow DOM
 
-所谓 `Shadow DOM` 指的是，浏览器将模板、样式表、属性、JavaScript 代码等，封装成一个独立的 DOM 元素。外部的设置无法影响到其内部，而内部的设置也不会影响到外部，与浏览器处理原生网页元素（比如 `<video>` 元素）的方式很像。`Shadow DOM` 最大的好处有两个，一是可以向用户隐藏细节，直接提供组件，二是可以封装内部样式表，不会影响到外部。Chrome 35+ 支持 `Shadow DOM`。
+所谓 `Shadow DOM` 指的是，浏览器将模板、样式表、属性、JavaScript 代码等，封装成一个独立的 DOM 元素。外部的设置无法影响到其内部，而内部的设置也不会影响到外部，与浏览器处理原生网页元素（比如 `<video>` 元素）的方式很像。
+
+`Shadow DOM` 最大的好处有两个，一是可以向用户隐藏细节，直接提供组件，二是可以封装内部样式表，不会影响到外部。Chrome 35+ 支持 `Shadow DOM`。
 
 `Shadow DOM` 元素必须依存在一个现有的 DOM 元素之下，通过 `createShadowRoot` 方法创造，然后将其插入该元素。
 
@@ -358,7 +352,7 @@ shadow.appendChild(template.content.cloneNode(true));
 
 ## 5.HTML Import
 
-### 5.1. 基本操作
+### 5.1.基本操作
 
 长久以来，网页可以加载外部的样式表、脚本、图片、多媒体，却无法方便地加载其他网页，`iframe` 和 `ajax` 都只能提供部分的解决方案，且有很大的局限。`HTML Import` 就是为了解决加载外部网页这个问题，而提出来的。
 
@@ -432,7 +426,7 @@ document.head.appendChild(link);
 
 最后，`HTML Import` 支持多重加载，即被加载的网页同时又加载其他网页。如果这些网页都重复加载同一个外部脚本，浏览器只会抓取并执行一次该脚本。比如，A 网页加载了 B 网页，它们各自都需要加载 jQuery，浏览器只会加载一次 jQuery。
 
-### 5.2. 脚本的执行
+### 5.2.脚本的执行
 
 外部网页的内容，并不会自动显示在当前网页中，它只是储存在浏览器中，等到被调用的时候才加载进入当前网页。为了加载网页网页，必须用 DOM 操作获取加载的内容。具体来说，就是使用 `link` 元素的 `import` 属性，来获取加载的内容。这一点与 `iframe` 完全不同。
 
@@ -440,17 +434,13 @@ document.head.appendChild(link);
 
 发生以下情况时，`link.import` 属性为 `null`。
 
----
-
 - 浏览器不支持 `HTML Import`
 - `link` 元素没有声明 `rel="import"`
 - `link` 元素没有被加入 DOM
 - `link` 元素已经从 DOM 中移除
 - 对方域名没有打开 `CORS`
 
----
-
-下面代码用于从加载的外部网页选取 id 为 `template` 的元素，然后将其克隆后加入当前网页的 DOM。
+下面代码用于从加载的外部网页选取 `id` 为 `template` 的元素，然后将其克隆后加入当前网页的 DOM。
 
 ```js
 var el = linkElement.import.querySelector("#template");
@@ -540,7 +530,7 @@ mainDoc.head.appendChild(styles.cloneNode(true));
 
 `Web Components` 是非常新的技术，为了让老式浏览器也能使用，Google 推出了一个函数库 `Polymer.js`。这个库不仅可以帮助开发者，定义自己的网页元素，还提供许多预先制作好的组件，可以直接使用。
 
-### 6.1. 直接使用的组件
+### 6.1.直接使用的组件
 
 `Polymer.js` 提供的组件，可以直接插入网页，比如下面的 `google-map`。
 
@@ -567,7 +557,7 @@ polymer-ui-clock {
 }
 ```
 
-### 6.2. 安装
+### 6.2.安装
 
 如果使用 bower 安装，至少需要安装 `platform` 和 `core components` 这两个核心部分。
 
@@ -589,7 +579,7 @@ bower install Polymer/polymer-ui-elements
 
 这时，组件根目录下的 `bower.json`，会指明该组件的依赖的模块，这些模块会被自动安装。
 
-```js
+```json
 {
   "name": "polymer-ui-accordion",
   "private": true,
@@ -602,7 +592,7 @@ bower install Polymer/polymer-ui-elements
 }
 ```
 
-### 6.3. 自定义组件
+### 6.3.自定义组件
 
 下面是一个最简单的自定义组件的例子。
 
@@ -618,21 +608,21 @@ bower install Polymer/polymer-ui-elements
 
 上面代码定义了 `lorem-element` 组件。它分成三个部分。
 
-（1）`import` 命令
+1. `import` 命令
 
 `import` 命令表示载入核心模块
 
-（2）`polymer-element` 标签
+2. `polymer-element` 标签
 
 `polymer-element` 标签定义了组件的名称（注意，组件名称中必须包含连字符）。它还可以使用 `extends` 属性，表示组件基于某种网页元素。
 
 `<polymer-element name="w3c-disclosure" extends="button">`
 
-（3）`template` 标签
+3. `template` 标签
 
 `template` 标签定义了网页元素的模板。
 
-### 6.4. 组件的使用方法
+### 6.4.组件的使用方法
 
 在调用组件的网页中，首先加载 `polymer.js` 库和组件文件。
 
