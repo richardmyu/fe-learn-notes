@@ -10,25 +10,26 @@ V8 的垃圾回收策略主要基于 *分代式垃圾回收机制*，现代的�
 // 一个内存溢出超出边界限制的例子
 // overflow.js
 const format = function (bytes) {
-    return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
 };
 
 const print = function() {
-    const memoryUsage = process.memoryUsage();
-    console.log(`heapTotal: ${format(memoryUsage.heapTotal)}, heapUsed: ${format(memoryUsage.heapUsed)}`);
+  const memoryUsage = process.memoryUsage();
+  console.log(`heapTotal: ${format(memoryUsage.heapTotal)}, heapUsed: ${format(memoryUsage.heapUsed)}`);
 }
 
 const total = [];
 setInterval(function() {
-    total.push(new Array(20 * 1024 * 1024)); // 大内存占用
-    print();
+  total.push(new Array(20 * 1024 * 1024)); // 大内存占用
+  print();
 }, 1000)
 ```
 
 以上例子中 `total` 为全局变量每次大约增长 160MB 左右且不会被回收，在接近 V8 边界时无法在分配内存导致进程内存溢出。
 
-```js
+```sh
 $ node overflow.js
+
 heapTotal: 166.84 MB, heapUsed: 164.23 MB
 heapTotal: 326.85 MB, heapUsed: 324.26 MB
 heapTotal: 487.36 MB, heapUsed: 484.27 MB
