@@ -17,7 +17,7 @@ if (x < y) {
 
 ## 2.单行长度
 
-不要超过80，但如果编辑器开启word wrap可以不考虑单行长度。
+不要超过 80，但如果编辑器开启 word wrap 可以不考虑单行长度。
 
 ## 3.分号
 
@@ -287,7 +287,7 @@ var zhangsan = 'zhangsan'; // one space after code
 
 - 难于理解的代码段
 - 可能存在错误的代码段
-- 浏览器特殊的HACK代码
+- 浏览器特殊的 HACK 代码
 - 业务逻辑强相关的代码
 
 ```js
@@ -311,16 +311,18 @@ var x = 1;
 /**
  * @func
  * @desc 一个带参数的函数
- * @param {string} a - 参数a
- * @param {number} b=1 - 参数b默认值为1
- * @param {string} c=1 - 参数c有两种支持的取值</br>1—表示x</br>2—表示xx
- * @param {object} d - 参数d为一个对象
- * @param {string} d.e - 参数d的e属性
- * @param {string} d.f - 参数d的f属性
- * @param {object[]} g - 参数g为一个对象数组
- * @param {string} g.h - 参数g数组中一项的h属性
- * @param {string} g.i - 参数g数组中一项的i属性
- * @param {string} [j] - 参数j是一个可选参数
+ * @param {string} a - 参数 a
+ * @param {number} b=1 - 参数 b 默认值为 1
+ * @param {string} c=1 - 参数 c 有两种支持的取值
+ *                       1— 表示 x
+ *                       2— 表示 xx
+ * @param {object} d - 参数 d 为一个对象
+ * @param {string} d.e - 参数 d 的 e 属性
+ * @param {string} d.f - 参数 d 的 f 属性
+ * @param {object[]} g - 参数 g 为一个对象数组
+ * @param {string} g.h - 参数 g 数组中一项的 h 属性
+ * @param {string} g.i - 参数 g 数组中一项的 i 属性
+ * @param {string} [j] - 参数 j 是一个可选参数
  */
 function foo(a, b, c, d, g, j) {
     ...
@@ -343,10 +345,10 @@ var y = 'foo',
 ## 11.变量命名
 
 - 标准变量采用驼峰式命名（除了对象的属性外，主要是考虑到 cgi 返回的数据）
-- 'ID'在变量名中全大写
-- 'URL'在变量名中全大写
-- 'Android'在变量名中大写第一个字母
-- 'iOS'在变量名中小写第一个，大写后两个字母
+  - 'ID'在变量名中全大写
+  - 'URL'在变量名中全大写
+  - 'Android'在变量名中大写第一个字母
+  - 'iOS'在变量名中小写第一个，大写后两个字母
 - 常量全大写，用下划线连接
 - 构造函数，大写第一个字母
 - jquery 对象必须以'`$`'开头命名
@@ -399,9 +401,9 @@ function doSomethingWithItems(items) {
 
 立即执行函数外必须包一层括号；
 
-不要给 inline function 命名；
+不要给 `inline function` 命名；
 
-参数之间用'`, `'分隔，注意逗号后有一个空格。
+参数之间用 `", "`分隔，注意逗号后有一个空格。
 
 ```js
 // no space before '(', but one space before'{'

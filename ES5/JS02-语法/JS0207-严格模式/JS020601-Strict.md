@@ -19,7 +19,7 @@
 
 ## 2.启用方法
 
-进入严格模式的标志，是一行字符串 `use strict`。
+进入严格模式的标志，是一行字符串：
 
 `'use strict';`
 
@@ -27,9 +27,9 @@
 
 严格模式可以用于整个脚本，也可以只用于单个函数。
 
-1). 整个脚本文件
+1. 整个脚本文件
 
-`use strict` 放在脚本文件的第一行，整个脚本都将以严格模式运行。如果这行语句不在第一行就无效，整个脚本会以正常模式运行。（严格地说，只要前面不是产生实际运行结果的语句，`use strict` 可以不在第一行，比如直接跟在一个空的分号后面，或者跟在注释后面。)
+`'use strict'` 放在脚本文件的第一行，整个脚本都将以严格模式运行。如果这行语句不在第一行就无效，整个脚本会以正常模式运行。（严格地说，只要前面不是产生实际运行结果的语句，`'use strict'` 可以不在第一行，比如直接跟在一个空的分号后面，或者跟在注释后面。)
 
 ```js
 <script>
@@ -42,24 +42,24 @@
 </script>
 ```
 
-如果 `use strict` 写成下面这样，则不起作用，严格模式必须从代码一开始就生效。
+如果 `'use strict'` 写成下面这样，则不起作用，严格模式必须从代码一开始就生效。
 
 ```js
 <script>console.log('这是正常模式'); 'use strict';</script>
 ```
 
-2). 单个函数
+2. 单个函数
 
-`use strict` 放在函数体的第一行，则整个函数以严格模式运行。
+`'use strict'` 放在函数体的第一行，则整个函数以严格模式运行。
 
 ```js
 function strict() {
-  "use strict";
+  'use strict';
   return "这是严格模式";
 }
 
 function strict2() {
-  "use strict";
+  'use strict';
   function f() {
     return "这也是严格模式";
   }
@@ -75,7 +75,7 @@ function notStrict() {
 
 ```js
 (function() {
-  "use strict";
+  'use strict';
   // some code here
 })();
 ```
@@ -89,18 +89,18 @@ function notStrict() {
 严格模式下，设置字符串的 `length` 属性，会报错。
 
 ```js
-"use strict";
+'use strict';
 "abc".length = 5;
 // TypeError: Cannot assign to read only property 'length' of string 'abc'
 ```
 
 上面代码报错，因为 `length` 是只读属性，严格模式下不可写。正常模式下，改变 `length` 属性是无效的，但不会报错。
 
-严格模式下，对只读属性赋值，或者删除**不可配置**（non-configurable）属性都会报错。
+严格模式下，对只读属性赋值，或者删除 **不可配置**（non-configurable）属性都会报错。
 
 ```js
 // 对只读属性赋值会报错
-"use strict";
+'use strict';
 Object.defineProperty({}, "a", {
   value: 37,
   writable: false
@@ -109,7 +109,7 @@ obj.a = 123;
 // TypeError: Cannot assign to read only property 'a' of object #<Object>
 
 // 删除不可配置的属性会报错
-("use strict");
+('use strict');
 var obj = Object.defineProperty({}, "p", {
   value: 1,
   configurable: false
@@ -123,7 +123,7 @@ delete obj.p;
 严格模式下，对一个只有取值器、没有存值器的属性赋值，会报错。
 
 ```js
-"use strict";
+'use strict';
 var obj = {
   get v() {
     return 1;
@@ -138,7 +138,7 @@ obj.v = 2;
 严格模式下，对禁止扩展的对象添加新属性，会报错。
 
 ```js
-"use strict";
+'use strict';
 var obj = {};
 Object.preventExtensions(obj);
 obj.v = 1;
@@ -193,7 +193,7 @@ var n = 0100;
 正常模式中，如果一个变量没有声明就赋值，默认是全局变量。严格模式禁止这种用法，全局变量必须显式声明。
 
 ```js
-"use strict";
+'use strict';
 
 v = 1; // 报错，v 未声明
 
@@ -223,7 +223,7 @@ f(); // true
 
 // 严格模式
 function f() {
-  "use strict";
+  'use strict';
   console.log(this === undefined);
 }
 f(); // true
@@ -233,14 +233,16 @@ f(); // true
 
 ```js
 function f() {
-  "use strict";
+  'use strict';
   this.a = 1;
 }
 
 f(); // 报错，this 未定义
 ```
 
-严格模式下，函数直接调用时（不使用 `new` 调用），函数内部的 `this` 表示 `undefined`（未定义），因此可以用 `call`、`apply` 和 `bind` 方法，将任意值绑定在 `this` 上面。正常模式下，`this` 指向全局对象，如果绑定的值是非对象，将被自动转为对象再绑定上去，而 `null` 和 `undefined` 这两个无法转成对象的值，将被忽略。
+严格模式下，函数直接调用时（不使用 `new` 调用），函数内部的 `this` 表示 `undefined`（未定义），因此可以用 `call`、`apply` 和 `bind` 方法，将任意值绑定在 `this` 上面。
+
+正常模式下，`this` 指向全局对象，如果绑定的值是非对象，将被自动转为对象再绑定上去，而 `null` 和 `undefined` 这两个无法转成对象的值，将被忽略。
 
 ```js
 // 正常模式
@@ -255,7 +257,7 @@ fun.call(null); // window
 fun.call(undefined); // window
 
 // 严格模式
-("use strict");
+'use strict';
 function fun() {
   return this;
 }
@@ -273,7 +275,7 @@ fun.call(undefined); // undefined
 
 ```js
 function f1() {
-  "use strict";
+  'use strict';
   f1.caller; // 报错
   f1.arguments; // 报错
 }
@@ -287,7 +289,7 @@ f1();
 
 ### 4.5.禁止删除变量
 
-严格模式下无法删除变量，如果使用 `delete` 命令删除一个变量，会报错。只有对象的属性，且属性的描述对象的 `configurable` 属性设置为 true，才能被 `delete` 命令删除。
+严格模式下无法删除变量，如果使用 `delete` 命令删除一个变量，会报错。只有对象的属性，且属性的描述对象的 `configurable` 属性设置为 `true`，才能被 `delete` 命令删除。
 
 ```js
 'use strict';
@@ -334,21 +336,21 @@ with (obj) {
 
 ```js
 (function() {
-  "use strict";
+  'use strict';
   var x = 2;
   console.log(eval("var x = 5; x")); // 5
   console.log(x); // 2
 })();
 ```
 
-上面代码中，由于 `eval` 语句内部是一个独立作用域，所以内部的变量 x 不会泄露到外部。
+上面代码中，由于 `eval` 语句内部是一个独立作用域，所以内部的变量 `x` 不会泄露到外部。
 
 注意，如果希望 `eval` 语句也使用严格模式，有两种方式。
 
 ```js
 // 方式一
 function f1(str) {
-  "use strict";
+  'use strict';
   return eval(str);
 }
 f1("undeclared_variable = 1"); // 报错
@@ -357,7 +359,7 @@ f1("undeclared_variable = 1"); // 报错
 function f2(str) {
   return eval(str);
 }
-f2('"use strict";undeclared_variable = 1'); // 报错
+f2(''use strict';undeclared_variable = 1'); // 报错
 ```
 
 上面两种写法，`eval` 内部使用的都是严格模式。
@@ -374,7 +376,7 @@ function f(a) {
 f(1); // 正常模式为 [2, 2]
 
 function f(a) {
-  "use strict";
+  'use strict';
   a = 2;
   return [a, arguments[0]];
 }
@@ -390,7 +392,7 @@ JavaScript 语言的下一个版本是 ECMAScript 6，为了平稳过渡，严�
 ES6 会引入块级作用域。为了与新版本接轨，ES5 的严格模式只允许在全局作用域或函数作用域声明函数。也就是说，不允许在非函数的代码块内声明函数。
 
 ```js
-"use strict";
+'use strict';
 if (true) {
   function f1() {} // 语法错误
 }
