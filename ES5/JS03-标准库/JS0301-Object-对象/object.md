@@ -18,7 +18,7 @@ Object.print = function(o) {
 
 ### 1.2.`Object` 的实例方法
 
-所谓**实例方法**就是定义在 `Object` 原型对象 `Object.prototype` 上的方法。它可以被 `Object` 实例直接使用。
+所谓 **实例方法** 就是定义在 `Object` 原型对象 `Object.prototype` 上的方法。它可以被 `Object` 实例直接使用。
 
 ```js
 Object.prototype.print = function() {
@@ -29,11 +29,11 @@ var obj = new Object();
 obj.print(); // obj
 ```
 
-## 2.`Object()`
+## 2.`Object`
 
 `Object` 本身是一个函数，可以当作工具方法使用，将任意值转为对象。这个方法常用于保证某个值一定是对象。
 
-如果参数为空（或者为 `undefined` 和 `null`），`Object()` 返回一个空对象。
+如果参数为空（或者为 `undefined` 和 `null`），`Object` 返回一个空对象。
 
 ```js
 var obj = Object();
@@ -44,9 +44,9 @@ var obj = Object(null);
 obj instanceof Object; // true
 ```
 
-`instanceof` 运算符用来验证：**一个对象是否为指定的构造函数的实例**。`obj instanceof Object` 返回 true，就表示 obj 对象是 `Object` 的实例。
+`instanceof` 运算符用来验证：*一个对象是否为指定的构造函数的实例*。`obj instanceof Object` 返回 `true`，就表示 `obj` 对象是 `Object` 的实例。
 
-如果参数是原始类型的值 (num,str,boo)，`Object` 方法将其转为对应的包装对象的实例。
+如果参数是原始类型的值，`Object` 方法将其转为对应的包装对象的实例。
 
 ```js
 var obj = Object(1);
@@ -142,9 +142,9 @@ Object.getOwnPropertyNames(obj).length; // 2
 
 ### 4.2.其他方法
 
-1). 对象属性模型的相关方法
+### 4.2.1.对象属性模型的相关方法
 
-[从一个程序员的角度来说](https://www.cnblogs.com/tarol/p/4670130.html)，属性分为可通过 JS 调用的的和不可通过 JS 调用的。不可调用的叫做内部属性，那么可调用的我们对应着叫外部属性。内部属性是 JS 解释器实现各种接口的时候使用的算法中需要调用的属性。而外部属性又分为两种，一种是数据属性，一种是访问器属性。
+[从一个程序员的角度来说](https://www.cnblogs.com/tarol/p/4670130.html)，属性分为可通过 Javascript 调用的的和不可通过 Javascript 调用的。不可调用的叫做内部属性，那么可调用的我们对应着叫外部属性。内部属性是 Javascript 解释器实现各种接口的时候使用的算法中需要调用的属性。而外部属性又分为两种，一种是数据属性，一种是访问器属性。
 
 属性还存在其他一些状态，我们称之为 **元属性**，无论是数据属性还是访问器属性，都存在四个元属性。
 
@@ -156,45 +156,29 @@ Object.getOwnPropertyNames(obj).length; // 2
 
 `[[Get]]`、`[[Set]]`、`[[Enumerable]]`、`[[Configuration]]`。
 
-JS 开放了三个接口用于设置和获取属性的特性，分别是：
+Javascript 开放了三个接口用于设置和获取属性的特性，分别是：
 
-1). 对象属性模型方法
-
----
+1. 对象属性模型方法
 
 - `Object.defineProperty()`：通过描述对象，定义某个属性
 - `Object.defineProperties()`：通过描述对象，定义多个属性
 - `Object.getOwnPropertyDescriptor()`：获取某个属性的描述对象
 
----
+2. 控制对象状态的方法
 
-2). 控制对象状态的方法
+- `Object.preventExtensions()`：防止对象扩展
+- `Object.isExtensible()`：判断对象是否可扩展
+>
+- `Object.seal()`：禁止对象配置
+- `Object.isSealed()`：判断一个对象是否可配置
+>
+- `Object.freeze()`：冻结一个对象
+- `Object.isFrozen()`：判断一个对象是否被冻结
 
----
-
-- `Object.preventExtensions()`：防止对象扩展。
-- `Object.isExtensible()`：判断对象是否可扩展。
-
----
-
-- `Object.seal()`：禁止对象配置。
-- `Object.isSealed()`：判断一个对象是否可配置。
-
----
-
-- `Object.freeze()`：冻结一个对象。
-- `Object.isFrozen()`：判断一个对象是否被冻结。
-
----
-
-3). 原型链相关方法
-
----
+3. 原型链相关方法
 
 - `Object.create()`：指定原型对象和属性，返回一个新的对象
 - `Object.getPrototypeOf()`：获取对象的 `Prototype` 对象
-
----
 
 ## 5.`Object` 的实例方法
 
@@ -202,19 +186,17 @@ JS 开放了三个接口用于设置和获取属性的特性，分别是：
 
 `Object` 实例对象的方法，主要有以下六个。
 
----
-
 - `Object.prototype.valueOf()`：返回当前对象对应的值
+>
 - `Object.prototype.toString()`：返回当前对象对应的字符串形式
+>
 - `Object.prototype.toLocaleString()`：返回当前对象对应的本地字符串形式
-
----
-
+>
 - `Object.prototype.hasOwnProperty()`：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性
+>
 - `Object.prototype.isPrototypeOf()`：判断当前对象是否为另一个对象的原型
+>
 - `Object.prototype.propertyIsEnumerable()`：判断某个属性是否可枚举
-
----
 
 ### 5.1.`Object.prototype.valueOf`
 
@@ -298,22 +280,29 @@ obj + " " + "world"; // "hello world"
 
 不同数据类型的 `Object.prototype.toString` 方法返回值如下。
 
----
-
-- 数值：返回 `[object Number]`。
-- 字符串：返回 `[object String]`。
-- 布尔值：返回 `[object Boolean]`。
-- `undefined`：返回 `[object Undefined]`。
-- `null`：返回 `[object Null]`。
-- 数组：返回 `[object Array]`。
-- `arguments` 对象：返回 `[object Arguments]`。
-- 函数：返回 `[object Function]`。
-- `Error` 对象：返回 `[object Error]`。
-- `Date` 对象：返回 `[object Date]`。
-- `RegExp` 对象：返回 `[object RegExp]`。
-- 其他对象：返回 `[object Object]`。
-
----
+- 数值：返回 `[object Number]`
+>
+- 字符串：返回 `[object String]`
+>
+- 布尔值：返回 `[object Boolean]`
+>
+- `undefined`：返回 `[object Undefined]`
+>
+- `null`：返回 `[object Null]`
+>
+- 数组：返回 `[object Array]`
+>
+- `arguments` 对象：返回 `[object Arguments]`
+>
+- 函数：返回 `[object Function]`
+>
+- `Error` 对象：返回 `[object Error]`
+>
+- `Date` 对象：返回 `[object Date]`
+>
+- `RegExp` 对象：返回 `[object RegExp]`
+>
+- 其他对象：返回 `[object Object]`
 
 这就是说，`Object.prototype.toString` 可以看出一个值到底是什么类型。
 
@@ -373,13 +362,9 @@ obj.toLocaleString(obj); // "[object Object]"
 
 这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的 `toLocaleString`，用来返回针对某些地域的特定的值。目前，主要有三个对象自定义了 `toLocaleString` 方法。
 
----
-
 - `Array.prototype.toLocaleString()`
 - `Number.prototype.toLocaleString()`
 - `Date.prototype.toLocaleString()`
-
----
 
 举例来说，日期的实例对象的 `toString` 和 `toLocaleString` 返回值就不一样，而且 `toLocaleString` 的返回值跟用户设定的所在地域相关。
 
