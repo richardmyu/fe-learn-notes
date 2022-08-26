@@ -44,7 +44,7 @@ var obj = Object(null);
 obj instanceof Object; // true
 ```
 
-`instanceof` 运算符用来验证：*一个对象是否为指定的构造函数的实例*。`obj instanceof Object` 返回 `true`，就表示 `obj` 对象是 `Object` 的实例。
+> `instanceof` 运算符用来验证：*一个对象是否为指定的构造函数的实例*。`obj instanceof Object` 返回 `true`，就表示 `obj` 对象是 `Object` 的实例。
 
 如果参数是原始类型的值，`Object` 方法将其转为对应的包装对象的实例。
 
@@ -186,17 +186,17 @@ Javascript 开放了三个接口用于设置和获取属性的特性，分别是
 
 `Object` 实例对象的方法，主要有以下六个。
 
-- `Object.prototype.valueOf()`：返回当前对象对应的值
+- `Object.prototype.valueOf()`
 >
-- `Object.prototype.toString()`：返回当前对象对应的字符串形式
+- `Object.prototype.toString()`
 >
-- `Object.prototype.toLocaleString()`：返回当前对象对应的本地字符串形式
+- `Object.prototype.toLocaleString()`
 >
-- `Object.prototype.hasOwnProperty()`：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性
+- `Object.prototype.hasOwnProperty()`
 >
-- `Object.prototype.isPrototypeOf()`：判断当前对象是否为另一个对象的原型
+- `Object.prototype.isPrototypeOf()`
 >
-- `Object.prototype.propertyIsEnumerable()`：判断某个属性是否可枚举
+- `Object.prototype.propertyIsEnumerable()`
 
 ### 5.1.`Object.prototype.valueOf`
 
@@ -327,7 +327,7 @@ var type = function(o) {
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 };
 
-let aryType = [
+var aryType = [
   "Null",
   "Undefined",
   "Object",
@@ -360,7 +360,9 @@ obj.toString(obj); // "[object Object]"
 obj.toLocaleString(obj); // "[object Object]"
 ```
 
-这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的 `toLocaleString`，用来返回针对某些地域的特定的值。目前，主要有三个对象自定义了 `toLocaleString` 方法。
+这个方法的主要作用是留出一个接口，让各种不同的对象实现自己版本的 `toLocaleString`，用来返回针对某些地域的特定的值。
+
+目前，主要有三个对象自定义了 `toLocaleString` 方法。
 
 - `Array.prototype.toLocaleString()`
 - `Number.prototype.toLocaleString()`
