@@ -22,10 +22,10 @@ JavaScript 的数据类型分为两类：原始类型（primitive type）和对�
 ```js
 s; // ReferenceError: v is not defined
 
-typeof s; //undefined
+typeof s; // undefined
 
 s = "lalala";
-typeof s; //string
+typeof s; // string
 ```
 
 上面代码中，变量 `s` 没有用 `var` 命令声明，直接使用就会报错。但是，放在 `typeof` 后面，就不报错了，而是返回 `undefined`。实际编程中，这个特点通常用在判断语句。
@@ -59,15 +59,11 @@ if (typeof s === "undefined") {
 
 由简单的结构组成：
 
-1).`number` 数字
-
-2).`string` 字符串
-
-3).`boolean` 布尔
-
-4).`null` 空对象指针
-
-5).`undefined` 未定义
+- `number` 数字
+- `string` 字符串
+- `boolean` 布尔
+- `null` 空对象指针
+- `undefined` 未定义
 
 > 为了避免属性名的冲突，ES6 新增了 `Symbol` 类型，`Symbol` 是一种原始数据类型，表示独一无二的值；
 
@@ -75,9 +71,8 @@ if (typeof s === "undefined") {
 
 结构相对复杂：
 
-1).`object` 对象数据类型
-
-2).`function` 函数数据类型
+- `object` 对象数据类型
+- `function` 函数数据类型
 
 引用类型的值（对象）是引用类型的一个实例。在 ECMAScript 中，**引用类型** 是一种数据结构，用于将数据和功能组织在一起。它也常被称为 *类*，但这并不妥当。尽管从技术上讲，ECMAScript 是一门面向对象的语言，但它不具备传统的面向对象语言所支持的类和接口等基本结构。引用类型有时也被称为 **对象定义**，因为它描述的是一类对象所具有的属性和方法。
 
@@ -114,12 +109,12 @@ if (typeof s === "undefined") {
 
 ```js
 var mess;
-console.log(mess); //undefined
+console.log(mess); // undefined
 console.log(me);
-//Uncaught ReferenceError: me is not defined
+// Uncaught ReferenceError: me is not defined
 
-typeof mess; //undefined
-typeof me; //undefined
+typeof mess; // undefined
+typeof me; // undefined
 ```
 
 对于尚未定义的变量，只能进行一项操作，即使用 `typeof` 检测其数据类型（使用 `delete` 也不会报错，但没什么实际意义，严格模式下则会报错）。

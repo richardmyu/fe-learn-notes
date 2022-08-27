@@ -14,7 +14,7 @@
 取反，先将值转为布尔类型，然后取反；
 
 ```js
-let a = 6;
+var a = 6;
 typeof a; // number
 typeof !a; // boolean
 !a; // false
@@ -25,7 +25,7 @@ typeof !a; // boolean
 再次取反；将其他数据类型转换为布尔数据类型，相当于 `Boolean(str)`；
 
 ```js
-let a = 6;
+var a = 6;
 typeof a; // number
 typeof !a; // boolean
 !!a; // true
