@@ -4,20 +4,25 @@
 
 `Number` 对象是数值对应的包装对象，可以作为构造函数使用，也可以作为工具函数使用。
 
-作为构造函数时，它用于生成值为数值的 *对象*。
-
-作为工具函数时，它可以将任何类型的值转为 *数值*。
+- 作为构造函数时，它用于生成值为数值的 *对象*。
+- 作为工具函数时，它可以将任何类型的值转为 *数值*。
 
 ## 2.属性
 
 `Number` 对象拥有以下一些属性。
 
 - `Number.POSITIVE_INFINITY`：正的无限，指向 `Infinity`。
+>
 - `Number.NEGATIVE_INFINITY`：负的无限，指向 `-Infinity`。
+>
 - `Number.NaN`：表示非数值，指向 `NaN`。
+>
 - `Number.MAX_VALUE`：表示最大的正数，相应的，最小的负数为 `-Number.MAX_VALUE`。
+>
 - `Number.MIN_VALUE`：表示最小的正数（即最接近 0 的正数，在 64 位浮点数体系中为 `5e-324`），相应的，最接近 0 的负数为 `-Number.MIN_VALUE`。
+>
 - `Number.MAX_SAFE_INTEGER`：表示能够精确表示的最大整数，即 `9007199254740991`。
+>
 - `Number.MIN_SAFE_INTEGER`：表示能够精确表示的最小整数，即 `-9007199254740991`。
 
 ## 3.实例方法
@@ -70,22 +75,22 @@ parseInt(0xa); // 10
 `toFixed` 方法的参数为小数位数，有效范围为 0 到 20（现在是 0 - 100)，超出这个范围将抛出 `RangeError` 错误。
 
 ```js
-//不传参数等价于传入 0
-(2.123456).toFixed(); //2
-(2.423456).toFixed(0); //2
+// 不传参数等价于传入 0
+(2.123456).toFixed(); // 2
+(2.423456).toFixed(0); // 2
 
-(2.123).toFixed(2); //2.12
-(2.445).toFixed(2); //2.44
-(2.556).toFixed(2); //2.56
-(2.978).toFixed(2); //2.98
+(2.123).toFixed(2); // 2.12
+(2.445).toFixed(2); // 2.44
+(2.556).toFixed(2); // 2.56
+(2.978).toFixed(2); // 2.98
 
-(2.978).toFixed(0); //3
+(2.978).toFixed(0); // 3
 (2.978).toFixed(-1);
-//toFixed() digits argument must be between 0 and 100
+// toFixed() digits argument must be between 0 and 100
 
-(2.978).toFixed(100); //2.98...
+(2.978).toFixed(100); // 2.98...
 (2.978).toFixed(101);
-//toFixed() digits argument must be between 0 and 100
+// toFixed() digits argument must be between 0 and 100
 ```
 
 ### 3.3.`number.toExponential`

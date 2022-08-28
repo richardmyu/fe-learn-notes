@@ -22,7 +22,7 @@ typeof bObjProto; // 'object'
 
 ## 2.实例方法
 
-### 2.1.`boolean.toString()`
+### 2.1.`boolean.toString`
 
 返回指定的布尔对象的字符串形式。
 
@@ -40,7 +40,7 @@ console.log(bZero.toString()); // 'false'
 
 对于 `Boolean` 对象或值，内置的 `toString` 方法返回字符串 `"true"` 或 `"false"`，具体返回哪个取决于布尔对象的值。
 
-### 2.2.`boolean.valueOf()`
+### 2.2.`boolean.valueOf`
 
 返回一个 `Boolean` 对象或 `Boolean` 字面量的原始值作为布尔数据类型。
 
@@ -54,7 +54,7 @@ const bZero = new Boolean(0);
 console.log(bZero.valueOf()); // false
 ```
 
-## 3.`Boolean()`
+## 3.`Boolean`
 
 `Boolean` 对象除了可以作为构造函数，还可以单独使用，强制将其他类型数据转换为布尔型，对 `0`、`NaN`、`null`、`undefined`、`""`、`false` （空字符串不是空格字符串）这 6 个为 `false`，其余为 `true`；
 
@@ -65,4 +65,4 @@ typeof bZero; // 'boolean'
 ```
 
 > 在流控制语句中，自动执行相应的 `Boolean` 转换。
-> 注意：使用 `new Boolean()`，是构造函数的用法，起到包装的作用，产生的布尔值是对象类型；而使用 `Boolean()` 则只是强制将其他数据类型转化为布尔类型，故而产生的值是布尔类型。
+> 注意：使用 `new Boolean`，是构造函数的用法，起到包装的作用，产生的布尔值是对象类型；而使用 `Boolean` 则只是强制将其他数据类型转化为布尔类型，故而产生的值是布尔类型。
