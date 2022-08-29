@@ -17,12 +17,12 @@ new String("abc")[1]; // "b"
 
 ```js
 // 将任意类型数据转换位字符串
-String(123); //'123'
-String([1, 2]); //'1,2'
-String({ a: 1, b: 2 }); //[object Object]
-String(NaN); //'NaN'
-String(null); //'null'
-String(undefined); //'undefined'
+String(123); // '123'
+String([1, 2]); // '1,2'
+String({ a: 1, b: 2 }); // [object Object]
+String(NaN); // 'NaN'
+String(null); // 'null'
+String(undefined); // 'undefined'
 
 // 只有第一个参数有效
 String(1, 2); //'1'
@@ -54,7 +54,7 @@ String.fromCharCode(97); // "a"
 String.fromCharCode(104, 101, 108, 108, 111); // "hello"
 String.fromCharCode(189, 43, 190, 61); // ½+¾=
 
-//  码点大于 `0xFFFF` 的字符
+// 码点大于 `0xFFFF` 的字符
 String.fromCharCode(0xd842, 0xdfb7);
 // "𠮷"
 
@@ -88,10 +88,10 @@ str.length; // 5
 // 但是严格模式下，会报错的
 ("use strict");
 var str = "明月几时有";
-str.length; //5
+str.length; // 5
 str.length = 2;
 str.length;
-//TypeError: Cannot assign to read only property 'length' of string '明月几时有'
+// TypeError: Cannot assign to read only property 'length' of string '明月几时有'
 ```
 
 字符串可以被视为字符数组，因此可以使用数组的方括号运算符，用来返回某个位置的字符（位置编号从 0 开始）。如果方括号中的数字超过字符串的长度，或者方括号中根本不是数字，则返回 `undefined`。
@@ -118,8 +118,9 @@ string.charAt(index)
 
 - **参数**
 
-  - `index`：一个介于 0 和字符串长度减 1 之间的整数(0 ~ `str.length` - 1)。
+  - `index`：一个介于 0 和字符串长度减 1 之间的整数(0 ~ (`str.length` - 1))。
     - 如果没有提供索引，默认将使用 0；
+    >
     - 如果指定的 `index` 值超出了该范围，则返回一个空字符串；
 
 - **示例**
@@ -131,10 +132,11 @@ function fixedCharAt (str, idx) {
   var ret = '';
   str += '';
   var end = str.length;
-
   var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+
   while ((surrogatePairs.exec(str)) != null) {
     var li = surrogatePairs.lastIndex;
+
     if (li - 2 < idx) {
       idx++;
     } else {
@@ -152,6 +154,7 @@ function fixedCharAt (str, idx) {
     // Go one further, since one of the "characters" is part of a surrogate pair
     ret += str.charAt(idx+1);
   }
+
   return ret;
 }
 ```
@@ -172,6 +175,7 @@ string.charCodeAt(index)
 
   - `index`：一个大于等于 0，小于字符串长度的整数。如果不是一个数值，则默认为 0。
     - 不传参数，返回首字符的码点；
+    >
     - 如果指定的 `index` 值超出了该范围，则会返回 `NaN`。
 
 - **实例**
@@ -202,11 +206,14 @@ function fixedCharCodeAt (str, idx) {
     if (0xD800 <= code && code <= 0xDBFF) {
         hi = code;
         low = str.charCodeAt(idx+1);
+
         if (isNaN(low)) {
             throw 'High surrogate not followed by low surrogate in fixedCharCodeAt()';
         }
+
         return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
     }
+
     if (0xDC00 <= code && code <= 0xDFFF) { // Low surrogate
         // We return false to allow loops to skip this iteration since should have
         // already handled high surrogate above in the previous iteration
@@ -215,6 +222,7 @@ function fixedCharCodeAt (str, idx) {
         low = code;
         return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;*/
     }
+
     return code;
 }
 ```
@@ -223,35 +231,38 @@ function fixedCharCodeAt (str, idx) {
 
 ```js
 function knownCharCodeAt (str, idx) {
-    str += '';
-    var code,
-        end = str.length;
+  str += '';
+  var code,
+    end = str.length;
+  var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 
-    var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
-    while ((surrogatePairs.exec(str)) != null) {
-        var li = surrogatePairs.lastIndex;
-        if (li - 2 < idx) {
-            idx++;
-        }
-        else {
-            break;
-        }
+  while ((surrogatePairs.exec(str)) != null) {
+    var li = surrogatePairs.lastIndex;
+
+    if (li - 2 < idx) {
+      idx++;
     }
-
-    if (idx >= end || idx < 0) {
-        return NaN;
+    else {
+      break;
     }
+  }
 
-    code = str.charCodeAt(idx);
+  if (idx >= end || idx < 0) {
+    return NaN;
+  }
 
-    var hi, low;
-    if (0xD800 <= code && code <= 0xDBFF) {
-        hi = code;
-        low = str.charCodeAt(idx+1);
-        // Go one further, since one of the "characters" is part of a surrogate pair
-        return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
-    }
-    return code;
+  code = str.charCodeAt(idx);
+  var hi, low;
+
+  if (0xD800 <= code && code <= 0xDBFF) {
+    hi = code;
+    low = str.charCodeAt(idx+1);
+
+    // Go one further, since one of the "characters" is part of a surrogate pair
+    return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
+  }
+
+  return code;
 }
 ```
 
@@ -269,6 +280,7 @@ string.concat(value, ...)
 
 - **参数**
   - 可以接受任意多参数，也就是说可以拼接任意多个字符串；
+  >
   - 若传入的参数不是字符串形式，则会自动转换为字符串；
 
 > `concat` 可以用来拼接任意多个字符串，但实际上更多用"`+/+=`"。
@@ -296,10 +308,15 @@ string.slice(beginIndex[, endIndex])
 - **参数**
   - `beginIndex`
     - 从该索引（以 0 为基数）处开始提取原字符串中的字符。
+    >
     - 如果值为负数，会被当做 `strLength + beginIndex` 看待，这里的 `strLength` 是字符串的长度（从另一个方面看，可以认为取倒数第 `-beginIndex` 位）。
+    >
   - `endIndex`
+    >
     - 可选。在该索引（以 0 为基数）处结束提取字符串（此位本身不复制）。
+    >
     - 如果省略该参数，`slice` 会一直提取到字符串末尾。
+    >
     - 如果该参数为负数，则被看作是 `strLength + endIndex`。
 
 - **实例**
@@ -328,12 +345,18 @@ string.substring(indexStart[, indexEnd])
 
 - `indexStart`
   - 需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
+  >
 - `indexEnd`
   - 可选。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
+  >
   - 如果 `indexStart` 等于 `indexEnd`，`substring` 返回一个空字符串。
+  >
   - 如果省略 `indexEnd`，`substring` 提取字符一直到字符串末尾。
+  >
   - 如果任一参数小于 0 或为 `NaN`，则被当作 0。
+  >
   - 如果任一参数大于 `stringName.length`，则被当作 `stringName.length`。
+  >
   - 如果 `indexStart` 大于 `indexEnd`，则 `substring` 的执行效果等价于调换两个参数。
 
 - **实例**
@@ -365,12 +388,18 @@ string.substr(start[, length])
 - **参数**
   - `start`
     - 开始提取字符的位置。如果忽略 `start` 或 `start` 为 0，则提取字符一直到字符串末尾。
+    >
     - 如果 `start` 为正值，且大于或等于字符串的长度，则 `substr` 返回一个空字符串。
+    >
     - 如果 `start` 为负值，则 `substr` 把它作为从字符串末尾开始的一个字符索引。
+    >
     - 如果 `start` 为负值且 `abs(start)` 大于字符串的长度，则 `substr` 使用 0 作为开始提取的索引。
+    >
   - `length`
     - 可选。提取的字符数。
+    >
     - 如果忽略 `length`，则 `substr` 提取字符，直到字符串末尾。
+    >
     - 如果 `length` 为 0 或负值，则 `substr` 返回一个空字符串。
 
 - **实例**
@@ -403,11 +432,16 @@ string.indexOf(searchValue [, fromIndex])
 - **参数**
   - `searchValue`
     - 要被查找的字符串值。如果没有提供确切地提供字符串，`searchValue` 会被 [强制设置为 `"undefined"`](https://tc39.es/ecma262/#sec-tostring)， 然后在当前字符串中查找这个值。
+    >
     - 如果忽略该参数，则返回 -1。
+    >
     - 若被查找的字符串 `searchValue` 是一个空字符串，将会产生“奇怪”的结果：
       - 如果 `fromIndex` 值为空，或者 `fromIndex` 值小于被查找的字符串的长度且大于 0，则返回值和 `fromIndex` 值一样；
+      >
       - 如果 `fromIndex` 值为负数，则返回 0；
+      >
       - 如果 `fromIndex` 值大于等于字符串的长度，将会直接返回字符串的长度；
+      >
   - `fromIndex` (可选)
     - 数字表示开始查找的位置。可以是任意整数，默认值为 0。如果 `fromIndex` 的值小于 0，或者大于等于 `str.length`，那么查找分别从 0 和 `str.length` 开始。
 
@@ -450,11 +484,16 @@ string.lastIndexOf(searchValue[, fromIndex])
 - **参数**
   - `searchValue`
     - 一个字符串，表示被查找的值。
+    >
     - 如果 `searchValue` 是空字符串，则返回 `fromIndex`。
+    >
     - 如果忽略该参数，则返回 -1。
+    >
   - `fromIndex` (可选)
     - 待匹配字符串 `searchValue` 的开头一位字符从 `str` 的第 `fromIndex` 位开始向左回向查找。`fromIndex` 默认值是 `+Infinity`。
+    >
     - 如果 `fromIndex >= str.length`，则会搜索整个字符串。
+    >
     - 如果 `fromIndex < 0`，则等同于 `fromIndex === 0`。
 
 - **实例**
@@ -554,6 +593,7 @@ str.trimLeft();
   (function (o, p) {
     if (p in o ? o[p] ? false : true : true) {
       var r = /^\s+/;
+
       o[p] = o.trimLeft || function () {
         return this.replace(r, '')
       }
@@ -561,24 +601,6 @@ str.trimLeft();
   })(Proto, 'trimStart');
 
 })(window);
-
-
-/*
-// ES6:
-(w => {
-  const String = w.String, Proto = String.prototype;
-
-  ((o, p) => {
-    if (p in o ? o[p] ? false : true : true) {
-      const r = /^\s+/;
-      o[p] = o.trimLeft || function () {
-        return this.replace(r, '')
-      }
-    }
-  })(Proto, 'trimStart');
-
-})(window);
-*/
 ```
 
 #### 4.4.3.`string.trimEnd`
@@ -589,7 +611,6 @@ str.trimLeft();
 
 ```js
 str.trimEnd();
-// or
 str.trimRight();
 ```
 
@@ -613,7 +634,6 @@ str.trimRight();
 
 ```js
 string.toUpperCase()
-
 string.toLowerCase()
 ```
 
@@ -657,7 +677,6 @@ string.toLocaleLowerCase([locale, locale, ...])
 
 - **Exceptions**
   - `RangeError`：
-  - `RangeError`：
 
 ```js
 '\u0130'.toLocaleLowerCase('en-US'); // i
@@ -693,15 +712,21 @@ string.match(regexp)
 - **参数**
   - `regexp`
     - 一个正则表达式对象。
+    >
     - 如果传入一个非正则表达式对象，则会隐式地使用 `new RegExp(obj)` 将其转换为一个 `RegExp`。
+    >
     - 如果你没有给出任何参数并直接使用 `match()` 方法 ，你将会得到一 个包含空字符串的 `Array ：[""]`。
-
+    >
 - **返回值**
   - 如果使用 `g` 标志，则将返回与完整正则表达式匹配的所有结果，但不会返回捕获组；
+  >
   - 如果未使用 `g` 标志，则仅返回第一个完整匹配及其相关的捕获组（Array）。在这种情况下，返回的项目将具有如下所述的其他属性：
     - `groups`: 一个捕获组数组 或 `undefined`（如果没有定义命名捕获组）；
+    >
     - `index`: 匹配的结果的开始位置；
+    >
     - `input`: 搜索的字符串；
+    >
     - 如果未找到匹配则为 `null`。
 
 - **实例**
@@ -751,6 +776,7 @@ string.search(regexp)
 
 - **返回值**
   - 如果匹配成功，则返回正则表达式在字符串中首次匹配项的索引;
+  >
   - 否则，返回 -1。
 
 - **实例**
@@ -781,10 +807,13 @@ string.replace(regexp|substr, newSubStr|function)
 - **参数**
   - `regexp` (pattern)
     - 一个 `RegExp` 对象或者其字面量。该正则所匹配的内容会被第二个参数的返回值替换掉。
+  >
   - `substr` (pattern)
     - 一个将被 `newSubStr` 替换的字符串。其被视为一整个字符串，而不是一个正则表达式。仅第一个匹配项会被替换。
+  >
   - `newSubStr` (replacement)
     - 用于替换掉第一个参数在原字符串中的匹配部分的字符串。该字符串中可以内插一些特殊的变量名。
+  >
   - `function` (replacement)
     - 一个用来创建新子字符串的函数，该函数的返回值将替换掉第一个参数匹配到的结果。
 
@@ -807,7 +836,6 @@ string.replace(regexp|substr, newSubStr|function)
 ```js
 var str = "hello world";
 
-//
 str.replace(/(l)/, $&); // error
 str.replace(/(l)/, "$&"); // hello world
 str.replace(/(l)/, "$`"); // hehelo world
@@ -839,11 +867,11 @@ str.replace(/(?<subStr>l)/, "$<subStr>"); // hello world
 
 并且还要给这个函数传最少三个参数：
 
-- 1). 当正则没有分组的时候，传进去的第一个实参是正则捕获到的内容，第二个参数是捕获到的内容在原字符串中的索引位置，第三个参数是原字符串（输入字符串）；
+1. 当正则没有分组的时候，传进去的第一个实参是正则捕获到的内容，第二个参数是捕获到的内容在原字符串中的索引位置，第三个参数是原字符串（输入字符串）；
 >
-- 2). 当正则有分组的时候，第一个参数总是正则查找到的内容，后面依次是各个子正则查找到的内容；
+2. 当正则有分组的时候，第一个参数总是正则查找到的内容，后面依次是各个子正则查找到的内容；
 >
-- 3). 传完查找到的内容之后，再把总正则查找到的内容在原字符串中的索引传进（就是 `arguments[0]` 在 str 中的索引位置）。最后把输入字符串（就是原字符串）传进去；
+3. 传完查找到的内容之后，再把总正则查找到的内容在原字符串中的索引传进（就是 `arguments[0]` 在 str 中的索引位置）。最后把输入字符串（就是原字符串）传进去；
 
 ```js
 var str = "bbs456qwe789";
@@ -878,13 +906,20 @@ string.split([separator[, limit]])
 - **参数**
   - `separator`
     - 指定表示每个拆分应发生的点的字符串或正则表达式。
+    >
     - 如果纯文本分隔符包含多个字符，则必须找到整个字符串来表示分割点。
+    >
     - 如果在 `string` 中省略或不出现分隔符，则返回的数组包含一个由整个字符串组成的元素。
+    >
     - 如果分隔符为空字符串，则将 `string` 原字符串中每个字符的数组形式返回。
+    >
     - 如果分隔符出现在字符串的开始或结尾，或两者都分开，分别以空字符串开头，结尾或两者开始和结束。
+    >
     - 如果分隔符是包含捕获括号的正则表达式，则每次分隔符匹配时，捕获括号的结果（包括任何未定义的结果）将被拼接到输出数组中。但是，并不是所有浏览器都支持此功能。
+    >
   - `limit`
     - 一个整数，限定返回的分割片段数量。
+    >
     - 当提供此参数时，`split` 方法会在指定分隔符的每次出现时分割该字符串，但在限制条目已放入数组时停止。如果在达到指定限制之前达到字符串的末尾，它可能仍然包含少于限制的条目。新数组中不返回剩下的文本。
 
 > **警告**：如果使用空字符串(`“`)作为分隔符，则字符串不是在每个用户感知的字符(图形素集群)之间，也不是在每个 Unicode 字符(代码点)之间，而是在每个 UTF-16 代码单元之间。这会摧毁代理对。还请参见 [how do you get a string to a character array in javascript](https://stackoverflow.com/questions/4547609/how-to-get-character-array-from-a-string/34717402#34717402)。
@@ -896,13 +931,12 @@ s.split(" "); // ["s1, s2, s3"]
 s.split(","); // ["s1", "s2", "s3"]
 s.split(/s/); // ["", "1,", "2,", "3"]
 s.split(""); // ["s", "1", ",", "s", "2", ",", "s", "3"]
-
 s.split("", 2); // ["s", "1"]
 ```
 
 > 对 `split` 中正则的支持因浏览器而异。尽管对于简单模式没有声明差别，但对于未发现匹配项以及带有捕获组的模式，匹配的行为就大相径庭了。差别如下：
-> IE8 及之前版本会忽略捕获组。ECMCA-262 规定应该把捕获组的内容拼接到结果数组中。IE 能正确地在结果中包含捕获组；
-> Firefox3.6 及之前版本在捕获组为捕获到匹配项时，会在结果中包含空字符；ECMCA-262 规定没有匹配项的捕获组在结果数组中应该用 `undefined` 表示；
+>> IE8 及之前版本会忽略捕获组。ECMCA-262 规定应该把捕获组的内容拼接到结果数组中。IE 能正确地在结果中包含捕获组；
+>> Firefox3.6 及之前版本在捕获组为捕获到匹配项时，会在结果中包含空字符；ECMCA-262 规定没有匹配项的捕获组在结果数组中应该用 `undefined` 表示；
 
 - **示例**
 
@@ -977,26 +1011,36 @@ string.localeCompare(compareString[, locales[, options]])
 - **参数**
   - `compareString`
     - 用来比较的字符串
+    >
   - `locales`
     - 可选。用来表示一种或多种语言或区域的一个符合 [BCP 47](https://tools.ietf.org/html/rfc5646) 标准的字符串或一个字符串数组。 `locales` 参数的一般形式与解释，详情请参考 [Intl page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)。
     > 下列的 Unicode 扩展关键词是允许的：`co` 为了某些地域多样的排序规则。可能的值包括： "`big5han`", "`dict`", "`direct`", "`ducet`", "`gb2312`", "`phonebk`", "`phonetic`", "`pinyin`", "`reformed`", "`searchjl`", "`stroke`", "`trad`", "`unihan`"。"`standard`" 和 "`search`" 这两个值是被忽略的; 它们被 `options` 的属性 `usage` 代替。kn指定数值排序是否应该被使用，像是这样 "1" < "2" < "10"。可能的值是 "`true`" 和 "`false`"。 这个选项能被通过`options` 属性设置或通过 Unicode 扩展。假如两个都被设置了，则 `options` 优先。（"language-region-u-kn-true|false"）kf 指定是否优先对大写字母或小写字母排序。可能的值有 "`upper`", "`lower`", 或 "`false`" (use the locale's default)。这个选项能被通过`options` 属性设置或通过 Unicode 扩展。假如两个都被设置了，则 `options` 优先。（"language-region-u-kf-upper|lower|false"）
+    >
   - `options`
     - 可选。 支持下列的一些或全部属性的一个对象:
       - `localeMatcher`
         - 地域匹配算法的使用。可能的值是 "`lookup`" 和 "`best fit`"; 默认的值是 "`best fit`"。
+      >
       - `usage`
         - 指定比较的目标是排序或者是搜索。可能的值是 "`sort`" 和 "`search`"; 默认是 "`sort`"。
+      >
       - `sensitivity`
         - 指定排序程序的敏感度（Which differences in the strings should lead to non-zero result values。） 可能的有:
           - "`base`": 只有不同的字母字符串比较是不相等的。举个例子: a ≠ b, a = á, a = A。
+          >
           - "`accent`": 只有不同的字母或读音比较是不相等的。举个例子: a ≠ b, a ≠ á, a = A。
+          >
           - "`case`": 只有不同的字母或大小写比较是不相等的。举个例子: a ≠ b, a = á, a ≠ A。
+          >
           - "`variant`": 不同的字母或读音及其它有区别的标志或大小写都是不相等的， 还有其它的差异可能也会考虑到。举个例子: a ≠ b, a ≠ á, a ≠ A。
         > The default is "variant" for usage "sort"; it's locale dependent for usage "search"。
+      >
       - `ignorePunctuation`
         - 指定是否忽略标点。可能的值是 `true / false`; 默认为 `false`。
+      >
       - `numeric`
         - 是否指定使用数字排序, 像这样 "1" < "2" < "10"。可能的值是 `true` 或 `false`; 默认为 `false`。这个选项能被通过 `options` 属性设置或通过 Unicode 扩展。假如两个都被设置了， 则 `options` 优先。实现不用必须支持这个属性。
+      >
       - `caseFirst`
         - 指定大小写有限排序。可能的值有 "`upper`", "`lower`", or "`false`" (use the locale's default); 默认为 "`false`"。这个选项能被通过 `options` 属性设置或通过 Unicode 扩展。假如两个都被设置了，则 `options` 优先。实现不用必须支持这个属性。
 
@@ -1015,11 +1059,13 @@ string.localeCompare(compareString[, locales[, options]])
 
 ```js
 function localeCompareSupportsLocales() {
+
   try {
     'foo'.localeCompare​('bar', 'i');
   } catch (e) {
     return e​.name === 'RangeError';
   }
+
   return false;
 }
 
@@ -1031,6 +1077,7 @@ function localeCompareSupportsLocales() {
 */
 console.log('ä'.localeCompare('z', 'de'));
 // -1 a negative value: in German, ä sorts with a
+
 console.log('ä'.localeCompare('z', 'sv'));
 // 1 a positive value: in Swedish, ä sorts after z
 
