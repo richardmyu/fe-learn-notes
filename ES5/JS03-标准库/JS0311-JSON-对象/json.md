@@ -4,19 +4,24 @@
 
 JSON 格式（JavaScript Object Notation 的缩写）是一种用于数据交换的文本格式，2001 年由 Douglas Crockford 提出，目的是取代繁琐笨重的 XML 格式。
 
-相比 XML 格式，JSON 格式有两个显著的优点：书写简单，一目了然；符合 JavaScript 原生语法，可以由解释引擎直接处理，不用另外添加解析代码。所以，JSON 迅速被接受，已经成为各大网站交换数据的标准格式，并被写入标准。
+相比 XML 格式，JSON 格式有两个显著的优点：
+
+1. 书写简单，一目了然；
+2. 符合 JavaScript 原生语法，可以由解释引擎直接处理，不用另外添加解析代码。
+
+所以，JSON 迅速被接受，已经成为各大网站交换数据的标准格式，并被写入标准。
 
 JSON 对值的类型和格式有严格的规定。
 
-- 1. 复合类型的值只能是数组或对象，不能是函数、正则表达式对象、日期对象。
-
-- 2. 原始类型的值只有四种：字符串、数值（必须以十进制表示）、布尔值和 `null`（不能使用 `NaN`, `Infinity`, `-Infinity` 和 `undefined`）。
-
-- 3. 字符串必须使用双引号表示，不能使用单引号。
-
-- 4. 对象的键名必须放在双引号里面。
-
-- 5. 数组或对象最后一个成员的后面，不能加逗号。
+1. 复合类型的值只能是数组或对象，不能是函数、正则表达式对象、日期对象。
+>
+2. 原始类型的值只有四种：字符串、数值（必须以十进制表示）、布尔值和 `null`（不能使用 `NaN`, `Infinity`, `-Infinity` 和 `undefined`）。
+>
+3. 字符串必须使用双引号表示，不能使用单引号。
+>
+4. 对象的键名必须放在双引号里面。
+>
+5. 数组或对象最后一个成员的后面，不能加逗号。
 
 > 注意，`null`、空数组和空对象都是合法的 JSON 值。
 
@@ -39,14 +44,14 @@ var dataObj = [
 
 ```js
 var dataStr='[
-  {"name":"a","age":2},
-  {"name":"b","age":12},
-  {"name":"c","age":22},
-  {"name":"d","age":32}
+  {"name": "a", "age": 2},
+  {"name": "b", "age": 12},
+  {"name": "c", "age": 22},
+  {"name": "d", "age": 32}
 ]';
 ```
 
-## 3.`JSON.parse()`
+## 3.`JSON.parse`
 
 将 JSON 字符串变成 JSON 对象（数组形式）
 
@@ -60,7 +65,8 @@ JSON.parse("null"); // null
 如果传入的字符串不是有效的 JSON 格式，`JSON.parse`方法将报错。
 
 ```js
-JSON.parse("'String'"); // illegal single quotes
+JSON.parse("'String'");
+// illegal single quotes
 // SyntaxError: Unexpected token ILLEGAL
 
 console.log(JSON.parse('{"a": undefined, "b": 2}'));
@@ -95,7 +101,7 @@ JSON.parse('{"a": 1, "b": 2}', f);
 // {a: 11, b: 2}
 ```
 
-## 4.`JSON.stringify()`
+## 4.`JSON.stringify`
 
 ### 4.1. 基本用法
 
@@ -146,9 +152,9 @@ Object.defineProperties(obj, {
 JSON.stringify(obj); // "{"foo":1}"
 ```
 
-### 4.2. 第二个参数（数组/函数）
+### 4.2.第二个参数（数组/函数）
 
-`JSON.stringify`方法还可以接受一个数组，作为第二个参数，指定需要转成字符串的属性。
+`JSON.stringify` 方法还可以接受一个数组，作为第二个参数，指定需要转成字符串的属性。
 
 ```js
 var obj = {
@@ -205,7 +211,7 @@ console.log(JSON.stringify({ a: 1, b: 2 }, f));
 // { "a": 2, "b": 4 }
 ```
 
-> 注意，这个处理函数是递归处理所有的键。
+注意，这个处理函数是递归处理所有的键。
 
 ```js
 var o = { a: { b: 1 } };
@@ -290,7 +296,7 @@ JSON.stringify({ p1: 1, p2: 2 }, null, "|-");
 
 > 超出部分忽略不计。
 
-### 4. 参数对象的 `toJSON` 方法
+### 4.参数对象的 `toJSON` 方法
 
 如果参数对象有自定义的 `toJSON` 方法，那么 `JSON.stringify` 会使用这个方法的返回值作为参数，而忽略原对象的其他属性。
 
@@ -307,7 +313,7 @@ var user = {
 };
 
 JSON.stringify(user);
-// "{"firstName":"三","lastName":"张","fullName":"张三"}"
+// "{"firstName": "三", "lastName": "张", "fullName": "张三"}"
 ```
 
 现在，为这个对象加上 `toJSON` 方法。
@@ -330,7 +336,7 @@ var user = {
 
 // 忽略其他属性
 JSON.stringify(user);
-// "{"name":"张三"}"
+// "{"name": "张三"}"
 ```
 
 `Date` 对象就有一个自己的 `toJSON` 方法。
@@ -358,7 +364,7 @@ JSON.stringify(/foo/); // ""/foo/""
 
 上面代码在正则对象的原型上面部署了 `toJSON` 方法，将其指向 `toString` 方法，因此遇到转换成 JSON 时，正则对象就先调用 `toJSON` 方法转为字符串，然后再被 `JSON.stringify` 方法处理。
 
-在低版本 IE 下没有 JSON
+在低版本 IE 下没有 JSON：
 
 ```js
 function toObj(str) {
@@ -372,4 +378,4 @@ function toObj(str) {
 
 > 1.`{}`表示对象千万不要放在行首，要置于行首可以使用一个 `()` 包起来，保证语法正确 `({a:1,b:2});`
 >
-> 2. 以后 `eval` 字符串中遇到转为对象的大括号时候，一定要使用小括号 `()` 包起来 `eval("("+{}+")");`
+> 2.以后 `eval` 字符串中遇到转为对象的大括号时候，一定要使用小括号 `()` 包起来 `eval("("+{}+")");`
