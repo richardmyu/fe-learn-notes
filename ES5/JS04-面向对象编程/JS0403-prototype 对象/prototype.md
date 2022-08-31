@@ -2,7 +2,7 @@
 
 [TOC]
 
-JavaScript 常被描述为一种 **基于原型的语言** (prototype-based language)—— **每个对象拥有一个原型对象，对象以其原型为模板、从原型继承方法和属性**。
+JavaScript 常被描述为一种 *基于原型的语言* (prototype-based language)—— *【每个对象拥有一个原型对象，对象以其原型为模板、从原型继承方法和属性】*。
 
 > 在 ES2015/ES6 中引入了 `class` 关键字，但那只是语法糖，JavaScript 仍然是基于原型的。
 
