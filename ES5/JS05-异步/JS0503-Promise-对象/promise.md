@@ -50,31 +50,23 @@ new Promise(step1)
 
 `Promise` 对象通过自身的状态，来控制异步操作。`Promise` 实例具有三种状态。
 
----
-
-- 异步操作未完成（pending）
-- 异步操作成功（fulfilled）
-- 异步操作失败（rejected）
-
----
+1. 异步操作 **未完成**（pending）；
+2. 异步操作 **成功**（fulfilled）；
+3. 异步操作 **失败**（rejected）；
 
 上面三种状态里面，`fulfilled` 和 `rejected` 合在一起称为 `resolved`（已定型）。
 
 这三种的状态的变化途径只有两种。
 
-- 从“未完成”到“成功”
-- 从“未完成”到“失败”
+- 从“未完成”到“成功”；
+- 从“未完成”到“失败”；
 
 一旦状态发生变化，就凝固了，不会再有新的状态变化。这也是 Promise 这个名字的由来，它的英语意思是“承诺”，一旦承诺成效，就不得再改变了。这也意味着，`Promise` 实例的状态变化只可能发生一次。
 
 因此，`Promise` 的最终结果只有两种。
 
----
-
 - 异步操作成功，`Promise` 实例传回一个值（value），状态变为 `fulfilled`。
 - 异步操作失败，`Promise` 实例抛出一个错误（error），状态变为 `rejected`。
-
----
 
 ## 3.Promise 构造函数
 
@@ -112,7 +104,7 @@ timeout(100);
 
 上面代码中，`timeout(100)` 返回一个 `Promise` 实例。100 毫秒以后，该实例的状态会变为 `fulfilled`。
 
-## 4.`Promise.prototype.then()`
+## 4.`Promise.prototype.then`
 
 `Promise` 实例的 `then` 方法，用来添加回调函数。
 
@@ -147,7 +139,7 @@ p1.then(step1)
 
 最后一个 `then` 方法，回调函数是 `console.log` 和 `console.error`，用法上有一点重要的区别。`console.log` 只显示 `step3` 的返回值，而 `console.error` 可以显示 `p1`、`step1`、`step2`、`step3` 之中任意一个发生的错误。举例来说，如果 `step1` 的状态变为 `rejected`，那么 `step2` 和 `step3` 都不会执行了（因为它们是 `resolved` 的回调函数）。`Promise` 开始寻找，接下来第一个为 `rejected` 的回调函数，在上面代码中是 `console.error`。这就是说，`Promise` 对象的报错具有传递性。
 
-## 5.`then()` 用法辨析
+## 5.`then` 用法辨析
 
 `Promise` 的用法，简单说就是一句话：使用 `then` 方法添加回调函数。但是，不同的写法有一些细微的差别，请看下面四种写法，它们的差别在哪里？
 
@@ -231,7 +223,6 @@ Ajax 操作是典型的异步操作，传统上往往写成下面这样。
 function search(term, onload, onerror) {
   var xhr, results, url;
   url = "http://example.com/search?q=" + term;
-
   xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
 
@@ -241,6 +232,7 @@ function search(term, onload, onerror) {
       onload(results);
     }
   };
+
   xhr.onerror = function(e) {
     onerror(e);
   };
@@ -261,15 +253,18 @@ function search(term) {
 
   var p = new Promise(function(resolve, reject) {
     xhr.open("GET", url, true);
+
     xhr.onload = function(e) {
       if (this.status === 200) {
         result = JSON.parse(this.responseText);
         resolve(result);
       }
     };
+
     xhr.onerror = function(e) {
       reject(e);
     };
+
     xhr.send();
   });
 
@@ -287,6 +282,7 @@ function imgLoad(url) {
     var request = new XMLHttpRequest();
     request.open("GET", url);
     request.responseType = "blob";
+
     request.onload = function() {
       if (request.status === 200) {
         resolve(request.response);
@@ -294,9 +290,11 @@ function imgLoad(url) {
         reject(new Error("图片加载失败：" + request.statusText));
       }
     };
+
     request.onerror = function() {
       reject(new Error("发生网络错误"));
     };
+
     request.send();
   });
 }
