@@ -6,13 +6,15 @@ JavaScript 常被描述为一种 *基于原型的语言* (prototype-based langua
 
 > 在 ES2015/ES6 中引入了 `class` 关键字，但那只是语法糖，JavaScript 仍然是基于原型的。
 
-原型对象也可能拥有原型，并从中继承方法和属性，一层一层、以此类推。这种关系常被称为**原型链** (prototype chain)，它解释了为何一个对象会拥有定义在其他对象中的属性和方法。
+原型对象也可能拥有原型，并从中继承方法和属性，一层一层、以此类推。这种关系常被称为 **原型链** (prototype chain)，它解释了为何一个对象会拥有定义在其他对象中的属性和方法。
 
 > 准确地说，这些属性和方法定义在 Object 的 **构造函数** (constructor functions) 之上的 `prototype` 属性上，而非对象实例本身。
 
-JavaScript 的原型链和 Java 的 `Class` 区别就在，它没有“Class”的概念，所有对象都是实例，所谓继承关系不过是把一个对象的原型指向另一个对象而已。
+JavaScript 的原型链和 Java 的 `Class` 区别就在，它没有 “Class” 的概念，所有对象都是实例，所谓继承关系不过是把一个对象的原型指向另一个对象而已。
 
-在传统的 OOP 中，首先定义“类”，此后创建对象实例时，类中定义的所有属性和方法都被复制到实例中。在 JavaScript 中并不如此复制——而是在对象实例和它的构造器之间建立一个链接（它是 `__proto__` 属性，是从构造函数的 `prototype` 属性派生的），之后通过上溯原型链，在构造器中找到这些属性和方法。
+在传统的 OOP 中，首先定义“类”，此后创建对象实例时，类中定义的所有属性和方法都被复制到实例中。
+
+在 JavaScript 中并不如此复制——而是在对象实例和它的构造器之间建立一个链接（它是 `__proto__` 属性，是从构造函数的 `prototype` 属性派生的），之后通过上溯原型链，在构造器中找到这些属性和方法。
 
 尽管这种原型继承通常被认为是 JavaScript 的弱点之一，但是原型继承模型本身实际上比经典模型更强大。例如，在原型模型的基础上构建经典模型相当简单。
 
@@ -20,11 +22,11 @@ JavaScript 的原型链和 Java 的 `Class` 区别就在，它没有“Class”�
 
 ### 1.1.`constructor`
 
-为了解决从原型对象生成实例的问题，Javascript 提供了一个**构造函数**（Constructor）模式。每个实例对象都从原型中继承了一个 `constructor` 属性，该属性指向了用于构造此实例对象的构造函数。
+为了解决从原型对象生成实例的问题，Javascript 提供了一个 **构造函数**（Constructor）模式。每个实例对象都从原型中继承了一个 `constructor` 属性，该属性指向了用于构造此实例对象的构造函数。
 
 所谓"构造函数"，其实就是一个普通函数，但是内部使用了 `this` 变量。对构造函数使用 `new` 运算符，就能生成实例，并且 `this` 变量会绑定在实例对象上，同时实例会自动包含一个 `constructor` 属性。
 
-`prototype` 对象有一个 `constructor` 属性，默认指向 `prototype` 对象所在的构造函数。
+> `prototype` 对象有一个 `constructor` 属性，默认指向 `prototype` 对象所在的构造函数。
 
 由于 `constructor` 属性定义在 `prototype` 对象上面，意味着可以被所有实例对象继承。
 
@@ -38,7 +40,7 @@ Foo.prototype.constructor === Foo ; // true
 foo.hasOwnProperty("constructor"); // false
 ```
 
-`foo` 是构造函数 `Foo` 的实例对象，但是 **`foo` 自身没有 `constructor` 属性**，该属性其实是读取原型链上面的 `P.prototype.constructor` 属性。
+`foo` 是构造函数 `Foo` 的实例对象，但是 `foo` 自身没有 `constructor` 属性，该属性其实是读取原型链上面的 `P.prototype.constructor` 属性。
 
 `constructor` 属性的作用是，可以得知某个实例对象，到底是哪一个构造函数产生的。
 
@@ -88,9 +90,7 @@ Person.prototype.constructor === Person; // false
 Person.prototype.constructor === Object; // true
 ```
 
-上面代码中，构造函数 `Person` 的原型对象改掉了，<s>但是没有修改 `constructor` 属性，导致这个属性不再指向 `Person`</s> 自然就丢失了原来的 `constructore` 的指向，从而被新原型的 `constructore` 指向所替代。
-
-由于 Person 的新原型是一个普通对象，而普通对象的 `contructor` 属性指向 Object 构造函数，导致 `Person.prototype.constructor` 变成了 `Object`。
+上面代码中，构造函数 `Person` 的原型对象改掉了，但是没有修改 `constructor` 属性，导致这个属性不再指向 `Person`，自然就丢失了原来的 `constructore` 的指向，从而被新原型的 `constructore` 指向所替代。由于 `Person` 的新原型是一个普通对象，而普通对象的 `contructor` 属性指向 `Object` 构造函数，导致 `Person.prototype.constructor` 变成了 `Object`。
 
 > 内置类的原型默认无法修改；只有浏览器默认开辟的堆内存才有 `constructor` 属性，若要修改地址（批量添加属性或方法），可以添加 `constructor：类`，引回原地址；
 
@@ -141,7 +141,7 @@ cat.name; // '大毛'
 cat.color; // '白色'
 ```
 
-通过构造函数为实例对象定义属性，虽然很方便，但是有一个缺点。**同一个构造函数的多个实例之间，无法共享属性**，从而造成对系统资源的浪费。
+通过构造函数为实例对象定义属性，虽然很方便，但是有一个缺点————*同一个构造函数的多个实例之间，无法共享属性*，从而造成对系统资源的浪费。
 
 ```js
 function Cat(name, color) {
@@ -161,13 +161,13 @@ cat1.meow === cat2.meow;
 
 由于 `meow` 方法是生成在每个实例对象上面，所以两个实例就生成了两次。也就是说，每新建一个实例，就会新建一个 `meow` 方法。这既没有必要，又浪费系统资源，因为所有 `meow` 方法都是同样的行为，完全应该共享。
 
-构造函数方法很好用，但是存在一个浪费内存的问题 -- 即没有共享属性和方法，每次生成的实例的属性和方法都是私有的，这样就引入 `Prototype` 模式。
+> 构造函数方法很好用，但是存在一个浪费内存的问题 -- 即没有共享属性和方法，每次生成的实例的属性和方法都是私有的，这样就引入 `Prototype` 模式。
 
 ### 1.3.`prototype`
 
-**JavaScript 继承机制的设计思想就是，原型对象的所有属性和方法，都能被实例对象共享**。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
+*[JavaScript 继承机制的设计思想就是，原型对象的所有属性和方法，都能被实例对象共享]*。也就是说，如果属性和方法定义在原型上，那么所有实例对象就能共享，不仅节省了内存，还体现了实例对象之间的联系。
 
-**Javascript 规定，每一个函数都有一个 `prototype` 属性**，指向另一个对象（即 `constructor`)。这个对象的所有属性和方法，都会被构造函数的实例继承。这意味着，我们可以把那些不变的属性和方法，直接定义在 `prototype` 对象上。
+*Javascript 规定，每一个函数都有一个 `prototype` 属性*，指向另一个对象（即 `constructor`)。这个对象的所有属性和方法，都会被构造函数的实例继承。这意味着，我们可以把那些不变的属性和方法，直接定义在 `prototype` 对象上。
 
 ```js
 function f() {}
@@ -180,39 +180,34 @@ typeof f.prototype; // "object"
 function Animal(name) {
   this.name = name;
 }
-Animal.prototype.color = "white";
 
+Animal.prototype.color = "white";
 var cat1 = new Animal("大毛");
 var cat2 = new Animal("二毛");
-
 cat1.color; // 'white'
 cat2.color; // 'white'
 ```
 
-上面代码中，构造函数 Animal 的 `prototype` 属性，就是实例对象 cat1 和 cat2 的原型对象。原型对象上添加一个 color 属性，结果，实例对象都共享了该属性。
+上面代码中，构造函数 `Animal` 的 `prototype` 属性，就是实例对象 `cat1` 和 `cat2` 的原型对象。原型对象上添加一个 `color` 属性，结果，实例对象都共享了该属性。
 
 原型对象的属性不是实例对象自身的属性。只要修改原型对象，变动就立刻会体现在所有实例对象上。
 
 ```js
 Animal.prototype.color = "yellow";
-
 cat1.color; // "yellow"
 cat2.color; // "yellow"
 ```
 
-当实例对象本身没有某个属性或方法的时候，它会到原型对象去寻找该属性或方法（原型链）。这就是原型对象的特殊之处。
-
-如果实例对象自身就有某个属性或方法，它就不会再去原型对象寻找这个属性或方法。
+当实例对象本身没有某个属性或方法的时候，它会到原型对象去寻找该属性或方法（原型链）。这就是原型对象的特殊之处。如果实例对象自身就有某个属性或方法，它就不会再去原型对象寻找这个属性或方法。
 
 ```js
 cat1.color = "black";
-
 cat1.color; // 'black'
 cat2.color; // 'yellow'
 Animal.prototype.color; // 'yellow';
 ```
 
-总结一下，**原型对象的作用，就是定义所有实例对象共享的属性和方法**。这也是它被称为原型对象的原因，而实例对象可以视作从原型对象衍生出来的子对象。
+总结一下，*【原型对象的作用，就是定义所有实例对象共享的属性和方法】*。这也是它被称为 【原型对象】 的原因，而实例对象可以视作从 *原型对象衍生出来的子对象*。
 
 ```js
 Animal.prototype.walk = function() {
@@ -224,9 +219,9 @@ Animal.prototype.walk = function() {
 
 > 该特性已经从 Web 标准中删除，虽然一些浏览器目前仍然支持它，但也许会在未来的某个时间停止支持，请尽量不要使用该特性。
 
-JavaScript 中任意对象都有一个内置属性 `[[prototype]]`，在 ES5 之前没有标准的方法访问这个内置属性，但是大多数浏览器都支持通过 `__proto__` 来访问。ES5 中有了对于这个内置属性标准的 Get 方法 `Object.getPrototypeOf()`。
+JavaScript 中任意对象都有一个内置属性 `[[prototype]]`，在 ES5 之前没有标准的方法访问这个内置属性，但是大多数浏览器都支持通过 `__proto__` 来访问。ES5 中有了对于这个内置属性标准的 `Get` 方法 `Object.getPrototypeOf()`。
 
-> `__proto__`，可称为**隐式原型**，指向创建该对象的函数的 `prototype`。
+> `__proto__`，可称为 **隐式原型**，指向创建该对象的函数的 `prototype`。
 
 使用 `__proto__` 是有争议的，也不鼓励使用它。因为它从来没有被包括在 EcmaScript 语言规范中，但是现代浏览器都实现了它。`__proto__` 属性已在 ECMAScript 6 语言规范中标准化，用于确保 Web 浏览器的兼容性，因此它未来将被支持。它已被不推荐使用，现在更推荐使用 `Object.getPrototypeOf/Reflect.getPrototypeOf` 和 `Object.setPrototypeOf/Reflect.setPrototypeOf`（尽管如此，设置对象的 `[[Prototype]]` 是一个缓慢的操作，如果性能是一个问题，应该避免）。
 
@@ -242,7 +237,6 @@ Function.__proto__ === Function.prototype; //true
 
 Symbol.__proto__ === Function.prototype; //true
 Date.__proto__ === Function.prototype; //true
-// typeof Math === 'object'
 Math.__proto__ === Function.prototype; //false
 Math.__proto__ === Object.prototype; //true
 
@@ -258,17 +252,17 @@ Object.prototype.__proto__ === null; //true
 
 ### 1.5.原型链
 
-JavaScript 规定，**所有对象都有自己的原型对象**。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。如此层层递进，就构成了实例与原型的链条，就会形成一个**原型链（prototype chain）**。
+JavaScript 规定，*所有对象都有自己的原型对象*。一方面，任何一个对象，都可以充当其他对象的原型；另一方面，由于原型对象也是对象，所以它也有自己的原型。如此层层递进，就构成了实例与原型的链条，就会形成一个 **原型链**（prototype chain）。
 
-> 简单回顾一下构造函数、原型和实例的关系：每一个构造函数 Function 都有一个原型对象 `prototype`，原型对象都包含一个指向构造函数的指针 `constructor`，而实例都包含一个指向原型对象的内部指针 `__proto__`。
+> 简单回顾一下构造函数、原型和实例的关系：每一个构造函数 `Function` 都有一个原型对象 `prototype`，原型对象都包含一个指向构造函数的指针 `constructor`，而实例都包含一个指向原型对象的内部指针 `__proto__`。
 
 如果一层层地上溯，所有对象的原型最终都可以上溯到 `Object.prototype`，即 `Object` 构造函数的 `prototype` 属性。也就是说，所有对象都继承了 `Object.prototype` 的属性。这就是所有对象都有 `valueOf` 和 `toString` 方法的原因，因为这是从 `Object.prototype` 继承的。
 
 那么，`Object.prototype` 对象有没有它的原型呢？回答是 `Object.prototype` 的原型是 `null`。`null` 没有任何属性和方法，也没有自己的原型。因此，原型链的尽头就是 `null`。
 
-`Object.getPrototypeOf(Object.prototype); // null`
-
 ```js
+Object.getPrototypeOf(Object.prototype); // null
+
 function SuperType() {
   this.property = true;
 }
@@ -304,7 +298,6 @@ instance.getSubValue()); //undefined2
 
 ```js
 var MyArray = function() {};
-
 MyArray.prototype = new Array();
 MyArray.prototype.constructor = MyArray;
 
@@ -327,11 +320,12 @@ v instanceof Vehicle; // true
 
 ```js
 v instanceof Vehicle;
+
 // 等同于
 Vehicle.prototype.isPrototypeOf(v);
 ```
 
-由于 `instanceof` 检查整个原型链，因此同一个实例对象，可能会对多个构造函数都返回 true。
+由于 `instanceof` 检查整个原型链，因此同一个实例对象，可能会对多个构造函数都返回 `true`。
 
 ```js
 var d = new Date();
@@ -344,9 +338,9 @@ d instanceof Object; // true
 ```js
 var obj = Object.create(null);
 typeof obj; // "object"
-obj instanceof Object; //false
+obj instanceof Object; // false
 obj instanceof null;
-//TypeError: Right-hand side of 'instanceof' is not an object
+// TypeError: Right-hand side of 'instanceof' is not an object
 ```
 
 上面代码中，`Object.create(null)` 返回一个新对象 obj，它的原型是 `null`。右边的构造函数 `Object` 的 `prototype` 属性，不在左边的原型链上，因此 `instanceof` 就认为 obj 不是 `Object` 的实例。但是，只要一个对象的原型不是`null`，`instanceof` 运算符的判断就不会失真。
@@ -367,7 +361,7 @@ var s = "hello";
 s instanceof String; // false
 ```
 
-此外，对于 `undefined` 和 `null`，`instanceOf` 运算符总是返回 false。
+此外，对于 `undefined` 和 `null`，`instanceOf` 运算符总是返回 `false`。
 
 ```js
 undefined instanceof Object; // false
@@ -389,7 +383,12 @@ function Fubar(foo, bar) {
 
 ## 3.继承
 
-许多面向对象语言都支持两种继承方式：**接口继承** 和 **实现继承**。接口继承只继承方法签名，而实现继承则继承实际的方法。由于函数没有签名，所以无法实现接口继承，只支持实现继承，而且实现继承主要是依靠原型链来实现的。
+许多面向对象语言都支持两种继承方式：**接口继承** 和 **实现继承**。
+
+- 接口继承只继承方法签名；
+- 实现继承则继承实际的方法。
+
+由于函数没有签名，所以无法实现接口继承，只支持实现继承，而且实现继承主要是依靠原型链来实现的。
 
 大部分面向对象的编程语言，都是通过 **类** （class）来实现对象的继承。JavaScript 语言的继承则是通过 **原型对象**（prototype）。
 
@@ -397,9 +396,7 @@ function Fubar(foo, bar) {
 
 > 一句话，原型继承就是复制原型对象，并保留复制源信息。
 
-原型继承是一种简化的继承机制，基于原型的编程是面向对象编程的一种特定的形式。实际上，JavaScript 就是一种基于原型的语言。
-
-在原型继承中，类和实例概念就被淡化了，一切都从对象角度来考虑。所以直接定义对象，该对象被其他对象引用，这样就形成了一种【继承关系】，其中被引用对象就称之为**原型对象**，引用原型对象的对象称为**实例**。
+原型继承是一种简化的继承机制，基于原型的编程是面向对象编程的一种特定的形式。实际上，JavaScript 就是一种基于原型的语言。在原型继承中，类和实例概念就被淡化了，一切都从对象角度来考虑。所以直接定义对象，该对象被其他对象引用，这样就形成了一种【继承关系】，其中被引用对象就称之为 **原型对象**，引用原型对象的对象称为 **实例**。
 
 > 基于原型的模型没有类的概念，原型继承中的类仅是一种模拟，从而不需要通过复制属性的方式进快速的实现继承。
 
@@ -422,11 +419,12 @@ function Sub() {
 Sub.prototype = new Super();
 
 // 其他方法
-// Object.assign(target,source) 方法只会拷贝源对象自身的并且可枚举的属性到目标对象，返回目标对象
-//合并对象（只能获得 B 的私有变量，无法获得 B 的原型上的变量；但可以保留自身原来原型上的变量）；
+// Object.assign(target,source) 方法只会拷贝源对象自身的并且可枚举的属性到目标对象，
+// 返回目标对象合并对象（只能获得 B 的私有变量，
+// 无法获得 B 的原型上的变量；但可以保留自身原来原型上的变量）；
 Object.assign(A.prototype, new B());
 
-//自定义 assign 方法；通过结合两者方法，使得实例可以获得两个类的私有属性和公有属性；
+// 自定义 assign 方法；通过结合两者方法，使得实例可以获得两个类的私有属性和公有属性；
 function assign(obj1, obj2) {
   for (var key in obj2) {
     if (obj2.hasOwnProperty(key)) {
@@ -445,7 +443,7 @@ function assign(obj1, obj2) {
 
 ### 3.2.构造函数继承
 
-在解决原型包含引用类型值所带来的问题的过程中，开发人员开始使用一种叫作 **借用构造函数**（constructor stealing）的技术，有时候也叫 **伪造对象** 或 **经典继承**。这种技术的基本思想相当简单，即 **在子类型构造函数的内部调用超类型构造函数**。
+在解决原型包含引用类型值所带来的问题的过程中，开发人员开始使用一种叫作 **借用构造函数**（constructor stealing）的技术，有时候也叫 **伪造对象** 或 **经典继承**。这种技术的基本思想相当简单，即 *在子类型构造函数的内部调用超类型构造函数*。
 
 ```js
 function Super() {
@@ -470,9 +468,9 @@ function Sub(value) {
 
 ### 3.3. 组合继承
 
-组合上述两种方法就是 **组合继承**（combination inheritance），也叫 **伪经典继承**。**用原型链实现对原型属性和方法的继承，用借用构造函数技术来实现实例属性的继承**。
+组合上述两种方法就是 **组合继承**（combination inheritance），也叫 **伪经典继承**。*用原型链实现对原型属性和方法的继承，用借用构造函数技术来实现实例属性的继承*。
 
-举例来说，下面是一个 Shape 构造函数。
+举例来说，下面是一个 `Shape` 构造函数。
 
 ```js
 function Super(name) {
@@ -518,7 +516,7 @@ ClassB.prototype.print = function() {
 };
 ```
 
-组合继承避免了原型链和构造函数的缺陷，融合了它们的优点，成为 JavaScript 中最常用的继承模式，而且， `instanceof` 和 `isPropertyOf()` 也能够用于识别基于组合继承创建的对象。
+组合继承避免了原型链和构造函数的缺陷，融合了它们的优点，成为 JavaScript 中最常用的继承模式，而且， `instanceof` 和 `isPropertyOf` 也能够用于识别基于组合继承创建的对象。
 
 最大的问题是：无论什么情况下，都会调用两次超类型构造函数。第一次在子类型原型上添加属性，第二次在在调用子类型构造函数的时候，给子类型的实例添加同样的属性，这样就屏蔽了原型上的属性。解决这个问题，需要用到寄生组合式继承。
 
@@ -553,13 +551,13 @@ var yetAnotherPerson = object(person);
 yetAnotherPerson.name = "Linda";
 yetAnotherPerson.friends.push("Barbie");
 
-alert(person.friends); //"Shelby,Court,Van,Rob,Barbie"
+person.friends; // "Shelby,Court,Van,Rob,Barbie"
 ```
 
 缺点：
 
-- 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能。
-- 无法传递参数
+- 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能；
+- 无法传递参数；
 
 另外，ES5 通过新增的 `Object.create()` 的方法规范了原型式继承。但是还是会像原型模式一样，引用类型值的属性始终都会共享相应的值。
 
@@ -586,7 +584,7 @@ var person = {
   friends: ["Shelby", "Court", "Van"]
 };
 var anotherPerson = createAnother(person);
-anotherPerson.sayHi(); //"hi"
+anotherPerson.sayHi(); // "hi"
 ```
 
 在主要考虑对象而不是自定义类型和构造函数的情况下，寄生式继承也是一种有用的模式。
@@ -595,18 +593,23 @@ anotherPerson.sayHi(); //"hi"
 
 - **缺点**（同原型式继承）：
   >
-  1. 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能。
-  2. 无法传递参数
+  1. 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能；
+  2. 无法传递参数；
 
 ### 3.6. 寄生组合式继承
 
-所谓寄生组合式继承，即 **通过借用构造函数来继承实例属性/方法，通过原型链的混成形式来继承原型属性/方法**。其背后的思路是：**不必为了指定子类型的原型而调用超类型的构造函数，我们所需要的无非就是超类型原型的一个副本**。本质上，就是使用寄生式继承来继承超类型的原型，然后再将结果指定给子类型的原型。
+所谓寄生组合式继承，即 *通过借用构造函数来继承实例属性/方法，通过原型链的混成形式来继承原型属性/方法*。其背后的思路是：*【不必为了指定子类型的原型而调用超类型的构造函数，我们所需要的无非就是超类型原型的一个副本】*。本质上，就是使用寄生式继承来继承超类型的原型，然后再将结果指定给子类型的原型。
 
 ```js {.line-numbers}
 function inheritPrototype(subType, superType) {
-  var prototype = object(superType.prototype); // 创建对象，创建父类原型的一个副本
-  prototype.constructor = subType; // 增强对象，弥补因重写原型而失去的默认的 constructor 属性
-  subType.prototype = prototype; // 指定对象，将新创建的对象赋值给子类的原型
+  // 创建对象，创建父类原型的一个副本
+  var prototype = object(superType.prototype);
+
+  // 增强对象，弥补因重写原型而失去的默认的 constructor 属性
+  prototype.constructor = subType;
+
+  // 指定对象，将新创建的对象赋值给子类的原型
+  subType.prototype = prototype;
 }
 
 // 父类初始化实例属性和原型属性
@@ -614,6 +617,7 @@ function SuperType(name) {
   this.name = name;
   this.colors = ["red", "blue", "green"];
 }
+
 SuperType.prototype.sayName = function() {
   alert(this.name);
 };
@@ -635,11 +639,13 @@ SubType.prototype.sayAge = function() {
 var instance1 = new SubType("xyc", 23);
 var instance2 = new SubType("lxy", 23);
 
-instance1.colors.push("2"); // ["red", "blue", "green", "2"]
-instance2.colors.push("3"); // ["red", "blue", "green", "3"]
+instance1.colors.push("2");
+// ["red", "blue", "green", "2"]
+instance2.colors.push("3");
+// ["red", "blue", "green", "3"]
 ```
 
-这个例子的高效率体现在它只调用了一次 SuperType  构造函数，并且因此避免了在 `SubType.prototype` 上创建不必要的、多余的属性。于此同时，原型链还能保持不变；因此，还能够正常使用 `instanceof` 和 `isPrototypeOf()`。这是最成熟的方法，也是现在库实现的方法。
+这个例子的高效率体现在它只调用了一次 `SuperType` 构造函数，并且因此避免了在 `SubType.prototype` 上创建不必要的、多余的属性。于此同时，原型链还能保持不变；因此，还能够正常使用 `instanceof` 和 `isPrototypeOf()`。这是最成熟的方法，也是现在库实现的方法。
 
 ### 3.7.多重继承
 
@@ -687,7 +693,7 @@ JavaScript 模块化编程，已经成为一个迫切的需求。理想情况下
 
 ### 4.1.基本的实现方法
 
-**模块是实现特定功能的一组属性和方法的封装**。
+*模块是实现特定功能的一组属性和方法的封装*。
 
 只要把不同的函数（以及记录状态的变量）简单地放在一起，就算是一个模块。
 
@@ -695,6 +701,7 @@ JavaScript 模块化编程，已经成为一个迫切的需求。理想情况下
 function m1() {
   //...
 }
+
 function m2() {
   //...
 }
@@ -760,7 +767,7 @@ StringBuilder.prototype = {
 
 ### 4.3.封装私有变量：立即执行函数的写法
 
-使用“立即执行函数”（Immediately-Invoked Function Expression，IIFE），将相关的属性和方法封装在一个函数作用域里面，可以达到不暴露私有成员的目的。
+使用 “**立即执行函数**”（Immediately-Invoked Function Expression，IIFE），将相关的属性和方法封装在一个函数作用域里面，可以达到不暴露私有成员的目的。
 
 ```js
 var module = (function() {
@@ -781,7 +788,7 @@ var module = (function() {
 使用上面的写法，外部代码无法读取内部的 `_count` 变量。
 
 ```js
-console.info(module._count); //undefined
+console.info(module._count); // undefined
 ```
 
 这种模式就是 JavaScript 模块的基本写法。
@@ -827,11 +834,8 @@ var module = (function($, YAHOO) {
 ```js
 (function($, window, document) {
   function go(num) {}
-
   function handleEvents() {}
-
   function initialize() {}
-
   function dieCarouselDie() {}
 
   //attach to the global scope
@@ -891,6 +895,7 @@ function copyObject(orig) {
 ```js
 function deepCopy(p, c) {
   var c = c || {};
+
   for (var i in p) {
     if (typeof p[i] === "object") {
       c[i] = p[i].constructor === Array ? [] : {};
@@ -899,6 +904,7 @@ function deepCopy(p, c) {
       c[i] = p[i];
     }
   }
+
   return c;
 }
 ```
@@ -919,8 +925,8 @@ Doctor.birthPlaces.push("厦门");
 这时，父对象就不会受到影响了。
 
 ```js
-alert(Doctor.birthPlaces); //北京，上海，香港，厦门
-alert(Chinese.birthPlaces); //北京，上海，香港
+alert(Doctor.birthPlaces); // 北京，上海，香港，厦门
+alert(Chinese.birthPlaces); // 北京，上海，香港
 ```
 
-目前，jQuery 库使用的就是这种继承方法。
+> 目前，jQuery 库使用的就是这种继承方法。
