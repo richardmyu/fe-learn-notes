@@ -21,7 +21,7 @@ p.nodeType; // 1
 `Element.id` 属性返回指定元素的 `id` 属性，该属性可读写。
 
 ```js
-// HTML 代码为 <p id="foo">
+// <p id="foo">
 var p = document.querySelector("p");
 p.id; // "foo"
 ```
@@ -33,7 +33,6 @@ p.id; // "foo"
 `Element.tagName` 属性返回指定元素的大写标签名，与 `nodeName` 属性的值相等。
 
 ```js
-// HTML 代码为
 // <span id="myspan">Hello</span>
 var span = document.getElementById("myspan");
 span.id; // "myspan"
@@ -49,7 +48,6 @@ span.tagName; // "SPAN"
 `Element.accessKey` 属性用于读写分配给当前元素的快捷键。
 
 ```js
-// HTML 代码如下
 // <button accesskey="h" id="btn">点击</button>
 var btn = document.getElementById("btn");
 btn.accessKey; // "h"
@@ -66,7 +64,6 @@ btn.accessKey; // "h"
 `Element.lang` 属性返回当前元素的语言设置。该属性可读写。
 
 ```js
-// HTML 代码如下
 // <html lang="en">
 document.documentElement.lang; // "en"
 ```
@@ -140,7 +137,7 @@ for (var i = attrs.length - 1; i >= 0; i--) {
 `classList` 属性返回一个类似数组的对象，当前元素节点的每个 `class` 就是这个对象的一个成员。
 
 ```js
-// HTML 代码 <div class="one two three" id="myDiv"></div>
+// <div class="one two three" id="myDiv"></div>
 var div = document.getElementById("myDiv");
 
 div.className;
@@ -159,12 +156,12 @@ div.classList;
 
 `classList` 对象有下列方法。
 
-- `add()`：增加一个 `class`。
-- `remove()`：移除一个 `class`。
-- `contains()`：检查当前元素是否包含某个 `class`。
-- `toggle()`：将某个 `class` 移入或移出当前元素。
-- `item()`：返回指定索引位置的 `class`。
-- `toString()`：将 `class` 的列表转为字符串。
+- `adds`：增加一个 `class`。
+- `remove`：移除一个 `class`。
+- `contains`：检查当前元素是否包含某个 `class`。
+- `toggle`：将某个 `class` 移入或移出当前元素。
+- `item`：返回指定索引位置的 `class`。
+- `toString`：将 `class` 的列表转为字符串。
 
 ```js
 var div = document.getElementById("myDiv");
@@ -268,7 +265,7 @@ mydiv.getAttribute("data-foo"); // "bar"
 注意，读取属性值的时候，如果文本节点包含 `&`、小于号（`<`）和大于号（`>`），`innerHTML` 属性会将它们转为实体形式 `&amp;`、`&lt;`、`&gt;`。如果想得到原文，建议使用 `element.textContent` 属性。
 
 ```js
-// HTML 代码如下 <p id="para"> 5 > 3 </p>
+// <p id="para"> 5 > 3 </p>
 document.getElementById("para").innerHTML;
 // 5 &gt; 3
 ```
@@ -294,7 +291,6 @@ el.innerHTML = name;
 `Element.outerHTML` 属性返回一个字符串，表示当前元素节点的所有 HTML 代码，包括该元素本身和所有子元素。
 
 ```js
-// HTML 代码如下
 // <div id="d"><p>Hello</p></div>
 var d = document.getElementById("d");
 d.outerHTML;
@@ -304,7 +300,6 @@ d.outerHTML;
 `outerHTML` 属性是可读写的，对它进行赋值，等于替换掉当前元素。
 
 ```js
-// HTML 代码如下
 // <div id="container"><div id="d">Hello</div></div>
 var container = document.getElementById("container");
 var d = document.getElementById("d");
@@ -367,7 +362,6 @@ document.body.scrollHeight;
 注意，如果元素节点的内容出现溢出，即使溢出的内容是隐藏的，`scrollHeight` 属性仍然返回元素的总高度。
 
 ```js
-// HTML 代码如下
 // <div id="myDiv" style="height: 200px; overflow: hidden;">...<div>
 document.getElementById("myDiv").scrollHeight; // 356
 ```
@@ -399,7 +393,7 @@ document.documentElement.scrollTop;
 </div>
 ```
 
-上面代码中，span 元素的 `offsetParent` 属性就是 div 元素。
+上面代码中，`span` 元素的 `offsetParent` 属性就是 `div` 元素。
 
 该属性主要用于确定子元素位置偏移的计算基准，`Element.offsetTop` 和 `Element.offsetLeft` 就是 `offsetParent` 元素计算的。
 
@@ -413,7 +407,7 @@ document.documentElement.scrollTop;
 </div>
 ```
 
-上面代码中，span 元素的 `offsetParent` 属性是 `null`。
+上面代码中，`span` 元素的 `offsetParent` 属性是 `null`。
 
 如果某个元素的所有上层节点的 `position` 属性都是 `static`，则 `Element.offsetParent` 属性指向 `<body>` 元素。
 
@@ -435,11 +429,13 @@ document.documentElement.scrollTop;
 function getElementPosition(e) {
   var x = 0;
   var y = 0;
+
   while (e !== null) {
     x += e.offsetLeft;
     y += e.offsetTop;
     e = e.offsetParent;
   }
+
   return { x: x, y: y };
 }
 ```
@@ -477,7 +473,6 @@ if (para.children.length) {
 `Element.nextElementSibling` 属性返回当前元素节点的后一个同级元素节点，如果没有则返回 `null`。
 
 ```js
-// HTML 代码如下
 // <div id="div-01">Here is div-01</div>
 // <div id="div-02">Here is div-02</div>
 
@@ -530,7 +525,11 @@ b.setAttribute("disabled", true);
 
 上面代码中，`button` 元素的 `name` 属性被设成 `myButton`，`disabled` 属性被设成 `true`。
 
-这里有两个地方需要注意，首先，属性值总是字符串，其他类型的值会自动转成字符串，比如布尔值 `true` 就会变成字符串 `true`；其次，上例的 `disable` 属性是一个布尔属性，对于 `<button>` 元素来说，这个属性不需要属性值，只要设置了就总是会生效，因此 `setAttribute` 方法里面可以将 `disabled` 属性设成任意值。
+这里有两个地方需要注意：
+
+- 首先，属性值总是字符串，其他类型的值会自动转成字符串，比如布尔值 `true` 就会变成字符串 `true`；
+>
+- 其次，上例的 `disable` 属性是一个布尔属性，对于 `<button>` 元素来说，这个属性不需要属性值，只要设置了就总是会生效，因此 `setAttribute` 方法里面可以将 `disabled` 属性设成任意值。
 
 #### 2.1.4.`Element.hasAttribute`
 
@@ -569,7 +568,7 @@ var el = content.querySelector("p");
 
 `document.body.querySelector("style[type='text/css'], style:not([type])");`
 
-注意，这个方法无法选中伪元素。
+> 注意，这个方法无法选中伪元素。
 
 它可以接受多个选择器，它们之间使用逗号分隔。
 
@@ -613,16 +612,15 @@ var matches = el.querySelectorAll("div.highlighted > p");
 
 ### 2.4.`Element.getElementsByClassName`
 
-`Element.getElementsByClassName` 方法返回一个 `HTMLCollection` 实例，成员是当前元素节点的所有具有指定 class 的子元素节点。该方法与 `document.getElementsByClassName` 方法的用法类似，只是搜索范围不是整个文档，而是当前元素节点。
+`Element.getElementsByClassName` 方法返回一个 `HTMLCollection` 实例，成员是当前元素节点的所有具有指定 `class` 的子元素节点。该方法与 `document.getElementsByClassName` 方法的用法类似，只是搜索范围不是整个文档，而是当前元素节点。
 
 `element.getElementsByClassName('red test');`
 
-注意，该方法的参数大小写敏感。
+> 注意，该方法的参数大小写敏感。
 
 由于 `HTMLCollection` 实例是一个活的集合，`document` 对象的任何变化会立刻反应到实例，下面的代码不会生效。
 
 ```js
-// HTML 代码如下
 // <div id="example">
 //   <p class="foo"></p>
 // </div>
@@ -633,7 +631,7 @@ for (var i = 0; i < matches.length; i++) {
   matches[i].classList.remove("foo");
   matches.item(i).classList.add("bar");
 }
-// 执行后，HTML 代码如下
+
 // <div id="example">
 //   <p></p>
 //   <p class="foo bar"></p>
@@ -658,7 +656,6 @@ var cells = table.getElementsByTagName("td");
 `Element.closest` 方法接受一个 CSS 选择器作为参数，返回匹配该选择器的、最接近当前节点的一个祖先节点（包括当前节点本身）。如果没有任何节点匹配 CSS 选择器，则返回 `null`。
 
 ```js
-// HTML 代码如下
 // <article>
 //   <div id="div-01">Here is div-01
 //     <div id="div-02">Here is div-02
@@ -692,9 +689,9 @@ if (el.matches(".someClass")) {
 
 以下三个方法与 `Element` 节点的事件相关。这些方法都继承自 `EventTarget` 接口，详见相关章节。
 
-- `Element.addEventListener()`：添加事件的回调函数；
-- `Element.removeEventListener()`：移除事件监听函数；
-- `Element.dispatchEvent()`：触发事件；
+- `Element.addEventListener`：添加事件的回调函数；
+- `Element.removeEventListener`：移除事件监听函数；
+- `Element.dispatchEvent`：触发事件；
 
 ```js
 element.addEventListener("click", listener, false);
