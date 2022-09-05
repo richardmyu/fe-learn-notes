@@ -13,7 +13,7 @@ window.a; // 1
 
 从语言设计的角度看，所有变量都是 `window` 对象的属性，其实不是很合理。因为 `window` 对象有自己的实体含义，不适合当作最高一层的顶层对象。这个设计失误与 JavaScript 语言匆忙的设计过程有关，最早的设想是语言内置的对象越少越好，这样可以提高浏览器的性能。因此，语言设计者 Brendan Eich 就把 `window` 对象当作顶层对象，所有未声明就赋值的变量都自动变成 `window` 对象的属性。这种设计使得编译阶段无法检测出未声明变量，但到了今天已经没有办法纠正了。
 
-## 2.window 对象的属性
+## 2.`window` 对象的属性
 
 ### 2.1.`window.window` 和 `window.name`
 
@@ -118,7 +118,7 @@ if (popup !== null && !popup.closed) {
 
 下面是 Chrome 浏览器的 `userAgent`。
 
-```sh
+```js
 navigator.userAgent;
 // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
 ```
@@ -164,7 +164,7 @@ navigator.platform;
 
 `navigator.geolocation` 返回一个 `Geolocation` 对象，包含用户地理位置的信息。
 
-### 3.6.`navigator.javaEnabled()`，`navigator.cookieEnabled`
+### 3.6.`navigator.javaEnabled`，`navigator.cookieEnabled`
 
 javaEnabled 方法返回一个布尔值，表示浏览器是否能运行 Java Applet 小程序。
 
@@ -210,7 +210,7 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 ## 5.`window` 对象的方法
 
-### 5.1.`window.moveTo()`，`window.moveBy()`
+### 5.1.`window.moveTo`，`window.moveBy`
 
 `window.moveTo` 方法用于移动浏览器窗口到指定位置。它接受两个参数，分别是窗口左上角距离屏幕左上角的水平距离和垂直距离，单位为像素。
 
@@ -224,7 +224,7 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 上面代码将窗口向右移动 25 像素、向下移动 50 像素。
 
-### 5.2.`window.scrollTo()`，`window.scrollBy()`
+### 5.2.`window.scrollTo`，`window.scrollBy`
 
 `window.scrollTo` 方法用于将网页的指定位置，滚动到浏览器左上角。它的参数是相对于整张网页的横坐标和纵坐标。它有一个别名 `window.scroll`。
 
@@ -436,7 +436,7 @@ window.frameElement === null; // true
 另外，如果 `iframe` 元素设置了 `name` 或 `id` 属性，那么属性值会自动成为全局变量，并且可以通过 `window.frames` 属性引用，返回子窗口的 `window` 对象。
 
 ```js
-// HTML 代码为<iframe id="myFrame">
+// <iframe id="myFrame">
 myFrame; // [HTMLIFrameElement]
 frames.myframe === myFrame; // true
 ```
@@ -454,6 +454,7 @@ frames.myframe === myFrame; // true
 ```js
 window.onload = function() {
   var elements = document.getElementsByClassName("example");
+
   for (var i = 0; i < elements.length; i++) {
     var elt = elements[i];
     // ...
@@ -475,11 +476,11 @@ window.onerror = function(message, filename, lineno, colno, error) {
 
 由于历史原因，`window` 的 `error` 事件的回调函数不接受错误对象作为参数，而是一共可以接受五个参数，它们的含义依次如下。
 
-1. 出错信息
-2. 出错脚本的网址
-3. 行号
-4. 列号
-5. 错误对象
+1. 出错信息；
+2. 出错脚本的网址；
+3. 行号；
+4. 列号；
+5. 错误对象；
 
 > 老式浏览器只支持前三个参数。
 
@@ -490,7 +491,7 @@ window.onerror = function(message, filename, lineno, colno, error) {
 ```js
 window.onerror = function(msg, url, line) {
   if (onerror.num++ > onerror.max) {
-    alert("ERROR: " + msg + "\n" + url + ":" + line);
+    console.log("ERROR: " + msg + "\n" + url + ":" + line);
     return true;
   }
 };
@@ -540,6 +541,7 @@ encodeURI("http://www.example.com/q=春节");
 ```js
 encodeURIComponent("春节");
 // "%E6%98%A5%E8%8A%82"
+
 encodeURIComponent("http://www.example.com/q=春节");
 // "http%3A%2F%2Fwww.example.com%2Fq%3D%E6%98%A5%E8%8A%82"
 ```
@@ -567,7 +569,7 @@ decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
 
 需要注意的是，`alert`、`prompt`、`confirm` 这三个方法弹出的对话框，都是浏览器统一规定的式样，是无法定制的。
 
-1).`alert`
+### 9.1.`alert`
 
 `alert` 方法弹出的对话框，只有一个“确定”按钮，往往用来通知用户某些信息。
 
@@ -583,7 +585,7 @@ alert("Hello World");
 
 `alert` 方法的参数只能是字符串，没法使用 CSS 样式，但是可以用 `\n` 指定换行。
 
-2).`prompt`
+### 9.2.`prompt`
 
 `prompt` 方法弹出的对话框，在提示文字的下方，还有一个输入框，要求用户输入信息，并有“确定”和“取消”两个按钮。它往往用来获取用户输入的数据。
 
@@ -605,7 +607,7 @@ var result = prompt('您的年龄？', 25)
 
 `prompt` 方法的第二个参数是可选的，但是如果不提供的话，IE 浏览器会在输入框中显示 `undefined`。因此，最好总是提供第二个参数，作为输入框的默认值。
 
-3).`confirm`
+### 9.3.`confirm`
 
 `confirm` 方法弹出的对话框，除了提示信息之外，只有“确定”和“取消”两个按钮，往往用来征询用户的意见。
 
@@ -623,6 +625,7 @@ var result = confirm("你最近好吗？");
 
 ```js
 var okay = confirm("Please confirm this message.");
+
 if (okay) {
   // 用户按下“确定”
 } else {

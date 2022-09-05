@@ -261,12 +261,14 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 ```js
 (function() {
   var scripts = document.getElementsByTagName("script")[0];
+
   function load(url) {
     var script = document.createElement("script");
     script.async = true;
     script.src = url;
     scripts.parentNode.insertBefore(script, scripts);
   }
+
   load("xxx");
 })();
 ```
@@ -279,12 +281,15 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 function loadScript(src, done) {
   var js = document.createElement("script");
   js.src = src;
+
   js.onload = function() {
     done();
   };
+
   js.onerror = function() {
     done(new Error("Failed to load script " + src));
   };
+
   document.head.appendChild(js);
 }
 ```
@@ -337,7 +342,7 @@ function loadScript(src, done) {
 
 页面生成以后，脚本操作和样式表操作，都会触发 **重流**（reflow）和 **重绘**（repaint）。用户的互动，也会触发，比如设置了鼠标悬停（`a:hover`）效果、页面滚动、在输入框中输入文本、改变窗口大小等等。
 
-重流和重绘并不一定一起发生，**重流必然导致重绘，重绘不一定需要重流**。比如改变元素颜色，只会导致重绘，而不会导致重流；改变元素的布局，则会导致重绘和重流。
+> 重流和重绘并不一定一起发生，*重流必然导致重绘，重绘不一定需要重流*。比如改变元素颜色，只会导致重绘，而不会导致重流；改变元素的布局，则会导致重绘和重流。
 
 大多数情况下，浏览器会智能判断，将重流和重绘只限制到相关的子树上面，最小化所耗费的代价，而不会全局重新生成网页。
 
@@ -345,7 +350,6 @@ function loadScript(src, done) {
 
 ```js
 var foo = document.getElementById("foobar");
-
 foo.style.color = "blue";
 foo.style.marginTop = "30px";
 ```
@@ -360,10 +364,10 @@ foo.style.marginTop = "30px";
 - 使用 `document fragment` 操作 DOM (<a href="./index.html">index.html</a>)
 - 动画时使用 `absolute` 定位或 `fixed` 定位，这样可以减少对其他元素的影响
 - 只在必要时才显示元素
-- 使用 `window.requestAnimationFrame()`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流
+- 使用 `window.requestAnimationFrame`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流
 - 使用虚拟 DOM（virtual DOM）库
 
-下面是一个 `window.requestAnimationFrame()` 对比效果的例子。
+下面是一个 `window.requestAnimationFrame` 对比效果的例子。
 
 ```js
 // 重绘代价高
