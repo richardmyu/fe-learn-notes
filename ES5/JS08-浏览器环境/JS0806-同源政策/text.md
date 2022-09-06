@@ -2,7 +2,7 @@
 
 浏览器安全的基石是 **同源政策**（same-origin policy）。
 
-## 1. 概述
+## 1.概述
 
 ### 1.1 含义
 
@@ -52,6 +52,7 @@ https://www.example.com/dir/page.html：不同源（协议不同）
   - `window.self`
   - `window.top`
   - `window.window`
+  >
 - 方法
   - `window.blur()`
   - `window.close()`
@@ -77,17 +78,23 @@ document.domain = "example.com";
 
 现在，A 网页通过脚本设置一个 `Cookie`。
 
-`document.cookie = "test1=hello";`
+```js
+document.cookie = "test1=hello";
+```
 
 B 网页就可以读到这个 `Cookie`。
 
-`var allCookie = document.cookie;`
+```js
+var allCookie = document.cookie;
+```
 
 注意，这种方法只适用于 `Cookie` 和 `iframe` 窗口，`LocalStorage` 和 `IndexedDB` 无法通过这种方法，规避同源政策，而要使用下文介绍 `PostMessage API`。
 
-另外，服务器也可以在设置 `Cookie` 的时候，指定 `Cookie` 的所属域名为一级域名，比如。example.com。
+另外，服务器也可以在设置 `Cookie` 的时候，指定 `Cookie` 的所属域名为一级域名，比如：`example.com`。
 
-`Set-Cookie: key=value; domain=.example.com; path=/`
+```sh
+Set-Cookie: key=value; domain=.example.com; path=/
+```
 
 这样的话，二级域名和三级域名不用做任何设置，都可以读取这个 `Cookie`。
 
@@ -99,7 +106,8 @@ B 网页就可以读到这个 `Cookie`。
 
 ```js
 document.getElementById("myIFrame").contentWindow.document;
-// Uncaught DOMException: Blocked a frame from accessing a cross-origin frame.
+// Uncaught DOMException:
+// Blocked a frame from accessing a cross-origin frame.
 ```
 
 上面命令中，父窗口想获取子窗口的 DOM，因为跨域导致报错。
@@ -146,9 +154,11 @@ function checkMessage() {
 
 同样的，子窗口也可以改变父窗口的片段标识符。
 
-`parent.location.href = target + '#' + hash;`
+```js
+parent.location.href = target + '#' + hash;
+```
 
-### 3.2.`window.postMessage()`
+### 3.2.`window.postMessage`
 
 上面的这种方法属于破解，HTML5 为了解决这个问题，引入了一个全新的 API：**跨文档通信** API（Cross-document messaging）。
 
@@ -194,6 +204,7 @@ window.addEventListener(
 
 ```js
 window.addEventListener("message", receiveMessage);
+
 function receiveMessage(event) {
   event.source.postMessage("Nice to see you!", "*");
 }
@@ -205,8 +216,12 @@ function receiveMessage(event) {
 
 ```js
 window.addEventListener("message", receiveMessage);
+
 function receiveMessage(event) {
-  if (event.origin !== "http://aaa.com") return;
+  if (event.origin !== "http://aaa.com") {
+    return;
+  }
+
   if (event.data === "Hello World") {
     event.source.postMessage("Hello", event.origin);
   } else {
@@ -226,6 +241,7 @@ window.onmessage = function(e) {
   if (e.origin !== "http://bbb.com") {
     return;
   }
+
   var payload = JSON.parse(e.data);
   localStorage.setItem(payload.key, JSON.stringify(payload.data));
 };
@@ -248,8 +264,12 @@ win.postMessage(
 
 ```js
 window.onmessage = function(e) {
-  if (e.origin !== "http://bbb.com") return;
+  if (e.origin !== "http://bbb.com") {
+    return;
+  }
+
   var payload = JSON.parse(e.data);
+
   switch (payload.method) {
     case "set":
       localStorage.setItem(payload.key, JSON.stringify(payload.data));
@@ -271,13 +291,16 @@ window.onmessage = function(e) {
 ```js
 var win = document.getElementsByTagName("iframe")[0].contentWindow;
 var obj = { name: "Jack" };
+
 // 存入对象
 win.postMessage(
   JSON.stringify({ key: "storage", method: "set", data: obj }),
   "http://bbb.com"
 );
+
 // 读取对象
 win.postMessage(JSON.stringify({ key: "storage", method: "get" }), "*");
+
 window.onmessage = function(e) {
   if (e.origin != "http://aaa.com") return;
   console.log(JSON.parse(e.data).name);

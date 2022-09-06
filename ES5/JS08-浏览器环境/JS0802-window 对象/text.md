@@ -19,7 +19,9 @@ window.a; // 1
 
 `window` 对象的 `window` 属性指向自身。
 
-`window.window === this // true`
+```js
+window.window === this; // true
+```
 
 `window.name` 属性用于设置当前浏览器窗口的名字。
 
@@ -39,7 +41,14 @@ console.log(window.name);
 
 ```js
 console.log(window.location);
-// Location {ancestorOrigins: DOMStringList, href: 'https://mail.qq.com/cgi-bin/frame_html?sid=I64y85tkpdGKmBJw&r=67426be7a7c186674e5206673f7cca61', origin: 'https://mail.qq.com', protocol: 'https:', host: 'mail.qq.com', …}
+/* Location {
+ *   ancestorOrigins: DOMStringList,
+ *   href: 'https://xx.com/xx/xxx',
+ *   origin: 'https://xx.com',
+ *   protocol: 'https:',
+ *   host: 'xx.com', 
+ *   …}
+*/
 
 window.location === document.location // true
 ```
@@ -62,7 +71,9 @@ if (popup !== null && !popup.closed) {
 
 `window.opener` 属性返回打开当前窗口的父窗口。如果当前窗口没有父窗口，则返回 `null`。
 
-`window.open().opener === window // true`
+```js
+window.open().opener === window; // true
+```
 
 上面表达式会打开一个新窗口，然后返回 `true`。
 
@@ -76,13 +87,17 @@ if (popup !== null && !popup.closed) {
 
 `frames` 属性实际上是 `window` 对象的别名。
 
-`frames === window // true`
+```js
+frames === window; // true
+```
 
 因此，`frames[0]` 也可以用 `window[0]` 表示。但是，从语义上看，`frames` 更清晰，而且考虑到 `window` 还是全局对象，因此推荐表示多窗口时，总是使用 `frames[0]` 的写法。
 
 `window.length` 属性返回当前网页包含的框架总数。如果当前网页不包含 `frame` 和 `iframe` 元素，那么 `window.length` 就返回 0。
 
-`window.frames.length === window.length // true`
+```js
+window.frames.length === window.length; // true
+```
 
 `window.frames.length` 与 `window.length` 应该是相等的。
 
@@ -120,7 +135,9 @@ if (popup !== null && !popup.closed) {
 
 ```js
 navigator.userAgent;
-// "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
+// Mozilla/5.0 (X11; Linux x86_64)
+// AppleWebKit/537.36 (KHTML, like Gecko)
+// Chrome/29.0.1547.57 Safari/537.36
 ```
 
 通过 `userAgent` 属性识别浏览器，不是一个好办法。因为必须考虑所有的情况（不同的浏览器，不同的版本），非常麻烦，而且无法保证未来的适用性，更何况各种上网设备层出不穷，难以穷尽。所以，现在一般不再识别浏览器了，而是使用“功能识别”方法，即逐一测试当前浏览器是否支持要用到的 JavaScript 功能。
@@ -158,7 +175,9 @@ navigator.platform;
 
 `navigator.onLine` 属性返回一个布尔值，表示用户当前在线还是离线。
 
-`navigator.onLine // true`
+```js
+navigator.onLine; // true
+```
 
 ### 3.5.`navigator.geolocation`
 
@@ -166,15 +185,19 @@ navigator.platform;
 
 ### 3.6.`navigator.javaEnabled`，`navigator.cookieEnabled`
 
-javaEnabled 方法返回一个布尔值，表示浏览器是否能运行 Java Applet 小程序。
+`javaEnabled` 方法返回一个布尔值，表示浏览器是否能运行 Java Applet 小程序。
 
-`navigator.javaEnabled() // false`
+```js
+navigator.javaEnabled(); // false
+```
 
 `cookieEnabled` 属性返回一个布尔值，表示浏览器是否能储存 `Cookie`。
 
-`navigator.cookieEnabled // true`
+```js
+navigator.cookieEnabled; // true
+```
 
-注意，这个返回值与是否储存某个网站的 `Cookie` 无关。用户可以设置某个网站不得储存 `Cookie`，这时 `cookieEnabled` 返回的还是 true。
+注意，这个返回值与是否储存某个网站的 `Cookie` 无关。用户可以设置某个网站不得储存 `Cookie`，这时 `cookieEnabled` 返回的还是 `true`。
 
 ## 4.`window.screen` 对象
 
@@ -214,7 +237,9 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 `window.moveTo` 方法用于移动浏览器窗口到指定位置。它接受两个参数，分别是窗口左上角距离屏幕左上角的水平距离和垂直距离，单位为像素。
 
-`window.moveTo(100, 200)`
+```js
+window.moveTo(100, 200);
+```
 
 上面代码将窗口移动到屏幕 (100, 200) 的位置。
 
@@ -228,11 +253,15 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 `window.scrollTo` 方法用于将网页的指定位置，滚动到浏览器左上角。它的参数是相对于整张网页的横坐标和纵坐标。它有一个别名 `window.scroll`。
 
-`window.scrollTo(0, 1000);`
+```js
+window.scrollTo(0, 1000);
+```
 
 `window.scrollBy` 方法用于将网页移动指定距离，单位为像素。它接受两个参数：向右滚动的像素，向下滚动的像素。
 
-`window.scrollBy(0, window.innerHeight)`
+```js
+window.scrollBy(0, window.innerHeight);
+```
 
 上面代码用于将网页向下滚动一屏。
 
@@ -240,7 +269,9 @@ if (screen.width <= 800 && screen.height <= 600) {
 
 `window.open` 方法用于新建另一个浏览器窗口，并且返回该窗口对象。
 
-`var popup = window.open('somefile.html');`
+```js
+var popup = window.open('somefile.html');
+```
 
 上面代码会让浏览器弹出一个新建窗口，网址是当前域名下的 `somefile.html`。
 
@@ -297,7 +328,9 @@ if (popup === null) {
 
 `window.close` 方法用于关闭当前窗口，一般用来关闭 `window.open` 方法新建的窗口。
 
-`popup.close()`
+```js
+popup.close();
+```
 
 该方法只对顶层窗口有效，`iframe` 框架之中的窗口使用该方法无效。
 
@@ -349,11 +382,15 @@ if (popup !== null && !popup.closed) {
 
 `window.getSelection` 方法返回一个 `Selection` 对象，表示用户现在选中的文本。
 
-`var selObj = window.getSelection();`
+```js
+var selObj = window.getSelection();
+```
 
 使用 `Selction` 对象的 `toString` 方法可以得到选中的文本。
 
-`var selectedText = selObj.toString();`
+```js
+var selectedText = selObj.toString();
+```
 
 ## 6.多窗口操作
 
@@ -378,7 +415,9 @@ window.top === window.self;
 
 下面的代码让父窗口的访问历史后退一次。
 
-`parent.history.back();`
+```js
+parent.history.back();
+```
 
 与这些变量对应，浏览器还提供一些特殊的窗口名，供 `open` 方法、`<a>` 标签、`<form>` 标签等引用。
 
@@ -388,7 +427,9 @@ window.top === window.self;
 
 下面代码就表示在顶层窗口打开链接。
 
-`<a href="somepage.html" target="_top">Link</a>`
+```html
+<a href="somepage.html" target="_top">Link</a>
+```
 
 ### 6.2.`iframe` 标签
 
@@ -469,7 +510,12 @@ window.onload = function() {
 浏览器脚本发生错误时，会触发 `window` 对象的 `error` 事件。我们可以通过 `window.onerror` 属性对该事件指定回调函数。
 
 ```js
-window.onerror = function(message, filename, lineno, colno, error) {
+window.onerror = function(
+  message,
+  filename,
+  lineno,
+  colno,
+  error) {
   console.log("出错了！--> %s", error.stack);
 };
 ```
@@ -495,17 +541,22 @@ window.onerror = function(msg, url, line) {
     return true;
   }
 };
+
 onerror.max = 3;
 onerror.num = 0;
 ```
 
 需要注意的是，如果脚本网址与网页网址不在同一个域（比如使用了 CDN），浏览器根本不会提供详细的出错信息，只会提示出错，错误类型是“`Script error.`”，行号为 0，其他信息都没有。这是浏览器防止向外部脚本泄漏信息。一个解决方法是在脚本所在的服务器，设置 `Access-Control-Allow-Origin` 的 HTTP 头信息。
 
-`Access-Control-Allow-Origin: *`
+```sh
+Access-Control-Allow-Origin: *
+```
 
 然后，在网页的 `<script>` 标签中设置 `crossorigin` 属性。
 
-`<script crossorigin="anonymous" src="//example.com/file.js"></script>`
+```html
+<script crossorigin="anonymous" src="//example.com/file.js"></script>
+```
 
 上面代码的 `crossorigin="anonymous"` 表示，读取文件不需要身份信息，即不需要 `cookie` 和 HTTP 认证信息。如果设为 `crossorigin="use-credentials"`，就表示浏览器会上传 `cookie` 和 `HTTP` 认证信息，同时还需要服务器端打开 HTTP 头信息 `Access-Control-Allow-Credentials`。
 
@@ -514,6 +565,7 @@ onerror.num = 0;
 网页 URL 的合法字符分成两类。
 
 - **URL 元字符**：分号（`;`），逗号（`,`），斜杠（`/`），问号（`?`），冒号（`:`），at（`@`），`&`，等号（`=`），加号（`+`），美元符号（`$`），井号（`#`）
+>
 - **语义字符**：a-z，A-Z，0-9，连词号（`-`），下划线（`_`），点（`.`），感叹号（`!`），波浪线（`~`），星号（`*`），单引号（`\`），圆括号（`()`）
 
 除了以上字符，其他字符出现在 URL 之中都必须转义，规则是根据操作系统的默认编码，将每个字节转为百分号（`%`）加上两个大写的十六进制字母。比如，UTF-8 的操作系统上，`http://www.example.com/q=春节` 这个 URL 之中，汉字“春节”不是 URL 的合法字符，所以被浏览器自动转成 `http://www.example.com/q=%E6%98%A5%E8%8A%82`。其中，“春”转成了 `%E6%98%A5`，“节”转成了 “`%E8%8A%82`”。这是因为“春”和”节“的 UTF-8 编码分别是 `E6 98 A5` 和 `E8 8A 82`，将每个字节前面加上百分号，就构成了 **URL 编码**。
@@ -561,7 +613,9 @@ decodeURI("http://www.example.com/q=%E6%98%A5%E8%8A%82");
 
 `decodeURIComponent` 用于还原转义后的 URL 片段。它是 `encodeURIComponent` 方法的逆运算。
 
-`decodeURIComponent('%E6%98%A5%E8%8A%82')// "春节"`
+```js
+decodeURIComponent('%E6%98%A5%E8%8A%82'); // "春节"
+```
 
 ## 9.`alert`，`prompt`，`confirm`
 

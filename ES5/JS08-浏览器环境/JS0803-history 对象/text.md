@@ -99,7 +99,6 @@ history.go(2);
 
 ```js
 history.pushState({ page: 1 }, "title 1", "?page=1");
-
 history.state;
 // { page: 1 }
 ```
@@ -129,7 +128,9 @@ window.addEventListener("popstate", function(event) {
 
 这个 `state` 对象也可以直接通过 `history` 对象读取。
 
-`var currentState = history.state;`
+```js
+var currentState = history.state;
+```
 
 注意，页面第一次加载的时候，浏览器不会触发 `popstate` 事件。
 
@@ -142,20 +143,19 @@ var paramsString = "q=URLUtils.searchParams&topic=api";
 var searchParams = new URLSearchParams(paramsString);
 ```
 
-`URLSearchParams` 有以下方法，用来操作某个参数。
+`URLSearchParams` 有以下方法，用来操作某个参数：
 
-- `has`：返回一个布尔值，表示是否具有某个参数
-- `get`：返回指定参数的第一个值
-- `getAll`：返回一个数组，成员是指定参数的所有值
-- `set`：设置指定参数
-- `delete`：删除指定参数
-- `append`：在查询字符串之中，追加一个键值对
-- `toString`：返回整个查询字符串
+- `has`：返回一个布尔值，表示是否具有某个参数；
+- `get`：返回指定参数的第一个值；
+- `getAll`：返回一个数组，成员是指定参数的所有值；
+- `set`：设置指定参数；
+- `delete`：删除指定参数；
+- `append`：在查询字符串之中，追加一个键值对；
+- `toString`：返回整个查询字符串；
 
 ```js
 var paramsString = "q=URLUtils.searchParams&topic=api";
 var searchParams = new URLSearchParams(paramsString);
-
 searchParams.has("topic"); // true
 searchParams.get("topic"); // "api"
 searchParams.getAll("topic"); // ["api"]
@@ -174,11 +174,11 @@ searchParams.delete("topic");
 searchParams.toString(); // "q=URLUtils.searchParams&foo=2&foo=3"
 ```
 
-`URLSearchParams` 还有三个方法，用来遍历所有参数。
+`URLSearchParams` 还有三个方法，用来遍历所有参数：
 
-- `keys`：遍历所有参数名
-- `values`：遍历所有参数值
-- `entries`：遍历所有参数的键值对
+- `keys`：遍历所有参数名；
+- `values`：遍历所有参数值；
+- `entries`：遍历所有参数的键值对；
 
 上面三个方法返回的都是 `Iterator` 对象。
 
@@ -218,7 +218,6 @@ for (var p of searchParams) {
 // URL: https://example.com?version=1.0
 var params = new URLSearchParams(location.search.slice(1));
 params.set("version", 2.0);
-
 window.history.replaceState({}, "", `${location.pathname}?${params}`);
 // URL: https://example.com?version=2.0
 ```
@@ -228,11 +227,10 @@ window.history.replaceState({}, "", `${location.pathname}?${params}`);
 ```js
 let params = new URLSearchParams();
 params.append('api_key', '1234567890');
-
 fetch('https://example.com/api', {
   method: 'POST',
   body: params
-}).then(...)
+}).then(...);
 ```
 
 DOM 的 `a` 元素节点的 `searchParams` 属性，就是一个 `URLSearchParams` 实例。

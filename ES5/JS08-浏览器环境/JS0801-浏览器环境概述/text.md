@@ -12,6 +12,7 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 4. URL 协议：URL 支持以 `javascript:` 协议的方式，执行 JavaScript 代码
 
 > 伪协议不同于因特网上所真实存在的协议，如 `http://`，`https://`，`ftp://`，而是为关联应用程序而使用的。如：`tencent://`（关联 QQ)，`data:`（用 base64 编码来在浏览器端输出二进制文件），还有就是 `javascript:`。
+>
 > `javascript:` 这个特殊的协议类型声明了 URL 的主体是任意的 javascript 代码，它由 javascript 的解释器运行。
 
 后两种方法用得很少，常用的是前两种方法。由于内容（HTML 代码）和行为代码（JavaScript）应该分离，所以第一种方法应当谨慎使用。
@@ -20,14 +21,19 @@ JavaScript 代码只有嵌入网页，才能在用户浏览网页时运行。
 
 通过 `<script>` 标签，可以直接将 JavaScript 代码嵌入网页。
 
-`<script>console.log('Hello World');</script>`
+```html
+<script>console.log('Hello World');</script>
+```
 
 `<script>` 标签有一个 `type` 属性，用来指定脚本类型。对 JavaScript 脚本来说，`type` 属性可以设为两种值。
 
 - `text/javascript`：这是默认值，也是历史上一贯设定的值。如果省略 `type` 属性，默认就是这个值。对于老式浏览器，设为这个值比较好。
+>
 - `application/javascript`：对于较新的浏览器，建议设为这个值。
 
-`<script type="application/javascript">console.log('Hello World');</script>`
+```html
+<script type="application/javascript">console.log('Hello World');</script>
+```
 
 由于 `<script>` 标签默认就是 JavaScript 代码。所以，嵌入 JavaScript 脚本时，`type` 属性也可以省略。
 
@@ -52,11 +58,15 @@ document.getElementById("myData").text;
 
 `<script>` 标签也可以指定加载外部的脚本文件：
 
-`<script src="example.js"></script>`
+```html
+<script src="example.js"></script>
+```
 
 如果脚本文件使用了非英语字符，还应该注明编码：
 
-`<script charset="utf-8" src="example.js"></script>`
+```html
+<script charset="utf-8" src="example.js"></script>
+```
 
 所加载的脚本必须是纯的 JavaScript 代码，不能有 HTML 代码和 `<script>` 标签。
 
@@ -83,7 +93,9 @@ document.getElementById("myData").text;
 
 某些 HTML 元素的事件属性（比如 `onclick` 和 `onmouseover`），可以写入 JavaScript 代码。当指定事件发生时，就会调用这些代码。
 
-`<div onclick="alert('Hello')"></div>`
+```html
+<div onclick="alert('Hello')"></div>
+```
 
 上面的事件属性代码只有一个语句。如果有多个语句，用分号分隔即可。
 
@@ -91,13 +103,17 @@ document.getElementById("myData").text;
 
 URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript 代码：
 
-`<a href="javascript:alert('Hello')"></a>`
+```html
+<a href="javascript:alert('Hello')"></a>
+```
 
 浏览器的地址栏也可以执行 `javascript:` 协议。将 `javascript:alert('Hello')` 放入地址栏，按回车键，就会跳出提示框。
 
 如果 JavaScript 代码返回一个字符串，浏览器就会新建一个文档，展示这个字符串的内容，原有文档的内容都会消失：
 
-`<a href="javascript:new Date().toLocaleTimeString();">What time is it?</a>`
+```html
+<a href="javascript:new Date().toLocaleTimeString();">What time is it?</a>
+```
 
 上面代码中，用户点击链接以后，会打开一个新文档，里面有当前时间。
 
@@ -127,7 +143,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是 JavaScript 可以修改 DOM（比如使用 `document.write` 方法），所以必须把控制权让给它，否则会导致复杂的线程竞赛的问题。
 
-如果外部脚本加载时间很长（比如一直无法完成下载），就会造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为“阻塞效应”。
+如果外部脚本加载时间很长（比如一直无法完成下载），就会造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为 “**阻塞效应**”。
 
 为了避免这种情况，较好的做法是将 `<script>` 标签都放在页面底部，而不是头部。这样即使遇到脚本失去响应，网页主体的渲染也已经完成了，用户至少可以看到内容，而不是面对一张空白的页面。
 
@@ -154,7 +170,9 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 > 如果放到 `head` 部分，会报错；放到 `body`，则可以获取到自身及自身之前；
 
-`<script src="jquery.min.js" onload="console.log(document.body.innerHTML)"></script>`
+```html
+<script src="jquery.min.js" onload="console.log(document.body.innerHTML)"></script>
+```
 
 但是，如果将脚本放在页面底部，就可以完全按照正常的方式写，上面两种方式都不需要。
 
@@ -204,7 +222,7 @@ URL 支持 `javascript:` 协议，调用这个 URL 时，就会执行 JavaScript
 
 有了 `defer` 属性，浏览器下载脚本文件的时候，不会阻塞页面渲染。下载的脚本文件在 `DOMContentLoaded` 事件触发前执行（即刚刚读取完 `</html>` 标签）。
 
-对于内置而不是加载外部脚本的 `script` 标签，以及动态生成的 `script` 标签，`defer` 属性不起作用。另外，使用 `defer` 加载的外部脚本不应该使用 `document.write` 方法。(？？？)
+对于内置而不是加载外部脚本的 `script` 标签，以及动态生成的 `script` 标签，`defer` 属性不起作用。另外，使用 `defer` 加载的外部脚本不应该使用 `document.write` 方法。
 
 ### 2.3.`async` 属性
 
@@ -300,15 +318,21 @@ function loadScript(src, done) {
 
 如果不指定协议，浏览器默认采用 HTTP 协议下载：
 
-`<script src="example.js"></script>`
+```html
+<script src="example.js"></script>
+```
 
 上面的 `example.js` 默认就是采用 HTTP 协议下载，如果要采用 HTTPS 协议下载，必需写明（假定服务器支持）：
 
-`<script src="https://example.js"></script>`
+```httml
+<script src="https://example.js"></script>
+```
 
 但是有时我们会希望，根据页面本身的协议来决定加载协议，这时可以采用下面的写法：
 
-`<script src="//example.js"></script>`
+```html
+<script src="//example.js"></script>
+```
 
 ## 3.浏览器的组成
 
@@ -358,14 +382,21 @@ foo.style.marginTop = "30px";
 
 下面是一些优化技巧。
 
-- 读取 DOM 或者写入 DOM，尽量写在一起，不要混杂
-- 缓存 DOM 信息
-- 不要一项一项地改变样式，而是使用 `CSS class` 一次性改变样式
-- 使用 `document fragment` 操作 DOM (<a href="./index.html">index.html</a>)
-- 动画时使用 `absolute` 定位或 `fixed` 定位，这样可以减少对其他元素的影响
-- 只在必要时才显示元素
-- 使用 `window.requestAnimationFrame`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流
-- 使用虚拟 DOM（virtual DOM）库
+1. 读取 DOM 或者写入 DOM，尽量写在一起，不要混杂；
+>
+2. 缓存 DOM 信息；
+>
+3. 不要一项一项地改变样式，而是使用 `CSS class` 一次性改变样式；
+>
+4. 使用 `document fragment` 操作 DOM (`<a href="./index.html">index.html</a>`)；
+>
+5. 动画时使用 `absolute` 定位或 `fixed` 定位，这样可以减少对其他元素的影响；
+>
+6. 只在必要时才显示元素；
+>
+7. 使用 `window.requestAnimationFrame`，因为它可以把代码推迟到下一次重流时执行，而不是立即要求页面重流；
+>
+8. 使用虚拟 DOM（virtual DOM）库；
 
 下面是一个 `window.requestAnimationFrame` 对比效果的例子。
 
@@ -401,11 +432,14 @@ JavaScript 是一种解释型语言，也就是说，它不需要编译，由解
 早期，浏览器内部对 JavaScript 的处理过程如下：
 
 1. 读取代码，进行 **词法分析**（Lexical analysis），将代码分解成 **词元**（token）。
+>
 2. 对词元进行 **语法分析**（parsing），将代码整理成 “**语法树**”（syntax tree）。
+>
 3. 使用“翻译器”（translator），将代码转为字节码（bytecode）。
+>
 4. 使用“字节码解释器”（bytecode interpreter），将字节码转为机器码。
 
-逐行解释将字节码转为机器码，是很低效的。为了提高运行速度，现代浏览器改为采用 “**即时编译**”（Just In Time compiler，缩写 JIT），即字节码只在运行时编译，用到哪一行就编译哪一行，并且把编译结果缓存（inline cache）。通常，一个程序被经常用到的，只是其中一小部分代码，有了缓存的编译结果，整个程序的运行速度就会显著提升。不同的浏览器有不同的编译策略。有的浏览器只编译最经常用到的部分，比如循环的部分；有的浏览器索性省略了字节码的翻译步骤，直接编译成机器码，比如 chrome 浏览器的 V8 引擎。
+逐行解释将字节码转为机器码，是很低效的。为了提高运行速度，现代浏览器改为采用 “**即时编译**”（Just In Time compiler，缩写 **JIT**），即字节码只在运行时编译，用到哪一行就编译哪一行，并且把编译结果缓存（inline cache）。通常，一个程序被经常用到的，只是其中一小部分代码，有了缓存的编译结果，整个程序的运行速度就会显著提升。不同的浏览器有不同的编译策略。有的浏览器只编译最经常用到的部分，比如循环的部分；有的浏览器索性省略了字节码的翻译步骤，直接编译成机器码，比如 chrome 浏览器的 V8 引擎。
 
 字节码不能直接运行，而是运行在一个 **虚拟机**（Virtual Machine）之上，一般也把虚拟机称为 JavaScript 引擎。因为 JavaScript 运行时未必有字节码，所以 JavaScript 虚拟机并不完全基于字节码，而是部分基于源码，即只要有可能，就通过 JIT（just in time）编译器直接把源码编译成机器码运行，省略字节码步骤。这一点与其他采用虚拟机（比如 Java）的语言不尽相同。这样做的目的，是为了尽可能地优化代码、提高性能。下面是目前最常见的一些 JavaScript 虚拟机：
 

