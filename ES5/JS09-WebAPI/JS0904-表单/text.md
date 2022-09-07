@@ -12,15 +12,15 @@
 <div>
   <label for="os">Operating System</label>
   <select name="os" id="os">
-      <option>Choose</option>
-      <optgroup label="Windows">
-          <option value="7 Home Basic">7 Home Basic</option>
-          <option value="7 Home Premium">7 Home Premium</option>
-          <option value="7 Professional">7 Professional</option>
-          <option value="7 Ultimate">7 Ultimate</option>
-          <option value="Vista">Vista</option>
-          <option value="XP">XP</option>
-      </optgroup>
+    <option>Choose</option>
+    <optgroup label="Windows">
+      <option value="7 Home Basic">7 Home Basic</option>
+      <option value="7 Home Premium">7 Home Premium</option>
+      <option value="7 Professional">7 Professional</option>
+      <option value="7 Ultimate">7 Ultimate</option>
+      <option value="Vista">Vista</option>
+      <option value="XP">XP</option>
+    </optgroup>
   <select>
 </div>
 ```
@@ -30,15 +30,15 @@
 <div>
   <label for="os">Operating System</label>
   <select name="os" id="os">
-      <option>Choose</option>
-      <optgroup label="Windows">
-          <option value="7 Home Basic">7 Home Basic</option>
-          <option value="7 Home Premium">7 Home Premium</option>
-          <option value="7 Professional">7 Professional</option>
-          <option value="7 Ultimate">7 Ultimate</option>
-          <option value="Vista">Vista</option>
-          <option value="XP">XP</option>
-      </optgroup>
+    <option>Choose</option>
+    <optgroup label="Windows">
+      <option value="7 Home Basic">7 Home Basic</option>
+      <option value="7 Home Premium">7 Home Premium</option>
+      <option value="7 Professional">7 Professional</option>
+      <option value="7 Ultimate">7 Ultimate</option>
+      <option value="Vista">Vista</option>
+      <option value="XP">XP</option>
+    </optgroup>
   <select>
 </div>
 
@@ -46,15 +46,21 @@
 
 可以通过 `value` 属性取到用户选择的值。
 
-`var data = document.getElementById('selectMenu').value;`
+```js
+var data = document.getElementById('selectMenu').value;
+```
 
 `selectedIndex` 可以设置选中的项目（从 0 开始）。如果用户没有选中任何一项，`selectedIndex` 等于 -1。
 
-`document.getElementById('selectMenu').selectedIndex = 1;`
+```js
+document.getElementById('selectMenu').selectedIndex = 1;
+```
 
 `select` 元素也可以设置为多选。
 
-`<select name="categories" id="categories" multiple>`
+```html
+<select name="categories" id="categories" multiple>
+```
 
 设为多选时，`value` 只返回选中的第一个选项。要取出所有选中的值，就必须遍历 `select` 的所有选项，检查每一项的 `selected` 属性。
 
@@ -71,15 +77,21 @@ for (var i = 0, count = elem.options.length; i < count; i++) {
 
 `checkbox` 是多选框控件，每个选择框只有选中和不选中两种状态。
 
-`<input type="checkbox" name="toggle" id="toggle" value="toggle">`
+```html
+<input type="checkbox" name="toggle" id="toggle" value="toggle">
+```
 
 `checked` 属性返回一个布尔值，表示用户是否选中。
 
-`var which = document.getElementById('someCheckbox').checked;`
+```js
+var which = document.getElementById('someCheckbox').checked;
+```
 
 `checked` 属性是可写的。
 
-`which.checked = true;`
+```j
+which.checked = true;
+```
 
 `value` 属性可以获取单选框的值。
 
@@ -93,27 +105,27 @@ if (which.checked) {
 
 `radio` 是单选框控件，同一组选择框同时只能选中一个，选中元素的 `checked` 属性为 `true`。由于同一组选择框的 `name` 属性都相同，所以只有通过遍历，才能获得用户选中的那个选择框的 `value`。
 
-```js
+```html
 <input type="radio" name="gender" value="Male"> Male </input>
 <input type="radio" name="gender" value="Female"> Female </input>
 <script>
-var radios = document.getElementsByName('gender');
-var selected;
-for (var i = 0; i < radios.length; i++) {
-  if (radios[i].checked) {
-    selected = radios[i].value;
-    break;
+  var radios = document.getElementsByName('gender');
+  var selected;
+  for (var i = 0; i < radios.length; i++) {
+    if (radios[i].checked) {
+      selected = radios[i].value;
+      break;
+    }
   }
-}
-if (selected) {
-  // 用户选中了某个选项
-}
+  if (selected) {
+    // 用户选中了某个选项
+  }
 </script>
 ```
 
 上面代码中，要求用户选择“性别”。通过遍历所有选项，获取用户选中的项。如果用户未做任何选择，则 `selected` 就为 `undefined`。
 
-## 2. 表单的验证
+## 2.表单的验证
 
 ### 2.1.HTML5 表单验证
 
@@ -129,7 +141,9 @@ if (inputElem.value === inputElem.defaultValue) {
 
 HTML 5 原生支持表单验证，不需要 JavaScript。
 
-`<input type="date" >`
+```html
+<input type="date" >
+```
 
 上面代码指定该 `input` 输入框只能填入日期，否则浏览器会报错。
 
@@ -138,7 +152,6 @@ HTML 5 原生支持表单验证，不需要 JavaScript。
 ```js
 var form = document.getElementById("myform");
 form.noValidate = true;
-
 form.onsubmit = validateForm;
 ```
 
@@ -146,7 +159,9 @@ form.onsubmit = validateForm;
 
 此外，还可以只针对单个的 `input` 输入框，关闭表单验证。
 
-`form.field.willValidate = false;`
+```js
+form.field.willValidate = false;
+```
 
 每个 `input` 输入框都有 `willValidate` 属性，表示是否开启表单验证。对于那些不支持的浏览器（比如 IE8），该属性等于 `undefined`。
 
@@ -158,9 +173,9 @@ if (field.nodeName === "INPUT" && field.type !== field.getAttribute("type")) {
 }
 ```
 
-### 2.2.`checkValidity()`，`setCustomValidity` 方法，`validity` 对象
+### 2.2.`checkValidity`，`setCustomValidity`，`validity`
 
-提交表单之前（即 `submit` 事件发生之前），浏览器会执行 `form.checkValidity()`，检查是否所有输入项都能通过验证。那些不能通过验证的输入项，会触发该输入项元素的 `invalid` 事件。因此，可以定义 `invalid` 事件的监听函数，一旦通不过验证，就显示报错提示。
+提交表单之前（即 `submit` 事件发生之前），浏览器会执行 `form.checkValidity`，检查是否所有输入项都能通过验证。那些不能通过验证的输入项，会触发该输入项元素的 `invalid` 事件。因此，可以定义 `invalid` 事件的监听函数，一旦通不过验证，就显示报错提示。
 
 ```js
 // CSS 样式如下：

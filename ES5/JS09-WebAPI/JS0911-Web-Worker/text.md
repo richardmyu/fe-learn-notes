@@ -67,7 +67,9 @@ function doSomething() {
 
 `Worker` 完成任务以后，主线程就可以把它关掉。
 
-`worker.terminate();`
+```js
+worker.terminate();
+```
 
 ### 2.2.Worker 线程
 
@@ -136,11 +138,15 @@ self.addEventListener(
 
 `Worker` 内部如果要加载其他脚本，有一个专门的方法 `importScripts`。
 
-`importScripts('script1.js');`
+```js
+importScripts('script1.js');
+```
 
 该方法可以同时加载多个脚本。
 
-`importScripts('script1.js', 'script2.js');`
+```js
+importScripts('script1.js', 'script2.js');
+```
 
 ### 2.4.错误处理
 
@@ -216,7 +222,7 @@ worker.postMessage(ab, [ab]);
 
 通常情况下，`Worker` 载入的是一个单独的 JavaScript 脚本文件，但是也可以载入与主线程在同一个网页的代码。
 
-```js
+```html
 <!DOCTYPE html>
   <body>
     <script id="worker" type="app/worker">
@@ -327,13 +333,14 @@ function storeResult(event) {
 ```js
 // core.js
 var start;
+var end;
 onmessage = getStart;
+
 function getStart(event) {
   start = event.data;
   onmessage = getEnd;
 }
 
-var end;
 function getEnd(event) {
   end = event.data;
   onmessage = null;
@@ -357,7 +364,9 @@ function work() {
 
 浏览器原生提供 `Worker` 构造函数，用来供主线程生成 `Worker` 线程。
 
-`var myWorker = new Worker(jsUrl, options);`
+```js
+var myWorker = new Worker(jsUrl, options);
+```
 
 `Worker` 构造函数，可以接受两个参数。第一个参数是脚本的网址（必须遵守同源政策），该参数是必需的，且只能加载 JS 脚本，否则会报错。第二个参数是配置对象，该对象可选。它的一个作用就是指定 `Worker` 的名称，用来区分多个 `Worker` 线程。
 
@@ -371,15 +380,15 @@ self.name; // myWorker
 
 `Worker` 构造函数返回一个 `Worker` 线程对象，用来供主线程操作 `Worker`。`Worker` 线程对象的属性和方法如下。
 
----
-
 - `Worker.onerror`：指定 `error` 事件的监听函数。
+>
 - `Worker.onmessage`：指定 `message` 事件的监听函数，发送过来的数据在 `Event.data` 属性中。
+>
 - `Worker.onmessageerror` ：指定 `messageerror` 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
+>
 - `Worker.postMessage`：向 `Worker` 线程发送消息。
-- `Worker.terminate(`)：立即终止 `Worker` 线程。
-
----
+>
+- `Worker.terminate`)：立即终止 `Worker` 线程。
 
 ### 7.2.Worker 线程
 
@@ -387,16 +396,17 @@ Web Worker 有自己的全局对象，不是主线程的 `window`，而是一个
 
 `Worker` 线程有一些自己的全局属性和方法。
 
----
-
 - `self.name`： `Worker` 的名字。该属性只读，由构造函数指定。
+>
 - `self.onmessage`：指定 `message` 事件的监听函数。
+>
 - `self.onmessageerror`：指定 `messageerror` 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
-- `self.close()`：关闭 `Worker` 线程。
-- `self.postMessage()`：向产生这个 `Worker` 线程发送消息。
-- `self.importScripts()`：加载 JS 脚本。
-
----
+>
+- `self.close`：关闭 `Worker` 线程。
+>
+- `self.postMessage`：向产生这个 `Worker` 线程发送消息。
+>
+- `self.importScripts`：加载 JS 脚本。
 
 ## 8.存档：Service Worker
 
@@ -405,11 +415,17 @@ Service worker 是一个在浏览器后台运行的脚本，与网页不相干�
 Service Worker 有以下特点。
 
 - 属于 JavaScript Worker，不能直接接触 DOM，通过 `postMessage` 接口与页面通信。
+>
 - 不需要任何页面，就能执行。
+>
 - 不用的时候会终止执行，需要的时候又重新执行，即它是事件驱动的。
+>
 - 有一个精心定义的升级策略。
+>
 - 只在 HTTPs 协议下可用，这是因为它能拦截网络请求，所以必须保证请求是安全的。
+>
 - 可以拦截发出的网络请求，从而控制页面的网路通信。
+>
 - 内部大量使用 `Promise`。
 
 Service worker 的常见用途。
@@ -438,7 +454,7 @@ if ("serviceWorker" in navigator) {
 
 上面代码向浏览器登记 `sw.js` 脚本，实质就是浏览器加载 `sw.js`。这段代码可以多次调用，浏览器会自行判断 `sw.js` 是否登记过，如果已经登记过，就不再重复执行了。注意，Service worker 脚本必须与页面在同一个域，且必须在 HTTPs 协议下正常运行。
 
-`sw.js` 位于域名的根目录下，这表明这个 Service worker 的范围（scope）是整个域，即会接收整个域下面的 `fetch` 事件。如果脚本的路径是 `/example/sw.js`，那么 Service worker 只对 `/example/` 开头的 URL 有效（比如 `/example/page1/`、`/example/page2/`）。如果脚本不在根目录下，但是希望对整个域都有效，可以指定 scope 属性。
+`sw.js` 位于域名的根目录下，这表明这个 Service worker 的范围（scope）是整个域，即会接收整个域下面的 `fetch` 事件。如果脚本的路径是 `/example/sw.js`，那么 Service worker 只对 `/example/` 开头的 URL 有效（比如 `/example/page1/`、`/example/page2/`）。如果脚本不在根目录下，但是希望对整个域都有效，可以指定 `scope` 属性。
 
 ```js
 navigator.serviceWorker.register("/path/to/serviceworker.js", {
@@ -483,6 +499,7 @@ self.addEventListener("fetch", function(event) {
 `fetch` 事件会在两种情况下触发。
 
 1. 用户访问 Service worker 范围内的网页。这些网页发出的任何网络请求（页面本身、CSS、JS、图像、XHR 等等），即使这些请求是发向另一个域。但是，`iframe` 和 `<object>` 标签发出的请求不会被拦截。
+>
 2. `fetch` 事件的 `event` 对象的 `request` 属性，返回一个对象，包含了所拦截的网络请求的所有信息，比如 URL、请求方法和 HTTP 头信息。
 
 Service worker 的强大之处，在于它会拦截请求，并会返回一个全新的回应。
@@ -502,32 +519,36 @@ self.addEventListener("fetch", function(event) {
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    body {
-      white-space: pre-line;
-      font-family: monospace;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body><script>
-    function log() {
-      document.body.appendChild(document.createTextNode(Array.prototype.join.call(arguments, ", ") + '\n'));
-      console.log.apply(console, arguments);
-    }
-    window.onerror = function(err) {
-      log("Error", err);
-    };
-    navigator.serviceWorker.register('sw.js', {
-      scope: './'
-    }).then(function(sw) {
-      log("Registered!", sw);
-      log("You should get a different response when you refresh");
-    }).catch(function(err) {
-      log("Error", err);
-    });
-  </script></body>
+  <head>
+    <style>
+      body {
+        white-space: pre-line;
+        font-family: monospace;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function log() {
+        document.body.appendChild(document.createTextNode(Array.prototype.join.call(arguments, ", ") + '\n'));
+        console.log.apply(console, arguments);
+      }
+
+      window.onerror = function(err) {
+        log("Error", err);
+      };
+
+      navigator.serviceWorker.register('sw.js', {
+        scope: './'
+      }).then(function(sw) {
+        log("Registered!", sw);
+        log("You should get a different response when you refresh");
+      }).catch(function(err) {
+        log("Error", err);
+      });
+    </script>
+  </body>
 </html>
 ```
 
@@ -557,7 +578,7 @@ self.addEventListener("fetch", function(event) {
 ```js
 self.addEventListener('fetch', function (event) {
   var request = event.request;
-  ...
+  // ...
 });
 ```
 
@@ -596,6 +617,7 @@ self.addEventListener("fetch", function(event) {
     if (supportsWebp) {
       // Clone the request
       var req = event.request.clone();
+
       // Build the return URL
       var returnUrl = req.url.substr(0, req.url.lastIndexOf(".")) + ".webp";
       event.respondWith(

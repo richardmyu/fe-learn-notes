@@ -12,7 +12,9 @@
 
 `requestAnimationFrame` 使用一个回调函数作为参数。这个回调函数会在浏览器重绘之前调用。
 
-`requestID = window.requestAnimationFrame(callback);`
+```js
+requestID = window.requestAnimationFrame(callback);
+```
 
 目前，主要浏览器（Firefox 23 / IE 10 / Chrome / Safari）都支持这个方法。可以用下面的方法，检查浏览器是否支持这个 API。如果不支持，则自行模拟部署该方法。
 
@@ -48,7 +50,9 @@ requestAnimationFrame(repeatOften);
 
 `cancelAnimationFrame` 方法用于取消重绘。
 
-`window.cancelAnimationFrame(requestID);`
+```js
+window.cancelAnimationFrame(requestID);
+```
 
 它的参数是 `requestAnimationFrame` 返回的一个代表任务 ID 的整数值。
 
@@ -71,7 +75,7 @@ $("#stop").on("click", function() {
 
 上面代码持续在 `body` 元素下添加 `div` 元素，直到用户点击 `stop` 按钮为止。
 
-## 3. 实例
+## 3.实例
 
 下面，举一个实例。
 
@@ -83,7 +87,6 @@ $("#stop").on("click", function() {
 
 ```js
 var elem = document.getElementById("anim");
-
 var startTime = undefined;
 
 function render(time) {

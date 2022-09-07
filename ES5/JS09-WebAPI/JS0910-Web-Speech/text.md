@@ -72,7 +72,6 @@ recognition.onresult = function(event) {
   if (event.results.length > 0) {
     var results = event.results[0],
       topResult = results[0];
-
     if (topResult.confidence > 0.5) {
       speechSearch(results, topResult);
     } else {

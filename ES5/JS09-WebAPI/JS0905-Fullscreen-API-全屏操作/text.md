@@ -8,7 +8,7 @@ The API allows a single element to be viewed full-screen. Unlike pressing F11 to
 
 只有包含在顶层文档内部的标准 HTML 元素、`svg` 元素和 `math` 元素， 以及拥有 `allowfullscreen` 属性的 `iframe` 的内部元素可以进入全屏模式。 这意味着在 `iframe` 内部的元素，以及 `object` 的内部元素不能进入全屏模式。
 
-## 0. 基础
+## 0.基础
 
 在了解全屏功能之前，先了解三个全屏相关概念：伪全屏，浏览器全屏 和 元素全屏。
 
@@ -24,7 +24,7 @@ The API allows a single element to be viewed full-screen. Unlike pressing F11 to
 
 元素全屏是浏览器实现的页面全屏能力，由 js 代码控制页面中的某个元素进行全屏展示。
 
-## 1. 方法
+## 1.方法
 
 全屏 API 在 `Document` 和 `Element` 接口中增加了一些方法，可用于允许打开关闭全屏模式。
 
@@ -45,13 +45,13 @@ The API allows a single element to be viewed full-screen. Unlike pressing F11 to
 - **参数**
   - `options`
     - 一个 `FullscreenOptions` 对象提供切换到全屏模式的控制选项。目前，唯一的选项是 `navigationUI`，这控制了是否在元素处于全屏模式时显示导航条 UI。默认值是"`auto`"，表明这将由浏览器来决定是否显示导航条。
-
+>
 - **返回值**
   - 在完成切换全屏模式后，返回一个 Promise。
-
+>
 - **异常**
 
-`requestFullscreen()` 通过拒绝返回的 Promise 来生成错误条件，而不是抛出一个传统的异常。拒绝控制器接收以下的某一个值：
+`requestFullscreen` 通过拒绝返回的 Promise 来生成错误条件，而不是抛出一个传统的异常。拒绝控制器接收以下的某一个值：
 
 在以下几种情况下，会抛出 `TypeError`：
 
@@ -117,7 +117,7 @@ exitFullscreen();
 
 用户手动按下 ESC 键或 F11 键，也可以退出全屏键。此外，加载新的页面，或者切换 tab，或者从浏览器转向其他应用（按下 Alt - Tab），也会导致退出全屏状态。
 
-## 2. 属性
+## 2.属性
 
 ### 2.1.`document.fullscreenElement`
 
@@ -170,7 +170,7 @@ if (fullscreenEnabled) {
 
 > 注意：这些事件处理函数特性不可以当成 HTML 内容属性来使用。换句话说，你无法在 HTML 内容中为 `fullscreenchange` 和 `fullscreenerror` 指定事件处理程序，你必须通过 JavaScript 代码添加它们。
 
-## 3. 全屏事件
+## 3.全屏事件
 
 全屏 API 定义了两个事件：
 
@@ -201,7 +201,7 @@ document.addEventListener("fullscreenchange", function(event) {
 
 > 注意：`fullscreenchange` 事件，不管在文档进入和退出全屏模式时，都不会提供任何信息
 
-## 4. 全屏状态的 CSS
+## 4.全屏状态的 CSS
 
 全屏状态下，大多数浏览器的 CSS 支持 `:full-screen` 伪类，只有 IE11 支持 `:fullscreen` 伪类。使用这个伪类，可以对全屏状态设置单独的 CSS 属性。
 
@@ -237,7 +237,7 @@ dialog::backdrop {
 
 `::backdrop` 不继承任何元素同时也不被任何元素继承。没有规定什么属性不能应用于该伪元素
 
-## 5. 一些问题
+## 5.一些问题
 
 ```shell
 # 测试环境
@@ -257,7 +257,7 @@ dialog::backdrop {
 
 3. 默认的 F11 不会触发  `fullscreenchange` 事件，而 ESC 可以。
 
-4.`fullscreenchange`的回调函数中出现 `alert`：chrome 全屏被破坏；FF 正常；欧鹏同样也失败，但和谷歌不同的是，进入全屏和退出全屏中的 `alert` 会一同触发（如果有的话），而谷歌只会触发一个（有时也会触发两个）；至于 IE，好像直接忽略了 `alert`。
+4. `fullscreenchange`的回调函数中出现 `alert`：chrome 全屏被破坏；FF 正常；欧鹏同样也失败，但和谷歌不同的是，进入全屏和退出全屏中的 `alert` 会一同触发（如果有的话），而谷歌只会触发一个（有时也会触发两个）；至于 IE，好像直接忽略了 `alert`。
 
 ---
 

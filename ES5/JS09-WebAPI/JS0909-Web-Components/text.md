@@ -8,15 +8,15 @@
 
 1. 管理和使用非常容易。加载或卸载组件，只要添加或删除一行代码就可以了。
 
-```js
+```html
 <link rel="import" href="my-dialog.htm">
 <my-dialog heading="A Dialog">Lorem ipsum</my-dialog>
 ```
-
+>
 2. 定制非常容易。组件往往留出接口，供使用者设置常见属性，比如上面代码的 `heading` 属性，就是用来设置对话框的标题。
-
+>
 3. 组件是模块化编程思想的体现，非常有利于代码的重用。标准格式的模块，可以跨平台、跨框架使用，构建、部署和与其他 UI 元素互动都有统一做法。
-
+>
 4. 组件提供了 HTML、CSS、JavaScript 封装的方法，实现了与同一页面上其他代码的隔离。
 
 未来的网站开发，可以像搭积木一样，把组件合在一起，就组成了一个网站。这是非常诱人的。
@@ -61,8 +61,7 @@ if (supportsTemplate()) {
 var template = document.querySelector("#profileTemplate");
 template.content.querySelector(".profile__img").src = "profile.jpg";
 template.content.querySelector(".profile__name").textContent = "Barack Obama";
-template.content.querySelector(".profile__social").textContent =
-  "Follow me on Twitter";
+template.content.querySelector(".profile__social").textContent = "Follow me on Twitter";
 document.body.appendChild(template.content);
 ```
 
@@ -192,7 +191,7 @@ var XFooExtended = document.registerElement("x-foo-extended", {
 
 定义了自定义元素以后，使用的时候，有两种方法。一种是直接使用，另一种是间接使用，指定为某个现有元素是自定义元素的实例。
 
-```js
+```html
 <!-- 直接使用 -->
 <supper-button></supper-button>
 
@@ -279,7 +278,7 @@ var XFoo = document.registerElement("x-foo-with-markup", {
 
 上面代码定义了 `createdCallback` 回调函数，生成实例时，该函数运行，插入如下的 HTML 语句。
 
-```js
+```html
 <x-foo-with-markup>
   <b>I'm an x-foo-with-markup!</b>
 </x-foo-with-markup>
@@ -372,7 +371,9 @@ if (supportsImports()) {
 
 `HTML Import` 用于将外部的 HTML 文档加载进当前文档。我们可以将组件的 HTML、CSS、JavaScript 封装在一个文件里，然后使用下面的代码插入需要使用该组件的网页。
 
-`<link rel="import" href="dialog.html">`
+```html
+<link rel="import" href="dialog.html">
+```
 
 上面代码在网页中插入一个对话框组件，该组建封装在 `dialog.html` 文件。注意，`dialog.html` 文件中的样式和 JavaScript 脚本，都对所插入的整个网页有效。
 
@@ -420,7 +421,9 @@ document.head.appendChild(link);
 
 `HTML Import` 是同步加载，会阻塞当前网页的渲染，这主要是为了样式表的考虑，因为外部网页的样式表对当前网页也有效。如果想避免这一点，可以为 `link` 元素加上 `async` 属性。当然，这也意味着，如果外部网页定义了组件，就不能立即使用了，必须等 `HTML Import` 完成，才能使用。
 
-`<link rel="import" href="/path/to/import_that_takes_5secs.html" async>`
+```html
+<link rel="import" href="/path/to/import_that_takes_5secs.html" async>
+```
 
 但是，`HTML Import` 不会阻塞当前网页的解析和脚本执行（即阻塞渲染）。这意味着在加载的同时，主页面的脚本会继续执行。
 
@@ -430,7 +433,9 @@ document.head.appendChild(link);
 
 外部网页的内容，并不会自动显示在当前网页中，它只是储存在浏览器中，等到被调用的时候才加载进入当前网页。为了加载网页网页，必须用 DOM 操作获取加载的内容。具体来说，就是使用 `link` 元素的 `import` 属性，来获取加载的内容。这一点与 `iframe` 完全不同。
 
-`var content = document.querySelector('link[rel="import"]').import;`
+```js
+var content = document.querySelector('link[rel="import"]').import;
+```
 
 发生以下情况时，`link.import` 属性为 `null`。
 
@@ -444,7 +449,6 @@ document.head.appendChild(link);
 
 ```js
 var el = linkElement.import.querySelector("#template");
-
 document.body.appendChild(el.cloneNode(true));
 ```
 
@@ -542,7 +546,9 @@ mainDoc.head.appendChild(styles.cloneNode(true));
 
 再比如，在网页中插入一个时钟，可以直接使用下面的标签。
 
-`<polymer-ui-clock></polymer-ui-clock>`
+```html
+<polymer-ui-clock></polymer-ui-clock>
+```
 
 自定义标签与其他标签的用法完全相同，也可以使用 CSS 指定它的样式。
 
@@ -561,21 +567,23 @@ polymer-ui-clock {
 
 如果使用 bower 安装，至少需要安装 `platform` 和 `core components` 这两个核心部分。
 
-```js
+```sh
 bower install --save Polymer/platform
 bower install --save Polymer/polymer
 ```
 
 你还可以安装所有预先定义的界面组件。
 
-```js
+```sh
 bower install Polymer/core-elements
 bower install Polymer/polymer-ui-elements
 ```
 
 还可以只安装单个组件。
 
-`bower install Polymer/polymer-ui-accordion`
+```sh
+bower install Polymer/polymer-ui-accordion
+```
 
 这时，组件根目录下的 `bower.json`，会指明该组件的依赖的模块，这些模块会被自动安装。
 
@@ -598,7 +606,6 @@ bower install Polymer/polymer-ui-elements
 
 ```html
 <link rel="import" href="../bower_components/polymer/polymer.html" />
-
 <polymer-element name="lorem-element">
   <template>
     <p>Lorem ipsum</p>
@@ -608,19 +615,18 @@ bower install Polymer/polymer-ui-elements
 
 上面代码定义了 `lorem-element` 组件。它分成三个部分。
 
-1. `import` 命令
+- `import` 命令
+  - `import` 命令表示载入核心模块
+>
+- `polymer-element` 标签
+  - `polymer-element` 标签定义了组件的名称（注意，组件名称中必须包含连字符）。它还可以使用 `extends` 属性，表示组件基于某种网页元素。
 
-`import` 命令表示载入核心模块
-
-2. `polymer-element` 标签
-
-`polymer-element` 标签定义了组件的名称（注意，组件名称中必须包含连字符）。它还可以使用 `extends` 属性，表示组件基于某种网页元素。
-
-`<polymer-element name="w3c-disclosure" extends="button">`
-
-3. `template` 标签
-
-`template` 标签定义了网页元素的模板。
+```html
+<polymer-element name="w3c-disclosure" extends="button">
+```
+>
+- `template` 标签
+  - `template` 标签定义了网页元素的模板。
 
 ### 6.4.组件的使用方法
 
@@ -633,10 +639,14 @@ bower install Polymer/polymer-ui-elements
 
 然后，分成两种情况。如果组件不基于任何现有的 HTML 网页元素（即定义的时候没有使用 `extends` 属性），则可以直接使用组件。
 
-`<lorem-element></lorem-element>`
+```html
+<lorem-element></lorem-element>
+```
 
 这时网页上就会显示一行字 “Lorem ipsum”。
 
 如果组件是基于（`extends`）现有的网页元素，则必须在该种元素上使用 `is` 属性指定组件。
 
-`<button is="w3c-disclosure">Expand section 1</button>`
+```html
+<button is="w3c-disclosure">Expand section 1</button>
+```

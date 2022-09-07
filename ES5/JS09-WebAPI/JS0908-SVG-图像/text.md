@@ -18,7 +18,7 @@ SVG 文件可以直接插入网页，成为 DOM 的一部分，然后用 JavaScr
       preserveAspectRatio="xMidYMid meet"
     >
       <circle id="mycircle" cx="400" cy="300" r="50" />
-    <svg>
+    </svg>
   </body>
 </html>
 ```
@@ -47,7 +47,9 @@ CSS 也可以使用 SVG 文件。
 
 SVG 文件还可以转为 BASE64 编码，然后作为 Data URI 写入网页。
 
-`<img src="data:image/svg+xml;base64,[data]">`
+```html
+<img src="data:image/svg+xml;base64,[data]">
+```
 
 ## 2.语法
 
@@ -240,7 +242,6 @@ SVG 的 `CSS` 属性与网页元素有所不同。
 ```html
 <svg viewBox="0 0 30 10" xmlns="http://www.w3.org/2000/svg">
   <circle id="myCircle" cx="5" cy="5" r="4" />
-
   <use href="#myCircle" x="10" y="0" fill="blue" />
   <use href="#myCircle" x="20" y="0" fill="white" stroke="blue" />
 </svg>
@@ -258,7 +259,6 @@ SVG 的 `CSS` 属性与网页元素有所不同。
     <text x="25" y="20">圆形</text>
     <circle cx="50" cy="50" r="20" />
   </g>
-
   <use href="#myCircle" x="100" y="0" fill="blue" />
   <use href="#myCircle" x="200" y="0" fill="white" stroke="blue" />
 </svg>
@@ -276,7 +276,6 @@ SVG 的 `CSS` 属性与网页元素有所不同。
       <circle cx="50" cy="50" r="20" />
     </g>
   </defs>
-
   <use href="#myCircle" x="0" y="0" />
   <use href="#myCircle" x="100" y="0" fill="blue" />
   <use href="#myCircle" x="200" y="0" fill="white" stroke="blue" />
@@ -357,7 +356,12 @@ SVG 的 `CSS` 属性与网页元素有所不同。
   dur="2s"
   repeatCount="indefinite"
 />
-<animate attributeName="width" to="500" dur="2s" repeatCount="indefinite" />
+<animate
+  attributeName="width"
+  to="500"
+  dur="2s"
+  repeatCount="indefinite"
+/>
 ```
 
 ### 2.16.`<animateTransform>` 标签
@@ -442,7 +446,7 @@ var svgIframe = document.getElementById("iframe").contentDocument;
 var svgEmbed = document.getElementById("embed").getSVGDocument();
 ```
 
-注意，如果使用 `<img>` 标签插入 SVG 文件，就无法获取 SVG DOM。
+> 注意，如果使用 `<img>` 标签插入 SVG 文件，就无法获取 SVG DOM。
 
 ### 3.3.读取 SVG 源码
 
@@ -462,9 +466,11 @@ var svgEmbed = document.getElementById("embed").getSVGDocument();
 </div>
 ```
 
-使用 `XMLSerializer` 实例的 `serializeToString()` 方法，获取 SVG 元素的代码。
+使用 `XMLSerializer` 实例的 `serializeToString` 方法，获取 SVG 元素的代码。
 
-`var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));`
+```js
+var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+```
 
 ### 3.4.SVG 图像转为 Canvas 图像
 
@@ -473,10 +479,8 @@ var svgEmbed = document.getElementById("embed").getSVGDocument();
 ```js
 var img = new Image();
 var svg = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-
 var DOMURL = self.URL || self.webkitURL || self;
 var url = DOMURL.createObjectURL(svg);
-
 img.src = url;
 ```
 
@@ -516,6 +520,7 @@ img.onload = function() {
       <text x="-40" y="105" dy="5">$10</text>
       <text x="-40" y="0" dy="5">$80</text>
     </g>
+
     <g class="x axis" transform="translate(0, 120)">
       <line x1="0" y1="0" x2="270" y2="0" />
       <text x="-30" y="20">January 2014</text>
