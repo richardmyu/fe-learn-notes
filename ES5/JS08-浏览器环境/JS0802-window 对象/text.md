@@ -63,7 +63,6 @@ window.location === document.location // true
 
 ```js
 var popup = window.open();
-
 if (popup !== null && !popup.closed) {
   // 窗口仍然打开着
 }
@@ -146,7 +145,6 @@ navigator.userAgent;
 
 ```js
 var ua = navigator.userAgent.toLowerCase();
-
 if (/mobi/i.test(ua)) {
   // 手机浏览器
 } else {
@@ -368,7 +366,6 @@ if (typeof window.print === "function") {
 
 ```js
 var popup = window.open("popup.html", "Popup Window");
-
 if (popup !== null && !popup.closed) {
   popup.focus();
 }
@@ -495,7 +492,6 @@ frames.myframe === myFrame; // true
 ```js
 window.onload = function() {
   var elements = document.getElementsByClassName("example");
-
   for (var i = 0; i < elements.length; i++) {
     var elt = elements[i];
     // ...
@@ -679,7 +675,6 @@ var result = confirm("你最近好吗？");
 
 ```js
 var okay = confirm("Please confirm this message.");
-
 if (okay) {
   // 用户按下“确定”
 } else {

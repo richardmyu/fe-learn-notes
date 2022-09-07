@@ -2,7 +2,7 @@
 
 [TOC]
 
-历史上，JavaScript 无法处理二进制数据。如果一定要处理的话，只能使用 `charCodeAt()` 方法，一个个字节地从文字编码转成二进制数据，还有一种办法是将二进制数据转成 Base64 编码，再进行处理。这两种方法不仅速度慢，而且容易出错。ECMAScript 5 引入了 `Blob` 对象，允许直接操作二进制数据。
+历史上，JavaScript 无法处理二进制数据。如果一定要处理的话，只能使用 `charCodeAt` 方法，一个个字节地从文字编码转成二进制数据，还有一种办法是将二进制数据转成 Base64 编码，再进行处理。这两种方法不仅速度慢，而且容易出错。ECMAScript 5 引入了 `Blob` 对象，允许直接操作二进制数据。
 
 `Blob` 对象是一个代表二进制数据的基本对象，在它的基础上，又衍生出一系列相关的 API，用来操作文件。
 
@@ -35,9 +35,11 @@ alert(buffer.byteLength); // 16
 如要操作 `ArrayBuffer`，我们需要使用“视图”对象。
 
 ```js
-let buffer = new ArrayBuffer(16); // 创建一个长度为 16 的 buffer
+// 创建一个长度为 16 的 buffer
+let buffer = new ArrayBuffer(16);
 
-let view = new Uint32Array(buffer); // 将 buffer 视为一个 32 位整数的序列
+// 将 buffer 视为一个 32 位整数的序列
+let view = new Uint32Array(buffer);
 
 alert(Uint32Array.BYTES_PER_ELEMENT); // 每个整数 4 个字节
 
@@ -49,7 +51,8 @@ view[0] = 123456;
 
 // 遍历值
 for(let num of view) {
-  alert(num); // 123456，然后 0，0，0（一共 4 个值）
+  alert(num);
+  // 123456，然后 0，0，0（一共 4 个值）
 }
 ```
 
@@ -58,8 +61,11 @@ for(let num of view) {
 例如：
 
 - `Uint8Array` —— 将 ArrayBuffer 中的每个字节视为 0 到 255 之间的单个数字（每个字节是 8 位，因此只能容纳那么多）。这称为 “8 位无符号整数”。
+>
 - `Uint16Array` —— 将每 2 个字节视为一个 `0` 到 `65535` 之间的整数。这称为 “16 位无符号整数”。
+>
 - `Uint32Array` —— 将每 4 个字节视为一个 `0` 到 `4294967295` 之间的整数。这称为 “32 位无符号整数”。
+>
 - `Float64Array` —— 将每 8 个字节视为一个 `5.0x10-324` 到 `1.8x10308` 之间的浮点数。
 
 因此，一个 16 字节 `ArrayBuffer` 中的二进制数据可以解释为 16 个“小数字”，或 8 个更大的数字（每个数字 2 个字节），或 4 个更大的数字（每个数字 4 个字节），或 2 个高精度的浮点数（每个数字 8 个字节）。
@@ -108,7 +114,8 @@ alert( arr[1] ); // 1，用给定值填充了 4 个字节（无符号 8 位整�
 let arr16 = new Uint16Array([1, 1000]);
 let arr8 = new Uint8Array(arr16);
 alert( arr8[0] ); // 1
-alert( arr8[1] ); // 232，试图复制 1000，但无法将 1000 放进 8 位字节中。
+alert( arr8[1] );
+// 232，试图复制 1000，但无法将 1000 放进 8 位字节中。
 ```
 
 4).对于数字参数 `length` —— 创建类型化数组以包含这么多元素。它的字节长度将是 `length` 乘以单个 `TypedArray.BYTES_PER_ELEMENT` 中的字节数：
@@ -143,6 +150,7 @@ let arr16 = new Uint16Array(arr8.buffer);
   - `Uint8ClampedArray` —— 用于 8 位整数，在赋值时便“固定“其值。
 >
 - `Int8Array`，`Int16Array`，`Int32Array` —— 用于有符号整数（可以为负数）。
+>
 - `Float32Array`，`Float64Array` —— 用于 32 位和 64 位的有符号浮点数。
 
 > 没有 `int8` 或类似的单值类型
@@ -155,7 +163,7 @@ let arr16 = new Uint16Array(arr8.buffer);
 
 生成 `Blob` 对象有两种方法：一种是使用 `Blob` 构造函数，另一种是对现有的 `Blob` 对象使用 `slice` 方法切出一部分。
 
-（1）`Blob` 构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。
+1）`Blob` 构造函数，接受两个参数。第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的。
 
 ```js
 var htmlParts = ['<a id="a"><b id="b">hey!</b></a>'];
@@ -166,20 +174,20 @@ var myBlob = new Blob(htmlParts, { type: "text/xml" });
 
 ```js
 var blob = new Blob(["Hello World"]);
-
 var a = document.createElement("a");
 a.href = window.URL.createObjectURL(blob);
 a.download = "hello-world.txt";
 a.textContent = "Download Hello World!";
-
 body.appendChild(a);
 ```
 
 上面的代码生成了一个超级链接，点击后提示下载文本文件 `hello-world.txt`，文件内容为 “Hello World”。
 
-（2）`Blob` 对象的 `slice` 方法，将二进制数据按照字节分块，返回一个新的 `Blob` 对象。
+2）`Blob` 对象的 `slice` 方法，将二进制数据按照字节分块，返回一个新的 `Blob` 对象。
 
-`var newBlob = oldBlob.slice(startingByte, endindByte);`
+```js
+var newBlob = oldBlob.slice(startingByte, endindByte);
+```
 
 下面是一个使用 `XMLHttpRequest` 对象，将大文件分割上传的例子。
 
@@ -193,25 +201,20 @@ function upload(blobOrFile) {
 
 document.querySelector('input[type="file"]').addEventListener('change', function(e) {
   var blob = this.files[0];
-
-  const BYTES_PER_CHUNK = 1024 * 1024; // 1MB chunk sizes.
-  const SIZE = blob.size;
-
+  var BYTES_PER_CHUNK = 1024 * 1024; // 1MB chunk sizes.
+  var SIZE = blob.size;
   var start = 0;
   var end = BYTES_PER_CHUNK;
 
   while(start < SIZE) {
     upload(blob.slice(start, end));
-
     start = end;
     end = start + BYTES_PER_CHUNK;
   }
 }, false);
-
-})();
 ```
 
-（3）`Blob` 对象有两个只读属性：
+3）`Blob` 对象有两个只读属性：
 
 - `size`：二进制数据的大小，单位为字节。
 - `type`：二进制数据的 MIME 类型，全部为小写，如果类型未知，则该值为空字符串。
@@ -224,11 +227,15 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 
 `FileList` 对象针对表单的 `file` 控件。当用户通过 `file` 控件选取文件后，这个控件的 `files` 属性值就是 `FileList` 对象。它在结构上类似于数组，包含用户选取的多个文件。
 
-`<input type="file" id="input" onchange="console.log(this.files.length)" multiple />`
+```html
+<input type="file" id="input" onchange="console.log(this.files.length)" multiple />
+```
 
 当用户选取文件后，就可以读取该文件。
 
-`var selected_file = document.getElementById('input').files[0];`
+```js
+var selected_file = document.getElementById('input').files[0];
+```
 
 采用拖放方式，也可以得到 `FileList` 对象。
 
@@ -239,9 +246,7 @@ dropZone.addEventListener("drop", handleFileSelect, false);
 function handleFileSelect(evt) {
   evt.stopPropagation();
   evt.preventDefault();
-
   var files = evt.dataTransfer.files; // FileList object.
-
   // ...
 }
 ```
@@ -254,7 +259,6 @@ File API 提供 `File` 对象，它是 `FileList` 对象的成员，包含了文
 
 ```js
 var selected_file = document.getElementById("input").files[0];
-
 var fileName = selected_file.name;
 var fileSize = selected_file.size;
 var fileType = selected_file.type;
@@ -286,14 +290,18 @@ FileReader API 用于读取文件，即把文件内容读入内存。它的参�
 对于不同类型的文件，FileReader 提供不同的方法读取文件。
 
 - `readAsBinaryString(Blob|File)`：返回二进制字符串，该字符串每个字节包含一个 0 到 255 之间的整数。
+>
 - `readAsText(Blob|File, opt_encoding)`：返回文本字符串。默认情况下，文本编码格式是 ’UTF-8’，可以通过可选的格式参数，指定其他编码格式的文本。
+>
 - `readAsDataURL(Blob|File)`：返回一个基于 `Base64` 编码的 `data-uri` 对象。
+>
 - `readAsArrayBuffer(Blob|File)`：返回一个 `ArrayBuffer` 对象。
 
 `readAsText` 方法用于读取文本文件，它的第一个参数是 `File` 或 `Blob` 对象，第二个参数是前一个参数的编码方法，如果省略就默认为 `UTF-8` 编码。该方法是异步方法，一般监听 `onload` 件，用来确定文件是否加载结束，方法是判断 `FileReader` 实例的 `result` 属性是否有值。其他三种读取方法，用法与 `readAsText` 方法类似。
 
 ```js
 var reader = new FileReader();
+
 reader.onload = function(e) {
   var text = reader.result;
 };
@@ -400,6 +408,7 @@ function errorHandler(evt) {
 ```js
 var reader = new FileReader();
 reader.onprogress = updateProgress;
+
 function updateProgress(evt) {
   if (evt.lengthComputable) {
     var percentLoaded = Math.round((evt.loaded / evt.totalEric Bidelman) * 100);
@@ -418,7 +427,9 @@ function updateProgress(evt) {
 
 假设有一个表单，用于用户选取图片。
 
-`<input type="file" name="picture" accept="image/png, image/jpeg"/>`
+```html
+<input type="file" name="picture" accept="image/png, image/jpeg"/>
+```
 
 一旦用户选中图片，将其显示在 `canvas` 的函数可以这样写：
 
@@ -494,6 +505,7 @@ document.onpaste = function(e) {
 var img = document.createElement("img");
 img.src = window.URL.createObjectURL(files[0]);
 img.height = 60;
+
 img.onload = function(e) {
   window.URL.revokeObjectURL(this.src);
 };

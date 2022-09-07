@@ -142,11 +142,9 @@ xmlhttp.onreadystatechange = function() {
   if (XMLHttpRequest.DONE != xmlhttp.readyState) {
     return;
   }
-
   if (200 != xmlhttp.status) {
     return;
   }
-
   console.log(xmlhttp.responseText);
 };
 
@@ -200,7 +198,6 @@ xhr.responseType = "arraybuffer";
 
 xhr.onload = function(e) {
   var uInt8Array = new Uint8Array(this.response);
-
   for (var i = 0, len = binStr.length; i < len; ++i) {
     // var byte = uInt8Array[i];
   }
@@ -232,11 +229,11 @@ data = JSON.parse(data);
 
 ```js
 /* 返回的 XML 文件如下
-  <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-  <book>
-      <chapter id="1">(Re-)Introducing JavaScript</chapter>
-      <chapter id="2">JavaScript in Action</chapter>
-  </book>
+ * <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+ * <book>
+ *     <chapter id="1">(Re-)Introducing JavaScript</chapter>
+ *     <chapter id="2">JavaScript in Action</chapter>
+ * </book>
 */
 
 var data = ajax.responseXML;
@@ -426,7 +423,6 @@ xhr.send(encodeURI("dataString"));
 var request = new XMLHttpRequest();
 request.open("GET", "/bar/foo.txt", false);
 request.send(null);
-
 if (request.status === 200) {
   console.log(request.responseText);
 }
@@ -501,7 +497,6 @@ var formData = new FormData();
 formData.append("username", "张三");
 formData.append("email", "zhangsan@example.com");
 formData.append("birthDate", 1940);
-
 var xhr = new XMLHttpRequest();
 xhr.open("POST", "/register");
 xhr.send(formData);
@@ -553,15 +548,16 @@ sendForm(form);
 ```js
 function uploadFiles(url, files) {
   var formData = new FormData();
-
   for (var i = 0, file; file = files[i]; ++i) {
     formData.append(file.name, file);
     // 可加入第三个参数，表示文件名
   }
-
   var xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);
-  xhr.onload = function(e) { ... };
+
+  xhr.onload = function(e) {
+    // ...
+   };
 
   xhr.send(formData);  // multipart/form-data
 }
@@ -608,10 +604,11 @@ xhr.overrideMimeType("text/plain; charset=x-user-defined");
 xhr.onreadystatechange = function(e) {
   if (this.readyState == 4 && this.status == 200) {
     var binStr = this.responseText;
-
     for (var i = 0, len = binStr.length; i < len; ++i) {
       var c = binStr.charCodeAt(i);
-      var byte = c & 0xff; // 去除高位字节，留下低位字节
+
+      // 去除高位字节，留下低位字节
+      var byte = c & 0xff;
     }
   }
 };
@@ -859,11 +856,9 @@ var formData = new FormData();
 
 for (var i = 0; i < files.length; i++) {
   var file = files[i];
-
   if (!file.type.match("image.*")) {
     continue;
   }
-
   formData.append("photos[]", file, file.name);
 }
 ```

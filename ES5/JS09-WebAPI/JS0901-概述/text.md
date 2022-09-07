@@ -7,8 +7,7 @@
 由于历史原因，HTML 元素的 `id` 属性的名字，会自动成为全局变量，指向该 HTML 元素。
 
 ```js
-// HTML 元素为
-<div id="example" />;
+// <div id="example" />;
 
 console.log(example);
 // <div id="example"></div>
@@ -21,7 +20,7 @@ console.log(example);
 var example = 1;
 
 // html
-<div id="example" />;
+// <div id="example" />;
 
 // js
 console.log(example); // 1
@@ -29,7 +28,7 @@ console.log(document.querySelector(".example"));
 // <div id="example"></div>
 ```
 
-由于这种原因，默认的全局变量名（比如，`history`、`location`、`navigator` 等），最好不要设为 `id` 属性的名字。（根据下列结果，似乎没有什么影响？？？那么让 `id` 变成全局变量的意义是什么？？？ )
+由于这种原因，默认的全局变量名（比如，`history`、`location`、`navigator` 等），最好不要设为 `id` 属性的名字。
 
 ```js
 <div id="history"></div>
@@ -38,16 +37,19 @@ console.log(document.querySelector(".example"));
 
 console.log(history);
 // History { length: 1, scrollRestoration: "auto", state: null }
+
 console.log(document.querySelector("#history"));
 // <div id="history"></div>
 
 console.log(location);
 // Location {replace: ƒ, …}
+
 console.log(document.querySelector("#location"));
 // <div id="location"></div>
 
 console.log(navigator);
 // Navigator {vendorSub: "",  …}
+
 console.log(document.querySelector("#navigator"));
 // <div id="navigator"></div>
 ```
@@ -69,7 +71,6 @@ console.log(document.querySelector("#navigator"));
 - `<object>`
 
 ```js
-// HTML 代码为
 // <form name="myForm" />
 
 myForm; // [object HTMLFormElement]
@@ -80,7 +81,6 @@ myForm; // [object HTMLFormElement]
 如果 `name` 属性同名的 `HTML` 元素不止一个，或者某个元素的 `id` 属性与另一个元素的 `name` 属性同名，这时全局变量会指向一个类似数组的对象。
 
 ```js
-// HTML 代码为
 // <div id="myForm" />
 // <form name="myForm" />
 
@@ -93,13 +93,13 @@ myForm[1]; // [object HTMLFormElement]
 这些元素的 `name` 属性名，也会成为 `document` 对象的属性。
 
 ```js
-// HTML 代码为<img name="xx" />
+// <img name="xx" />
 document.xx === xx; // true
 ```
 
 上面代码中，`name` 属性为 `xx` 的 `img` 元素，自动生成了全局变量 `xx` 和 `document` 对象的属性 `xx`。
 
-如果有多个 `name` 属性相同的元素，那么 `document` 对象的该属性指向一个类似数组的对象（NodeList 对象的实例）。
+如果有多个 `name` 属性相同的元素，那么 `document` 对象的该属性指向一个类似数组的对象（`NodeList` 对象的实例）。
 
 这样设计的原意是，通过引用 `document.elementName` 就可以获得该元素。但是，由于这些属性是自动生成的，既不规范，也不利于除错，所以建议不要使用它们。
 
@@ -128,9 +128,9 @@ document.forms.myForm;
 document.forms[n];
 ```
 
-`document.forms` 返回一个类似数组的对象（HTMLCollection 的实例），包含了当前页面中所有表单（`<form>` 元素）。HTMLCollection 的实例都可以使用某个节点的 `id` 和 `name` 属性，取到该节点。
+`document.forms` 返回一个类似数组的对象（`HTMLCollection` 的实例），包含了当前页面中所有表单（`<form>` 元素）。`HTMLCollection` 的实例都可以使用某个节点的 `id` 和 `name` 属性，取到该节点。
 
-表单对象本身也是一个 HTMLCollection 对象的实例，它里面的各个子节点也可以用 `id` 属性、`name` 属性或者索引值取到。举例来说，`myForm` 表单的第一个子节点是 `<input type="text" name="address">`，它可以用下面的方法取到。
+表单对象本身也是一个 `HTMLCollection` 对象的实例，它里面的各个子节点也可以用 `id` 属性、`name` 属性或者索引值取到。举例来说，`myForm` 表单的第一个子节点是 `<input type="text" name="address">`，它可以用下面的方法取到。
 
 ```js
 document.forms.myForm[0];
@@ -164,7 +164,6 @@ document.forms.myForm.elements.address;
 ```js
 var methods = document.forms.myForm.elements.method;
 var result;
-
 for (var i = 0; i < methods.length; i++) {
   if (methods[i].checked) value = methods[i].value;
 }
@@ -181,8 +180,9 @@ for (var i = 0; i < methods.length; i++) {
 
 `Form` 对象还有两个属性，可以指定事件的回调函数。
 
-- `onsubmit`：提交表单前调用，只要返回 `false`，就会取消提交。可以在这个函数里面，校验用户的输入。该函数只会在用户提交表单时调用，脚本调用 `submit()` 方法是不会触发这个函数的。
-- `onreset`：重置表单前调用，只要返回 `false`，就会取消表单重置。该函数只能由真实的 `reset` 按钮触发，脚本调用 `reset()` 方法并不会触发这个函数。
+- `onsubmit`：提交表单前调用，只要返回 `false`，就会取消提交。可以在这个函数里面，校验用户的输入。该函数只会在用户提交表单时调用，脚本调用 `submit` 方法是不会触发这个函数的。
+>
+- `onreset`：重置表单前调用，只要返回 `false`，就会取消表单重置。该函数只能由真实的 `reset` 按钮触发，脚本调用 `reset` 方法并不会触发这个函数。
 
 ```html
 <form onreset="return confirm('你要重置表单吗？')">
@@ -191,23 +191,26 @@ for (var i = 0; i < methods.length; i++) {
 </form>
 ```
 
-`Form` 对象的方法主要是下面两个。
+`Form` 对象的方法主要是下面两个：
 
-- `submit()`：将表单数据提交到服务器
-- `reset()`：重置表单数据
+- `submit`：将表单数据提交到服务器
+- `reset`：重置表单数据
 
 ### 2.3.表单控件对象
 
 表单包含了各种控件，每个控件都是一个对象。它们都包含了以下四个属性。
 
 - `type`：表示控件的类型，对于 `<input>` 元素、`<button>` 元素等于这些标签的 `type` 属性，对于其他控件，`<select>` 为 `select-one`，`<select multiple>` 为 `select-multiple`，`<textarea>` 为 `textarea`。该属性只读。
+>
 - `form`：指向包含该控件的表单对象，如果该控件不包含在表单之中，则返回 `null`。该属性只读。
+>
 - `name`：返回控件标签的 `name` 属性。该属性只读。
+>
 - `value`：返回或设置该控件的值，这个值会被表单提交到服务器。该属性可读写。 才会 `form` 属性有一个特别的应用，就是在控件的事件回调函数里面，`this` 指向事件所在的控件对象，所以 `this.form` 就指向控件所在的表单，`this.form.x` 就指向其他控件元素，里面的 `x` 就是该控件的 `name` 属性或 `id` 属性的值。
 
 表单控件之中，只要是按钮，都有 `onclick` 属性，用来指定用户点击按钮时的回调函数；其他的控件一般都有 `onchange` 属性，控件值发生变化，并且该控件失去焦点时调用。单选框（`Radio` 控件）和多选框（`Checkbox` 控件）可以同时设置 `onchange` 和 `onclick` 属性。
 
-表单控件还有以下两个事件。
+表单控件还有以下两个事件：
 
 - `focus`：得到焦点时触发
 - `blur`：失去焦点时触发
@@ -216,13 +219,17 @@ for (var i = 0; i < methods.length; i++) {
 
 `<select>` 元素用来生成下拉列表。默认情况下，浏览器只显示一条选项，其他选项需要点击下拉按钮才会显示。`size` 选项如果大于 1，那么浏览器就会默认显示多个选项。
 
-`<select size="3">`
+```html
+<select size="3">
+```
 
 上面代码指定默认显示三个选项，更多的选项需要点击下拉按钮才会显示。
 
 `<select>` 元素默认只能选中一个选项，如果想选中多个选项，必须指定 `multiple` 属性。
 
-`<select multiple>`
+```html
+<select multiple>
+```
 
 用户选中或者取消一个下拉选项时，会触发 `Select` 对象的 `change` 事件，从而自动执行 `onchange` 监听函数。
 
@@ -274,7 +281,7 @@ mySelector.options[mySelector.options.length] = item;
 
 上面代码在下拉列表的末尾添加了一个选项。从中可以看到，`Option` 构造函数可以接受四个选项，对应 `<Option>` 对象的四个属性。
 
-注意，用脚本插入下拉选项完全可以用标准的 DOM 操作方法实现，比如 `Document.create Element()`、`Node.insertBefore()` 和 `Node.removeChild()` 等等。
+注意，用脚本插入下拉选项完全可以用标准的 DOM 操作方法实现，比如 `Document.createElement`、`Node.insertBefore` 和 `Node.removeChild` 等等。
 
 ## 3.`image` 元素
 
@@ -322,14 +329,14 @@ myImage.addEventListener("onload", function() {
 
 表格有一些特殊的 DOM 操作方法。
 
-- `insertRow()`：在指定位置插入一个新行（`tr`）。
-- `deleteRow()`：在指定位置删除一行（`tr`）。
-- `insertCell()`：在指定位置插入一个单元格（`td`）。
-- `deleteCell()`：在指定位置删除一个单元格（`td`）。
-- `createCaption()`：插入标题。
-- `deleteCaption()`：删除标题。
-- `createTHead()`：插入表头。
-- `deleteTHead()`：删除表头。
+- `insertRow`：在指定位置插入一个新行（`tr`）。
+- `deleteRow`：在指定位置删除一行（`tr`）。
+- `insertCell`：在指定位置插入一个单元格（`td`）。
+- `deleteCell`：在指定位置删除一个单元格（`td`）。
+- `createCaption`：插入标题。
+- `deleteCaption`：删除标题。
+- `createTHead`：插入表头。
+- `deleteTHead`：删除表头。
 
 下面是使用 JavaScript 生成表格的一个例子。
 
@@ -357,7 +364,6 @@ for (var i = 0; i <= 9; i++) {
 
 table.createCaption();
 table.caption.appendChild(document.createTextNode("A DOM-Generated Table"));
-
 document.body.appendChild(table);
 ```
 
@@ -377,11 +383,17 @@ document.body.appendChild(table);
 `audio` 元素和 `video` 元素加载音频和视频时，以下事件按次序发生。
 
 - `loadstart`：开始加载音频和视频。
+>
 - `durationchange`：音频和视频的 `duration` 属性（时长）发生变化时触发，即已经知道媒体文件的长度。如果没有指定音频和视频文件，`duration` 属性等于 `NaN`。如果播放流媒体文件，没有明确的结束时间，`duration` 属性等于 `Inf`（`Infinity`）。
+>
 - `loadedmetadata`：媒体文件的元数据加载完毕时触发，元数据包括 `duration`（时长）、`dimensions`（大小，视频独有）和文字轨。
+>
 - `loadeddata`：媒体文件的第一帧加载完毕时触发，此时整个文件还没有加载完。
+>
 - `progress`：浏览器正在下载媒体文件，周期性触发。下载信息保存在元素的 `buffered` 属性中。
+>
 - `canplay`：浏览器准备好播放，即使只有几帧，`readyState` 属性变为 `CAN_PLAY`。
+>
 - `canplaythrough`：浏览器认为可以不缓冲（`buffering`）播放时触发，即当前下载速度保持不低于播放速度，`readyState` 属性变为 `CAN_PLAY_THROUGH`。
 
 除了上面这些事件，`audio` 元素和 `video` 元素还支持以下事件。
@@ -414,8 +426,8 @@ var b1 = document.getElementById("button1");
 b1.tabIndex = 1;
 ```
 
-如果 `tabindex = -1`，`tab` 键跳过当前元素。
-
-如果 `tabindex = 0`，表示 `tab` 键将遍历当前元素。如果一个元素没有设置 `tabindex`，默认值就是 0。
-
-如果 `tabindex > 0`，表示 `tab` 键优先遍历。值越大，就表示优先级越大。
+- 如果 `tabindex = -1`，`tab` 键跳过当前元素。
+>
+- 如果 `tabindex = 0`，表示 `tab` 键将遍历当前元素。如果一个元素没有设置 `tabindex`，默认值就是 0。
+>
+- 如果 `tabindex > 0`，表示 `tab` 键优先遍历。值越大，就表示优先级越大。

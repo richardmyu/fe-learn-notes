@@ -165,13 +165,15 @@ searchParams.set("foo", 2);
 searchParams.get("foo"); // 2
 
 searchParams.append("topic", "webdev");
-searchParams.toString(); // "q=URLUtils.searchParams&topic=api&foo=2&topic=webdev"
+searchParams.toString();
+// "q=URLUtils.searchParams&topic=api&foo=2&topic=webdev"
 
 searchParams.append("foo", 3);
 searchParams.getAll("foo"); // [2, 3]
 
 searchParams.delete("topic");
-searchParams.toString(); // "q=URLUtils.searchParams&foo=2&foo=3"
+searchParams.toString();
+// "q=URLUtils.searchParams&foo=2&foo=3"
 ```
 
 `URLSearchParams` 还有三个方法，用来遍历所有参数：
@@ -184,7 +186,6 @@ searchParams.toString(); // "q=URLUtils.searchParams&foo=2&foo=3"
 
 ```js
 var searchParams = new URLSearchParams("key1=value1&key2=value2");
-
 for (var key of searchParams.keys()) {
   console.log(key);
 }

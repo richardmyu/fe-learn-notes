@@ -38,18 +38,24 @@ if ("EventSource" in window) {
 
 使用 SSE 时，浏览器首先生成一个 `EventSource` 实例，向服务器发起连接。
 
-`var source = new EventSource(url);`
+```js
+var source = new EventSource(url);
+```
 
 上面的 `url` 可以与当前网址同域，也可以跨域。跨域时，可以指定第二个参数，打开 `withCredentials` 属性，表示是否一起发送 `Cookie`。
 
-`var source = new EventSource(url, { withCredentials: true });`
+```js
+var source = new EventSource(url, { withCredentials: true });
+```
 
 ### 3.2.`readyState` 属性
 
 `EventSource` 实例的 `readyState` 属性，表明连接的当前状态。该属性只读，可以取以下值。
 
 - 0：相当于常量 `EventSource.CONNECTING`，表示连接还未建立，或者断线正在重连。
+>
 - 1：相当于常量 `EventSource.OPEN`，表示连接已经建立，可以接受数据。
+>
 - 2：相当于常量 `EventSource.CLOSED`，表示连接已断，且不会重连。
 
 ```js
@@ -157,7 +163,9 @@ source.addEventListener(
 
 `close` 方法用于关闭 SSE 连接。
 
-`source.close();`
+```js
+source.close();
+```
 
 ## 4.服务器实现
 
@@ -165,7 +173,7 @@ source.addEventListener(
 
 服务器向浏览器发送的 SSE 数据，必须是 UTF-8 编码的文本，具有如下的 HTTP 头信息。
 
-```js
+```shs
 Content-Type: text/event-stream
 Cache-Control: no-cache
 Connection: keep-alive
@@ -186,11 +194,13 @@ Connection: keep-alive
 
 此外，还可以有冒号开头的行，表示注释。通常，服务器每隔一段时间就会向浏览器发送一个注释，保持连接不中断。
 
-`: This is a comment`
+```sh
+: This is a comment
+```
 
 下面是一个例子。
 
-```js
+```sh
 : this is a test stream\n\n
 
 data: some text\n\n
@@ -203,18 +213,20 @@ data: with two lines \n\n
 
 数据内容用 `data` 字段表示。
 
-`data: message\n\n`
+```sh
+data: message\n\n
+```
 
 如果数据很长，可以分成多行，最后一行用 `\n\n` 结尾，前面行都用 `\n` 结尾。
 
-```js
+```sh
 data: begin message\n
 data: continue message\n\n
 ```
 
 下面是一个发送 JSON 数据的例子。
 
-```js
+```sh
 data: {\n
 data: "foo": "bar",\n
 data: "baz", 555\n
@@ -225,7 +237,7 @@ data: }\n\n
 
 数据标识符用 `id` 字段表示，相当于每一条数据的编号。
 
-```js
+```sh
 id: msg1\n
 data: message\n\n
 ```
@@ -236,7 +248,7 @@ data: message\n\n
 
 `event` 字段表示自定义的事件类型，默认是 `message` 事件。浏览器可以用 `addEventListener` 监听该事件。
 
-```js
+```sh
 event: foo\n
 data: a foo event\n\n
 
@@ -250,7 +262,7 @@ data: a bar event\n\n
 
 下面是另一个例子。
 
-```js
+```sh
 event: userconnect
 data: {"username": "bobby", "time": "02:33:48"}
 
@@ -268,7 +280,9 @@ data: {"username": "sean", "time": "02:34:36", "text": "Bye, bobby."}
 
 服务器可以用 `retry` 字段，指定浏览器重新发起连接的时间间隔。
 
-`retry: 10000\n`
+```sh
+retry: 10000\n
+```
 
 两种情况会导致浏览器重新发起连接：一种是时间间隔到期，二是由于网络错误等原因，导致连接出错。
 

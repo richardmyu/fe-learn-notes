@@ -195,7 +195,6 @@ document.cookie // "foo=bar;baz=bar"
 
 ```js
 var cookies = document.cookie.split(";");
-
 for (var i = 0; i < cookies.length; i++) {
   console.log(cookies[i]);
 }

@@ -167,6 +167,7 @@ parent.location.href = target + '#' + hash;
 ```js
 // 父窗口打开一个子窗口
 var popup = window.open("http://bbb.com", "title");
+
 // 父窗口向子窗口发消息
 popup.postMessage("Hello World!", "http://bbb.com");
 ```
@@ -221,7 +222,6 @@ function receiveMessage(event) {
   if (event.origin !== "http://aaa.com") {
     return;
   }
-
   if (event.data === "Hello World") {
     event.source.postMessage("Hello", event.origin);
   } else {
@@ -241,7 +241,6 @@ window.onmessage = function(e) {
   if (e.origin !== "http://bbb.com") {
     return;
   }
-
   var payload = JSON.parse(e.data);
   localStorage.setItem(payload.key, JSON.stringify(payload.data));
 };
@@ -267,7 +266,6 @@ window.onmessage = function(e) {
   if (e.origin !== "http://bbb.com") {
     return;
   }
-
   var payload = JSON.parse(e.data);
 
   switch (payload.method) {
