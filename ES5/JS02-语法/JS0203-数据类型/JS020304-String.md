@@ -24,7 +24,7 @@ var str='a \
 b \
 c';
 
-str; //a b c
+str; // a b c
 ```
 
 连接运算符（`+`）可以连接多个单行字符串，将长字符串拆成多行书写，输出的时候也是单行。
@@ -34,20 +34,21 @@ str; //a b c
 ```js
 (function() {
   /*
-  line 1
-  line 2
-  line 3
+  * line 1
+  * line 2
+  * line 3
   */
 }
   .toString()
   .split("\n")
   .slice(1, -1)
   .join("\n"));
-//   /*
-//   line 1
-//   line 2
-//   line 3
-//   */
+
+// /*
+// * line 1
+// * line 2
+// * line 3
+// */
 ```
 
 反斜杠（`\`）在字符串内有特殊含义，用来表示一些特殊字符，所以又称为 **转义符**。
@@ -90,11 +91,8 @@ str; //a b c
 ```js
 "\251"; // ©
 "\250"; // ¨
-
 "\xA9"; // ©
 "\xA1"; // ¡
-
-
 "\u00A9"; // ©
 "\u1022"; // ဢ
 
@@ -103,8 +101,11 @@ str; //a b c
 "\a"; // a
 
 // 也会出错
-"\x"; // Uncaught SyntaxError: Invalid hexadecimal escape sequence
-"\u"; // Uncaught SyntaxError: Invalid Unicode escape sequence
+"\x";
+// Uncaught SyntaxError: Invalid hexadecimal escape sequence
+
+"\u";
+// Uncaught SyntaxError: Invalid Unicode escape sequence
 ```
 
 ## 2.字符串的特点
@@ -135,7 +136,6 @@ str; //'asdfbcd'
 
 ```js
 var num = 123;
-
 num.toString(); // 123
 
 // 参数只能在 2 - 36 ，否则报错
@@ -157,9 +157,12 @@ objN.toString(); // [object Object]
 
 // 特殊
 [null].toString(); // ''
-null.toString(); // Uncaught TypeError: Cannot read properties of null (reading 'toString')
+null.toString();
+// Uncaught TypeError: Cannot read properties of null (reading 'toString')
+
 [undefined].toString(); // ''
-undefined.toString(); // Uncaught TypeError: Cannot read properties of undefined (reading 'toString')
+undefined.toString();
+// Uncaught TypeError: Cannot read properties of undefined (reading 'toString')
 
 // boo
 true.toString(); // 'true'
@@ -177,6 +180,7 @@ true.toString(); // 'true'
 String({ name: "hh" }); // [object Object]
 String(123); // 123
 String(["name"]); // 'name'
+
 // 特殊
 String([null]); // ''
 String(null); // 'null'

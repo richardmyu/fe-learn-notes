@@ -13,15 +13,15 @@ ECMAScript 中的对象其实就是一组数据和功能的集合，主要思想
 - **方法**：
 
 1. `hasOwnProperty(propertyName)`：用于检查对象是否拥有一个指定名字的自身定义（而不是继承）的属性。其中，作为参数的属性名 (propertyName) 必须以字符串形式指定（例如：`o.hasOwnProperty("name")`）；
-
+>
 2. `isPrototypeOf(object)`：用于检查传入的对象是否是当前对象的原型；
-
+>
 3. `propertyIsEnumerable(propertyName)`：用于检查给定的属性是否存在并且能够使用 `for-in` 语句来枚举；作为参数的属性名必须以字符串形式指定；
-
+>
 4. `toLocaleString()`：返回对象的字符串表示，该字符串执行与执行环境的地区对应；
-
+>
 5. `toString()`：返回对象的字符串表示；`Object` 类实现的这个方法非常宽泛，不能提供很多有效的信息。`Object` 的子类通常会通过自定义的 `toString` 方法来将他覆盖，以便提供更多有用的输出信息。
-
+>
 6. `valueOf()`：返回对象的原始值（如果存在）。对于 `Object` 类来说，只是简单的返回该对象本身。`Object` 的子类（如 `Number`,`Boolean`) 则重载了这个方法，以便返回与该对象相关的原始值。
 
 由于 `object` 是所有对象的基础，因此所有对象都具有这些基本的属性和方法。
@@ -43,12 +43,13 @@ var obj={
 
 对象的每一个键名又称为 “**属性**”（property），它的“键值”可以是任何数据类型。如果一个属性的值为函数，通常把这个属性称为“方法”，它可以像函数那样调用。对象的属性之间用逗号分隔，最后一个属性后面可以加逗号，也可以不加。
 
-JavaScript 允许属性的“**后绑定**”，也就是说，你可以在任意时刻新增属性，没必要在定义对象的时候，就定义好属性。如果属性的值还是一个对象，就形成了链式引用。
+JavaScript 允许属性的 “**后绑定**”，也就是说，你可以在任意时刻新增属性，没必要在定义对象的时候，就定义好属性。如果属性的值还是一个对象，就形成了链式引用。
 
 ```js
 var obj = {
   // 属性
   name: "xxx",
+
   // 方法
   action: function(str) {
     return str.repeat(2);
@@ -56,13 +57,15 @@ var obj = {
 };
 
 obj.action("O(∩_∩)O 哈哈~");
-//O(∩_∩)O 哈哈~O(∩_∩)O 哈哈~
+// O(∩_∩)O 哈哈~O(∩_∩)O 哈哈~
 
 var broObj = {};
+
 // 动态创建属性
 broObj.frist = obj;
+
 // 链式引用
-broObj.frist.action("囍"); //囍囍
+broObj.frist.action("囍"); // 囍囍
 ```
 
 > 注意：
@@ -83,7 +86,7 @@ obj.name = "Mark";
 2. 字面量（直接量）创建方式
 
 ```js
-var obj = {}; //与 new Object() 相同
+var obj = {}; // 与 new Object() 相同
 var obj = { name: "12", age: 6 };
 ```
 
@@ -127,12 +130,12 @@ eval("({foo: 123})"); // {foo: 123}
 
 ```js
 var obj={a:"xue",2:"xi"};
-console.log(obj.a);//xue
+console.log(obj.a); // xue
 
 console.log(obj.2);
-//Uncaught SyntaxError: missing ) after argument list
+// Uncaught SyntaxError: missing ) after argument list
 
-console.log(obj[2]);//xi
+console.log(obj[2]); // xi
 ```
 
 ## 7.查看所有属性
@@ -164,13 +167,13 @@ var obj = {
   cv: "2"
 };
 obj.zx = null;
-obj; //{ zx: null, cv: "2" }
+obj; // { zx: null, cv: "2" }
 
 delete obj["cv"];
-obj; //{ zx: null}
+obj; // { zx: null}
 
-delete obj.toString; //true
-obj.toString; //f function(){...}
+delete obj.toString; // true
+obj.toString; // f function(){...}
 ```
 
 `toString` 是对象 obj 继承的属性，虽然 `delete` 命令返回 true，但该属性并没有被删除，依然存在。这个例子还说明，即使 `delete` 返回 true，该属性依然可能读取到值。
@@ -199,6 +202,7 @@ var obj = {};
 
 ```js
 var obj = { a: 1, b: 2, c: 3 };
+
 for (var i in obj) {
   console.log(obj[i]);
 }
@@ -218,13 +222,14 @@ for (var i in obj) {
 var obj = {
   hello: "world"
 };
+
 for (var key in obj) {
   if (obj.hasOwnProperty(key)) {
     console.log(key);
   }
 }
 
-//hello
+// hello
 ```
 
 ## 11.`with` 语句
@@ -266,21 +271,21 @@ with (obj) {
 
 ```js
 var n = 5;
-n.toString(); //"5"
+n.toString(); // "5"
 // 5.toString();
-//Uncaught SyntaxError: Invalid or unexpected token
+// Uncaught SyntaxError: Invalid or unexpected token
 
 var boo = true;
-boo.toString(); //"true"
+boo.toString(); // "true"
 
 var ary = [1, 2, 3];
-ary.toString(); //"1,2,3"
+ary.toString(); // "1,2,3"
 
 var obj = { a: "12" };
-obj.toString(); //[object Object]
+obj.toString(); // [object Object]
 
 var fn = function() {};
-fn.toString(); //function(){}
+fn.toString(); // function(){}
 ```
 
 显式地使用 `toString` 方法，有助于使代码更加清晰。
@@ -291,27 +296,27 @@ fn.toString(); //function(){}
 
 ```js
 var obj1 = {};
-obj1.valueOf(); //{}
+obj1.valueOf(); // {}
 
 var obj2 = { a: "12" };
-obj2.valueOf(); //{a: "12"}
+obj2.valueOf(); // {a: "12"}
 
 var n = 123;
-n.valueOf(); //123
+n.valueOf(); // 123
 
 var str = "nm12";
-str.valueOf(); //"nm12"
+str.valueOf(); // "nm12"
 
 var boo = true;
-boo.valueOf(); //true
+boo.valueOf(); // true
 
 var ary = [1, 3, 6];
-ary.valueOf(); //[1,3,6]
+ary.valueOf(); // [1,3,6]
 
 var fn = function() {
   console.log("k");
 };
-fn.valueOf(); //fn=function(){}\
+fn.valueOf(); // fn=function(){}\
 ```
 
 不过，对类型为 `Number` 的对象而言，`valueOf` 将返回该对象表示的原始数字值。类似的，`Boolean` 对象会返回一个关联的原始布尔值，`String` 对象则返回一个关联的字符串。

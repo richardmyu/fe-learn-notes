@@ -20,8 +20,7 @@ JavaScript 的数据类型分为两类：原始类型（primitive type）和对�
 > 如果检测表达式，要注意 `typeof` 的优先级仅次于括号运算符，并且不能检测 递增/递减 表达式。
 
 ```js
-s; // ReferenceError: v is not defined
-
+s; // ReferenceError: ss is not defined
 typeof s; // undefined
 
 s = "lalala";
@@ -93,8 +92,11 @@ if (typeof s === "undefined") {
 而引用数据类型：
 
 - a：定义了一个变量；
+>
 - b：开辟了一个新空间，并把属性名和属性值存储在这个空间中，有相应的空间地址；
+>
 - c：把空间地址给这个变量（不是直接给值），变量并没有存储这个值，而是存储这个值的引用空间地址；
+>
 - d：接下来把这个地址传递给新变量，此时两个变量操作的是同一空间，当其中一个变量改变，另一个变量也会改变（因为引用空间里的值发生改变）。
 
 ## 3.`null` and `undefined`
@@ -159,16 +161,18 @@ f(); // undefined
 console.dir(null); // null
 console.dir(undefined); // undefined
 console.dir({});
-// Object
-// __proto__:
-//   constructor
-//   hasOwnProperty
-//   isPrototypeof
-//   propertyIsEnnumberable
-//   toLocaseString
-//   toString
-//   valueOf
-//   ...
+/*
+* Object
+*   __proto__:
+*     constructor
+*     hasOwnProperty
+*     isPrototypeof
+*     propertyIsEnnumberable
+*     toLocaseString
+*     toString
+*     valueOf
+*     ...
+*/
 
 // Number
 Number(null); // 0
@@ -209,13 +213,13 @@ Number(undefined); // NaN
 在 JavaScript 里，`null` 和 `undefined` 都表示不存在的数据，并且 `undefined` 也是从 `null` 中继承而来；主要区别如下：
 
 1. `null` 和 `undefined` 都是表示没有的、不存在的值。他们在进行逻辑转换时都是 `false`，这两个值进行 (`==`) 比较是 `true`；
-
+>
 2. `null` 表示空引用，它是 `object` 类型 ( `typeof` 检测）；`undefined` 表示未定义，是 `undefined` 类型；
-
+>
 3. 如果一个变量的值是 `null`，那么必须主动给它赋值 `null`；如果这个对象以后要用，但是现在还没有值，一般情况下，会给它一个 `null` 值；
-
+>
 4. 一个变量未声明（对未声明的变量，只能进行一个操作，即使用 `typeof` 操作符检测其数据类型），报错：`xx is not defined`；一个变量定义了未赋值，则值是 `undefined`。
-
+>
 5. 对属性来说，如果原来没有这个属性，根本就不存在这个属性，那么他的值就是 `undefined`。（对象的属性不需要定义，如果不存在也可以直接读取，不会报错，而会给出一个 `undefined` 的值出来）；
-
+>
 6. 在函数（方法）里，如果必须返回值，但是值又计算不出来，那就返回一个 `null`（这是规范，不是语法规定）；但是没有返回值的函数，它的返回值都是 `undefined`。

@@ -12,7 +12,6 @@
 
 ```js
 var arr = ["a", "b", "c"];
-
 Object.keys(arr);
 // ["0", "1", "2"]
 
@@ -30,13 +29,12 @@ for (var i of arr) {
 
 ```js
 var arr = ["a", "b", "c"];
-arr[0]; //a
-arr[0.0]; //a
-arr["0"]; //a
-
+arr[0]; // a
+arr[0.0]; // a
+arr["0"]; // a
 arr[3] = 123;
 arr["4"] = 234;
-arr; //["a", "b", "c", 123, 234]
+arr; // ["a", "b", "c", 123, 234]
 ```
 
 对象有两种读取成员的方法：点结构（`object.key`）和方括号结构（`object['key']`）。但是，对于数值的键名，不能使用点结构 (SyntaxError)，因为单独的数值不能作为标识符。所以，数组成员只能用方括号 `arr[n]` 表示（方括号是运算符，可以接受数值）。
@@ -54,8 +52,7 @@ JavaScript 使用一个 32 位整数，保存数组的元素个数。这意味�
 `length` 属性是可写的。如果人为设置一个小于当前成员个数的值，该数组的成员会自动减少到 `length` 设置的值。清空数组的一个有效方法，就是将 `length` 属性设为 0。
 
 ```js
-var arr = ["a", "b", "c"];
-
+var arr = ["a", "b", "c"];s
 arr.length = 0;
 arr; // []
 ```
@@ -82,12 +79,11 @@ arr; // []
 ```js
 var arr = [];
 arr["a"] = "ab";
-arr.length; //0
-
+arr.length; // 0
 arr[1] = "zx";
-arr.length; //2
-arr; //[ empty, "zx", a:"ab" ]
-arr[0]; //undefined
+arr.length; // 2
+arr; // [ empty, "zx", a:"ab" ]
+arr[0]; // undefined
 
 // keys 遍历
 Object.keys(arr);
@@ -128,7 +124,7 @@ arr[-2] = "-22";
 arr.length; // 0
 arr[-1]; // "-11"
 delete arr[-2];
-arr[-2]; //undefined
+arr[-2]; // undefined
 ```
 
 ## 4.`in` 运算符
@@ -137,13 +133,12 @@ arr[-2]; //undefined
 
 ```js
 var arr = ["a", "b", "c"];
-2 in arr; //true
-"2" in arr; //true
-4 in arr; //false
-
+2 in arr; // true
+"2" in arr; // true
+4 in arr; // false
 arr.length = 4;
-arr; //["a", "b", "c", empty]
-3 in arr; //false
+arr; // ["a", "b", "c", empty]
+3 in arr; // false
 ```
 
 ## 5.`for…in` 循环和数组的遍历
@@ -174,7 +169,6 @@ for (var key in a) {
 ```js
 var a = [1, 2, 3];
 delete a[1];
-
 a[1]; // undefined
 a.length; // 3
 ```
@@ -183,7 +177,6 @@ a.length; // 3
 
 ```js
 var emp = [, 23, undefined];
-
 Object.keys(emp);
 //["1", "2"]
 
@@ -203,8 +196,8 @@ for (var j of emp) {
 for (var z = 0; z < emp.length; z++) {
   console.log(emp[z]);
 }
-//undefined
-//23
+// undefined
+// 23
 // undefined
 ```
 
@@ -221,11 +214,12 @@ var likeAry = {
   2: "e",
   length: 3
 };
-likeAry.length; //3
-likeAry[0]; //q
-likeAry[3]; //undefined
-typeof likeAry; //object
-likeAry.splice; //undefined
+
+likeAry.length; // 3
+likeAry[0]; // q
+likeAry[3]; // undefined
+typeof likeAry; // object
+likeAry.splice; // undefined
 ```
 
 “类似数组的对象”的根本特征，就是具有 `length` 属性。只要有 `length` 属性，就可以认为这个对象类似于数组。但是有一个问题，这种 `length` 属性不是动态值，不会随着成员的变化而变化。
@@ -245,17 +239,17 @@ obj.length; // 0
 ```js
 // 将类数组转换为数组--1
 var newAry = Array.prototype.slice.call(likeAry);
-newAry; //["q", "w", "e"]
+newAry; // ["q", "w", "e"]
 
 newAry.push("rrrr");
-newAry; //["q", "w", "e", "rrrr"]
+newAry; // ["q", "w", "e", "rrrr"]
 
 // 将类数组转换为数组--2
 Array.from(likeAry);
 // ["q", "w", "e"]
 
 // 将类数组转换为数组--3
-[...likeAry]; //["q", "w", "e"]
+[...likeAry]; // ["q", "w", "e"]
 // 使用该方法注意，类数组必须得有默认的迭代器，且伪可遍历的
 ```
 

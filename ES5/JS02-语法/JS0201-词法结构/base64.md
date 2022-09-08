@@ -48,11 +48,11 @@ Base64 编码本质上是一种将二进制数据转成文本数据的方案。�
 |Base64 编码后值 |     S     |     G     |     V     |     s     |     b     |     G     |     8     |     h     |
 ```
 
-可知 `Hello!` 的 Base64 编码结果为 `SGVsbG8h`，原始字符串长度为 6 个字符，编码后长度为 8 个字符，每 3 个原始字符经 Base64 编码成 4 个字符，编码前后长度比 4/3，这个长度比很重要 - 比原始字符串长度短，则需要使用更大的编码字符集，这并不我们想要的；长度比越大，则需要传输越多的字符，传输时间越长。Base64应用广泛的原因是在字符集大小与长度比之间取得一个较好的平衡，适用于各种场景。
+可知 `Hello!` 的 Base64 编码结果为 `SGVsbG8h`，原始字符串长度为 6 个字符，编码后长度为 8 个字符，每 3 个原始字符经 Base64 编码成 4 个字符，编码前后长度比 4/3，这个长度比很重要 - 比原始字符串长度短，则需要使用更大的编码字符集，这并不我们想要的；长度比越大，则需要传输越多的字符，传输时间越长。Base64 应用广泛的原因是在字符集大小与长度比之间取得一个较好的平衡，适用于各种场景。
 
 但这里需要注意一个点：Base64 编码是每 3 个原始字符编码成 4 个字符，如果原始字符串长度不能被 3 整除，那怎么办？使用 `0` 值来补充原始字符串。
 
-```mk
+```
 |原始字符        |       !       |               |               |
 |ASCII 十进制值  |       33      |               |               |
 |二进制值        |0|0|1|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
@@ -140,15 +140,15 @@ Content-Transfer-Encoding: base64
 
 JavaScript 原生提供两个 Base64 相关的方法。
 
-- `btoa()`：任意值转为 Base64 编码
-- `atob()`：Base64 编码转为原来的值
+- `btoa`：任意值转为 Base64 编码；
+- `atob`：Base64 编码转为原来的值；
 
 ```js
 btoa("i mess you"); // 'aSBtZXNzIHlvdQ=='
 atob("aSBtZXNzIHlvdQ=="); // 'i mess you'
 ```
 
-> 注意，这两个方法不适合非 ASCII 码的字符，会报错。由于 DOMString 是 16 位编码的字符串，所以如果有字符超出了 8 位 ASCII 编码的字符范围时，在大多数的浏览器中对 Unicode 字符串调用 `window.btoa` 将会造成一个 `Uncaught DOMException: Failed to execute 'btoa' on 'Window': The string to be encoded contains characters outside of the Latin1 range.` 的异常。[Unicode 问题](https://developer.mozilla.org/zh-CN/docs/Glossary/Base64#unicode_%E9%97%AE%E9%A2%98)
+> 注意，这两个方法不适合非 ASCII 码的字符，会报错。由于 `DOMString` 是 16 位编码的字符串，所以如果有字符超出了 8 位 ASCII 编码的字符范围时，在大多数的浏览器中对 Unicode 字符串调用 `window.btoa` 将会造成一个 `Uncaught DOMException: Failed to execute 'btoa' on 'Window': The string to be encoded contains characters outside of the Latin1 range.` 的异常。[Unicode 问题](https://developer.mozilla.org/zh-CN/docs/Glossary/Base64#unicode_%E9%97%AE%E9%A2%98)
 
 要将非 ASCII 码字符转为 Base64 编码，必须中间插入一个转码环节，再使用这两个方法。
 

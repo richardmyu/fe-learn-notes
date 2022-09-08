@@ -9,16 +9,16 @@ V8 的垃圾回收策略主要基于 *分代式垃圾回收机制*，现代的�
 ```js
 // 一个内存溢出超出边界限制的例子
 // overflow.js
-const format = function (bytes) {
+var format = function (bytes) {
   return (bytes / 1024 / 1024).toFixed(2) + ' MB';
 };
 
-const print = function() {
-  const memoryUsage = process.memoryUsage();
+var print = function() {
+  var memoryUsage = process.memoryUsage();
   console.log(`heapTotal: ${format(memoryUsage.heapTotal)}, heapUsed: ${format(memoryUsage.heapUsed)}`);
 }
 
-const total = [];
+var total = [];
 setInterval(function() {
   total.push(new Array(20 * 1024 * 1024)); // 大内存占用
   print();
@@ -61,31 +61,35 @@ heapTotal: 1289.42 MB, heapUsed: 1283.96 MB
 
 栈用于 **静态内存分配**（Static Memory Allocation），它具有以下特点：
 
-- 操作数据快，因为是在栈顶操作
-- 数据必须是静态的，数据大小在编译时是已知的
-- 多线程应用程序中，每个线程可以有一个栈
-- 堆的内存管理简单，且由操作系统完成
-- 栈大小有限，可能发生栈溢出（Stack Overflow）
-- 值大小有限制
+- 操作数据快，因为是在栈顶操作；
+- 数据必须是静态的，数据大小在编译时是已知的；
+- 多线程应用程序中，每个线程可以有一个栈；
+- 堆的内存管理简单，且由操作系统完成；
+- 栈大小有限，可能发生栈溢出（Stack Overflow）；
+- 值大小有限制；
 
 ### 1.2.堆内存
 
 堆用于 **动态内存分配**（Dynamic Memory Allocation），与栈不同，程序需要使用指针在堆中查找数据。它的特点是：
 
-- 操作速度慢，但容量大
-- 可以将动态大小的数据存储在此处
-- 堆在应用程序的线程之间共享
-- 因为堆的动态特性，堆管理起来比较困难
-- 值大小没有限制
+- 操作速度慢，但容量大；
+- 可以将动态大小的数据存储在此处；
+- 堆在应用程序的线程之间共享；
+- 因为堆的动态特性，堆管理起来比较困难；
+- 值大小没有限制；
 
 堆内存的进一步划分：
 
 - **新生代**（New space / Young generation）：空间小，并且分为了两个半空间（Semi-space），由 **Minor GC**(Scavenger) 管理，其中的数据存活期短（short-lived）。
+>
 - **老生代**（Old Space / Old generation）：空间大，由 **Major GC**(Mark-Sweep & Mark-Compact) 管理。进一步分为：
-  - 旧指针空间（Old pointer space）：包含的对象中还存在指针，这个指针指向其他对象
-  - 旧数据空间（Old data space）：包含的对象中仅有数据
+  - **旧指针空间**（Old pointer space）：包含的对象中还存在指针，这个指针指向其他对象
+  - **旧数据空间**（Old data space）：包含的对象中仅有数据
+>
 - **大对象空间**（Large object space）：这里对象的大小超过了其他空间大小限制。
+>
 - **代码空间**（Code-space）：即时（Just In Time，JIT）编译器在这里存储已编译的代码块。
+>
 - **元空间**（Cell Space），属性元空间（Property Cell Apace），映射空间（Map Space）：这些空间中的每个空间都包含相同大小的对象，并且对它们指向的对象有某种约束，从而简化了收集。
 
 **页**（Page）：页是从操作系统分配的连续内存块，以上的空间都由一组组的页构成的。
@@ -96,14 +100,14 @@ V8 会通过移动记录当前执行状态的指针（ESP） 来销毁该函数�
 
 ## 3.回收堆内存
 
-V8 中的垃圾收集器（Garbage Collector），它的工作是：跟踪内存的分配和使用，以便当分配的内存不再使用时，自动释放它。并且，这个垃圾收集器是分代的，也就是说，堆中的对象按其年龄分组并在不同阶段清除。
+V8 中的 **垃圾收集器**（Garbage Collector），它的工作是：跟踪内存的分配和使用，以便当分配的内存不再使用时，自动释放它。并且，这个垃圾收集器是分代的，也就是说，堆中的对象按其年龄分组并在不同阶段清除。
 
 回收堆内存有两种思路：
 
-- 引用计数法（Reference-counting garbage collection）
-- 标记清除法（Mark-and-sweep algorithm）
+- **引用计数法**（Reference-counting garbage collection）
+- **标记清除法**（Mark-and-sweep algorithm）
 
-在 V8 中，使用两个阶段和三种算法来进行 GC (Garbage Collection)：
+在 V8 中，使用两个阶段和三种算法来进行 **GC** (Garbage Collection)：
 
 - Minor GC：针对新生代，使用 Scavenger 和 Cheney’s algorithm 两种算法
 - Major GC：针对老生代，使用 Mark-Sweep & Mark-Compact 算法
@@ -125,10 +129,15 @@ V8 中的垃圾收集器（Garbage Collector），它的工作是：跟踪内存
 Minor GC 是针对新生区进行垃圾回收。Minor GC 的总体思路：（这个过程使用到了 Scavenger 和 Cheney’s algorithm。）
 
 1. 新生代分为两个半区，分别为 to-space 和 from-space ，我们先不断地在 from-space 上分配内存；
+>
 2. 如果 from-space 满了，就触发 GC；
+>
 3. 找出 from-space 上的活动对象，如果这个活动对象存活过两个 minor GC 周期，就把它移到老生代，否则并把它们移到 to-space；
+>
 4. 清空 from-space；
+>
 5. 转换 to-space 和 from-space 的角色；
+>
 6. 不断重复上述过程；
 
 ### 4.2.老生代空间
@@ -141,7 +150,9 @@ Minor GC 是针对新生区进行垃圾回收。Minor GC 的总体思路：（�
 所以在老生代空间中采用了 Mark-Sweep（标记清除） 和 Mark-Compact（标记整理） 算法，思路为：
 
 - **标记**（Marking）：对堆进行深度优先搜索（depth-first-search），标记可达对象；
+>
 - **清除**（Sweeping）：垃圾收集器遍历堆并记下未标记为活动的对象的内存地址。现在，该空间在空闲列表中被标记为空闲，可用于存储其他对象；
+>
 - **压缩**（Compacting）：将所有存活的对象移到一起，以减少碎片化，并提高为新对象分配内存的性能；
 
 #### 4.2.1.晋升
