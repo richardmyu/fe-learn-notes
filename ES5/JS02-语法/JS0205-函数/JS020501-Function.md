@@ -65,7 +65,9 @@ print();
 
 因此，下面的形式声明函数（也叫匿名函数表达式）也非常常见。
 
-`var f = function f() {};`
+```js
+var f = function f() {};
+```
 
 需要注意的是，函数的表达式需要在语句的结尾加上分号，表示语句结束。而函数的声明在结尾的大括号后面不用加分号。总的来说，这两种声明函数的方式，差别很细微，可以近似认为是等价的。
 
@@ -158,52 +160,66 @@ JavaScript 引擎将函数名视同变量名，所以采用 `function` 命令声
 
 ```js
 // case 1
-f1; //f f1(){return 2;}
+f1; // f f1(){return 2;}
+
 var f1 = function() {
   return 1;
 };
+
 function f1() {
   return 2;
 }
+
 f1(); //1
 
 // case 2
-f2); //f f2(){return 22;}
+f2; // f f2(){return 22;}
+
 function f2() {
   return 11;
 }
+
 var f2 = function() {
   return 22;
 };
+
 f2(); //22
 
 // case 3
-f3; //f f3(){return 222;}
+f3; // f f3(){return 222;}
+
 function f3() {
   return 111;
 }
+
 function f3() {
   return 222;
 }
+
 f3(); //222
 
 // case 4
-f4; //undefined
+f4; // undefined
+
 var f4 = function() {
   return 1111;
 };
+
 var f4 = function() {
   return 2222;
 };
+
 f4(); //2222
 
 // case 5
-f5; //f f5(){return 5;}
+f5; // f f5(){return 5;}
+
 function f5() {
   return 5;
 }
+
 var f5 = 123;
-f5(); //TypeError: f5 is not a function
+f5(); // TypeError: f5 is not a function
 ```
 
 ## 6.不能在条件语句中声明函数
@@ -286,12 +302,12 @@ function test(f) {
 }
 test(myFunc); // myFunc
 
-//1. 函数 f.bind 函数的函数名是：bound 函数 f
+// 1.函数 f.bind 函数的函数名是：bound 函数 f
 function f1() {}
 var f2 = f1.bind(1);
 console.log(f2.name); //bound f1
 
-//2. 通过构造函数创建方式创建的函数： name :anonymous
+// 2.通过构造函数创建方式创建的函数： name :anonymous
 var ff = new Function();
 console.log(ff.name); //anonymous
 console.log(function() {}.name); //""
@@ -311,6 +327,7 @@ f.length; // 2
 ```js
 function overF(a, b, c) {
   var arg = [...arguments];
+
   if (arg.length < overF.length) {
     console.log("less param");
   } else if (arg.length === overF.length) {
@@ -319,6 +336,7 @@ function overF(a, b, c) {
     console.log("more param");
   }
 }
+
 overF("a"); //less param
 overF("a", "b", "c"); //ok
 overF("a", "b", "c", "d"); //more param
@@ -335,6 +353,7 @@ function overFn(...arg) {
     console.log("more");
   }
 }
+
 overFn("a"); //1
 overFn("a", "b"); //2;
 overFn("a", "b", "c"); //3
@@ -345,7 +364,7 @@ overFn("a", "b", "c", "d"); //4
 
 函数的 `toString` 方法返回一个字符串，内容是函数的源码。函数内部的注释也可以返回。
 
-对于那些原生的函数，`toString()` 方法返回 `function (){[native code]}`。
+对于那些原生的函数，`toString` 方法返回 `function (){[native code]}`。
 
 ## 9.函数作用域
 
@@ -361,11 +380,13 @@ overFn("a", "b", "c", "d"); //4
 
 ```js
 var globalV = "this is global var";
+
 function highFn() {
   var globalV = "this is local var";
-  globalV; //this is local var
-  window.globalV; //this is global var
+  globalV; // this is local var
+  window.globalV; // this is global var
 }
+
 highFn();
 ```
 
@@ -379,6 +400,7 @@ JavaScript 中的函数运行在它们被定义的作用域里，而不是它们
 var fn = function(lps, rps) {
   var name = "laruence";
 };
+
 fn();
 ```
 
@@ -394,6 +416,7 @@ fn();
 
 ```js
 var name = "laruence";
+
 function echo() {
   console.log(name);
 }
@@ -403,12 +426,12 @@ function env() {
   echo();
 }
 
-env(); //laruence
+env(); // laruence
 ```
 
 ### 9.2.函数内部的声明提前
 
-与全局作用域一样，函数作用域内部也会产生“*声明提前*”现象。`var` 命令声明的变量，不管在什么位置，变量声明都会被提升到函数体的头部。
+与全局作用域一样，函数作用域内部也会产生 “*声明提前*” 现象。`var` 命令声明的变量，不管在什么位置，变量声明都会被提升到函数体的头部。
 
 ### 9.3.函数本身的作用域
 
@@ -416,6 +439,7 @@ env(); //laruence
 
 ```js
 var a = 1;
+
 var x = function() {
   console.log(a);
 };
@@ -482,7 +506,7 @@ function f(a, a) {
 }
 
 f(1, 2); // 2
-f(1); //undefined
+f(1); // undefined
 ```
 
 ## 11.`arguments` 对象
@@ -536,6 +560,7 @@ function f1() {
 function f2() {
   f1();
 }
+
 f2();
 ```
 
@@ -543,7 +568,7 @@ f2();
 
 ECMAScript 函数没有 **签名**（接收的参数的类型和数量），因为其参数是由包含 0 或多个值的数组来表示的。而没有函数签名，真正的重载是不可能做到的。
 
-## 13. 闭包
+## 13.闭包
 
 理解 **闭包**（closure），首先必须理解变量作用域。JavaScript 有两种作用域：全局作用域和函数作用域。函数内部可以直接读取全局变量。但是，函数外部无法读取函数内部声明的变量。
 
@@ -552,6 +577,7 @@ ECMAScript 函数没有 **签名**（接收的参数的类型和数量），因�
 ```js
 function f1() {
   var n = 999;
+
   function f2() {
     console.log(n); // 999
   }
@@ -565,9 +591,11 @@ function f1() {
 ```js
 function f1() {
   var n = 999;
+
   function f2() {
     console.log(n);
   }
+
   return f2;
 }
 
@@ -587,7 +615,6 @@ function createIncrementor(start) {
 }
 
 var inc = createIncrementor(5);
-
 inc(); // 5
 inc(); // 6
 inc(); // 7
@@ -602,9 +629,11 @@ inc(); // 7
 ```js
 function Person(name) {
   var _age;
+
   function setAge(n) {
     _age = n;
   }
+
   function getAge() {
     return _age;
   }
@@ -639,6 +668,7 @@ p1.getAge(); // 25
 (function() {
   /* code */
 })();
+
 // 或者
 (function() {
   /* code */
@@ -694,19 +724,21 @@ IIFE 的一个普遍的进阶用法，是把它们当做函数调用并传递参
 
 ```js
 var a = 2;
+
 (function IIFE(global) {
   var a = 3;
-  console.log(a); //3
-  console.log(global.a); //2
+  console.log(a); // 3
+  console.log(global.a); // 2
 })(window);
 
-console.log(s); //2
+console.log(s); // 2
 ```
 
 这个模式的一个应用场景是解决 `undefined` 标识符的默认值被错误覆盖导致异常。
 
 ```js
-undefined = true; //不建议
+undefined = true; // 不建议
+
 (function IIFE(undefined) {
   var a;
   if (a === undefined) {
@@ -719,12 +751,13 @@ IIFE 还有一种变化的用途是倒置代码的运行顺序，将需要运行
 
 ```js
 var a = 2;
+
 (function IIFE(def) {
   def(window);
 })(function def(global) {
   var a = 3;
-  console.log(a); //3
-  console.log(global.a); //2
+  console.log(a); // 3
+  console.log(global.a); // 2
 });
 ```
 
@@ -742,7 +775,8 @@ var a = 2;
 (function f() {
   "use strict";
   eval("var foo = 123");
-  console.log(foo); // ReferenceError: foo is not defined
+  console.log(foo);
+  // ReferenceError: foo is not defined
 })();
 ```
 
@@ -781,7 +815,6 @@ f(); // 1
 
 ```js
 var jsonp = 'foo({"id": 42})';
-
 var f = new Function("foo", jsonp);
 // 相当于定义了如下函数
 // function f(foo) {
@@ -807,5 +840,6 @@ try {
 } catch (err) {
   console.log(err); //undefined is not a function
 }
+
 console.log(err); //err is not defined
 ```

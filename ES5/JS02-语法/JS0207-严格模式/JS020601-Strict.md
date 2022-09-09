@@ -31,7 +31,7 @@
 
 `'use strict'` 放在脚本文件的第一行，整个脚本都将以严格模式运行。如果这行语句不在第一行就无效，整个脚本会以正常模式运行。（严格地说，只要前面不是产生实际运行结果的语句，`'use strict'` 可以不在第一行，比如直接跟在一个空的分号后面，或者跟在注释后面。)
 
-```js
+```html
 <script>
   'use strict';
   console.log('这是严格模式');
@@ -44,7 +44,7 @@
 
 如果 `'use strict'` 写成下面这样，则不起作用，严格模式必须从代码一开始就生效。
 
-```js
+```html
 <script>console.log('这是正常模式'); 'use strict';</script>
 ```
 
@@ -60,6 +60,7 @@ function strict() {
 
 function strict2() {
   'use strict';
+
   function f() {
     return "这也是严格模式";
   }
@@ -109,7 +110,7 @@ obj.a = 123;
 // TypeError: Cannot assign to read only property 'a' of object #<Object>
 
 // 删除不可配置的属性会报错
-('use strict');
+'use strict';
 var obj = Object.defineProperty({}, "p", {
   value: 1,
   configurable: false
