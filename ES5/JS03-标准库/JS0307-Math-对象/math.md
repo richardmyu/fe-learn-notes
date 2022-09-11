@@ -107,45 +107,44 @@ var ary = [1, 3, 2, 6, 12], max, min;
 max = Math.max.apply(Math, ary);
 
 // or
-
 // max = Math.max(...ary);
 console.log(max); // 12
-
 min = Math.min.apply(Math, ary);
 
 // or
-
 // min = Math.min(...ary);
 console.log(min); // 1
 ```
 
 #### 2.1.3.取整
 
-- `Math.ceil()`
+- `Math.ce`
   - 函数返回大于或等于一个给定数字的最小整数。
   >
-- `Math.floor()`
+- `Math.flo`
   - 返回小于或等于一个给定数字的最大整数。
   >
-- `Math.round()`
+- `Math.rou`
   - 函数返回一个数字四舍五入后最接近的整数。
   >
-- `Math.trunc()`
+- `Math.tru`
   - 方法会将数字的小数部分去掉，只保留整数部分。
 
-| 方法名         | 功能         |
-| -------------- | ------------ |
-| `Math.ceil()`  | 执行向上舍入 |
-| `Math.floor()` | 执行向下舍入 |
-| `Math.round()` | 执行标准舍入 |
-| `Math.trunc()` | 只保留整数   |
+| 方法名       | 功能         |
+| ------------ | ------------ |
+| `Math.ceil`  | 执行向上舍入 |
+| `Math.floor` | 执行向下舍入 |
+| `Math.round` | 执行标准舍入 |
+| `Math.trunc` | 只保留整数   |
 
-> **对于 `Math.round()`**
->> 如果参数的小数部分大于 0.5，则舍入到相邻的绝对值更大的整数；
->> 如果参数的小数部分小于 0.5，则舍入到相邻的绝对值更小的整数；
->> 如果参数的小数部分恰好等于 0.5，则舍入到相邻的在正无穷（+∞）方向上的整数。
->
->> 注意，与很多其他语言中的 `round()` 函数不同，`Math.round()` 并不总是舍入到远离 0 的方向（尤其是在负数的小数部分恰好等于 0.5 的情况下）。
+- **对于 `Math.round`**
+  - 如果参数的小数部分大于 0.5，则舍入到相邻的绝对值更大的整数；
+  >
+  - 如果参数的小数部分小于 0.5，则舍入到相邻的绝对值更小的整数；
+  >
+  - 如果参数的小数部分恰好等于 0.5，则舍入到相邻的在正无穷（+∞）方向上的整数。
+
+>> 注意，与很多其他语言中的 `round` 函数不同，`Math.round` 并不总是舍入到远离 0 的方向（尤其是在负数的小数部分恰好等于 0.5 的情况下）。
 
 - **语法**
 
@@ -287,7 +286,7 @@ function equal(v1, v2) {
   return Math.fround(v1) == Math.fround(v2);
 }
 
-equal(0.1 + 0.2, 0.3); //true
+equal(0.1 + 0.2, 0.3); // true
 ```
 
 - **Polyfill**
@@ -337,14 +336,16 @@ function getRandomArbitrary(min, max) {
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; // 不含最大值，含最小值
+  return Math.floor(Math.random() * (max - min)) + min;
+  // 不含最大值，含最小值
 }
 
 // 得到一个两数之间的随机整数，包括两个数在内
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; // 含最大值，含最小值
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+  // 含最大值，含最小值
 }
 ```
 

@@ -37,10 +37,10 @@ obj.print(); // obj
 
 ```js
 var obj = Object();
+
 // 等同于
 var obj = Object(undefined);
 var obj = Object(null);
-
 obj instanceof Object; // true
 ```
 
@@ -79,7 +79,9 @@ isObject(true); // false
 
 `Object` 构造函数的首要用途，是直接通过它来生成新对象。
 
-`var obj = new Object();`
+```js
+var obj = new Object();
+```
 
 > 注意，通过 `var obj = new Object()` 的写法生成新对象，与字面量的写法 `var obj = {}` 是等价的。或者说，后者只是前者的一种简便写法。
 
@@ -102,7 +104,6 @@ var obj = {
   p1: 123,
   p2: 456
 };
-
 Object.keys(obj); // ["p1", "p2"]
 ```
 
@@ -113,7 +114,6 @@ var obj = {
   p1: 123,
   p2: 456
 };
-
 Object.getOwnPropertyNames(obj); // ["p1", "p2"]
 ```
 
@@ -121,7 +121,6 @@ Object.getOwnPropertyNames(obj); // ["p1", "p2"]
 
 ```js
 var a = ["Hello", "World"];
-
 Object.keys(a); // ["0", "1"]
 Object.getOwnPropertyNames(a); // ["0", "1", "length"]
 ```
@@ -133,7 +132,6 @@ var obj = {
   p1: 123,
   p2: 456
 };
-
 Object.keys(obj).length; // 2
 Object.getOwnPropertyNames(obj).length; // 2
 ```
@@ -150,35 +148,41 @@ Object.getOwnPropertyNames(obj).length; // 2
 
 数据属性的元属性：
 
-`[[Value]]`、`[[Writable]]`、`[[Enumerable]]`、`[[Configuration]]`；
+- `[[Value]]`
+- `[[Writable]]`
+- `[[Enumerable]]`
+- `[[Configuration]]`
 
-访问器属性的元属性：
+访问器属性的元属
 
-`[[Get]]`、`[[Set]]`、`[[Enumerable]]`、`[[Configuration]]`。
+- `[[Get]]`
+- `[[Set]]`
+- `[[Enumerable]]`
+- `[[Configuration]]`
 
 Javascript 开放了三个接口用于设置和获取属性的特性，分别是：
 
 1. 对象属性模型方法
 
-- `Object.defineProperty()`：通过描述对象，定义某个属性
-- `Object.defineProperties()`：通过描述对象，定义多个属性
-- `Object.getOwnPropertyDescriptor()`：获取某个属性的描述对象
+- `Object.defineProperty`：通过描述对象，定义某个属性
+- `Object.defineProperties`：通过描述对象，定义多个属性
+- `Object.getOwnPropertyDescriptor`：获取某个属性的描述对象
 
 2. 控制对象状态的方法
 
-- `Object.preventExtensions()`：防止对象扩展
-- `Object.isExtensible()`：判断对象是否可扩展
+- `Object.preventExtensions`：防止对象扩展
+- `Object.isExtensible`：判断对象是否可扩展
 >
-- `Object.seal()`：禁止对象配置
-- `Object.isSealed()`：判断一个对象是否可配置
+- `Object.seal`：禁止对象配置
+- `Object.isSealed`：判断一个对象是否可配置
 >
-- `Object.freeze()`：冻结一个对象
-- `Object.isFrozen()`：判断一个对象是否被冻结
+- `Object.freeze`：冻结一个对象
+- `Object.isFrozen`：判断一个对象是否被冻结
 
 3. 原型链相关方法
 
-- `Object.create()`：指定原型对象和属性，返回一个新的对象
-- `Object.getPrototypeOf()`：获取对象的 `Prototype` 对象
+- `Object.create`：指定原型对象和属性，返回一个新的对象
+- `Object.getPrototypeOf`：获取对象的 `Prototype` 对象
 
 ## 5.`Object` 的实例方法
 
@@ -186,17 +190,17 @@ Javascript 开放了三个接口用于设置和获取属性的特性，分别是
 
 `Object` 实例对象的方法，主要有以下六个。
 
-- `Object.prototype.valueOf()`
+- `Object.prototype.valueOf`
 >
-- `Object.prototype.toString()`
+- `Object.prototype.toString`
 >
-- `Object.prototype.toLocaleString()`
+- `Object.prototype.toLocaleString`
 >
-- `Object.prototype.hasOwnProperty()`
+- `Object.prototype.hasOwnProperty`
 >
-- `Object.prototype.isPrototypeOf()`
+- `Object.prototype.isPrototypeOf`
 >
-- `Object.prototype.propertyIsEnumerable()`
+- `Object.prototype.propertyIsEnumerable`
 
 ### 5.1.`Object.prototype.valueOf`
 
@@ -218,6 +222,7 @@ var obj = new Object();
 
 ```js
 var obj = new Object();
+
 obj.valueOf = function() {
   return 2;
 };
@@ -232,7 +237,6 @@ obj.valueOf = function() {
 ```js
 var o1 = new Object();
 o1.toString(); // "[object Object]"
-
 var o2 = { a: 1 };
 o2.toString(); // "[object Object]"
 ```
@@ -253,7 +257,6 @@ obj + " " + "world"; // "hello world"
 
 ```js
 [1, 2, 3].toString(); // "1,2,3"
-
 "123".toString();
 // "123"
 
@@ -266,8 +269,8 @@ obj + " " + "world"; // "hello world"
 
 (new Date()).toString());
 (new Date()).toLocaleString();
-//Sat May 26 2018 09:46:15 GMT+0800 （中国标准时间）
-//2018-5-26 09:46:15
+// Sat May 26 2018 09:46:15 GMT+0800 （中国标准时间）
+// 2018-5-26 09:46:15
 ```
 
 ### 5.3.`toString` 应用
@@ -312,7 +315,7 @@ obj + " " + "world"; // "hello world"
 var type = function(o) {
   var s = Object.prototype.toString.call(o);
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
-  //return s.slice(8,-1).toLowerCase();
+  // return s.slice(8,-1).toLowerCase();
 };
 
 type({}); // "object"
@@ -364,9 +367,9 @@ obj.toLocaleString(obj); // "[object Object]"
 
 目前，主要有三个对象自定义了 `toLocaleString` 方法。
 
-- `Array.prototype.toLocaleString()`
-- `Number.prototype.toLocaleString()`
-- `Date.prototype.toLocaleString()`
+- `Array.prototype.toLocaleString`
+- `Number.prototype.toLocaleString`
+- `Date.prototype.toLocaleString`
 
 举例来说，日期的实例对象的 `toString` 和 `toLocaleString` 返回值就不一样，而且 `toLocaleString` 的返回值跟用户设定的所在地域相关。
 
@@ -375,17 +378,17 @@ var date = new Date();
 date.toString();
 date.toLocaleString();
 
-//chorme
-//Sat May 26 2018 09:53:22 GMT+0800 （中国标准时间）
-//2018/5/26 上午 9:53:22
+// chorme
+// Sat May 26 2018 09:53:22 GMT+0800 （中国标准时间）
+// 2018/5/26 上午 9:53:22
 
-//Firefox
-//Sat May 26 2018 09:54:09 GMT+0800
-//2018/5/26 上午 9:54:09
+// Firefox
+// Sat May 26 2018 09:54:09 GMT+0800
+// 2018/5/26 上午 9:54:09
 
-//node.js
-//Sat May 26 2018 09:53:12 GMT+0800 （中国标准时间）
-//2018-5-26 09:53:12
+// node.js
+// Sat May 26 2018 09:53:12 GMT+0800 （中国标准时间）
+// 2018-5-26 09:53:12
 ```
 
 ### 5.5.`Object.prototype.hasOwnProperty`

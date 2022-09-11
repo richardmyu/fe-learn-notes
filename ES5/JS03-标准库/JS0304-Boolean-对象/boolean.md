@@ -29,7 +29,6 @@ typeof bObjProto; // 'object'
 ```js
 const flag = new Boolean(true);
 console.log(flag.toString()); // 'true'
-
 const bZero = new Boolean(0);
 console.log(bZero.toString()); // 'false'
 ```
@@ -49,7 +48,6 @@ console.log(bZero.toString()); // 'false'
 ```js
 const flag = new Boolean(true);
 console.log(flag.valueOf()); // true
-
 const bZero = new Boolean(0);
 console.log(bZero.valueOf()); // false
 ```
