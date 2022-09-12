@@ -2,15 +2,21 @@
 
 ## 1.概述
 
-**正则表达式**（regular expression）是一种表达文本模式（即字符串结构）的方法，有点像字符串的模板，常常用来按照“给定模式”匹配文本。JavaScript 的正则表达式体系是参照 Perl 5 建立的。
+**正则表达式**（regular expression）是一种表达文本模式（即字符串结构）的方法，有点像字符串的模板，常常用来按照“给定模式”匹配文本。
+
+> JavaScript 的正则表达式体系是参照 Perl 5 建立的。
 
 ECMAScript 通过 `RegExp` 类型来支持正则表达式。使用下面类似 Perl 的语法，就可以创建一个正则表达式。
 
-`var expression = /pattern/flags;`
+```js
+var expression = /pattern/flags;
+```
 
 其中的 **模式**（pattern）部分可以是任何简单或复杂的正则表达式，可以包括字符类。限定符、分组、先前查找以及反向引用。每个正则表达式都可以带有一个或多个 **标志**（flags），用以标明正则表达式的行为。
 
-`var reg = new RegExp('zxc','g');`
+```js
+var reg = new RegExp('zxc','g');
+```
 
 上面两种写法是等价的，它们的主要区别是：
 
@@ -159,6 +165,7 @@ ECMAScript5 明确规定，使用正则表达式字面量必须像直接调用 `
 2. 另一类是与修饰符无关的属性，主要是下面两个。
 
 - `RegExp.prototype.lastIndex`：返回一个数值，表示下一次开始搜索的位置。该属性可读写，但是只在设置了 `g` 修饰符、进行连续搜索时有意义。
+>
 - `RegExp.prototype.source`：返回正则表达式的字符串形式（不包括反斜杠），该属性只读。
 
 ```js
@@ -175,7 +182,8 @@ pattern.source; // \[bc\]at
 pattern.toString(); // '/\[bc\]at/gi'
 pattern.toLocaleString(); // '/\[bc\]at/gi'
 pattern.valueOf(); // /\[bc\]at/gi
-Object.prototype.toString.call(pattern.valueOf()); // [object RegExp]
+Object.prototype.toString.call(pattern.valueOf());
+// [object RegExp]
 ```
 
 > `RegExp` 实例继承的 `toLocaleString` 和 `toString` 方法都会返回正则表达式的字面量，与创建方式无关。`valueOf` 方法返回正则表达式本身。
@@ -199,23 +207,27 @@ Object.prototype.toString.call(pattern.valueOf()); // [object RegExp]
 > IE 在实现 `lastIndex` 属性上有偏差，即使在非全局模式下，也会变化。
 
 ```js
-var str = "name561age21"
+var str = "name561age21";
 var reg1 = /[a-z]+/g,
     reg2 = /[a-z]+/,
-    reg3 = /([a-z])+/
+    reg3 = /([a-z])+/;
 
-reg1.exec(str) // ["name", index: 0, input: "name561age21"]
-reg1.lastIndex // 0
+reg1.exec(str);
+// ["name", index: 0, input: "name561age21"]
+reg1.lastIndex; // 0
 
-reg1.exec(str) // ["name", index: 0, input: "name561age21"]
-reg1.lastIndex // 0
+reg1.exec(str);
+// ["name", index: 0, input: "name561age21"]
+reg1.lastIndex; // 0
 
-reg2.exec(str) // ["name", index: 0, input: "name561age21"]
-reg2.lastIndex // 0
+reg2.exec(str);
+// ["name", index: 0, input: "name561age21"]
+reg2.lastIndex; // 0
 
 // 同一捕获组的匹配项，只返回之后一次的匹配项
-reg3.exec(str) // ["name", "e", index: 0, input: "name561age21"]
-reg3.lastIndex // 0
+reg3.exec(str);
+// ["name", "e", index: 0, input: "name561age21"]
+reg3.lastIndex; // 0
 ```
 
 > 正则实例对象的 `lastIndex` 属性不仅可读，还可写。
@@ -274,13 +286,21 @@ s1 + ":" + s2 + ":" + s3; // 2018:04:26
 不支持的特性：
 
 1. 匹配字符串开始和结尾的 `\A` 和 `\Z`（但支持以插入符号 `^` 和美元 `$` 符号来匹配字符串的开头和结尾）
+>
 2. **向后查找**（lookbehind）（但完全支持 **向前查找**（lookhead））
+>
 3. 并集和交集类
+>
 4. **原子组**（atomic grouping）
-5.`Unicode` 支持（单个字符除外，如 `\uFFFF`）
+>
+5. `Unicode` 支持（单个字符除外，如 `\uFFFF`）
+>
 6. 命名的捕获组（但支持编号的捕获组）
-7.`s`(single，单行）和 `x`(free-spacing, 无间隔）匹配模式
+>
+7. `s`(single，单行）和 `x`(free-spacing, 无间隔）匹配模式
+>
 8. 条件匹配
+>
 9. 正则表达式注释
 
 ## 10.正则的特性
@@ -329,7 +349,9 @@ console.log(reg.exec(str)); // [2]
 
 ### 11.1.分组
 
-`/(\w)ff\1/.test("dffd");`
+```js
+/(\w)ff\1/.test("dffd");
+```
 
 正则表达式的括号表示分组匹配，括号中的模式可以用来匹配分组的内容。
 
@@ -444,8 +466,8 @@ console.log(str.split(/[ :-]/));
 
 ```js
 var str = "sdf123";
-console.log(str.search(/\d/)); //2
-console.log(str.search(/\w/)); //0
+console.log(str.search(/\d/)); // 2
+console.log(str.search(/\w/)); // 0
 ```
 
 ### 12.5.`string.replace`
@@ -460,13 +482,13 @@ console.log(eval(str.replace(/,/g, "+"))); // 21
 
 replacement 中的 `$` 具有特定的含义：
 
-|    字符    | 意义                                         |
-| :--------: | -------------------------------------------- |
-|  **`$`**   | 匹配第 1~99 个 regexp 中圆括号子表达式的文本 |
-| **`\$&`**  | 匹配整个模式的子串                           |
-| **`\$``**  | 匹配子串的左边文本                           |
-| **`\$'`**  | 匹配子串右边的文本                           |
-| **`\$\$`** | 美元符号                                     |
+|   字符    | 意义                                         |
+| :-------: | -------------------------------------------- |
+|  **`$`**  | 匹配第 1~99 个 regexp 中圆括号子表达式的文本 |
+| **`$&`**  | 匹配整个模式的子串                           |
+| **`$\``** | 匹配子串的左边文本                           |
+| **`$'`**  | 匹配子串右边的文本                           |
+| **`$$`**  | 美元符号                                     |
 
 ```js
 var s = "hello world";
@@ -502,10 +524,10 @@ var s = str.replace(reg, function($1) {
   // Arguments(4) ["bs456", "bs", 1, "bbs456qwe789"]
   // Arguments(4) ["we789", "we", 7, "bbs456qwe789"]
 
-  //$1 当前匹配的结果
+  // $1 当前匹配的结果
   console.log($1); // bs456   we789
 
-  //RegExp.$1 的值是最后一次匹配的结果
+  // RegExp.$1 的值是最后一次匹配的结果
   console.log(RegExp.$1); // we  we
   return "[" + arguments[1] + "]";
 });

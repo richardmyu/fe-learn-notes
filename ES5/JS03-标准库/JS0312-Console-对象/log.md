@@ -54,7 +54,7 @@ console.log(" %s + %s = %s", 1, 1, 2);
 - `%o` 对象的链接
 - `%c` CSS 格式字符串
 
-> 当然参数可以结合在一起使用。区别 string 1 和 number 1 是 string 1 为灰色，而 number 1 为蓝色。在接下来的代码中只有需要显示区分时，用 'number' 表示 string-number，默认情况下根据条件区分。
+> 当然参数可以结合在一起使用。区别 `string` 1 和 `number` 1 是 `string` 1 为灰色，而 `number` 1 为蓝色。在接下来的代码中只有需要显示区分时，用 `'number'` 表示 `string-number`，默认情况下根据条件区分。
 
 ```js
 // %s 会将非字符串的参数转为字符串形式
@@ -66,40 +66,52 @@ console.log(" %s + %s = %s", {}, [1], "c", "d");
 // %d & %i 都只能识别 number 类型
 console.log(" %d + %i + %f", 1, 1, 1);
 // 1 + 1 + 1
+
 console.log(" %d + %i + %f", "a", "b", "c");
 // NaN + NaN + NaN
+
 console.log(" %d + %i + %f", "1", "2", "3");
 // NaN + NaN + NaN
 
 // %f 较 %d & %i 能识别浮点数
 console.log(" %d + %i + %f", 1.0000001, 1.0000001, 1.0000001);
 // 1 + 1 + 1.0000001
+
 console.log(" %d + %i + %f", 3e7, 3e7, 3e7);
 // 30000000 + 30000000 + 30000000
 
 // 三者都能识别八进制、十六进制和二进制
 console.log(" %d + %i + %f", 0123, 0123, 0123);
 // 83 + 83 + 83
+
 console.log(" %d + %i + %f", 0o123, 0o123, 0o123);
 // 83 + 83 + 83
+
 console.log(" %d + %i + %f", 0x123, 0x123, 0x123);
 // 291 + 291 + 291
+
 console.log(" %d + %i + %f", 0b111, 0b111, 0b111);
 // 7 + 7 + 7
 
 // %o 识别 url，但对于不是 www || http/https 开头的字符串会以红色形式输出
 console.log(" %o", "www.jkl.com");
 // "www.jkl.com"
+
 console.log(" %o", "zxc.jkl.com");
 // "zxc.jkl.com"
+
 console.log(" %o", "zxcfhjdghdfj");
 // "zxcfhjdghdfj"（字符串内字符为红色）
+
 console.log(" %o", "www.zxcfhjdghdfj");
 // "www.zxcfhjdghdfj"（字符串内字符为红色）
+
 console.log(" %o", "http://zxcfhjdghdfj");
 // "http://zxcfhjdghdfj"
+
 console.log(" %o", "http://www.jkl.com");
 // "http://www.jkl.com"
+
 console.log(" %o", "https://www.jkl.com");
 // "https://www.jkl.com"
 ```
@@ -118,15 +130,19 @@ console.log(
 ```js
 console.log({ foo: "bar" });
 // Object {foo: "bar"}
+
 console.log({ foo: "bar" }.toString());
 // [object Object]
+
 console.log({ foo: "bar" }.valueOf());
 // Object {foo: "bar"}
 
 console.log(Date);
 // f Date() { [native code] }
+
 console.log(Date.toString());
 // function Date() { [native code] }
+
 console.log(Date.valueOf());
 // f Date() { [native code] }
 ```
@@ -256,20 +272,26 @@ greet("bob");
 
 该方法对于输出 DOM 对象非常有用，因为会显示 DOM 对象的所有属性。
 
-`console.dir(document.body)`
+```js
+console.dir(document.body)
+```
 
 Node 环境之中，还可以指定以代码高亮的形式输出。
 
-`console.dir(obj, {colors: true})`
+```js
+console.dir(obj, {colors: true})
+```
 
-`dirxml` 方法主要用于以*目录树*的形式，显示 DOM 节点。
+`dirxml` 方``js法主要用于以*目录树*的形式，显示 DOM 节点。
 
-`console.dirxml(document.body)`
+```js
+console.dirxml(document.body)
+```
 
 如果参数不是 DOM 节点，而是普通的 JavaScript 对象，`console.dirxml` 等同于 `console.dir`。
 
 > 但注意 `console.dir` 只能识别一个参数，并且对不同数据类型略有差异。
-> 简单说对于基本数据类型 `console.dir` 会返回 `string`，而 `console.dirxml` 返回值类似 `console.log`，返回其原始值；而对于复杂数据类型两者返回等同。详情见 <a href="./demo/console-count.html">console-count.html</a>
+> 简单说对于基本数据类型 `console.dir` 会返回 `string`，而 `console.dirxml` 返回值类似 `console.log`，返回其原始值；而对于复杂数据类型两者返回等同。
 
 ### 2.6.`console.assert`
 
@@ -290,8 +312,6 @@ try {
 }
 ```
 
-> 见 <a href="./demo/console-assert.html" target="_blank">console-assert.html</a>
-
 ### 2.7.`console.time`，`console.timeEnd`
 
 这两个方法用于计时，可以算出一个操作所花费的准确时间。
@@ -310,7 +330,7 @@ console.timeEnd("Array initialize");
 
 `time` 方法表示计时开始，`timeEnd` 方法表示计时结束。它们的 *参数是计时器的名称*。调用 `timeEnd` 方法之后，控制台会显示“计时器名称：所耗费的时间”。
 
-> 一个 `time` 方法对应一个 `timeEnd` 方法。否则会抛出警告。见 <a href="./demo/console-time.html">console-time.html</a>
+> 一个 `time` 方法对应一个 `timeEnd` 方法。否则会抛出警告。
 
 ### 2.8.`console.group`，`console.groupEnd`，`console.groupCollapsed`
 
@@ -349,19 +369,25 @@ function add(a) {
 // (anonymous) 作用域内的函数名（若函数为命名函数）
 
 add(1)(2)(3);
-// console.trace console-trace.html:16
-// (anonymous) @ console-trace.html:16
-// (anonymous) @ console-trace.html:21
+/*
+* console.trace console-trace.html:16
+* (anonymous) @ console-trace.html:16
+* (anonymous) @ console-trace.html:21
+*/
 
 add(2)(2)(3);
-// console.trace console-trace.html:16
-// (anonymous) @ console-trace.html:16
-// (anonymous) @ console-trace.html:26
+/*
+* console.trace console-trace.html:16
+* (anonymous) @ console-trace.html:16
+* (anonymous) @ console-trace.html:26
+*/
 
 add(3)(2)(3);
-// console.trace console-trace.html:16
-// (anonymous) @ console-trace.html:16
-// (anonymous) @ console-trace.html:31
+/*
+* console.trace console-trace.html:16
+* (anonymous) @ console-trace.html:16
+* (anonymous) @ console-trace.html:31
+*/
 ```
 
 > 细节见 <a href="./demo/console-trace.html" target="_blank">console-trace.html</a>
@@ -404,12 +430,20 @@ add(3)(2)(3);
 
 ```js
 inspect(window);
-// Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, parent: Window, …}
+/*
+* Window {
+*   postMessage: ƒ,
+*   blur: ƒ,
+*   focus: ƒ,
+*   close: ƒ,
+*   parent: Window, 
+*   …}
+*/
 ```
 
-### 3.7.`getEventListeners(object)`
+### 3.7.`getEventListeners`
 
-`getEventListeners(object)` 方法返回一个对象，该对象的成员为 `object` 登记了回调函数的各种事件（比如 `click` 或 `keydown`），每个事件对应一个数组，数组的成员为该事件的回调函数。
+`getEventListeners` 方法返回一个对象，该对象的成员为 `object` 登记了回调函数的各种事件（比如 `click` 或 `keydown`），每个事件对应一个数组，数组的成员为该事件的回调函数。
 
 ```html
 <div class="btn" onClick="console.log('\(^o^)/~')">
@@ -422,11 +456,11 @@ getEventListeners($(".btn"));
 // {click: Array(1)}
 ```
 
-### 3.8.`keys(object)，values(object)`
+### 3.8.`keys，values`
 
-`keys(object)` 方法返回一个数组，包含 object 的所有键名。
+`keys` 方法返回一个数组，包含 object 的所有键名。
 
-`values(object)` 方法返回一个数组，包含 object 的所有键值。
+`values` 方法返回一个数组，包含 object 的所有键值。
 
 ```js
 var o = { p1: "a", p2: "b" };
@@ -437,20 +471,20 @@ values(o);
 // ["a", "b"]
 ```
 
-### 3.9.`monitorEvents(object[, events])`，`unmonitorEvents(object[, events])`
+### 3.9.`monitorEvents`，`unmonitorEvents`
 
-`monitorEvents(object[, events])` 方法监听特定对象上发生的特定事件。事件发生时，会返回一个 Event 对象，包含该事件的相关信息。`unmonitorEvents` 方法用于停止监听。
+`monitorEvents` 方法监听特定对象上发生的特定事件。事件发生时，会返回一个 Event 对象，包含该事件的相关信息。`unmonitorEvents` 方法用于停止监听。
 
 ```js
 monitorEvents(window, "resize");
 /*
-resize Event {
-  isTrusted: true,
-  type: "resize",
-  target: Window,
-  currentTarget: Window,
-  eventPhase: 2, 
-  …}
+* resize Event {
+*   isTrusted: true,
+*   type: "resize",
+*   target: Window,
+*   currentTarget: Window,
+*   eventPhase: 2, 
+*   …}
 */
 
 monitorEvents(window, ["resize", "scroll"]);
@@ -458,9 +492,10 @@ monitorEvents(window, ["resize", "scroll"]);
 
 上面代码分别表示单个事件和多个事件的监听方法。
 
-`monitorEvents($0, 'mouse');`
-
-`unmonitorEvents($0, 'mousemove');`
+```js
+monitorEvents($0, 'mouse');
+unmonitorEvents($0, 'mousemove');
+```
 
 上面代码表示如何停止监听。
 
@@ -503,13 +538,13 @@ monitorEvents(window, ["resize", "scroll"]);
 
 命令行 API 还提供以下方法。
 
-- `clear()`：清除控制台的历史。
+- `clear`：清除控制台的历史。
 >
-- `copy(object)`：复制特定 DOM 元素到剪贴板。
+- `copy`：复制特定 DOM 元素到剪贴板。
 >
-- `dir(object)`：显示特定对象的所有属性，是 `console.dir` 方法的别名。
+- `dir`：显示特定对象的所有属性，是 `console.dir` 方法的别名。
 >
-- `dirxml(object)`：显示特定对象的 XML 形式，是 `console.dirxml` 方法的别名。
+- `dirxml`：显示特定对象的 XML 形式，是 `console.dirxml` 方法的别名。
 
 ## 4.`debugger` 语句
 

@@ -7,6 +7,7 @@ JSON 格式（JavaScript Object Notation 的缩写）是一种用于数据交换
 相比 XML 格式，JSON 格式有两个显著的优点：
 
 1. 书写简单，一目了然；
+>
 2. 符合 JavaScript 原生语法，可以由解释引擎直接处理，不用另外添加解析代码。
 
 所以，JSON 迅速被接受，已经成为各大网站交换数据的标准格式，并被写入标准。
@@ -47,8 +48,7 @@ var dataStr='[
   {"name": "a", "age": 2},
   {"name": "b", "age": 12},
   {"name": "c", "age": 22},
-  {"name": "d", "age": 32}
-]';
+  {"name": "d", "age": 32}]';
 ```
 
 ## 3.`JSON.parse`
@@ -117,13 +117,15 @@ JSON.stringify("foo") === '"foo"'; // true
 上面代码中，字符串 `foo`，被转成了 `"\"foo"\"`。这是因为将来还原的时候，内层双引号可以让 JavaScript 引擎知道，这是一个字符串，而不是其他类型的值。
 
 ```js
-// 如果对象的属性是 `undefined`、函数或 XML 对象，该属性会被 `JSON.stringify` 过滤
+// 如果对象的属性是 `undefined`、函数或 XML 对象，
+// 该属性会被 `JSON.stringify` 过滤
 console.log(JSON.stringify({ a: undefined, b: 2 }));
 // {"b":2}
 console.log(JSON.stringify({ a: function() {}, b: 2 }));
 // {"b":2}
 
-// 如果数组的成员是 `undefined`、函数或 XML 对象，则这些值被转成 `null`
+// 如果数组的成员是 `undefined`、函数或 XML 对象，
+// 则这些值被转成 `null`
 console.log(JSON.stringify([undefined, 1, 2]));
 // [null,1,2]
 console.log(JSON.stringify([function() {}, 1, 2]));
@@ -184,7 +186,6 @@ JSON.stringify({ 0: "a", 1: "b" }, ["0"]);
 ```js
 function f(key, value) {
   console.log(key);
-  //
   // a
   // b
   if (typeof value === "number") {
@@ -245,13 +246,15 @@ function f(key, value) {
 JSON.stringify(o, f);
 // "{"b": 4}"
 
-// key：'', value: { a: 1}
-// if(true)
-// return {b: 2}
-// key：b, value: 2
-// if(false)
-// return value*2
-// ----> { b: 4}
+/*
+* key：'', value: { a: 1}
+* if(true)
+* return {b: 2}
+* key：b, value: 2
+* if(false)
+* return value*2
+* ----> { b: 4}
+*/
 ```
 
 上面代码中，`f` 函数修改了对象 `o`，接着 `JSON.stringify` 方法就递归处理修改后的对象 `o`。
@@ -279,18 +282,18 @@ JSON.stringify({ a: "abc", b: 123 }, f);
 ```js
 JSON.stringify({ p1: 1, p2: 2 }, null, 2);
 /*
-"{
-  "p1": 1,
-  "p2": 2
-}"
+* "{
+*   "p1": 1,
+*   "p2": 2
+* }"
 */
 
 JSON.stringify({ p1: 1, p2: 2 }, null, "|-");
 /*
-"{
-|-"p1": 1,
-|-"p2": 2
-}"
+* "{
+* |-"p1": 1,
+* |-"p2": 2
+* }"
 */
 ```
 
@@ -355,7 +358,7 @@ var obj = {
 };
 
 // 不设置 toJSON 方法时
-JSON.stringify(obj); // "{"reg":{}}"
+JSON.stringify(obj); // "{"reg": {}}"
 
 // 设置 toJSON 方法时
 RegExp.prototype.toJSON = RegExp.prototype.toString;
