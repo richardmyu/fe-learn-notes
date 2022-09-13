@@ -8,7 +8,7 @@
 
 ```js
 function f1(resolve, reject) {
-  // 异步代码。..
+  // 异步代码...
 }
 
 var p1 = new Promise(f1);

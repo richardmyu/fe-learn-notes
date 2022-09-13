@@ -33,7 +33,6 @@ JavaScript 的原型链和 Java 的 `Class` 区别就在，它没有 “Class”
 ```js
 function Foo() {}
 var foo = new Foo();
-
 foo.constructor === Foo; // true
 foo.constructor === Foo.prototype.constructor; // true
 Foo.prototype.constructor === Foo ; // true
@@ -47,7 +46,6 @@ foo.hasOwnProperty("constructor"); // false
 ```js
 function F() {}
 var f = new F();
-
 f.constructor === F; // true
 f.constructor === RegExp; // false
 ```
@@ -57,7 +55,6 @@ f.constructor === RegExp; // false
 ```js
 function Constr() {}
 var x = new Constr();
-
 var y = new x.constructor();
 y instanceof Constr; // true
 ```
@@ -78,14 +75,12 @@ function Person(name) {
 }
 
 Person.prototype.constructor === Person; // true
-
 Person.prototype = {
   method: function() {}
 };
 
 // 注意 constructor 属性是继承属性
 // 所以修改原型以后，constructor 指向的时新的原型的构造函数
-
 Person.prototype.constructor === Person; // false
 Person.prototype.constructor === Object; // true
 ```
@@ -121,6 +116,7 @@ C.prototype.method1 = function (...) { ... };
 ```js
 function Foo() {}
 var f = new Foo();
+
 // 构造函数的名称
 f.constructor.name; // "Foo"
 ```
@@ -136,7 +132,6 @@ function Cat(name, color) {
 }
 
 var cat = new Cat("大毛", "白色");
-
 cat.name; // '大毛'
 cat.color; // '白色'
 ```
@@ -154,7 +149,6 @@ function Cat(name, color) {
 
 var cat1 = new Cat("大毛", "白色");
 var cat2 = new Cat("二毛", "黑色");
-
 cat1.meow === cat2.meow;
 // false
 ```
@@ -219,33 +213,33 @@ Animal.prototype.walk = function() {
 
 > 该特性已经从 Web 标准中删除，虽然一些浏览器目前仍然支持它，但也许会在未来的某个时间停止支持，请尽量不要使用该特性。
 
-JavaScript 中任意对象都有一个内置属性 `[[prototype]]`，在 ES5 之前没有标准的方法访问这个内置属性，但是大多数浏览器都支持通过 `__proto__` 来访问。ES5 中有了对于这个内置属性标准的 `Get` 方法 `Object.getPrototypeOf()`。
+JavaScript 中任意对象都有一个内置属性 `[[prototype]]`，在 ES5 之前没有标准的方法访问这个内置属性，但是大多数浏览器都支持通过 `__proto__` 来访问。ES5 中有了对于这个内置属性标准的 `Get` 方法 `Object.getPrototypeOf`。
 
 > `__proto__`，可称为 **隐式原型**，指向创建该对象的函数的 `prototype`。
 
 使用 `__proto__` 是有争议的，也不鼓励使用它。因为它从来没有被包括在 EcmaScript 语言规范中，但是现代浏览器都实现了它。`__proto__` 属性已在 ECMAScript 6 语言规范中标准化，用于确保 Web 浏览器的兼容性，因此它未来将被支持。它已被不推荐使用，现在更推荐使用 `Object.getPrototypeOf/Reflect.getPrototypeOf` 和 `Object.setPrototypeOf/Reflect.setPrototypeOf`（尽管如此，设置对象的 `[[Prototype]]` 是一个缓慢的操作，如果性能是一个问题，应该避免）。
 
-`__proto__` 的设置器 (setter) 允许对象的 `[[Prototype]]` 被变更。前提是这个对象必须通过 `Object.isExtensible()` 判断为是可扩展的，如果不可扩展，则会抛出一个 `TypeError` 错误。要变更的值必须是一个 `object` 或 `null`，提供其它值将不起任何作用。
+`__proto__` 的设置器 (setter) 允许对象的 `[[Prototype]]` 被变更。前提是这个对象必须通过 `Object.isExtensible` 判断为是可扩展的，如果不可扩展，则会抛出一个 `TypeError` 错误。要变更的值必须是一个 `object` 或 `null`，提供其它值将不起任何作用。
 
 ```js
-foo.__proto__ === Foo.prototype; //true
-Foo.__proto__ === Function.prototype; //true
+foo.__proto__ === Foo.prototype; // true
+Foo.__proto__ === Function.prototype; // true
 
 // 内置对象（也是函数，除了 Math) 的 __proto__ 都指向 Function.prototype
-Object.__proto__ === Function.prototype; //true
-Function.__proto__ === Function.prototype; //true
+Object.__proto__ === Function.prototype; // true
+Function.__proto__ === Function.prototype; // true
 
-Symbol.__proto__ === Function.prototype; //true
-Date.__proto__ === Function.prototype; //true
-Math.__proto__ === Function.prototype; //false
-Math.__proto__ === Object.prototype; //true
+Symbol.__proto__ === Function.prototype; // true
+Date.__proto__ === Function.prototype; // true
+Math.__proto__ === Function.prototype; // false
+Math.__proto__ === Object.prototype; // true
 
 // 函数的 prototype 的 __proto__ 都指向 Object.prototype
-Function.prototype.__proto__ === Object.prototype; //true
-Foo.prototype.__proto__ === Object.prototype; //true
+Function.prototype.__proto__ === Object.prototype; // true
+Foo.prototype.__proto__ === Object.prototype; // true
 
 // Object 的 prototype 的 __proto__ 指向 null
-Object.prototype.__proto__ === null; //true
+Object.prototype.__proto__ === null; // true
 ```
 
 ![prototype-001](https://richyu.gitee.io/img_bed/doc/es5/prototype_01.png)
@@ -287,7 +281,7 @@ SubType.prototype.getSubValue = function() {
 
 let instance = new SubType();
 
-instance.getSubValue()); //undefined2
+instance.getSubValue(); // undefined2
 ```
 
 读取对象的某个属性时，JavaScript 引擎先寻找对象本身的属性，如果找不到，则通过 `__proto__` 到它的原型去找，如果还是找不到，就到原型的原型去找。如果直到最顶层的 `Object.prototype` 还是找不到，则返回 `undefined`。如果对象自身和它的原型，都定义了一个同名属性，那么优先读取对象自身的属性，这叫做 **覆盖**（overriding）。
@@ -300,7 +294,6 @@ instance.getSubValue()); //undefined2
 var MyArray = function() {};
 MyArray.prototype = new Array();
 MyArray.prototype.constructor = MyArray;
-
 var mine = new MyArray();
 mine.push(1, 2, 3);
 mine.length; // 3
@@ -484,7 +477,8 @@ Super.prototype.getName = function() {
 
 // 第一步，子类继承父类的实例
 function Sub() {
-  Super.call(this, '张三'); // 调用父类构造函数
+  Super.call(this, '张三');
+  // 调用父类构造函数
 }
 
 // 另一种写法
@@ -544,6 +538,7 @@ var person = {
 
 var anotherPerson = object(person);
 // var anotherPerson = Object.create(person);
+
 anotherPerson.name = "Greg";
 anotherPerson.friends.push("Rob");
 
@@ -559,7 +554,7 @@ person.friends; // "Shelby,Court,Van,Rob,Barbie"
 - 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能；
 - 无法传递参数；
 
-另外，ES5 通过新增的 `Object.create()` 的方法规范了原型式继承。但是还是会像原型模式一样，引用类型值的属性始终都会共享相应的值。
+另外，ES5 通过新增的 `Object.create` 的方法规范了原型式继承。但是还是会像原型模式一样，引用类型值的属性始终都会共享相应的值。
 
 ### 3.5.寄生式继承
 
@@ -567,7 +562,9 @@ person.friends; // "Shelby,Court,Van,Rob,Barbie"
 
 ```js
 function createAnother(original) {
-  var clone = object(original); // 通过调用函数创建一个新对象
+  var clone = object(original);
+  // 通过调用函数创建一个新对象
+
   clone.sayHi = function() {
     // 以某种方式来增强对象
     alert("hi");
@@ -641,11 +638,12 @@ var instance2 = new SubType("lxy", 23);
 
 instance1.colors.push("2");
 // ["red", "blue", "green", "2"]
+
 instance2.colors.push("3");
 // ["red", "blue", "green", "3"]
 ```
 
-这个例子的高效率体现在它只调用了一次 `SuperType` 构造函数，并且因此避免了在 `SubType.prototype` 上创建不必要的、多余的属性。于此同时，原型链还能保持不变；因此，还能够正常使用 `instanceof` 和 `isPrototypeOf()`。这是最成熟的方法，也是现在库实现的方法。
+这个例子的高效率体现在它只调用了一次 `SuperType` 构造函数，并且因此避免了在 `SubType.prototype` 上创建不必要的、多余的属性。于此同时，原型链还能保持不变；因此，还能够正常使用 `instanceof` 和 `isPrototypeOf`。这是最成熟的方法，也是现在库实现的方法。
 
 ### 3.7.多重继承
 
@@ -772,12 +770,15 @@ StringBuilder.prototype = {
 ```js
 var module = (function() {
   var _count = 0;
+
   var m1 = function() {
     //...
   };
+
   var m2 = function() {
     //...
   };
+
   return {
     m1: m1,
     m2: m2
@@ -802,6 +803,7 @@ var module = (function(mod) {
   mod.m3 = function() {
     //...
   };
+
   return mod;
 })(module);
 ```
@@ -838,7 +840,7 @@ var module = (function($, YAHOO) {
   function initialize() {}
   function dieCarouselDie() {}
 
-  //attach to the global scope
+  // attach to the global scope
   window.finalCarousel = {
     init: initialize,
     destroy: dieCouraselDie

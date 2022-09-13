@@ -94,7 +94,7 @@ f();
 obj.f();
 ```
 
-现在问题就来了，由于函数可以在不同的运行环境执行，所以需要有一种机制，能够在函数体内部获得当前的运行环境（context）。所以，`this` 就出现了，它的设计目的就是在函数体内部，指代函数当前的运行环境。
+现在问题就来了，由于函数可以在不同的运行环境执行，所以需要有一种机制，能够在函数体内部获得当前的 **运行环境**（context）。所以，`this` 就出现了，它的设计目的就是在函数体内部，指代函数当前的运行环境。
 
 ## 3.使用场合
 
@@ -153,13 +153,14 @@ obj.foo(); // obj
 (1, obj.foo)(); // window
 ```
 
-可以这样理解，JavaScript 引擎内部，obj 和 obj.foo 储存在两个内存地址，称为地址一和地址二。`obj.foo()` 这样调用时，是从地址一调用地址二，因此地址二的运行环境是地址一，`this` 指向 obj。但是，上面三种情况，都是直接取出地址二进行调用，这样的话，运行环境就是全局环境，因此 `this` 指向全局环境。上面三种情况等同于下面的代码。
+可以这样理解，JavaScript 引擎内部，`obj` 和 `obj.foo` 储存在两个内存地址，称为地址一和地址二。`obj.foo()` 这样调用时，是从地址一调用地址二，因此地址二的运行环境是地址一，`this` 指向 `obj`。但是，上面三种情况，都是直接取出地址二进行调用，这样的话，运行环境就是全局环境，因此 `this` 指向全局环境。上面三种情况等同于下面的代码。
 
 ```js
 // 情况一
 (obj.foo = function() {
   console.log(this);
 })();
+
 // 等同于
 (function() {
   console.log(this);
@@ -210,7 +211,7 @@ var a = {
 a.b.m(); // 等同于 b.m()
 ```
 
-可以只将 m 所在的对象赋值给 hello，这样调用时，`this` 的指向就不会变。
+可以只将 `m` 所在的对象赋值给 `hello`，这样调用时，`this` 的指向就不会变。
 
 ```js
 var hello = a.b;
@@ -238,7 +239,7 @@ o.f1();
 // Window
 ```
 
-一个解决方法是在第二层改用一个指向外层 this 的变量。
+一个解决方法是在第二层改用一个指向外层 `this` 的变量。
 
 ```js
 var o = {
@@ -328,7 +329,7 @@ o.f = function() {
 $("#button").on("click", o.f);
 ```
 
-上面代码中，点击按钮以后，控制台会显示 false。原因是此时 `this` 不再指向 o 对象，而是指向按钮的 DOM 对象，因为 f 方法是在按钮对象的环境中被调用的。这种细微的差别，很容易在编程中忽视，导致难以察觉的错误。
+上面代码中，点击按钮以后，控制台会显示 `false`。原因是此时 `this` 不再指向 `o` 对象，而是指向按钮的 DOM 对象，因为 `f` 方法是在按钮对象的环境中被调用的。这种细微的差别，很容易在编程中忽视，导致难以察觉的错误。
 
 为了解决这个问题，可以采用下面的一些方法对 `this` 进行绑定，也就是使得 `this` 固定指向某个对象，减少不确定性。
 
@@ -336,7 +337,7 @@ $("#button").on("click", o.f);
 
 `this` 的动态切换，固然为 JavaScript 创造了巨大的灵活性，但也使得编程变得困难和模糊。有时，需要把 `this` 固定下来，避免出现意想不到的情况。JavaScript 提供了 `call`、`apply`、`bind` 这三个方法，来切换/固定 `this` 的指向。
 
-### 5.1.`Function.prototype.call()`
+### 5.1.`Function.prototype.call`
 
 函数实例的 `call` 方法，可以指定函数内部 `this` 的指向（即函数执行时所在的作用域），然后在所指定的作用域中，调用该函数。
 
@@ -353,8 +354,6 @@ f.call(obj) === obj; // true
 
 `call` 方法的参数，应该是一个对象。如果参数为空、`null` 和 `undefined`，则默认传入全局对象。
 
----
-
 非严格模式：第一个参数不传或者是 `null` & `undefined`，则 `this` 都是 `window`
 
 - 若参数不是对象，默认转换为对象；
@@ -366,9 +365,7 @@ f.call(obj) === obj; // true
 - `undefined` --> `this` = `undefined`；
 - 函数执行前面没有执行主体，`this` 就是 `undefined`；
 
----
-
-`call`方法还可以接受多个参数。
+`call` 方法还可以接受多个参数。
 
 `func.call(thisValue, arg1, arg2, ...)`
 
@@ -455,7 +452,7 @@ f1.call.call.call.call.call(f2, ary);
 
 两个及以上 `call`（第一个参数必须是函数，作为参数传递给最后一个 `call`；若不是，则会报错，this is not a function ，因为第一个参数不是函数，会把参数函数内的 `this` 变成 `window`，而 `window` 不是函数，无法执行）等价于参数函数 `.call`（除去第一个参数后的所有参数）。
 
-### 5.2.`Function.prototype.apply()`
+### 5.2.`Function.prototype.apply`
 
 `apply` 方法的作用与 `call` 方法类似，也是改变 `this` 指向，然后再调用该函数。唯一的区别就是，它接收一个数组作为函数执行时的参数，使用格式如下。
 
@@ -548,7 +545,7 @@ $("#button").on("click", f);
 
 上面代码中，点击按钮以后，控制台将会显示 true。由于 `apply` 方法（或者 `call` 方法）不仅绑定函数执行时所在的对象，还会立即执行函数，因此不得不把绑定语句写在一个函数体内。更简洁的写法是采用下面介绍的 `bind` 方法。
 
-### 5.3.`Function.prototype.bind()`
+### 5.3.`Function.prototype.bind`
 
 `bind` 方法用于将函数体内的 `this` 绑定到某个对象，然后返回一个新函数。
 
@@ -557,10 +554,11 @@ var d = new Date();
 d.getTime(); // 1481869925657
 
 var print = d.getTime;
-print(); // Uncaught TypeError: this is not a Date object.
+print();
+// Uncaught TypeError: this is not a Date object.
 ```
 
-上面代码中，我们将 d.getTime 方法赋给变量 print，然后调用 print 就报错了。这是因为 `getTime` 方法内部的 `this`，绑定 Date 对象的实例，赋给变量 print 以后，内部的 `this` 已经不指向 Date 对象的实例了。
+上面代码中，我们将 `d.getTime` 方法赋给变量 `print`，然后调用 `print` 就报错了。这是因为 `getTime` 方法内部的 `this`，绑定 Date 对象的实例，赋给变量 `print` 以后，内部的 `this` 已经不指向 `Date` 对象的实例了。
 
 `bind` 方法可以解决这个问题。
 
@@ -618,7 +616,7 @@ var newAdd = add.bind(obj, 5);
 newAdd(5); // 20
 ```
 
-上面代码中，`bind` 方法除了绑定 `this` 对象，还将 add 函数的第一个参数 x 绑定成 5，然后返回一个新函数 newAdd，这个函数只要再接受一个参数 y 就能运行了。
+上面代码中，`bind` 方法除了绑定 `this` 对象，还将 `add` 函数的第一个参数 `x` 绑定成 5，然后返回一个新函数 `newAdd`，这个函数只要再接受一个参数 `y` 就能运行了。
 
 如果 `bind` 方法的第一个参数是 `null` 或 `undefined`，等于将 `this` 绑定到全局对象，函数运行时 `this` 指向顶层对象。
 
@@ -639,7 +637,9 @@ plus5(10); // 15
 
 `bind` 方法每运行一次，就返回一个新函数，这会产生一些问题。比如，监听事件的时候，不能写成下面这样。
 
-`element.addEventListener('click', o.m.bind(o));`
+```js
+element.addEventListener('click', o.m.bind(o));
+```
 
 上面代码中，`click` 事件绑定 `bind` 方法生成的一个匿名函数。这样会导致无法取消绑定，所以，这样的代码是无效的。
 
@@ -652,11 +652,9 @@ element.addEventListener("click", listener);
 element.removeEventListener("click", listener);
 ```
 
----
-
 2). 结合回调函数使用
 
-回调函数是 JavaScript 最常用的模式之一，但是一个常见的错误是，将包含 `this` 的方法直接当作回调函数。解决方法就是使用 `bind` 方法，将 counter.inc 绑定 counter。
+回调函数是 JavaScript 最常用的模式之一，但是一个常见的错误是，将包含 `this` 的方法直接当作回调函数。解决方法就是使用 `bind` 方法，将 `counter.inc` 绑定 `counter`。
 
 ```js
 var counter = {
@@ -707,8 +705,6 @@ obj.print();
 // 张三
 ```
 
----
-
 3). 结合 `call` 方法使用
 
 利用 `bind` 方法，可以改写一些 JavaScript 原生方法的使用形式，以数组的 `slice` 方法为例。
@@ -731,11 +727,9 @@ slice([1, 2, 3], 0, 1); // [1]
 ```js
 var push = Function.prototype.call.bind(Array.prototype.push);
 var pop = Function.prototype.call.bind(Array.prototype.pop);
-
 var a = [1, 2, 3];
 push(a, 4);
 a; // [1, 2, 3, 4]
-
 pop(a);
 a; // [1, 2, 3]
 ```
@@ -752,4 +746,4 @@ var bind = Function.prototype.call.bind(Function.prototype.bind);
 bind(f, o)(); // 123
 ```
 
-上面代码的含义就是，将 `Function.prototype.bind`方法绑定在`Function.prototype.call`上面，所以`bind`方法就可以直接使用，不需要在函数实例上使用。
+上面代码的含义就是，将 `Function.prototype.bind` 方法绑定在 `Function.prototype.call` 上面，所以 `bind` 方法就可以直接使用，不需要在函数实例上使用。

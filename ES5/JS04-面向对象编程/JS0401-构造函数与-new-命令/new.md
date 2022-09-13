@@ -6,7 +6,7 @@ JavaScript 语言具有很强的面向对象编程能力。
 
 ## 1.对象是什么
 
-**面向对象编程**（Object Oriented Programming，缩写为 OOP）是目前主流的编程范式。它将真实世界各种复杂的关系，抽象为一个个对象，然后由对象之间的分工与合作，完成对真实世界的模拟。
+**面向对象编程**（Object Oriented Programming，缩写为 **OOP**）是目前主流的编程范式。它将真实世界各种复杂的关系，抽象为一个个对象，然后由对象之间的分工与合作，完成对真实世界的模拟。
 
 每一个对象都是功能中心，具有明确分工，可以完成接受信息、处理数据、发出信息等任务。对象可以复用，通过继承机制还可以定制。因此，面向对象编程具有灵活、代码可复用、高度模块化等特点，容易维护和开发，比起由一系列函数或指令组成的传统的 **过程式编程**（procedural programming），更适合多人合作的大型软件项目。
 
@@ -124,8 +124,11 @@ new Fubar(1, 2).foo; // 1
 使用 `new` 命令时，它后面的函数依次执行下面的步骤：
 
 1. 创建一个空对象，作为将要返回的对象实例；
+>
 2. 将这个空对象的原型，指向构造函数的 `prototype` 属性；
+>
 3. 将这个空对象赋值给函数内部的 `this` 关键字；
+>
 4. 开始执行构造函数内部的代码。
 
 也就是说，构造函数内部，`this` 指的是一个新生成的空对象，所有针对 `this` 的操作，都会发生在这个空对象上。构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作一个空对象（即 `this` 对象），将其“构造”为需要的样子。默认返回 `this` 对象。
@@ -206,7 +209,8 @@ console.log(typeof msgs); // "object"
 
 ```js
 function f() {
-  // console.log(new); // SyntaxError: Unexpected token )
+  // console.log(new);
+  // SyntaxError: Unexpected token )
   console.log(new.target);
   console.log(new.target === f);
 }

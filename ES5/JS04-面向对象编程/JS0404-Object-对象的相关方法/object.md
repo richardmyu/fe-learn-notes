@@ -45,7 +45,7 @@ a.x; // 1
 
 > 警告：由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，更改对象的 `[[Prototype]]` 在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 `obj.__proto__ = ...` 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何 `[[Prototype]]` 已被更改的对象的代码。如果你关心性能，你应该避免设置一个对象的 `[[Prototype]]`。相反，你应该使用 `Object.create()` 来创建带有你想要的 `[[Prototype]]` 的新对象。
 
-如果对象的 `[[Prototype]]` 被修改成不可扩展（通过 `Object.isExtensible()` 查看），就会抛出 `TypeError` 异常。
+如果对象的 `[[Prototype]]` 被修改成不可扩展（通过 `Object.isExtensible` 查看），就会抛出 `TypeError` 异常。
 
 ```js
 function Fn() {
@@ -60,7 +60,7 @@ Object.setPrototypeOf(fn, {}); //...
 
 // case 2：对象不可扩展，设置原型报错
 Object.preventExtensions(fn);
-Object.setPrototypeOf(fn, {}); //TypeError: #<Fn> is not extensible
+Object.setPrototypeOf(fn, {}); // TypeError: #<Fn> is not extensible
 ```
 
 `new` 命令可以使用 `Object.setPrototypeOf` 方法模拟。
@@ -78,21 +78,22 @@ var f = Object.setPrototypeOf({}, F.prototype);
 F.call(f);
 ```
 
-## 3.`Object.create()`
+## 3.`Object.create`
 
-`Object.create()` 方法创建一个新对象，使用现有的对象来提供新创建的对象的`__proto__`。 该新对象完全继承原型对象的属性。
+`Object.create` 方法创建一个新对象，使用现有的对象来提供新创建的对象的`__proto__`。 该新对象完全继承原型对象的属性。
 
 - **语法**
 
-`Object.create(proto, [propertiesObject])`
+```js
+Object.create(proto, [propertiesObject])
+```
 
 - **参数**
-
-- `proto`
-  - 新创建对象的原型对象。
-  >
-- `propertiesObject`
-  - 可选。如果没有指定为 `undefined`，则是要添加到新创建对象的可枚举属性（即其自身定义的属性，而不是其原型链上的枚举属性）对象的属性描述符以及相应的属性名称。这些属性对应 `Object.defineProperties()` 的第二个参数。
+  - `proto`
+    - 新创建对象的原型对象。
+    >
+  - `propertiesObject`
+    - 可选。如果没有指定为 `undefined`，则是要添加到新创建对象的可枚举属性（即其自身定义的属性，而不是其原型链上的枚举属性）对象的属性描述符以及相应的属性名称。这些属性对应 `Object.defineProperties()` 的第二个参数。
 
 ```js
 // 原型对象
@@ -104,7 +105,6 @@ var A = {
 
 // 新对象
 var B = Object.create(A);
-
 Object.getPrototypeOf(B) === A; // true
 B.print(); // hello
 B.print === A.print; // true
@@ -202,8 +202,7 @@ b instanceof A; // true
 ```
 
 - **返回值**
-
-一个新对象，带着指定的原型对象和属性。
+  - 一个新对象，带着指定的原型对象和属性。
 
 - **例外**
 
@@ -308,12 +307,8 @@ B.print === proto.print; // true
 
 ```js
 var obj = new Object();
-
-obj.__proto__ === Object.prototype;
-// true
-obj.__proto__ === obj.constructor.prototype;
-// true
-
+obj.__proto__ === Object.prototype; // true
+obj.__proto__ === obj.constructor.prototype; // true
 obj.constructor; // Object()
 ```
 
@@ -335,12 +330,9 @@ Object.getPrototypeOf(obj);
 ```js
 var Q = function() {};
 var q = new Q();
-
 var A = function() {};
-
 A.prototype = q;
 var a = new A();
-
 a.constructor.prototype === q; // false
 ```
 
@@ -349,7 +341,6 @@ a.constructor.prototype === q; // false
 ```js
 C.prototype = p;
 C.prototype.constructor = C;
-
 var c = new C();
 c.constructor.prototype === p; // true
 ```
