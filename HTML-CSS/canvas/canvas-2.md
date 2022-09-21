@@ -282,9 +282,9 @@ setTimeout(function, delay);
 window.requestAnimationFrame(callback);
 ```
 
-### 3.3.像素处理
+### 4.像素处理
 
-#### 3.3.1.`ImageData` 对象
+#### 4.1.`ImageData` 对象
 
 `ImageData` 对象中存储着 canvas 对象真实的像素数据，它包含以下几个只读属性：
 
@@ -305,7 +305,7 @@ window.requestAnimationFrame(callback);
 blueComponent = imageData.data[((50 * (imageData.width * 4)) + (200 * 4)) + 0/1/2/3];
 ```
 
-#### 1.1.创建一个 `ImageData` 对象
+#### 4.1.1.创建一个 `ImageData` 对象
 
 ```js
 // 创建一个新的，空白的 `ImageData` 对象
@@ -317,7 +317,7 @@ var myImageData = ctx.createImageData(anotherImageData);
 
 > 所有像素被预设为透明黑。
 
-#### 1.2.得到场景像素数据
+#### 4.1.2.得到场景像素数据
 
 ```js
 var myImageData = ctx.getImageData(left, top, width, height);
@@ -329,7 +329,7 @@ var myImageData = ctx.getImageData(left, top, width, height);
 
 > [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata.html)
 
-#### 3.在场景中写入像素数据
+#### 4.1.3.在场景中写入像素数据
 
 ```js
 ctx.putImageData(myImageData, dx, dy);
@@ -337,9 +337,9 @@ ctx.putImageData(myImageData, dx, dy);
 
 > [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata_2.html)
 
-### 保存图片
+### 4.2.保存图片
 
-#### 1.`canvas.toDataURL`
+#### 4.2.1.`canvas.toDataURL`
 
 返回一个包含图片展示的 data URI 。可以使用 `type` 参数其类型，默认为 PNG 格式。图片的分辨率为 96dpi。
 
@@ -358,7 +358,7 @@ canvas.toDataURL(type, encoderOptions);
 
 > 当你从画布中生成了一个数据链接，例如，你可以将它用于任何 `<image>` 元素，或者将它放在一个有 `download` 属性的超链接里用于保存到本地。`jpeg` 默认黑色背景。
 
-#### 2.`canvas.toBlob(callback, type, encoderOptions)`
+#### 4.2.2.`canvas.toBlob(callback, type, encoderOptions)`
 
 创造 `Blob` 对象，用以展示 canvas 上的图片；这个图片文件可以被缓存或保存到本地，由用户代理端自行决定。如不特别指明，图片的类型默认为 `image/png`，分辨率为 96dpi。
 
@@ -373,19 +373,19 @@ canvas.toBlob(callback, type, encoderOptions);
 - `encoderOptions` 【可选】
   - `Number` 类型，值在 0 与 1 之间，当请求图片格式为 `image/jpeg` 或者 `image/webp` 时用来指定图片展示质量。如果这个参数的值不在指定类型与范围之内，则使用默认值（0.92），其余参数将被忽略。
 
-## 点击区域和无障碍访问
+## 5.点击区域和无障碍访问
 
-### 内容兼容
+### 5.1.内容兼容
 
 `<canvas>` 标签只是一个位图，它并不提供任何已经绘制在上面的对象的信息。 canvas 的内容不能像语义化的 HTML 一样暴露给一些协助工具。一般来说，应该避免在交互型的网站或者 App 上使用 canvas。
 
-### ARIA 规则
+### 5.2.ARIA 规则
 
 Accessible Rich Internet Applications (ARIA) 定义了让 Web 内容和 Web 应用更容易被有身体缺陷的人获取的办法。可以用 ARIA 属性来描述 canvas 元素的行为和存在目的。
 
 ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其适用于 HTML。`role` 属性定义了对象的通用类型（例如文章、警告，或幻灯片）。额外的 ARIA 属性提供了其他有用的特性，例如表单的描述或进度条的当前值。
 
-### 点击区域
+### 5.3.点击区域
 
 判断鼠标坐标是否在 canvas 上一个特定区域里一直是个有待解决的问题。 hit region API 让你可以在 canvas 上定义一个区域，这让无障碍工具获取 canvas 上的交互内容成为可能。它能让你更容易地进行点击检测并把事件转发到 DOM 元素去。这个 API 有以下三个方法：
 
@@ -398,11 +398,11 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 
 > 均已废弃。慎用！
 
-### 焦点圈
+### 5.4.焦点圈
 
 当用键盘控制时，焦点圈是一个能帮我们在页面上快速导航的标记。要在 canvas 上绘制焦点圈，可以使用 `drawFocusIfNeeded` 属性。
 
-#### 1.`ctx.drawFocusIfNeeded`
+#### 5.4.1.`ctx.drawFocusIfNeeded`
 
 （如果给定的元素获取了焦点）用来给当前路径或特定路径绘制焦点。
 
@@ -411,7 +411,7 @@ ctx.drawFocusIfNeeded(element);
 ctx.drawFocusIfNeeded(path, element);
 ```
 
-#### 2.`ctx.scrollPathIntoView()` :mag:Experimental
+#### 5.4.2.`ctx.scrollPathIntoView` :mag:Experimental
 
 把当前的路径或者一个给定的路径滚动到显示区域内。
 
@@ -420,63 +420,63 @@ ctx.scrollPathIntoView();
 ctx.scrollPathIntoView(path);
 ```
 
-## 优化
+## 6.优化
 
 `<canvas>` 元素是众多广泛使用的网络 2D 图像渲染标准之一。它被广泛用于游戏及复杂的图像可视化中。然而，随着网站和应用将 canvas 画布推至极限，性能开始成为问题。
 
-**1. 在离屏 canvas 上预渲染相似的图形或重复的对象**
+1. 在离屏 canvas 上预渲染相似的图形或重复的对象
 
 如果发现自己在每个动画帧上重复了一些相同的绘制操作，请考虑将其分流到屏幕外的画布上。然后，可以根据需要频繁地将屏幕外图像渲染到主画布上，而不必首先重复生成该图像的步骤。
-
-**2. 避免浮点数的坐标点，用整数取而代之**
+>
+2. 避免浮点数的坐标点，用整数取而代之
 
 当画一个没有整数坐标点的对象时会发生子像素渲染。浏览器为了达到抗锯齿的效果会做额外的运算。为了避免这种情况，请保证在你调用 `drawImage()` 函数时，用 `Math.floor()` 函数对所有的坐标点取整。
-
-**3. 不要在用 `drawImage` 时缩放图像**
+>
+3. 不要在用 `drawImage` 时缩放图像
 
 在离屏 canvas 中缓存图片的不同尺寸，而不要用 `drawImage()` 去缩放它们。
-
-**4. 使用多层画布去画一个复杂的场景**
+>
+4. 使用多层画布去画一个复杂的场景
 
 在应用程序中，如果会发现某些对象需要经常移动或更改，而其他对象则保持相对静态。在这种情况下，可能的优化是使用多个 `<canvas>` 元素对项目进行分层。
-
-**5. 用 CSS 设置大的背景图**
+>
+5. 用 CSS 设置大的背景图
 
 如果像大多数游戏那样，有一张静态的背景图，用一个静态的 `<div>` 元素，结合 `background` 特性，以及将它置于画布元素之后。这么做可以避免在每一帧在画布上绘制大图。
-
-**6. 用 CSS `transforms` 特性缩放画布**
+>
+6. 用 CSS `transforms` 特性缩放画布
 
 CSS `transforms` 使用 GPU，因此速度更快。 最好的情况是不直接缩放画布，或者具有较小的画布并按比例放大，而不是较大的画布并按比例缩小。
-
-**7. 关闭透明度**
+>
+7. 关闭透明度
 
 如果游戏使用画布而且不需要透明，当使用 `HTMLCanvasElement.getContext()` 创建一个绘图上下文时把 `alpha` 选项设置为 `false` 。这个选项可以帮助浏览器进行内部优化。
 
 ```js
 var ctx = canvas.getContext('2d', { alpha: false });
 ```
-
-**8. 将画布的函数调用集合到一起**
+>
+8. 将画布的函数调用集合到一起
 
 例如，画一条折线，而不要画多条分开的直线。
+>
+9. 避免不必要的画布状态改变
+>
+10. 渲染画布中的不同点，而非整个新状态
+>
+11. 尽可能避免 `shadowBlur` 特性
+>
+12. 尽可能避免 `text rendering`
+>
+13. 尝试不同的方法来清除画布
 
-**9. 避免不必要的画布状态改变**
+`clearRect` vs. `fillRect` vs. 调整 canvas 大小。
+>
+14. 使用 `window.requestAnimationFrame` 而非 `window.setInterval`
+>
+15. 谨慎使用大型物理库
 
-**10. 渲染画布中的不同点，而非整个新状态**
-
-**11. 尽可能避免 `shadowBlur` 特性**
-
-**12. 尽可能避免 `text rendering`**
-
-**13. 尝试不同的方法来清除画布**
-
-`clearRect()` vs. `fillRect()` vs. 调整 canvas 大小。
-
-**14. 使用 `window.requestAnimationFrame()` 而非 `window.setInterval()`**
-
-**15. 谨慎使用大型物理库**
-
-## 安全性和“被污染”的 canvas
+## 7.安全性和“被污染”的 canvas
 
 由于在 `<canvas>` 位图中的像素可能来自多种来源，包括从其他主机检索的图像或视频，因此不可避免的会出现安全问题。
 
@@ -486,9 +486,9 @@ var ctx = canvas.getContext('2d', { alpha: false });
 
 在"被污染"的画布中调用以下方法将会抛出安全错误：
 
-- 在 `<canvas>` 的上下文上调用 `getImageData()`；
-- 在 `<canvas>` 上调用 `toBlob()`；
-- 在 `<canvas>` 上调用 `toDataURL()`。
+- 在 `<canvas>` 的上下文上调用 `getImageData`；
+- 在 `<canvas>` 上调用 `toBlob`；
+- 在 `<canvas>` 上调用 `toDataURL`。
 
 这种机制可以避免未经许可拉取远程网站信息而导致的用户隐私泄露。
 
