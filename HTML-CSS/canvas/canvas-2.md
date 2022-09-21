@@ -1,14 +1,14 @@
 # Canvas
 
-## 变形
+## 1.变形
 
 变形是一种更强大的方法，可以将原点移动到另一点、对网格进行旋转和缩放。
 
-### 1.状态的保存和恢复
+### 1.1.状态的保存和恢复
 
-#### 1.1.`ctx.save()`
+#### 1.1.1.`ctx.save`
 
-通过将当前状态放入栈中，保存 canvas 全部状态的方法。
+通过将当前状态放入栈中，保存 `canvas` 全部状态的方法。
 
 ```js
 ctx.save();
@@ -19,6 +19,7 @@ ctx.save();
 - 当前的变换矩阵；
 - 当前的剪切区域；
 - 当前的虚线列表；
+>
 - 以下属性当前的值：
   - `strokeStyle`, `fillStyle`；
   - `globalAlpha`；
@@ -30,17 +31,17 @@ ctx.save();
 
 > Canvas 的状态就是当前画面应用的所有样式和变形的一个快照。
 
-#### 1.2.`ctx.restore()`
+#### 1.1.2.`ctx.restore`
 
-通过在绘图状态栈中弹出顶端的状态，将 canvas 恢复到最近的保存状态的方法。 如果没有保存状态，此方法不做任何改变。
+通过在绘图状态栈中弹出顶端的状态，将 `canvas` 恢复到最近的保存状态的方法。如果没有保存状态，此方法不做任何改变。
 
 ```js
 ctx.restore();
 ```
 
-### 2.移动
+### 1.2.移动
 
-#### 2.1.`ctx.translate()`
+#### 1.2.1.`ctx.translate`
 
 将 canvas 按原始 `x` 点的水平方向、原始的 `y` 点垂直方向进行平移变换。
 
@@ -50,9 +51,9 @@ ctx.translate(x, y);
 
 在做变形之前先保存状态是一个良好的习惯。大多数情况下，调用 `restore` 方法比手动恢复原先的状态要简单得多。如果在一个循环中做位移但没有保存和恢复 canvas 的状态，很可能到最后会发现怎么有些东西不见了，那是因为它很可能已经超出 canvas 范围以外了。
 
-### 3.旋转
+### 1.3.旋转
 
-#### 3.1.`ctx.rotate()`
+#### 1.3.1.`ctx.rotate`
 
 在变换矩阵中增加旋转。角度变量表示一个顺时针旋转角度并且用弧度表示。
 
@@ -63,11 +64,11 @@ ctx.rotate(angle);
 - `angle`
   - 顺时针旋转的弧度。如果你想通过角度值计算，可以使用公式： `degree * Math.PI / 180` 。
 
-> 旋转中心点一直是 canvas 的起始点。 如果想改变中心点，可以通过 `translate()` 方法移动 canvas 。
+> 旋转中心点一直是 canvas 的起始点。 如果想改变中心点，可以通过 `translate` 方法移动 canvas 。
 
-### 4.缩放
+### 1.4.缩放
 
-#### 4.1.`ctx.scale()`
+#### 1.4.1.`ctx.scale`
 
 根据 `x` 水平方向和 `y` 垂直方向，为 canvas 单位添加缩放变换。
 
@@ -83,13 +84,13 @@ ctx.scale(x, y);
 
 > 可以使用 `ctx.scale(-1, 1)` 水平翻转上下文，使用 `ctx.scale(1, -1)` 垂直翻转上下文。
 
-### 5.变形
+### 1.5.变形
 
-#### 5.1.`ctx.transform()`
+#### 1.5.1.`ctx.transform`
 
 使用矩阵多次叠加当前变换，矩阵由方法的参数进行描述。可以缩放、旋转、移动和倾斜上下文。
 
-> 这个方法使用单位矩阵重新设置当前的变换并且会调用 `transform()`。
+> 这个方法使用单位矩阵重新设置当前的变换并且会调用 `transform`。
 
 ```js
 ctx.transform(a, b, c, d, e, f);
@@ -97,20 +98,25 @@ ctx.transform(a, b, c, d, e, f);
 
 - `a (m11)`
   - 水平缩放。
+>
 - `b (m12)`
   - 垂直倾斜。
+>
 - `c (m21)`
   - 水平倾斜。
+>
 - `d (m22)`
   - 垂直缩放。
+>
 - `e (dx)`
   - 水平移动。
+>
 - `f (dy)`
   - 垂直移动。
 
 > 如果任意一个参数是 `Infinity`，变形矩阵也必须被标记为无限大，否则会抛出异常。
 
-#### 5.2.`ctx.setTransform()`
+#### 1.5.2.`ctx.setTransform`
 
 使用 *单位矩阵* 重新设置（覆盖）当前的变换并调用变换，此变换由方法的变量进行描述。
 
@@ -120,7 +126,7 @@ ctx.transform(a, b, c, d, e, f);
 ctx.setTransform(a, b, c, d, e, f);
 ```
 
-#### 5.3.`ctx.resetTransform()` :mag:Experimental
+#### 1.5.3.`ctx.resetTransform` :mag:Experimental
 
 使用单位矩阵重新设置当前变形。和调用以下语句是一样的：`ctx.setTransform(1, 0, 0, 1, 0, 0);`。
 
@@ -128,13 +134,13 @@ ctx.setTransform(a, b, c, d, e, f);
 ctx.resetTransform();
 ```
 
-## 合成和剪辑
+## 2.合成和剪辑
 
-### 一。组合 Compositing
+## 2.1.组合 Compositing
 
 不仅可以在已有图形后面再画新图形，还可以用来遮盖指定区域，清除画布中的某些部分（清除区域不仅限于矩形，像 `clearRect()` 方法做的那样）以及更多其他操作。
 
-#### 1.`ctx.globalCompositeOperation`
+### 2.1.1.`ctx.globalCompositeOperation`
 
 设定了在画新图形时采用的遮盖策略，其值是一个标识遮盖方式的字符串。
 
@@ -146,64 +152,89 @@ ctx.globalCompositeOperation = type;
 
 - `source-over`
   - 这是默认设置，并在现有画布上下文之上绘制新图形。
+>
 - `source-in`
   - 新图形只在新图形和目标画布重叠的地方绘制。其他的都是透明的。
+>
 - `source-out`
   - 在不与现有画布内容重叠的地方绘制新图形。
+>
 - `source-atop`
   - 新图形只在与现有画布内容重叠的地方绘制。
+>
 - `destination-over`
   - 在现有的画布内容后面绘制新的图形。
+>
 - `destination-in`
   - 现有的画布内容保持在新图形和现有画布内容重叠的位置。其他的都是透明的。
+>
 - `destination-out`
   - 现有内容保持在新图形不重叠的地方。
+>
 - `destination-atop`
   - 现有的画布只保留与新图形重叠的部分，新的图形是在画布内容后面绘制的。
+>
 - `lighter`
   - 两个重叠图形的颜色是通过颜色值相加来确定的。
+>
 - `copy`
   - 只显示新图形。
+>
 - `xor`
   - 图像中，那些重叠和正常绘制之外的其他地方是透明的。
+>
 - `multiply`
   - 将顶层像素与底层相应像素相乘，结果是一幅更黑暗的图片。
+>
 - `screen`
   - 像素被倒转，相乘，再倒转，结果是一幅更明亮的图片。
+>
 - `overlay`
   - `multiply` 和 `screen` 的结合，原本暗的地方更暗，原本亮的地方更亮。
+>
 - `darken`
   - 保留两个图层中最暗的像素。
+>
 - `lighten`
   - 保留两个图层中最亮的像素。
+>
 - `color-dodge`
   - 将底层除以顶层的反置。
+>
 - `color-burn`
   - 将反置的底层除以顶层，然后将结果反过来。
+>
 - `hard-light`
   - 屏幕相乘（A combination of multiply and screen）类似于叠加，但上下图层互换了。
+>
 - `soft-light`
   - 用顶层减去底层或者相反来得到一个正值。
+>
 - `difference`
   - 一个柔和版本的强光（hard-light）。纯黑或纯白不会导致纯黑或纯白。
+>
 - `exclusion`
   - 和 `difference` 相似，但对比度较低。
+>
 - `hue`
   - 保留了底层的亮度（luma）和色度（chroma），同时采用了顶层的色调（hue）。
+>
 - `saturation`
   - 保留底层的亮度（luma）和色调（hue），同时采用顶层的色度（chroma）。
+>
 - `color`
   - 保留了底层的亮度（luma），同时采用了顶层的色调 (hue) 和色度 (chroma)。
+>
 - `luminosity`
   - 保持底层的色调（hue）和色度（chroma），同时采用顶层的亮度（luma）。
 
-### 二。裁切路径
+### 2.2.裁切路径
 
 裁切路径和普通的 canvas 图形差不多，不同的是它的作用是遮罩，用来隐藏不需要的部分。
 
 和 `globalCompositeOperation` 比较，它可以实现与 `source-in` 和 `source-atop` 差不多的效果。最重要的区别是裁切路径不会在 canvas 上绘制东西，而且它永远不受新图形的影响。这些特性使得它在特定区域里绘制图形时相当好用。
 
-#### 1.`ctx.clip()`
+#### 2.2.1.`ctx.clip`
 
 当前创建的路径设置为当前剪切路径。
 
@@ -213,27 +244,31 @@ ctx.clip(fillRule);
 ctx.clip(path, fillRule);
 ```
 
-## 基本动画
+## 3.基本动画
 
 可能最大的限制就是图像一旦绘制出来，它就是一直保持那样了。如果需要移动它，我们不得不对所有东西（包括之前的）进行重绘。重绘是相当费时的，而且性能很依赖于电脑的速度。
 
-### 一。动画的基本步骤
+### 3.1.动画的基本步骤
 
 可以通过以下的步骤来画出一帧：
+
 1. **清空 canvas**
   除非接下来要画的内容会完全充满 canvas （例如背景图），否则就需要清空所有。最简单的做法就是用 `clearRect` 方法。
+>
 2. **保存 canvas 状态**
   如果要改变一些会改变 canvas 状态的设置（样式，变形之类的），又要在每画一帧之时都是原始状态的话，需要先保存一下。
-3. **绘制动画图形（animated shapes）**
+>
+3. **绘制动画图形**（animated shapes）
   这一步才是重绘动画帧。
+>
 4. **恢复 canvas 状态**
   如果已经保存了 canvas 的状态，可以先恢复它，然后重绘下一帧。
 
-### 二。操控动画
+### 3.2.操控动画
 
 为了实现动画，我们需要一些可以定时执行重绘的方法。有两种方法可以实现这样的动画操控。
 
-首先，可以用 `window.setInterval()`, `window.setTimeout()` 和 `window.requestAnimationFrame()` 来设定定期执行一个指定函数。
+首先，可以用 `window.setInterval`, `window.setTimeout` 和 `window.requestAnimationFrame` 来设定定期执行一个指定函数。
 
 ```js
 // 当设定好间隔时间后，function 会定期执行。
@@ -242,20 +277,23 @@ setInterval(function, delay);
 // 在设定好的时间之后执行函数
 setTimeout(function, delay);
 
-// 告诉浏览器执行一个动画，并在重绘之前，请求浏览器执行一个特定的函数来更新动画。
+// 告诉浏览器执行一个动画，并在重绘之前，
+// 请求浏览器执行一个特定的函数来更新动画。
 window.requestAnimationFrame(callback);
 ```
 
-## 像素处理
+### 3.3.像素处理
 
-### 一。ImageData 对象
+#### 3.3.1.`ImageData` 对象
 
 `ImageData` 对象中存储着 canvas 对象真实的像素数据，它包含以下几个只读属性：
 
 - `width`
   - 图片宽度，单位是像素
+>
 - `height`
   - 图片高度，单位是像素
+>
 - `data`
   - `Uint8ClampedArray` 类型的一维数组，包含着 RGBA`格式的整型数据，范围在 0 至 255 之间（包括 255）。
 
@@ -267,7 +305,7 @@ window.requestAnimationFrame(callback);
 blueComponent = imageData.data[((50 * (imageData.width * 4)) + (200 * 4)) + 0/1/2/3];
 ```
 
-#### 1. 创建一个 ImageData 对象
+#### 1.1.创建一个 `ImageData` 对象
 
 ```js
 // 创建一个新的，空白的 `ImageData` 对象
@@ -279,7 +317,7 @@ var myImageData = ctx.createImageData(anotherImageData);
 
 > 所有像素被预设为透明黑。
 
-#### 2. 得到场景像素数据
+#### 1.2.得到场景像素数据
 
 ```js
 var myImageData = ctx.getImageData(left, top, width, height);
@@ -291,7 +329,7 @@ var myImageData = ctx.getImageData(left, top, width, height);
 
 > [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata.html)
 
-#### 3. 在场景中写入像素数据
+#### 3.在场景中写入像素数据
 
 ```js
 ctx.putImageData(myImageData, dx, dy);
@@ -299,9 +337,9 @@ ctx.putImageData(myImageData, dx, dy);
 
 > [demo](https://github.com/richardmyu/CSS-And-JS-Animate/tree/master/canvas/basic/imagedata_2.html)
 
-### 二。保存图片
+### 保存图片
 
-#### 1.`canvas.toDataURL()`
+#### 1.`canvas.toDataURL`
 
 返回一个包含图片展示的 data URI 。可以使用 `type` 参数其类型，默认为 PNG 格式。图片的分辨率为 96dpi。
 
@@ -337,17 +375,17 @@ canvas.toBlob(callback, type, encoderOptions);
 
 ## 点击区域和无障碍访问
 
-### 一。内容兼容
+### 内容兼容
 
 `<canvas>` 标签只是一个位图，它并不提供任何已经绘制在上面的对象的信息。 canvas 的内容不能像语义化的 HTML 一样暴露给一些协助工具。一般来说，应该避免在交互型的网站或者 App 上使用 canvas。
 
-### 二。ARIA 规则
+### ARIA 规则
 
 Accessible Rich Internet Applications (ARIA) 定义了让 Web 内容和 Web 应用更容易被有身体缺陷的人获取的办法。可以用 ARIA 属性来描述 canvas 元素的行为和存在目的。
 
 ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其适用于 HTML。`role` 属性定义了对象的通用类型（例如文章、警告，或幻灯片）。额外的 ARIA 属性提供了其他有用的特性，例如表单的描述或进度条的当前值。
 
-### 三。点击区域
+### 点击区域
 
 判断鼠标坐标是否在 canvas 上一个特定区域里一直是个有待解决的问题。 hit region API 让你可以在 canvas 上定义一个区域，这让无障碍工具获取 canvas 上的交互内容成为可能。它能让你更容易地进行点击检测并把事件转发到 DOM 元素去。这个 API 有以下三个方法：
 
@@ -360,11 +398,11 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 
 > 均已废弃。慎用！
 
-### 四。焦点圈
+### 焦点圈
 
 当用键盘控制时，焦点圈是一个能帮我们在页面上快速导航的标记。要在 canvas 上绘制焦点圈，可以使用 `drawFocusIfNeeded` 属性。
 
-#### 1.`ctx.drawFocusIfNeeded()`
+#### 1.`ctx.drawFocusIfNeeded`
 
 （如果给定的元素获取了焦点）用来给当前路径或特定路径绘制焦点。
 

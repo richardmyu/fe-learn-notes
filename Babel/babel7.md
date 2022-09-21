@@ -6,9 +6,7 @@
 npm install --save-dev @babel/core @babel/cli
 ```
 
-假定我们已通过 npm init 初始化项目，并安装完成。
-
-现在假定我们的项目下有一个 `script.js` 文件，内容是：
+假定我们已通过 `npm init` 初始化项目，并安装完成。现在假定我们的项目下有一个 `script.js` 文件，内容是：
 
 ```js
 let fun = () => console.log('hello babel.js');
@@ -48,11 +46,7 @@ let fun = function () {
 
 ## 3.配置文件 `.babelrc`
 
-随着各种新插件的加入，我们的命令行参数会越来越长。
-
-这时，我们可以新建一个 `.babelrc` 文件，把各种命令行参数统一到其中。
-
-比如，要配置前面提到过的箭头函数插件：
+随着各种新插件的加入，我们的命令行参数会越来越长。这时，我们可以新建一个 `.babelrc` 文件，把各种命令行参数统一到其中。比如，要配置前面提到过的箭头函数插件：
 
 ```js
 {
@@ -99,19 +93,13 @@ npm install --save-dev @babel/preset-env
 }
 ```
 
-与前面辛苦配置各种插件后的输出结果几乎一模一样。
-
-可是，我们还没告诉 babel 我们要支持 IE 10 的，为什么它却好像预知一切？
-
-我们来看 `babel-preset-env` 的一段文档：
+与前面辛苦配置各种插件后的输出结果几乎一模一样。可是，我们还没告诉 babel 我们要支持 IE 10 的，为什么它却好像预知一切？我们来看 `babel-preset-env` 的一段文档：
 
 > Without any configuration options, babel-preset-env behaves exactly the same as babel-preset-latest (or babel-preset-es2015, babel-preset-es2016, and babel-preset-es2017 together).
 
 默认情况下，`babel-preset-env` 等效于三个套餐，而不巧我们前面安装的几个插件已经囊括在 `babel-preset-es2015` 中。
 
-那么，如果我只想支持最新版本的 Chrome 呢？
-
-这时我们可以调整 `.babelrc` 的配置：
+那么，如果我只想支持最新版本的 Chrome 呢？这时我们可以调整 `.babelrc` 的配置：
 
 ```js
 {
@@ -145,16 +133,12 @@ npm install --save-dev @babel/preset-env
 
 > babel's modular runtime helpers
 
-有点不知所谓。
-
-那么，`babel-runtime` 与 `babel-polyfill` 的区别究竟是什么？
-
-我们拿 `Object.assign` 为例，剖析下 `babel-polyfill` 与 `babel-runtime` 的异同。
+有点不知所谓。那么，`babel-runtime` 与 `babel-polyfill` 的区别究竟是什么？我们拿 `Object.assign` 为例，剖析下 `babel-polyfill` 与 `babel-runtime` 的异同。
 
 我们知道，IE 11 不支持 `Object.assign`，此时，我们有俩种候选方案：
 
 1. 引入 `babel-polyfill`，补丁一打，`Object.assign` 就被创造出来配置 `@babel/plugin-transform-object-assign`
-
+>
 2. 第二种方案中，babel 会将所有的 `Object.assign` 替换成 `_extends` 这样一个辅助函数。如下所示：
 
 ```js
@@ -179,9 +163,7 @@ var _extends = require("@babel/runtime/helpers/extends");
 _extends({}, {});
 ```
 
-非常漂亮。可没人想要手动转换这些代码。
-
-于是 babel 提供了 `@babel/plugin-transform-runtime` 来替我们做这些转换。
+非常漂亮。可没人想要手动转换这些代码。于是 babel 提供了 `@babel/plugin-transform-runtime` 来替我们做这些转换。
 
 我们首先安装插件：
 
@@ -216,9 +198,7 @@ npm install @babel/runtime
 
 ## 7.babel-register
 
-经过 babel 的编译后，我们的源代码与运行在生产下的代码是不一样的。
-
-`babel-register` 则提供了动态编译。换句话说，我们的源代码能够真正运行在生产环境下，不需要 babel 编译这一环节。
+经过 babel 的编译后，我们的源代码与运行在生产下的代码是不一样的。`babel-register` 则提供了动态编译。换句话说，我们的源代码能够真正运行在生产环境下，不需要 babel 编译这一环节。
 
 我们先在项目下安装 `babel-register`：
 
