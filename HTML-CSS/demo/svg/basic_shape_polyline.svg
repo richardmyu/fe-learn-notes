@@ -1,0 +1,5 @@
+<svg version="1.1" baseProfile="full" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <polyline points="20 20, 65 120, 70 45" />
+  <polyline points="65 120, 90 40" stroke="black" fill="none" />
+  <polyline points="65 120, 86 245, 32 200" />
+</svg>

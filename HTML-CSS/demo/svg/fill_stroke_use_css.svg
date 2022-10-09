@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!-- import style.css -->
+<?xml-stylesheet type="text/css" href="./use_css_style.css"?>
+<svg
+  version="1.1"
+  baseProfile="full"
+  width="300"
+  height="200"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css"><![CDATA[
+        #MyRect {
+          stroke: black;
+          fill: red;
+        }
+    ]]></style>
+  </defs>
+  <rect x="10" height="180" y="10" width="180" id="MyRect" />
+</svg>

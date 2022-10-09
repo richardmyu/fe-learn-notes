@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>form-2</title>
+</head>
+
+<body>
+  <!-- 验证，也可以用form表单的onsubmit时间属性 -->
+  <form action="" method="post"  onsubmit="return eg.regCheck();" >
+    <br/> 账户：
+    <input type="text" name="" id="user-id" />
+    <br/>
+    <br/> 密码：
+    <input type="password" name="" id="user-paw" />
+    <br/>
+    <br/> 确认：
+    <input type="password" name="" id="user-pawd" />
+    <br/>
+    <br/>
+    <input type="submit" value="注册"/>
+  </form>
+</body>
+<script>
+
+  let eg = {};
+
+  eg.$ = function (id) {
+    return document.getElementById(id);
+  }
+
+  eg.regCheck = function () {
+    let uid = eg.$("user-id");
+    let upaw = eg.$("user-paw");
+    let upawd = eg.$("user-pawd");
+    if (uid.value === '') {
+      alert('账户不能为空');
+      return false;
+    }
+    if (upaw.value === '') {
+      alert('密码不能为空');
+      return false;
+    }
+    if (upawd.value === '') {
+      alert('请确认密码');
+      return false;
+    }
+    if (upawd.value !== upaw.value) {
+      alert('两次输入密码不相同');
+      return false;
+    }
+    return true;
+  }
+</script>
+
+</html>

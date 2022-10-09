@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas</title>
+  <style>
+    .canvas {
+      border: 1px solid #000000;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas_first" width="600" height="600" class="canvas"></canvas>
+  <canvas id="canvas_two" width="600" height="600" class="canvas"></canvas>
+  <canvas id="canvas_three" width="600" height="600" class="canvas"></canvas>
+  <script>
+    let canvas_first = document.querySelector("#canvas_first");
+    let ctx_first = canvas_first.getContext("2d");
+    const FIRST_MOIUNT = 24;
+    const FIRST_STEP = 255 / FIRST_MOIUNT;
+    // const FIRST_WH = 600 / FIRST_MOIUNT;
+    const FIRST_WH = 5;
+    const FIRST_COLORS = [];
+
+    for (var x = 0; x < FIRST_MOIUNT; x++) {
+      for (var y = 0; y < FIRST_MOIUNT; y++) {
+        for (var z = 0; z < FIRST_MOIUNT; z++) {
+          let str = 'rgb(' + (255 - FIRST_STEP * x) + ',' + (255 - FIRST_STEP * y) + ',' + (255 - FIRST_STEP * z) + ')';
+          FIRST_COLORS.push(str);
+        }
+      }
+    }
+    // 24^3 < 120^2
+    for (let i = 0; i < 120; i++) {
+      for (let j = 0; j < 120; j++) {
+        ctx_first.fillStyle = FIRST_COLORS[(i + 1) * (j + 1)];
+        ctx_first.fillRect(j * FIRST_WH, i * FIRST_WH, FIRST_WH, FIRST_WH);
+      }
+    }
+  </script>
+  <script>
+    let canvas_two = document.querySelector("#canvas_two");
+    let ctx_two = canvas_two.getContext("2d");
+    const TWO_MOIUNT = 24;
+    const TWO_STEP = Math.floor(255 / TWO_MOIUNT);
+    const TWO_WH = Math.floor(600 / TWO_MOIUNT);
+    for (var x = 0; x < TWO_MOIUNT; x++) {
+      for (var y = 0; y < TWO_MOIUNT; y++) {
+        // ctx_two.fillStyle = 'rgb(' + (255 - TWO_STEP * x) + ',' + (255 - TWO_STEP * y) + ',' + (255 - TWO_STEP * Math.sqrt(x * y)) + ')';
+        ctx_two.fillStyle = 'rgb(' + (255 - TWO_STEP * x) + ',' + (255 - TWO_STEP * y) + ',' + (255 - TWO_STEP * (x + y) / 2) + ')';
+        ctx_two.fillRect(y * TWO_WH, x * TWO_WH, TWO_WH, TWO_WH);
+
+      }
+    }
+  </script>
+  <script>
+    let canvas_three = document.querySelector("#canvas_three");
+    let ctx_three = canvas_three.getContext("2d");
+    const THREE_MOIUNT = 24 * 5;
+    const THREE_STEP = Math.floor(255 / THREE_MOIUNT);
+    const THREE_WH = Math.floor(600 / THREE_MOIUNT);
+
+    for (var x = 0; x < THREE_MOIUNT; x++) {
+      for (var y = 0; y < THREE_MOIUNT; y++) {
+        ctx_three.fillStyle = 'rgb(' + (255 - THREE_STEP * x) + ',' + (255 - THREE_STEP * y) + ',' + (255 - THREE_STEP * (x + y) / 2) + ')';
+        ctx_three.fillRect(y * THREE_WH, x * THREE_WH, THREE_WH, THREE_WH);
+      }
+    }
+
+  </script>
+</body>
+
+</html>

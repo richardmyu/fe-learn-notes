@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas-path</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="600"></canvas>
+  <script>
+    let ctx = document.getElementById('canvas').getContext('2d');
+
+    // Scaled rectangle
+    ctx.scale(9, 3);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(10, 10, 8, 20);
+
+    // Reset current transformation matrix to the identity matrix
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    // Non-scaled rectangle
+    ctx.fillStyle = 'gray';
+    ctx.fillRect(10, 10, 8, 20);
+
+
+    // 2
+    ctx.scale(-1, 1);
+    ctx.font = '48px serif';
+    ctx.fillText('Hello world!', -400, 190);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  </script>
+
+</body>
+
+</html>

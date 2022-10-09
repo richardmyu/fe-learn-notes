@@ -1,0 +1,26 @@
+<svg version="1.1" baseProfile="full" width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <style>
+    polygon { fill: black }
+
+    div {
+      color: white;
+      font-size: 18px;
+      height: 100%;
+      overflow: auto;
+    }
+  </style>
+  <polygon points="5,5 195,10 185,185 10,195" />
+  <!-- Common use case: embed HTML text into SVG -->
+  <foreignObject x="20" y="20" width="160" height="160">
+    <!--
+      In the context of SVG embeded into HTML, the XHTML namespace could
+      be avoided, but it is mandatory in the context of an SVG document
+    -->
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Sed mollis mollis mi ut ultricies. Nullam magna ipsum,
+      porta vel dui convallis, rutrum imperdiet eros. Aliquam
+      erat volutpat.
+    </div>
+  </foreignObject>
+</svg>

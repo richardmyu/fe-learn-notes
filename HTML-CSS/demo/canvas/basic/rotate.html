@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas-path</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="600"></canvas>
+  <script>
+    let ctx = document.getElementById('canvas').getContext('2d');
+
+    ctx.rotate(45 * Math.PI / 180);
+    ctx.fillRect(70, 0, 100, 30);
+
+
+    // 2
+    ctx.translate(275, 75);
+
+    for (var i = 1; i < 6; i++) { // Loop through rings (from inside to out)
+      ctx.save();
+      ctx.fillStyle = 'rgb(' + (51 * i) + ',' + (255 - 51 * i) + ',255)';
+
+      for (var j = 0; j < i * 6; j++) { // draw individual dots
+        ctx.rotate(Math.PI * 2 / (i * 6));
+        ctx.beginPath();
+        ctx.arc(0, i * 12.5, 5, 0, Math.PI * 2, true);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<svg version="1.1" baseProfile="full" width="700" height="900" xmlns="http://www.w3.org/2000/svg">
+  <linearGradient id="pattern1">
+    <stop offset="5%" stop-color="white"/>
+    <stop offset="95%" stop-color="blue"/>
+  </linearGradient>
+  <linearGradient id="pattern2" x1="0" x2="1" y1="0" y2="1">
+    <stop offset="5%" stop-color="red"/>
+    <stop offset="95%" stop-color="orange"/>
+  </linearGradient>
+  <linearGradient id="Gradient1">
+    <stop class="stop1" offset="0%"/>
+    <stop class="stop2" offset="50%"/>
+    <stop class="stop3" offset="100%"/>
+  </linearGradient>
+  <radialGradient id="Gradient2">
+    <stop offset="0%" stop-color="red"/>
+    <stop offset="100%" stop-color="blue"/>
+  </radialGradient>
+  <pattern id="Pattern1" x="10" y="10" width="50" height="50" patternUnits="userSpaceOnUse">
+    <rect x="0" y="0" width="50" height="50" fill="skyblue"/>
+    <rect x="0" y="0" width="25" height="25" fill="url(#pattern2)"/>
+    <circle cx="25" cy="25" r="20" fill="url(#pattern1)" fill-opacity="0.5"/>
+  </pattern>
+  <style type="text/css">
+    <![CDATA[
+        #rect1 { fill: url(#Gradient1); }
+        .stop1 { stop-color: red; }
+        .stop2 { stop-color: black; stop-opacity: 0; }
+        .stop3 { stop-color: blue; }
+      ]]>
+  </style>
+  <text x="10" y="50" font-size="50">Hello World!</text>
+  <text x="10" y="100" font-size="50" fill="url(#Gradient1)">Hello World!</text>
+  <text x="10" y="150" font-size="50" fill="url(#Gradient2)">Hello World!</text>
+  <text x="10" y="250" font-size="80" stroke="blue" stroke-width="2">Hello World!</text>
+  <text x="10" y="350" font-size="80" fill="white" stroke="black" stroke-width="2">Hello World!</text>
+  <text x="10" y="500" font-size="100" fill="url(#Pattern1)"  stroke="black" stroke-width="1">Hello World!</text>
+  <!-- test -->
+  <rect fill="url(#Pattern1)" stroke="black" x="10" y="610" width="200" height="200"/>
+</svg>

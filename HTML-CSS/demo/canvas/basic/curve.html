@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="500"></canvas>
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+
+    // Quadratic Bézier curve
+    ctx.beginPath();
+    ctx.moveTo(250, 20);
+    ctx.quadraticCurveTo(480, 60, 250, 100);
+    ctx.stroke();
+
+    // Start and end points
+    ctx.fillStyle = 'blue';
+    ctx.beginPath();
+    ctx.arc(250, 20, 5, 0, 2 * Math.PI);   // Start point
+    ctx.arc(250, 100, 5, 0, 2 * Math.PI);  // End point
+    ctx.fill();
+
+    // Control point
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(480, 60, 5, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // 二次贝塞尔曲线
+    ctx.beginPath();
+    ctx.moveTo(75, 25);
+    ctx.quadraticCurveTo(25, 25, 25, 62.5);
+    ctx.quadraticCurveTo(25, 100, 50, 100);
+    ctx.quadraticCurveTo(50, 120, 30, 125);
+    ctx.quadraticCurveTo(60, 120, 65, 100);
+    ctx.quadraticCurveTo(125, 100, 125, 62.5);
+    ctx.quadraticCurveTo(125, 25, 75, 25);
+    ctx.stroke();
+  </script>
+</body>
+
+</html>

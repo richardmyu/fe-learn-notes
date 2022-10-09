@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .stage {
+        border: 1px solid black;
+        padding: 20px;
+      }
+      .kk {
+        margin: 30px 0;
+        width: 30px;
+        height: 30px;
+        border: 1px solid red;
+        animation-name: kk;
+        animation-duration: 3s;
+        animation-iteration-count: 3;
+        animation-direction: alternate;
+        background-color: rgb(189, 230, 6);
+      }
+      @keyframes kk {
+        0% {
+          margin-left: 0;
+        }
+
+        50% {
+          margin-left: 100%;
+        }
+
+        100% {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <p>使用动画事件</p>
+      <div class="item" id="anima"></div>
+      <ul id="output"></ul>
+    </div>
+    <script>
+      let e = document.getElementById("anima");
+      console.log("e ", e);
+      e.addEventListener("animationstart", listener, true);
+      e.addEventListener("animationiteration", listener, false);
+      e.addEventListener("animationend", listener, false);
+      e.className = "kk";
+
+      function listener(e) {
+        let l = document.createElement("li");
+        console.log("e.type ", e, e.type);
+        switch (e.type) {
+          case "animationstart":
+            l.innerHTML = "Started: elapsed time is " + e.elapsedTime;
+            break;
+          case "animationend":
+            l.innerHTML = "Ended: elpased time is " + e.elapsedTime;
+            break;
+          case "animationiteration":
+            l.innerHTML = "New loop started at time " + e.elapsedTime;
+            break;
+        }
+        console.log("l.innerHTml", l.innerHTML);
+        document.getElementById("output").appendChild(l);
+      }
+    </script>
+  </body>
+</html>

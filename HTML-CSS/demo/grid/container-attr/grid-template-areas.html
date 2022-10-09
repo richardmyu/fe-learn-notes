@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grid-template-areas</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    /*
+    * grid-template-areas 属性用于定义区域
+    * 一个区域由单个或多个单元格组成
+    *
+    * 如果某些区域不需要利用，则使用"点"（.）表示
+    */
+    .container-1 {
+      grid-template-columns: 50px 50px 50px;
+      grid-template-rows: 50px 50px 50px;
+      grid-template-areas: 'a b c'
+        'd e f'
+        'g h i';
+    }
+
+    .container-2 {
+      grid-template-columns: 50px 50px 50px;
+      grid-template-rows: 50px 50px 50px;
+      grid-template-areas: 'a a a'
+        'b b b'
+        'c c c';
+    }
+
+    .container-3 {
+      grid-template-columns: 50px 50px 50px;
+      grid-template-rows: 50px 50px 50px;
+      grid-template-areas: 'a . c'
+        'd . f'
+        'g . i';
+    }
+  </style>
+</head>
+
+<body>
+  <span>grid-template-areas: 'a b c'
+    'd e f'
+    'g h i';</span>
+  <div class="container container-1">
+    <div class="item item-1">1</div>
+    <div class="item item-2">2</div>
+    <div class="item item-3">3</div>
+    <div class="item item-4">4</div>
+    <div class="item item-5">5</div>
+    <div class="item item-6">6</div>
+    <div class="item item-7">7</div>
+    <div class="item item-8">8</div>
+    <div class="item item-9">9</div>
+  </div>
+  <span>grid-template-areas: 'a a a'
+    'b b b'
+    'c c c';</span>
+  <div class="container container-2">
+    <div class="item item-1">1</div>
+    <div class="item item-2">2</div>
+    <div class="item item-3">3</div>
+    <div class="item item-4">4</div>
+    <div class="item item-5">5</div>
+    <div class="item item-6">6</div>
+    <div class="item item-7">7</div>
+    <div class="item item-8">8</div>
+    <div class="item item-9">9</div>
+  </div>
+  <span>grid-template-areas: 'a . c'
+    'd . f'
+    'g . i';</span>
+  <div class="container container-3">
+    <div class="item item-1">1</div>
+    <div class="item item-2">2</div>
+    <div class="item item-3">3</div>
+    <div class="item item-4">4</div>
+    <div class="item item-5">5</div>
+    <div class="item item-6">6</div>
+    <div class="item item-7">7</div>
+    <div class="item item-8">8</div>
+    <div class="item item-9">9</div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+<svg viewBox="-40 0 150 100" version="1.1" baseProfile="full" width="300" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <radialGradient id="red_heart"
+            cx="0.5" cy="0.5" r="0.9" fx="0.9" fy="0.2">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="gray"/>
+    </radialGradient>
+    <radialGradient id="red_heart_shadow"
+            cx="0.5" cy="0.5" r="0.9" fx="0.9" fy="0.9">
+      <stop offset="0%" stop-color="rgba(255,0,0,0.7)"/>
+      <stop offset="100%" stop-color="gray"/>
+    </radialGradient>
+  </defs>
+  <g fill="url(#red_heart_shadow)"
+     fill-opacity="0.4"
+     transform="rotate(-10 50 100)
+                translate(-36 45.5)
+                skewX(40)
+                scale(1 0.5)">
+    <path id="heart" d="M 10,30 A 20,20 0,0,1 50,30 A 20,20 0,0,1 90,30 Q 90,60 50,90 Q 10,60 10,30 z" />
+  </g>
+  <use xlink:href="#heart" fill="url(#red_heart)" />
+</svg>

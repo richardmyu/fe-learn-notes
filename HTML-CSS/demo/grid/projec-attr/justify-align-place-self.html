@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>justify/align/place-self</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    /*
+    * justify-self 属性设置单元格内容的水平位置（左中右），
+    *   跟 justify-items 属性的用法完全一致，但只作用于单个项目
+    * align-self 属性设置单元格内容的垂直位置（上中下），
+    *   跟 align-items 属性的用法完全一致，也是只作用于单个项目。
+    *   start：对齐单元格的起始边框
+    *   end：对齐单元格的结束边框
+    *   center：单元格内部居中
+    *   stretch：拉伸，占满单元格的整个宽度（默认值）。
+    *
+    * place-self 属性是 align-self 属性和 justify-self 属性的合并简写形式。
+    */
+    .container {
+      grid-template-columns: 50px 50px 50px;
+      grid-template-rows: 50px 50px 50px;
+    }
+
+    .item-1-1 {
+      justify-self: start;
+    }
+
+    .item-1-2 {
+      justify-self: end;
+    }
+
+    .item-1-3 {
+      justify-self: center;
+    }
+
+    .item-1-4 {
+      justify-self: stretch;
+    }
+
+    .item-2-1 {
+      align-self: start;
+    }
+
+    .item-2-2 {
+      align-self: end;
+    }
+
+    .item-2-3 {
+      align-self: center;
+    }
+
+    .item-2-4 {
+      align-self: stretch;
+    }
+
+    .item-3-1 {
+      place-self: start;
+    }
+
+    .item-3-2 {
+      place-self: end;
+    }
+
+    .item-3-3 {
+      place-self: center;
+    }
+
+    .item-3-4 {
+      place-self: stretch;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <span>justify/align/place-self: start;</span>
+    <div class="container container-1-1">
+      <div class="item item-1 item-1-1">1</div>
+      <div class="item item-2 item-2-1">2</div>
+      <div class="item item-3 item-3-1">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>justify/align/place-self: end;</span>
+    <div class="container container-1-2">
+      <div class="item item-1 item-1-2">1</div>
+      <div class="item item-2 item-2-2">2</div>
+      <div class="item item-3 item-3-2">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>justify/align/place-self: center;</span>
+    <div class="container container-1-3">
+      <div class="item item-1 item-1-3">1</div>
+      <div class="item item-2 item-2-3">2</div>
+      <div class="item item-3 item-3-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>justify/align/place-self: stretch;</span>
+    <div class="container container-1-4">
+      <div class="item item-1 item-1-4">1</div>
+      <div class="item item-2 item-2-4">2</div>
+      <div class="item item-3 item-3-4">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+
+</body>
+
+</html>

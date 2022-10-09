@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas</title>
+  <style>
+    .canvas {
+      border: 1px solid #000000;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas_first" width="600" height="600" class="canvas"></canvas>
+  <canvas id="canvas_two" width="600" height="600" class="canvas"></canvas>
+  <script>
+    function create_natural_arrange(n) {
+      const ary = [];
+      let result = 0;
+      for (let i = 1; i < n; i++) {
+        for (let j = 1; j < n; j++) {
+          result = (2 ** (j - 1)) * (2 * i - 1);
+          if (result <= n) {
+            ary.push((2 ** (j - 1)) * (2 * i - 1));
+          }
+        }
+      }
+      return ary;
+    }
+  </script>
+  <script>
+    let canvas_first = document.querySelector("#canvas_first");
+    let ctx_first = canvas_first.getContext("2d");
+    const FIRST_MOIUNT = 24;
+    const FIRST_STEP = 255 / FIRST_MOIUNT;
+    const FIRST_WH = 5;
+    const FIRST_COLORS = [];
+
+
+    for (var x = 0; x < FIRST_MOIUNT; x++) {
+      for (var y = 0; y < FIRST_MOIUNT; y++) {
+        for (var z = 0; z < FIRST_MOIUNT; z++) {
+          let str = 'rgb(' + (255 - FIRST_STEP * x) + ',' + (255 - FIRST_STEP * y) + ',' + (255 - FIRST_STEP * z) + ')';
+          FIRST_COLORS.push(str);
+        }
+      }
+    }
+
+    for (let i = 0; i < 120; i++) {
+      for (let j = 0; j < 120; j++) {
+        ctx_first.fillStyle = FIRST_COLORS.shift() || "#ffffff";
+        ctx_first.fillRect(j * FIRST_WH, i * FIRST_WH, FIRST_WH, FIRST_WH);
+      }
+    }
+  </script>
+  <script>
+    let canvas_two = document.querySelector("#canvas_two");
+    let ctx_two = canvas_two.getContext("2d");
+    const TWO_MOIUNT = 24;
+    const TWO_STEP = 255 / TWO_MOIUNT;
+    const TWO_WH = 5;
+    const TWO_COLORS = [];
+    const TWO_list = create_natural_arrange(24 ** 3);
+
+    for (var x = 0; x < TWO_MOIUNT; x++) {
+      for (var y = 0; y < TWO_MOIUNT; y++) {
+        for (var z = 0; z < TWO_MOIUNT; z++) {
+          let str = 'rgb(' + (255 - TWO_STEP * x) + ',' + (255 - TWO_STEP * y) + ',' + (255 - TWO_STEP * z) + ')';
+          TWO_COLORS.push(str);
+        }
+      }
+    }
+
+    for (let i = 0; i < 120; i++) {
+      for (let j = 0; j < 120; j++) {
+        ctx_two.fillStyle = TWO_COLORS[TWO_list.shift()] || "#ffffff";
+        ctx_two.fillRect(j * TWO_WH, i * TWO_WH, TWO_WH, TWO_WH);
+      }
+    }
+  </script>
+</body>
+
+</html>

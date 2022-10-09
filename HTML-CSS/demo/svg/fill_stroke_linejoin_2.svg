@@ -1,0 +1,39 @@
+<svg viewBox="0 0 18 12" version="1.1" baseProfile="full" width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1,5 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5" stroke="black" fill="none"
+        stroke-linejoin="miter" />
+  <path d="M7,5 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5" stroke="black" fill="none"
+        stroke-linejoin="round" />
+  <path d="M13,5 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5" stroke="black" fill="none"
+        stroke-linejoin="bevel" />
+  <path d="M3,11 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5" stroke="black" fill="none"
+        stroke-linejoin="miter-clip" />
+  <path d="M9,11 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5" stroke="black" fill="none"
+        stroke-linejoin="arcs" />
+  <g id="highlight">
+    <path d="M1,5 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5"
+          stroke="pink" fill="none" stroke-width="0.025" />
+    <circle cx="1" cy="5"   r="0.05" fill="pink" />
+    <circle cx="3" cy="2"   r="0.05" fill="pink" />
+    <circle cx="5" cy="5.5" r="0.05" fill="pink" />
+    <path d="M7,5 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5"
+          stroke="pink" fill="none" stroke-width="0.025" />
+    <circle cx="7" cy="5"   r="0.05" fill="pink" />
+    <circle cx="9" cy="2"   r="0.05" fill="pink" />
+    <circle cx="11" cy="5.5" r="0.05" fill="pink" />
+    <path d="M13,5 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5"
+          stroke="pink" fill="none" stroke-width="0.025" />
+    <circle cx="13" cy="5"   r="0.05" fill="pink" />
+    <circle cx="15" cy="2"   r="0.05" fill="pink" />
+    <circle cx="17" cy="5.5" r="0.05" fill="pink" />
+    <path d="M3,11 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5"
+          stroke="pink" fill="none" stroke-width="0.025" />
+    <circle cx="3" cy="11"   r="0.05" fill="pink" />
+    <circle cx="5" cy="8"   r="0.05" fill="pink" />
+    <circle cx="7" cy="11.5" r="0.05" fill="pink" />
+    <path d="M9,11 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5"
+          stroke="pink" fill="none" stroke-width="0.025" />
+    <circle cx="9" cy="11"   r="0.05" fill="pink" />
+    <circle cx="11" cy="8"   r="0.05" fill="pink" />
+    <circle cx="13" cy="11.5" r="0.05" fill="pink" />
+  </g>
+</svg>

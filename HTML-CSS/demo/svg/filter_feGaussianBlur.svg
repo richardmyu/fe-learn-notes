@@ -1,0 +1,19 @@
+<svg version="1.1" baseProfile="full" width="560" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <filter id="blurMe">
+    <feGaussianBlur stdDeviation="1"/>
+  </filter>
+  <filter id="blurMe2">
+    <feGaussianBlur stdDeviation="5"/>
+  </filter>
+  <filter id="blurMe3">
+    <feGaussianBlur stdDeviation="10"/>
+  </filter>
+  <filter id="blurMe4">
+    <feGaussianBlur stdDeviation="15"/>
+  </filter>
+  <circle cx="60" cy="60" r="50" fill="green" />
+  <circle cx="170" cy="60" r="50" fill="green" filter="url(#blurMe)" />
+  <circle cx="280" cy="60" r="50" fill="green" filter="url(#blurMe2)" />
+  <circle cx="390" cy="60" r="50" fill="green" filter="url(#blurMe3)" />
+  <circle cx="500" cy="60" r="50" fill="green" filter="url(#blurMe4)" />
+</svg>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grid-area;</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    /*
+    * grid-area 属性指定项目放在哪一个区域。
+    * 还可用作 grid-row-start、grid-column-start、
+    * grid-row-end、grid-column-end 的合并简写形式，
+    * 直接指定项目的位置
+    */
+    .container {
+      display: grid;
+      grid-template-columns: 100px 100px 100px;
+      grid-template-rows: 100px 100px 100px;
+      grid-template-areas: 'a b c'
+        'd e f'
+        'g h i';
+    }
+
+    .item-1-1 {
+      grid-area: e;
+    }
+
+    .item-2-1 {
+      grid-area: 2 / 2 / 3 / 3;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <span>grid-area: e;</span>
+    <div class="container container-1">
+      <div class="item item-1 item-1-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>grid-area: 2 / 2 / 3 / 3;</span>
+    <div class="container container-2">
+      <div class="item item-1 item-2-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+</body>
+
+</html>

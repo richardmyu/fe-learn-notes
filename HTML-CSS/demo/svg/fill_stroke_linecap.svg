@@ -1,0 +1,14 @@
+<svg version="1.1" baseProfile="full" width="300" height="400" xmlns="http://www.w3.org/2000/svg">
+
+  <text x="150" y="40" font-size="16" text-anchor="middle">stroke-linecap="butt"</text>
+  <line x1="40" x2="260" y1="60" y2="60" stroke="gray" stroke-width="20"/>
+  <line x1="40" x2="260" y1="60" y2="60" stroke="red" stroke-dasharray="5,5" />
+
+<text x="150" y="160" font-size="16" text-anchor="middle">stroke-linecap="square"</text>
+  <line x1="40" x2="260" y1="180" y2="180" stroke="gray" stroke-width="20" stroke-linecap="square"/>
+  <line x1="40" x2="260" y1="180" y2="180" stroke="red" stroke-dasharray="5,5" />
+
+<text x="150" y="280" font-size="16" text-anchor="middle">stroke-linecap="round"</text>
+  <line x1="40" x2="260" y1="300" y2="300" stroke="gray" stroke-width="20" stroke-linecap="round"/>
+  <line x1="40" x2="260" y1="300" y2="300" stroke="red" stroke-dasharray="5,5" />
+</svg>

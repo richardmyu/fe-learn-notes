@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=di, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>sepia</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .sepia-three-one{
+            -webkit-filter: sepia(33%);
+            filter: sepia(33%);
+        }
+        .sepia-three-two{
+            -webkit-filter: sepia(66%);
+            filter: sepia(66%);
+        }
+        .sepia-three-end{
+            -webkit-filter: sepia(100%);
+            filter: sepia(100%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stage">
+        <h1>filter: sepia（n）; 褐色</h1>
+        <p>取值小数（0-1）或百分比（0% - 100%），数值越大，褐色程度越大，默认是 0</p>
+        <div class="demo">
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>原图.jpg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="sepia-three-one" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>sepia: 33%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="sepia-three-two" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>sepia: 66%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="sepia-three-end" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>sepia: 100%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>原图.png</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="sepia-three-one" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>sepia: 33%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="sepia-three-two" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>sepia: 66%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="sepia-three-end" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>sepia: 100%</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

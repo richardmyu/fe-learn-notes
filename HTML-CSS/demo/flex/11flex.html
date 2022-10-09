@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>flex</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      h3 {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .stage {
+        margin: 0 auto 50px;
+        width: 80%;
+        border: 1px solid gray;
+        padding: 30px;
+        display: flex;
+        border-radius: 5px;
+      }
+      .stage1 .item1,
+      .stage1 .item2,
+      .stage1 .item3 {
+        flex: 0 1 auto; /* default auto */
+      }
+      .stage2 .item1,
+      .stage2 .item2,
+      .stage2 .item3 {
+        flex: auto; /*1 1 auto*/
+      }
+      .stage3 .item1,
+      .stage3 .item2,
+      .stage3 .item3 {
+        flex: none; /* 0 0 auto*/
+      }
+      .stage4 .item1,
+      .stage4 .item2,
+      .stage4 .item3 {
+        flex: initial; /* 0 1 auto*/
+      }
+      .stage .item {
+        height: 30px;
+        line-height: 30px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .item1 {
+        width: 200px;
+        background: red;
+        flex-grow: 1;
+      }
+      .item2 {
+        width: 280px;
+        background: orange;
+        flex-grow: 1;
+      }
+      .item3 {
+        width: 300px;
+        background: yellow;
+        flex-grow: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>flex: 0 1 auto; /* default auto */</h3>
+    <div class="stage stage1">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+    </div>
+
+    <h3>flex: auto;</h3>
+    <div class="stage stage2">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+    </div>
+
+    <h3>flex: none;</h3>
+    <div class="stage stage3">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+    </div>
+
+    <h3>flex: initial;</h3>
+    <div class="stage stage4">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+    </div>
+  </body>
+</html>
