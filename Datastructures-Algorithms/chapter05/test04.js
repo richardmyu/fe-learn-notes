@@ -190,24 +190,24 @@ let DoublyLinkedList = (function () {
 let list = new DoublyLinkedList();
 
 list.append(15);
-list.print();//15
-list.printInverse();//15
+list.print(); // 15
+list.printInverse(); // 15
 
 list.append(16);
-list.print();//15,16
-list.printInverse();//16,15
+list.print(); // 15,16
+list.printInverse(); // 16,15
 
 list.append(17);
-list.print();//15,16,17
-list.printInverse();//17,16,15
+list.print(); // 15,16,17
+list.printInverse(); // 17,16,15
 
 list.insert(0, 13);
-list.print();//13,15,16,17
-list.printInverse();//17,16,15,13
+list.print(); // 13,15,16,17
+list.printInverse(); // 17,16,15,13
 
 list.insert(4, 18);
-list.print();//13,15,16,17
-list.printInverse();//18,
+list.print(); // 13,15,16,17
+list.printInverse(); // 18,
 
 list.insert(1, 14);
 list.print();

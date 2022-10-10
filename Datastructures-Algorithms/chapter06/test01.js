@@ -12,7 +12,7 @@ function Set() {
 
   this.add = function (value) {
     if (!this.has(value)) {
-      //同时作为键和值，有利于查找
+      // 同时作为键和值，有利于查找
       items[value] = value;
       return true;
     }
@@ -67,7 +67,7 @@ function Set() {
     return items;
   };
 
-  //并集
+  // 并集
   this.union = function (otherSet) {
     let unionSet = new Set();
     let values = this.values();
@@ -81,7 +81,7 @@ function Set() {
     return unionSet;
   };
 
-  //交集
+  // 交集
   this.intersection = function (otherSet) {
     let intersectionSet = new Set();
     let values = this.values();
@@ -94,7 +94,7 @@ function Set() {
     return intersectionSet;
   };
 
-  //差集
+  // 差集
   this.difference = function (otherSet) {
     let differenceSet = new Set();
     let values = this.values();
@@ -106,7 +106,7 @@ function Set() {
     return differenceSet;
   };
 
-  //子集
+  // 子集
   this.subset = function (otherSet) {
     if (this.size() > otherSet.size()) {
       return false;
@@ -124,17 +124,17 @@ function Set() {
 
 let set = new Set();
 set.add(1);
-console.log(set.values());//[1]
-console.log(set.has(1));//true
-console.log(set.size());//1
+console.log(set.values()); // [1]
+console.log(set.has(1)); // true
+console.log(set.size()); // 1
 set.add(2);
-console.log(set.values());//[1, 2]
-console.log(set.has(2));//true
-console.log(set.size());//2
+console.log(set.values()); // [1, 2]
+console.log(set.has(2)); // true
+console.log(set.size()); // 2
 set.remove(1);
-console.log(set.values());//[2]
+console.log(set.values()); // [2]
 set.remove(2);
-console.log(set.values());//[]
+console.log(set.values()); // []
 
 let setA = new Set();
 setA.add(1);

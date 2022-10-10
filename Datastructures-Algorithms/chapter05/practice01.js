@@ -11,7 +11,8 @@ function DoublyLinkedList() {
 
   let length = 0;
   let head = null;
-  //tail:最后一项的引用
+
+  // tail:最后一项的引用
   let tail = null;
 
   // head ---- prev -- current -- next ---- tail
@@ -41,15 +42,16 @@ function DoublyLinkedList() {
       let index = 0;
 
       if (position === 0) {
-        //空
+        // 空
         if (!head) {
           head = node;
           tail = node;
         } else {
-          //非空
+          // 非空
           node.next = current;
           current.prev = node;
-          //head指向node
+
+          // head 指向 node
           head = node;
         }
       } else if (position === length) {

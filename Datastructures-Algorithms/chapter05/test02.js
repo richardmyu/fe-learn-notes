@@ -133,33 +133,33 @@ let LinkedList = (function () {
 
 let list = new LinkedList();
 list.append(15);
-list.print();//15
-console.log(list.indexOf(15));//0
+list.print(); // 15
+console.log(list.indexOf(15)); // 0
 list.append(10);
-list.print();//15,10
+list.print(); // 15,10
 console.log(list.indexOf(10));
-list.append(13);//1
-list.print();//15,10,13
-console.log(list.indexOf(13));//2
-console.log(list.indexOf(10));//1
+list.append(13); // 1
+list.print(); // 15,10,13
+console.log(list.indexOf(13)); // 2
+console.log(list.indexOf(10)); // 1
 // list.append(11);
 // list.append(12);
-// list.print();//15,10,13,11,12
-// console.log(list.removeAt(1));//10
-// list.print();//15,13,11,12
-// console.log(list.removeAt(3));//12
-// list.print();//15,13,11
+// list.print(); // 15,10,13,11,12
+// console.log(list.removeAt(1)); // 10
+// list.print(); // 15,13,11,12
+// console.log(list.removeAt(3)); // 12
+// list.print(); // 15,13,11
 // list.append(14);
-// list.print();//15,13,11,14
+// list.print(); // 15,13,11,14
 // list.insert(0, 16);
-// list.print();//16,15,13,11,14
+// list.print(); // 16,15,13,11,14
 // list.insert(1, 17);
-// list.print();//16,17,15,13,11,14
+// list.print(); // 16,17,15,13,11,14
 // list.insert(list.size(), 18);
-// list.print();//16,17,15,13,11,14,18
+// list.print(); // 16,17,15,13,11,14,18
 // list.remove(16);
-// list.print();//17,15,13,11,14,18
+// list.print(); // 17,15,13,11,14,18
 // list.remove(11);
-// list.print();//17,15,13,14,18
+// list.print(); // 17,15,13,14,18
 // list.remove(18);
-// list.print();//17,15,13,14
+// list.print(); // 17,15,13,14

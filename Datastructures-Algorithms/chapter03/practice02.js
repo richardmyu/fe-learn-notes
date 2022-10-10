@@ -9,7 +9,7 @@ function baseConverter(decNumber, base) {
   let baseString = '';
   let digits = '0123456789ABCDEF';
 
-  if(base<2 || base>16||!Number.isInteger(base)){
+  if (base < 2 || base > 16 || !Number.isInteger(base)) {
     throw new Error('参数有误，base 只能是 【2，16]')
   }
 
@@ -25,6 +25,6 @@ function baseConverter(decNumber, base) {
   return baseString;
 }
 
-console.log(baseConverter(100345, 2));//11000011111111001
-console.log(baseConverter(100345, 8));//303771
-console.log(baseConverter(100345, 16));//187F9
+console.log(baseConverter(100345, 2)); // 11000011111111001
+console.log(baseConverter(100345, 8)); // 303771
+console.log(baseConverter(100345, 16)); // 187F9

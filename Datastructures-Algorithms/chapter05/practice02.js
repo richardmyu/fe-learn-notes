@@ -156,29 +156,29 @@ function CircularLinkedList() {
 let circularLinkedList = new CircularLinkedList();
 
 circularLinkedList.append(15);
-circularLinkedList.print();//15
+circularLinkedList.print(); // 15
 
 circularLinkedList.append(16);
-circularLinkedList.print();//15,16
+circularLinkedList.print(); // 15,16
 
 circularLinkedList.insert(0, 14);
-circularLinkedList.print();//14,15,16
+circularLinkedList.print(); // 14,15,16
 
 circularLinkedList.insert(1, 14.5);
-circularLinkedList.print();//14,14.5,15,16
+circularLinkedList.print(); // 14,14.5,15,16
 
 circularLinkedList.insert(4, 17);
-circularLinkedList.print();//14,14.5,15,16,17
+circularLinkedList.print(); // 14,14.5,15,16,17
 
 circularLinkedList.removeAt(0);
 
-circularLinkedList.print();//14.5,15,16,17
+circularLinkedList.print(); // 14.5,15,16,17
 
 circularLinkedList.removeAt(1);
-circularLinkedList.print();//14.5,16,17
+circularLinkedList.print(); // 14.5,16,17
 
 circularLinkedList.removeAt(2);
-circularLinkedList.print();//14.5,16
+circularLinkedList.print(); // 14.5,16
 
 console.log(circularLinkedList.indexOf(14.5));//0
-console.log(circularLinkedList.indexOf(16));//1
+console.log(circularLinkedList.indexOf(16)); // 1
