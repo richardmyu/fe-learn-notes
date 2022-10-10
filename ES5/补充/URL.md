@@ -20,17 +20,21 @@ F
 
 > 注意，虽然这么做是可行的，但利用 `javascript:` 伪协议来执行 JavaScript 代码是不推荐的，推荐的做法是为链接元素绑定事件。
 
-## 2.JavaScript 中伪协议 javascript: 使用探讨
+## 2.JavaScript 中伪协议 `javascript:` 使用探讨
 
 将 javascript 代码添加到客户端的方法是把它放置在伪协议说明符 `javascript:` 后的 URL 中。这个特殊的协议类型声明了 URL 的主体是任意的 javascript 代码，它由 javascript 的解释器运行。如果 `javascript:URL` 中的 javascript 代码含有多个语句，必须使用分号将这些语句分隔开。这样的 URL 如下所示：
 
-`javascript:var now = new Date(); "<h1>The time is:</h1>" + now;`
+```js
+javascript:var now = new Date(); "<h1>The time is:</h1>" + now;
+```
 
 当浏览器装载了这样的 URL 时，它将执行这个 URL 中包含的 javascript 代码，并把最后一条 javascript 语句的字符串值作为新文档的内容显示出来。这个字符串值可以含有 HTML 标记，并被格式化，其显示与其他装载进浏览器的文档完全相同。
 
 javascript URL 还可以含有只执行动作，但不返回值的 javascript 语句。例如：
 
-`javascript:alert("hello world!")`
+```js
+javascript:alert("hello world!")
+```
 
 装载了这种 URL 时，浏览器仅执行其中的 javascript 代码，但由于没有作为新文档来显示的值，因此它并不改变当前显示的文档。
 
@@ -153,8 +157,8 @@ function CreateNodes() {
 console.time("普通模式");
 CreateNodes();
 console.timeEnd("普通模式");
-//10000 20 23 23 20 23
-//100000 174 164 166 177 170
+// 10000 20 23 23 20 23
+// 100000 174 164 166 177 170
 
 function CreateFragments() {
   var fragment = document.createDocumentFragment();
@@ -172,13 +176,15 @@ function CreateFragments() {
 console.time("DocumentFragment 模式");
 CreateFragments();
 console.timeEnd("DocumentFragment 模式");
-//10000 22 24 24 23 30
-//100000 175 182 175 187 202
+// 10000 22 24 24 23 30
+// 100000 175 182 175 187 202
 ```
 
 > 也没有怎么快呀 O_O
 
-上面的代码给出了两个函数，分别是用普通的 DOM 方法和 `DocumentFragment` 两种方式向页面添加一万个 div 节点，大家可以自己实验一下，使用第二种方式要比第一种快很多。这里只是简单的 div 标签的平铺添加，如果是更加复杂的 HTML 标签或是多层的嵌套标签，那么性能的差距就会更加明显。???
+上面的代码给出了两个函数，分别是用普通的 DOM 方法和 `DocumentFragment` 两种方式向页面添加一万个 `div` 节点，大家可以自己实验一下，使用第二种方式要比第一种快很多。这里只是简单的 div 标签的平铺添加，如果是更加复杂的 HTML 标签或是多层的嵌套标签，那么性能的差距就会更加明显。
+
+---
 
 参考：
 

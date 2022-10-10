@@ -46,28 +46,28 @@ WebAssembly 简称 wasm，是一种数据格式，对应的文件后缀名为 `.
 
 ## 2.WebAssembly 的由来
 
-### 2.1. 性能瓶颈
+### 2.1.性能瓶颈
 
 在业务需求越来越复杂的现在，前端的开发逻辑越来越复杂，相应的代码量随之变的越来越多。渐渐暴露出了 JavaScript 的问题：
 
-- 语法太灵活导致开发大型 Web 项目困难；
-
-- 性能不能满足一些场景的需要。
+1. 语法太灵活导致开发大型 Web 项目困难；
+>
+2. 性能不能满足一些场景的需要。
 
 针对以上两点缺陷，近年来出现了一些 JS 的代替语言，例如：
 
 - 微软的 TypeScript 通过为 JS 加入静态类型检查来改进 JS 松散的语法，提升代码健壮性；
-
+>
 - 谷歌的 Dart 则是为浏览器引入新的虚拟机去直接运行 Dart 程序以提升性能；
-
+>
 - 火狐的 asm.js 则是取 JS 的子集，JS 引擎针对 asm.js 做性能优化。
 
 以上尝试各有优缺点，其中：
 
 - TypeScript 只是解决了 JS 语法松散的问题，最后还是需要编译成 JS 去运行，对性能没有提升；
-
+>
 - Dart 只能在 Chrome 预览版中运行，无主流浏览器支持，用 Dart 开发的人不多；
-
+>
 - asm.js 语法太简单、有很大限制，开发效率低。
 
 于是 WebAssembly 诞生了，WebAssembly 是一种新的字节码格式，主流浏览器都已经支持 WebAssembly。
@@ -76,9 +76,9 @@ WebAssembly 简称 wasm，是一种数据格式，对应的文件后缀名为 `.
 >
 > 紧接着浏览器厂商们就开始了更多的竞争。
 >
-> 2008 年，人们称之为浏览器性能大战的时期开始了。很多浏览器加入了**即时编译器**（JIT compiler，just-in-time compiler）。在这种模式下，JavaScript 在运行的时候，JIT 选择模式然后基于这些模式使代码运行更快。
+> 2008 年，人们称之为浏览器性能大战的时期开始了。很多浏览器加入了 **即时编译器**（JIT compiler，just-in-time compiler）。在这种模式下，JavaScript 在运行的时候，JIT 选择模式然后基于这些模式使代码运行更快。
 >
->> 在部分的商用虚拟机（HotSpot）中，Java 程序最初是通过**解释器**（Interpreter）进行解释执行的，当虚拟机发现某个方法或代码块运行的特别频繁时，就会把这些代码认定为“**热点代码**”（Hot Spot Code）。为了提高热点代码的执行效率，在运行时，虚拟机将会把这些热点代码编译成与本地代码相关的机器码，并进行各种层次的优化，完成这个任务的编译器称为**即时编译器**（Just In Time Compiler）。
+>> 在部分的商用虚拟机（HotSpot）中，Java 程序最初是通过 **解释器**（Interpreter）进行解释执行的，当虚拟机发现某个方法或代码块运行的特别频繁时，就会把这些代码认定为 “**热点代码**”（Hot Spot Code）。为了提高热点代码的执行效率，在运行时，虚拟机将会把这些热点代码编译成与本地代码相关的机器码，并进行各种层次的优化，完成这个任务的编译器称为 **即时编译器**（Just In Time Compiler）。
 >
 > 这些 JIT 的引入是浏览器运行代码机制的一个转折点。所有的突然之间，JavaScript 的运行速度快了 10 倍。
 >
@@ -88,7 +88,7 @@ WebAssembly 简称 wasm，是一种数据格式，对应的文件后缀名为 `.
 
 但是除了逻辑复杂、代码量大，还有另一个原因是 JavaScript 这门语言本身的缺陷，JavaScript 没有静态变量类型。
 
-### 2.2. 静态变量类型所带来的问题
+### 2.2.静态变量类型所带来的问题
 
 ![edge](https://user-gold-cdn.xitu.io/2018/11/7/166ed498c346cec4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
@@ -107,18 +107,10 @@ WebAssembly 简称 wasm，是一种数据格式，对应的文件后缀名为 `.
 
 而 WebAssembly 与其他的汇编语言不一样，它不依赖于具体的物理机器。可以抽象地理解成它是概念机器的机器语言，而不是实际的物理机器的机器语言。
 
-正因为如此，WebAssembly 指令有时也被称为**虚拟指令**。它比 JavaScript 代码更直接地映射到机器码，它也代表了“如何能在通用的硬件上更有效地执行代码”的一种理念。所以它并不直接映射成特定硬件的机器码。
+正因为如此，WebAssembly 指令有时也被称为 **虚拟指令**。它比 JavaScript 代码更直接地映射到机器码，它也代表了“如何能在通用的硬件上更有效地执行代码”的一种理念。所以它并不直接映射成特定硬件的机器码。
+
+---
 
 参考：
 
 1.[WebAssembly](https://www.wasm.com.cn/)
-
-2.[WebAssembly 完全入门——了解 wasm 的前世今身](https://juejin.im/post/6844903709806182413)
-
-3.[几张图让你看懂 WebAssembly](https://www.jianshu.com/p/bff8aa23fe4d)
-
-4.[什么是 WebAssembly(wasm)？](https://www.zhihu.com/question/304577684)
-
-5.[Web 3D 是否需要 WebAssembly?](https://zhuanlan.zhihu.com/p/102167475?from_voters_page=true)
-
-5.[WebAssembly 学习（一）：认识 WebAssembly](https://www.cnblogs.com/jixiaohua/p/10425805.html)
