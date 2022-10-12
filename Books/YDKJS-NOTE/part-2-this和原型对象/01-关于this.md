@@ -44,7 +44,7 @@ function speak(context) {
 }
 
 identify(you); // READER
-speak(me); //Hello, I'm KYLE
+speak(me); // Hello, I'm KYLE
 ```
 
 然而，*`this` 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计得更加简洁并且易于复用*。
