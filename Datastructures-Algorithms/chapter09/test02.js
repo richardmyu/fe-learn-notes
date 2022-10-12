@@ -1,6 +1,8 @@
-//Dijkstra 是一种计算单个源到所有其他源的最短路径的贪心算法
-
-//Floyd-Warshall 是一种计算图中所有最短路径的动态规划算法
+/*
+* Dijkstra 是一种计算单个源到所有其他源的最短路径的贪心算法
+*
+* Floyd-Warshall 是一种计算图中所有最短路径的动态规划算法
+**/
 
 function ShortestPath(graph) {
 

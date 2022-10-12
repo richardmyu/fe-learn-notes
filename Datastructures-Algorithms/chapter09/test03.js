@@ -1,6 +1,8 @@
-//最小生成树   MST
-
-//Prim & Kruskal 一种求解加权无向连通图的MST问题的贪心算法
+/*
+* 最小生成树   MST
+*
+* Prim & Kruskal 一种求解加权无向连通图的MST问题的贪心算法
+**/
 
 function MinimumSpanningTree(graph) {
 

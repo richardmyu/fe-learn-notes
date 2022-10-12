@@ -1,0 +1,22 @@
+<svg version="1.1" baseProfile="full" width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="125" cy="80" r="45" stroke="blue" stroke-width="1" fill="none"></circle>
+  <path d="M80 80
+               A 45 45, 0, 0, 0, 125 125
+               L 125 80 Z" fill="green" />
+  <circle cx="80" cy="125" r="45" stroke="red" stroke-width="1" fill="none"></circle>
+  <circle cx="275" cy="80" r="45" stroke="blue" stroke-width="1" fill="none"></circle>
+  <path d="M230 80
+               A 45 45, 0, 1, 0, 275 125
+               L 275 80 Z" fill="green" />
+  <circle cx="230" cy="125" r="45" stroke="red" stroke-width="1" fill="none"></circle>
+  <circle cx="125" cy="230" r="45" stroke="blue" stroke-width="1" fill="none"></circle>
+  <path d="M80 230
+               A 45 45, 0, 0, 1, 125 275
+               L 125 230 Z" fill="green" />
+  <circle cx="80" cy="275" r="45" stroke="red" stroke-width="1" fill="none"></circle>
+  <circle cx="275" cy="230" r="45" stroke="blue" stroke-width="1" fill="none"></circle>
+  <path d="M230 230
+               A 45 45, 0, 1, 1, 275 275
+               L 275 230 Z" fill="green" />
+  <circle cx="230" cy="275" r="45" stroke="red" stroke-width="1" fill="none"></circle>
+</svg>

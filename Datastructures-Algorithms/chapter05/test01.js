@@ -5,12 +5,14 @@ function LinkedList() {
   let Node = function (ele) {
     // ele : 存储值
     this.ele = ele;
+
     // next : 指针
     this.next = null;
   };
 
   // 私有变量 length、head
   let length = 0;
+
   // 将第一个节点的引用存入 head
   let head = null;
 
@@ -36,6 +38,7 @@ function LinkedList() {
         // 将最后一项的引用存入 current, 作为循环增量
         current = current.next;
       }
+
       // 将最后一项的 next 赋为 node，建立连接
       current.next = node;
     }
@@ -55,6 +58,7 @@ function LinkedList() {
       if (position === 0) {
         // 添加在首位，将第一项的引用给新的第一项
         node.next = current;
+
         // 将 head 指向新项
         head = node;
       } else {
@@ -67,8 +71,10 @@ function LinkedList() {
           // 占据待插入位置的元素--即当前元素
           current = current.next;
         }
+
         // 将占据插入项位置的元素的指针赋给插入项
         node.next = current;
+
         // 将前一项指向插入项
         previous.next = node;
       }
@@ -96,9 +102,11 @@ function LinkedList() {
         while (index++ < position) {
           // 将删除项的前一项的引用赋给 previous
           previous = current;
+
           // 当前元素的引用
           current = current.next;
         }
+
         // current.next 删除项的指针
         // previous.next 删除项的前一项的指针
         // 所谓删除就是，丢掉指向该项的指针，并拿到该项的指针
@@ -166,15 +174,15 @@ list.append(14);
 list.append(13);
 list.append(12);
 list.append(11);
-list.print();//15,14,13,12,11
-console.log(list.indexOf(15));//0
-console.log(list.indexOf(11));//4
+list.print(); // 15,14,13,12,11
+console.log(list.indexOf(15)); // 0
+console.log(list.indexOf(11)); // 4
 list.insert(0, 16);
-list.print();//16,15,14,13,12,11
+list.print(); // 16,15,14,13,12,11
 list.insert(1, 17);
-list.print();//16,17,15,14,13,12,11
+list.print(); // 16,17,15,14,13,12,11
 list.remove(16);
 list.remove(11);
-list.print();//17,15,14,13,12
+list.print(); // 17,15,14,13,12
 list.remove(18);
-list.print();//17,15,13,14
+list.print(); // 17,15,13,14

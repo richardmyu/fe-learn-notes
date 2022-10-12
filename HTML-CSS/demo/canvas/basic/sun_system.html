@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="300" height="300"></canvas>
+
+  <script>
+    const sun = new Image();
+    const moon = new Image();
+    const earth = new Image();
+
+    /**
+     * 加载图片，执行动画
+     * */
+    function init() {
+      sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+      moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+      earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+      window.requestAnimationFrame(draw);
+    }
+
+    function draw() {
+      const ctx = document.getElementById('canvas').getContext('2d');
+
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.clearRect(0, 0, 300, 300); // clear canvas
+
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+      ctx.save();
+      // 将 canvas 平移，方便之后的坐标计算
+      // 原本要以画布的 (150,150)为中心计算
+      // 平移之后，原 (150,150) 的新坐标为 (0,0)
+      ctx.translate(150, 150);
+
+      // Earth
+      var time = new Date();
+      // v
+      ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+      // 轨道半径
+      ctx.translate(105, 0);
+      // 地球阴影（1.遮蔽地球背阳面；2.遮蔽月球）
+      ctx.fillRect(0, -12, 50, 24); // Shadow
+      ctx.drawImage(earth, -12, -12);
+
+      // Moon
+      ctx.save();
+      // v(moon)= 1/10 * v(earth)
+      ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+      // 月轨半径
+      ctx.translate(0, 28.5);
+      ctx.drawImage(moon, -3.5, -3.5);
+      ctx.restore();
+
+      ctx.restore();
+
+      ctx.beginPath();
+      // 地球轨道
+      ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+      ctx.stroke();
+
+      ctx.drawImage(sun, 0, 0, 300, 300);
+
+      window.requestAnimationFrame(draw);
+    }
+
+    init();
+  </script>
+</body>
+
+</html>

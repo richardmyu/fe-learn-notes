@@ -1,0 +1,189 @@
+<svg version="1.1" baseProfile="full" width="700" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="Gradient1" spreadMethod="pad">
+      <stop stop-color="red" offset="0%"/>
+      <stop stop-color="blue" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="Gradient2" spreadMethod="repeat">
+      <stop stop-color="red" offset="0%"/>
+      <stop stop-color="blue" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="Gradient3" spreadMethod="reflect">
+      <stop stop-color="red" offset="0%"/>
+      <stop stop-color="blue" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="Gradient11" spreadMethod="pad" gradientUnits="userSpaceOnUse">
+      <stop stop-color="red" offset="0%"/>
+      <stop stop-color="blue" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="Gradient22" spreadMethod="repeat" gradientUnits="userSpaceOnUse">
+      <stop stop-color="red" offset="0%"/>
+      <stop stop-color="blue" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="Gradient33" spreadMethod="reflect" gradientUnits="userSpaceOnUse">
+      <stop stop-color="red" offset="0%"/>
+      <stop stop-color="blue" offset="100%"/>
+    </linearGradient>
+    <radialGradient
+      id="GradientPad"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      spreadMethod="pad">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientRepeat"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      spreadMethod="repeat">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientReflect"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      spreadMethod="reflect">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientPad1"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      gradientUnits="userSpaceOnUse"
+      spreadMethod="pad">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientRepeat1"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      gradientUnits="userSpaceOnUse"
+      spreadMethod="repeat">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientReflect1"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      gradientUnits="userSpaceOnUse"
+      spreadMethod="reflect">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientPad_f"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      fx="0.75"
+      fy="0.75"
+      spreadMethod="pad">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientRepeat_f"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      fx="0.75"
+      fy="0.75"
+      spreadMethod="repeat">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientReflect_f"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      fx="0.75"
+      fy="0.75"
+      spreadMethod="reflect">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientPad_f1"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      fx="0.75"
+      fy="0.75"
+      gradientUnits="userSpaceOnUse"
+      spreadMethod="pad">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientRepeat_f1"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      fx="0.75"
+      fy="0.75"
+      gradientUnits="userSpaceOnUse"
+      spreadMethod="repeat">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+    <radialGradient
+      id="GradientReflect_f1"
+      cx="0.5"
+      cy="0.5"
+      r="0.4"
+      fx="0.75"
+      fy="0.75"
+      gradientUnits="userSpaceOnUse"
+      spreadMethod="reflect">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+  </defs>
+  <!-- row -->
+  <text x="60" y="16" fill="black" text-anchor="middle"  font-family="sans-serif" font-size="12pt">Pad</text>
+  <text x="170" y="16" fill="black" text-anchor="middle"  font-family="sans-serif" font-size="12pt">Repeat</text>
+  <text x="280" y="16" fill="black" text-anchor="middle"  font-family="sans-serif" font-size="12pt">Reflect</text>
+  <!-- col -->
+  <text x="350" y="70" fill="black" font-family="sans-serif" font-size="12pt">linearGradient</text>
+  <text x="350" y="180" fill="black" font-family="sans-serif" font-size="12pt">linearGradient + userSpaceOnUse</text>
+  <text x="350" y="290" fill="black" font-family="sans-serif" font-size="12pt">non-fx/y + objectBoundingBox</text>
+  <text x="350" y="400" fill="black" font-family="sans-serif" font-size="12pt">non-fx/y + userSpaceOnUse</text>
+  <text x="350" y="510" fill="black" font-family="sans-serif" font-size="12pt">fx,fy + objectBoundingBox</text>
+  <text x="350" y="620" fill="black" font-family="sans-serif" font-size="12pt">fx/y + userSpaceOnUse</text>
+  <!-- linearGradient -->
+  <rect x="10" y="20" rx="15" ry="15" width="100" height="100" fill="url(#Gradient1)"/>
+  <rect x="120" y="20" rx="15" ry="15" width="100" height="100" fill="url(#Gradient2)"/>
+  <rect x="230" y="20" rx="15" ry="15" width="100" height="100" fill="url(#Gradient3)"/>
+  <!-- 2 -->
+  <rect x="10" y="130" rx="15" ry="15" width="100" height="100" fill="url(#Gradient11)"/>
+  <rect x="120" y="130" rx="15" ry="15" width="100" height="100" fill="url(#Gradient22)"/>
+  <rect x="230" y="130" rx="15" ry="15" width="100" height="100" fill="url(#Gradient33)"/>
+  <!-- 3 -->
+  <rect x="10" y="240" rx="15" ry="15" width="100" height="100" fill="url(#GradientPad)"/>
+  <rect x="120" y="240" rx="15" ry="15" width="100" height="100" fill="url(#GradientRepeat)"/>
+  <rect x="230" y="240" rx="15" ry="15" width="100" height="100" fill="url(#GradientReflect)"/>
+  <!-- 4 -->
+  <rect x="10" y="350" rx="15" ry="15" width="100" height="100" fill="url(#GradientPad1)"/>
+  <rect x="120" y="350" rx="15" ry="15" width="100" height="100" fill="url(#GradientRepeat1)"/>
+  <rect x="230" y="350" rx="15" ry="15" width="100" height="100" fill="url(#GradientReflect1)"/>
+  <!-- 5 -->
+  <rect x="10" y="460" rx="15" ry="15" width="100" height="100" fill="url(#GradientPad_f)"/>
+  <rect x="120" y="460" rx="15" ry="15" width="100" height="100" fill="url(#GradientRepeat_f)"/>
+  <rect x="230" y="460" rx="15" ry="15" width="100" height="100" fill="url(#GradientReflect_f)"/>
+  <!-- 6 -->
+  <rect x="10" y="570" rx="15" ry="15" width="100" height="100" fill="url(#GradientPad_f1)"/>
+  <rect x="120" y="570" rx="15" ry="15" width="100" height="100" fill="url(#GradientRepeat_f1)"/>
+  <rect x="230" y="570" rx="15" ry="15" width="100" height="100" fill="url(#GradientReflect_f1)"/>
+</svg>

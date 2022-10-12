@@ -1,0 +1,38 @@
+<svg version="1.1" baseProfile="full" width="300" height="700" xmlns="http://www.w3.org/2000/svg">
+  <text x="150" y="40" font-size="16" text-anchor="middle">stroke-linejoin="miter"</text>
+  <polyline
+    points="110 100 150 60 190 100"
+    stroke="black"
+    stroke-width="20"
+    fill="none"
+    stroke-linejoin="miter" />
+  <polyline
+    points="110 100 150 60 190 100"
+    stroke="red"
+    fill="none"
+    stroke-dasharray="5,5" />
+  <text x="150" y="160" font-size="16" text-anchor="middle">stroke-linejoin="bevel"</text>
+  <polyline
+    points="110 220 150 180 190 220"
+    stroke="black"
+    stroke-width="20"
+    fill="none"
+    stroke-linejoin="bevel" />
+  <polyline
+    points="110 220 150 180 190 220"
+    stroke="red"
+    fill="none"
+    stroke-dasharray="5,5" />
+  <text x="150" y="280" font-size="16" text-anchor="middle">stroke-linejoin="round"</text>
+  <polyline
+    points="110 340 150 300 190 340"
+    stroke="black"
+    stroke-width="20"
+    fill="none"
+    stroke-linejoin="round"/>
+  <polyline
+    points="110 340 150 300 190 340"
+    stroke="red"
+    fill="none"
+    stroke-dasharray="5,5" />
+</svg>

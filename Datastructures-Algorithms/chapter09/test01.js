@@ -142,10 +142,10 @@ let Queue = (function () {
 function Graph() {
   // 顶点
   let vertices = [];
-  //邻接表
+  // 邻接表
   let adjList = new Dictionary();
 
-  //添加顶点
+  // 添加顶点
   this.addVertex = function (v) {
     vertices.push(v);
     adjList.set(v, []);
@@ -153,9 +153,9 @@ function Graph() {
 
   //
   this.addEdge = function (v, w) {
-    //有向图
+    // 有向图
     adjList.get(v).push(w);
-    //无向图
+    // 无向图
     adjList.get(w).push(v);
   };
 
@@ -172,12 +172,14 @@ function Graph() {
     return str;
   };
 
-  //BFS
   /*
-  * 广度优先搜索算法会从指定的第一个顶点开始遍历图，先访问其所有的相邻点，就像一次访问图的一层；
+  * BFS
+  * 广度优先搜索算法会从指定的第一个顶点开始遍历图，
+  * 先访问其所有的相邻点，就像一次访问图的一层；
+  *
   * */
 
-  //初始化标记--white
+  // 初始化标记--white
   let initializeColor = function () {
     let color = [];
     for (let i = 0; i < vertices.length; i++) {
@@ -186,47 +188,54 @@ function Graph() {
     return color;
   };
 
-  //BFS
+  // BFS
   this.bfs = function (v, callback) {
     let color = initializeColor();
-    //存储待访问和待探索点
+    // 存储待访问和待探索点
     queue = new Queue();
-    //起点
+    // 起点
     queue.enqueue(v);
 
     while (!queue.isEmpty()) {
-      //移除一个顶点，获取其邻接表
+      // 移除一个顶点，获取其邻接表
       let u = queue.dequeue();
       neighbors = adjList.get(u);
-      //访问但未探索
+
+      // 访问但未探索
       color[u] = 'grey';
-      //操作每一个子节点
+
+      // 操作每一个子节点
       for (let i = 0; i < neighbors.length; i++) {
-        //当前子节点
+        // 当前子节点
         let w = neighbors[i];
         if (color[w] === 'white') {
-          //若子节点还有子节点，将该子节点标记为已访问为探索
+          // 若子节点还有子节点，将该子节点标记为已访问为探索
           color[w] = 'grey';
-          //并加入队列
+
+          // 并加入队列
           queue.enqueue(w);
         }
       }
-      //将该顶点标记为已探索
+
+      // 将该顶点标记为已探索
       color[u] = 'black';
-      //若有回调函数，则执行
+
+      // 若有回调函数，则执行
       if (callback) {
         callback(u);
       }
     }
   };
 
-  //使用BFS寻找最短路径
+  // 使用 BFS 寻找最短路径
   this.BFS = function (v) {
     let color = initializeColor();
     let queue = new Queue();
-    //距离
+
+    // 距离
     let d = [];
-    //前溯点
+
+    // 前溯点
     let pred = [];
     queue.enqueue(v);
 
@@ -258,9 +267,11 @@ function Graph() {
     }
   };
 
-  //DFS
   /*
-  * 深度优先搜索算法会从指定的第一个顶点开始遍历图，沿着路径直到这条路径的最后一个顶点被访问，接着原路退回并探索下一条路径
+  * DFS
+  * 深度优先搜索算法会从指定的第一个顶点开始遍历图，
+  * 沿着路径直到这条路径的最后一个顶点被访问，接着原路退回并探索下一条路径
+  *
   * */
   this.dfs = function (callback) {
     let color = initializeColor();
@@ -287,7 +298,7 @@ function Graph() {
     color[u] = 'black';
   };
 
-  //
+
   let time = 0;
   this.DFS = function () {
     let color = initializeColor();
@@ -381,7 +392,7 @@ for (let i = 0; i < myVertices.length; i++) {
 graph.dfs(printNode);
 graph.DFS();
 
-//拓扑排序
+// 拓扑排序
 let graphTopsort = new Graph();
 myV = ['A', 'B', 'C', 'D', 'E', 'F'];
 for (let i = 0; i < myV.length; i++) {

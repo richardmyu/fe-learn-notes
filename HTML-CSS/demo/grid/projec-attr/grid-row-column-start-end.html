@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grid-row-column-start-end</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    /*
+    * 项目的位置是可以指定的，
+    * 具体方法就是指定项目的四个边框，
+    * 分别定位在哪根网格线。
+    *  grid-column-start 属性：左边框所在的垂直网格线
+    *  grid-column-end 属性：右边框所在的垂直网格线
+    *  grid-row-start 属性：上边框所在的水平网格线
+    *  grid-row-end 属性：下边框所在的水平网格线
+    *  这四个属性的值，除了指定为第几个网格线，还可以指定为网格线的名字
+    * 还可以使用 span 关键字，表示"跨越"，
+    * 即左右边框（上下边框）之间跨越多少个网格。
+    *
+    * 其他项目都没有指定位置，
+    * 由浏览器自动布局，
+    * 这时它们的位置由容器的 grid-auto-flow 属性决定
+    */
+    .container {
+      /* width: 100%; */
+      grid-template-columns: 100px 100px 100px;
+      grid-template-rows: 100px 100px 100px;
+      grid-template-areas: "header header header"
+        "main main sidebar"
+        "footer footer footer";
+    }
+
+    .container-1 {
+      grid-auto-flow: row;
+    }
+
+    .container-2 {
+      grid-auto-flow: column;
+    }
+
+    .container-3 {
+      grid-auto-flow: row dense;
+    }
+
+    .container-4 {
+      grid-auto-flow: column dense;
+    }
+
+    .item {
+      font-size: 4em;
+    }
+
+    .item-1-1 {
+      grid-column-start: 2;
+      grid-column-end: 4;
+      /* grid-column-start: header-start; */
+      /* grid-column-end: header-end; */
+      /* grid-column-start: span 2; */
+      /* grid-column-end: span 2; */
+    }
+
+    .item-2-1 {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 2;
+      grid-row-end: 4;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <span>case1 - grid-auto-flow: row;</span>
+    <div class="container container-1">
+      <div class="item item-1 item-1-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>case1 - grid-auto-flow: column;</span>
+    <div class="container container-2">
+      <div class="item item-1 item-1-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>case1 - grid-auto-flow: row dense;</span>
+    <div class="container container-3">
+      <div class="item item-1 item-1-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>case1 - grid-auto-flow: column dense;</span>
+    <div class="container container-4">
+      <div class="item item-1 item-1-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>case2 - grid-auto-flow: row;</span>
+    <div class="container container-1">
+      <div class="item item-1 item-2-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>case2 - grid-auto-flow: column;</span>
+    <div class="container container-2">
+      <div class="item item-1 item-2-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>case2 - grid-auto-flow: row dense;</span>
+    <div class="container container-3">
+      <div class="item item-1 item-2-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>case2 - grid-auto-flow: column dense;</span>
+    <div class="container container-4">
+      <div class="item item-1 item-2-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+</body>
+
+</html>

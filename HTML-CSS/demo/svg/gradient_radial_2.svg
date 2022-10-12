@@ -1,0 +1,16 @@
+<svg version="1.1" baseProfile="full" width="220" height="220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="Gradient"
+            cx="0.5" cy="0.5" r="0.5" fx="0.25" fy="0.25">
+      <stop offset="0%" stop-color="red"/>
+      <stop offset="100%" stop-color="blue"/>
+    </radialGradient>
+  </defs>
+  <rect x="10" y="10" rx="15" ry="15" width="200" height="200"
+        fill="url(#Gradient)" stroke="black" stroke-width="2"/>
+  <circle cx="110" cy="110" r="100" fill="transparent" stroke="white" stroke-width="2"/>
+  <circle cx="60" cy="60" r="2" fill="white" stroke="white"/>
+  <circle cx="110" cy="110" r="2" fill="white" stroke="white"/>
+  <text x="63" y="63" fill="white" font-family="sans-serif" font-size="12pt">(fx,fy)</text>
+  <text x="113" y="113" fill="white" font-family="sans-serif" font-size="12pt">(cx,cy)</text>
+</svg>

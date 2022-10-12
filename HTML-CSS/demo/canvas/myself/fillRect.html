@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>canvas</title>
+  <style>
+    .canvas {
+      border: 1px solid #000000;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas_first" width="600" height="600" class="canvas"></canvas>
+
+  <canvas id="canvas_two" width="600" height="600" class="canvas"></canvas>
+
+  <canvas id="canvas_three" width="600" height="600" class="canvas"></canvas>
+
+  <canvas id="canvas_four" width="600" height="600" class="canvas"></canvas>
+
+  <canvas id="canvas_five" width="600" height="600" class="canvas"></canvas>
+
+  <canvas id="canvas_six" width="600" height="600" class="canvas"></canvas>
+  <script>
+    let canvas = document.querySelector("#canvas_first");
+    // 创建 context 对象
+    let ctx = canvas.getContext("2d", { alpha: false });
+
+    ctx.fillStyle = "blue";
+    // 填充
+    // params: x, y, width, height
+    ctx.fillRect(450, 0, 150, 75);
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(300, 0, 150, 75);
+    ctx.fillRect(450, 75, 150, 75);
+
+    ctx.fillStyle = "cyan";
+    ctx.fillRect(150, 0, 150, 75);
+    ctx.fillRect(300, 75, 150, 75);
+    ctx.fillRect(450, 150, 150, 75);
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(0, 0, 150, 75);
+    ctx.fillRect(150, 75, 150, 75);
+    ctx.fillRect(300, 150, 150, 75);
+    ctx.fillRect(450, 225, 150, 75);
+
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(0, 75, 150, 75);
+    ctx.fillRect(150, 150, 150, 75);
+    ctx.fillRect(300, 225, 150, 75);
+    ctx.fillRect(450, 300, 150, 75);
+
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 150, 150, 75);
+    ctx.fillRect(150, 225, 150, 75);
+    ctx.fillRect(300, 300, 150, 75);
+    ctx.fillRect(450, 375, 150, 75);
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(0, 225, 150, 75);
+    ctx.fillRect(150, 300, 150, 75);
+    ctx.fillRect(300, 375, 150, 75);
+    ctx.fillRect(450, 450, 150, 75);
+
+    ctx.fillStyle = "cyan";
+    ctx.fillRect(0, 300, 150, 75);
+    ctx.fillRect(150, 375, 150, 75);
+    ctx.fillRect(300, 450, 150, 75);
+    ctx.fillRect(450, 525, 150, 75);
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(0, 375, 150, 75);
+    ctx.fillRect(150, 450, 150, 75);
+    ctx.fillRect(300, 525, 150, 75);
+
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(0, 450, 150, 75);
+    ctx.fillRect(150, 525, 150, 75);
+
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 525, 150, 75);
+
+
+  </script>
+  <script>
+    let canvas_two = document.querySelector("#canvas_two");
+
+    let ctx_two = canvas_two.getContext("2d", { alpha: false });
+    for (var i = 0; i < 12; i++) {
+      for (var j = 0; j < 12; j++) {
+        ctx_two.fillStyle = 'rgb(' + (255 - 21.25 * i) + ',' + (255 - 21.25 * j) + ',0)';
+        ctx_two.fillRect(j * 50, i * 50, 50, 50);
+      }
+    }
+  </script>
+  <script>
+    let canvas_three = document.querySelector("#canvas_three");
+    let ctx_three = canvas_three.getContext("2d", { alpha: false });
+    const THREE_MOIUNT = 24;
+    const THREE_STEP = 255 / THREE_MOIUNT;
+    // const THREE_WH = 600 / THREE_MOIUNT;
+    const THREE_WH = 5;
+    const THREE_COLORS = [];
+
+    for (var x = 0; x < THREE_MOIUNT; x++) {
+      for (var y = 0; y < THREE_MOIUNT; y++) {
+        for (var z = 0; z < THREE_MOIUNT; z++) {
+          let str = 'rgb(' + (255 - THREE_STEP * x) + ',' + (255 - THREE_STEP * y) + ',' + (255 - THREE_STEP * z) + ')';
+          THREE_COLORS.push(str);
+        }
+      }
+    }
+    // 24^3 < 120^2
+    for (let i = 0; i < 120; i++) {
+      for (let j = 0; j < 120; j++) {
+        ctx_three.fillStyle = THREE_COLORS[(i + 1) * (j + 1)];
+        ctx_three.fillRect(j * THREE_WH, i * THREE_WH, THREE_WH, THREE_WH);
+      }
+    }
+  </script>
+  <script>
+    let canvas_four = document.querySelector("#canvas_four");
+    let ctx_four = canvas_four.getContext("2d", { alpha: false });
+    const FOUR_MOIUNT = 24 * 2;
+    const FOUR_STEP = 255 / FOUR_MOIUNT;
+    const FOUR_WH = 5 / 2;
+    const FOUR_COLORS = [];
+    for (var x = 0; x < FOUR_MOIUNT; x++) {
+      for (var y = 0; y < FOUR_MOIUNT; y++) {
+        for (var z = 0; z < FOUR_MOIUNT; z++) {
+          let str = 'rgb(' + (255 - FOUR_STEP * x) + ',' + (255 - FOUR_STEP * y) + ',' + (255 - FOUR_STEP * z) + ')';
+          FOUR_COLORS.push(str);
+        }
+      }
+    }
+    // 48^3 < 333^2
+    for (let i = 0; i < 333; i++) {
+      for (let j = 0; j < 333; j++) {
+        ctx_four.fillStyle = FOUR_COLORS[(i + 1) * (j + 1)];
+        ctx_four.fillRect(j * FOUR_WH, i * FOUR_WH, FOUR_WH, FOUR_WH);
+      }
+    }
+  </script>
+  <script>
+    let canvas_five = document.querySelector("#canvas_five");
+    let ctx_five = canvas_five.getContext("2d", { alpha: false });
+    const FIVE_MOIUNT = 24 * 2 * 2;
+    const FIVE_STEP = 255 / FIVE_MOIUNT;
+    const FIVE_WH = 5 / 2 / 2;
+    const FIVE_COLORS = [];
+    for (var x = 0; x < FIVE_MOIUNT; x++) {
+      for (var y = 0; y < FIVE_MOIUNT; y++) {
+        for (var z = 0; z < FIVE_MOIUNT; z++) {
+          let str = 'rgb(' + (255 - FIVE_STEP * x) + ',' + (255 - FIVE_STEP * y) + ',' + (255 - FIVE_STEP * z) + ')';
+          FIVE_COLORS.push(str);
+        }
+      }
+    }
+    // 96^3 < 941^2
+    for (let i = 0; i < 941; i++) {
+      for (let j = 0; j < 941; j++) {
+        ctx_five.fillStyle = FIVE_COLORS[(i + 1) * (j + 1)];
+        ctx_five.fillRect(j * FIVE_WH, i * FIVE_WH, FIVE_WH, FIVE_WH);
+      }
+    }
+  </script>
+  <script>
+    let canvas_six = document.querySelector("#canvas_six");
+    let ctx_six = canvas_six.getContext("2d", { alpha: false });
+    const SIX_MOIUNT = 24 * 2 * 2 * 2;
+    const SIX_STEP = 255 / SIX_MOIUNT;
+    const SIX_WH = 5 / 2 / 2 / 2;
+    const SIX_COLORS = [];
+    for (var x = 0; x < SIX_MOIUNT; x++) {
+      for (var y = 0; y < SIX_MOIUNT; y++) {
+        for (var z = 0; z < SIX_MOIUNT; z++) {
+          let str = 'rgb(' + (255 - SIX_STEP * x) + ',' + (255 - SIX_STEP * y) + ',' + (255 - SIX_STEP * z) + ')';
+          SIX_COLORS.push(str);
+        }
+      }
+    }
+    // 192^3 < 2661^2
+    for (let i = 0; i < 2661; i++) {
+      for (let j = 0; j < 2661; j++) {
+        ctx_six.fillStyle = SIX_COLORS[(i + 1) * (j + 1)];
+        ctx_six.fillRect(j * SIX_WH, i * SIX_WH, SIX_WH, SIX_WH);
+      }
+    }
+  </script>
+</body>
+
+</html>

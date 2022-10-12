@@ -1,0 +1,9 @@
+<svg version="1.1" baseProfile="full" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="150" cy="150" r="140" stroke="violet" stroke-width="20" fill="none" />
+  <circle cx="150" cy="150" r="120" stroke="indigo" stroke-width="20" fill="none" />
+  <circle cx="150" cy="150" r="100" stroke="blue" stroke-width="20" fill="none" />
+  <circle cx="150" cy="150" r="80" stroke="green" stroke-width="20" fill="none" />
+  <circle cx="150" cy="150" r="60" stroke="yellow" stroke-width="20" fill="none" />
+  <circle cx="150" cy="150" r="40" stroke="orange" stroke-width="20" fill="none" />
+  <circle cx="150" cy="150" r="20" stroke="red" stroke-width="20" fill="none" />
+</svg>

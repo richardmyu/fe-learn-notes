@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <style>
+    .canvas {
+      border: 1px solid #000000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stage">
+    <canvas id="canvas-first" width="600" height="600" class="canvas"></canvas>
+
+    <canvas id="canvas-two" width="600" height="600" class="canvas"></canvas>
+
+    <canvas id="canvas-three" width="600" height="600" class="canvas"></canvas>
+
+    <canvas id="canvas-four" width="600" height="600" class="canvas"></canvas>
+
+    <canvas id="canvas-five" width="600" height="600" class="canvas"></canvas>
+  </div>
+  <script>
+    const PI = Math.PI;
+    const sqrt_three = Math.sqrt(3);
+    const sqrt_two = Math.sqrt(2);
+    const W = "#ffffff";
+    const B = "#000000";
+
+    let canvas = document.querySelector("#canvas-first");
+    let ctx = canvas.getContext("2d");
+
+    // 绘制圆 arc(x,y,r,start,stop,false)
+    ctx.beginPath();
+    ctx.arc(300, 300, 250, 0, 2 * PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(300, 300, 200, 0, 2 * PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(300, 300, 150, 0, 2 * PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(300, 300, 100, 0, 2 * PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(300, 300, 50, 0, 2 * PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(300, 300, 10, 0, 2 * PI);
+    ctx.stroke();
+  </script>
+  <script>
+    /***
+     * 60° WIFI
+     * */
+
+    let canvas_two = document.querySelector("#canvas-two");
+    let ctx_two = canvas_two.getContext("2d");
+    ctx_two.beginPath();
+    ctx_two.arc(300, 300, 250, 4 / 3 * PI, 5 / 3 * PI);
+    ctx_two.stroke();
+    ctx_two.beginPath();
+    ctx_two.arc(300, 300, 200, 4 / 3 * PI, 5 / 3 * PI);
+    ctx_two.stroke();
+    ctx_two.beginPath();
+    ctx_two.arc(300, 300, 150, 4 / 3 * PI, 5 / 3 * PI);
+    ctx_two.stroke();
+    ctx_two.beginPath();
+    ctx_two.arc(300, 300, 100, 4 / 3 * PI, 5 / 3 * PI);
+    ctx_two.stroke();
+    ctx_two.beginPath();
+    ctx_two.arc(300, 300, 50, 4 / 3 * PI, 5 / 3 * PI);
+    ctx_two.stroke();
+
+    ctx_two.beginPath();
+    ctx_two.arc(300, 300, 20, 4 / 3 * PI, 5 / 3 * PI);
+    ctx_two.fill();
+    ctx_two.beginPath();
+    ctx_two.moveTo(300, 300);
+    ctx_two.lineTo(290, 300 - 20 / 2 * sqrt_three);
+    ctx_two.lineTo(310, 300 - 20 / 2 * sqrt_three);
+    ctx_two.fill();
+  </script>
+  <script>
+    /***
+     * 90° WIFI
+     * */
+    let canvas_three = document.querySelector("#canvas-three");
+    let ctx_three = canvas_three.getContext("2d");
+
+    ctx_three.beginPath();
+    ctx_three.arc(300, 300, 250, 1.25 * PI, 1.75 * PI);
+    ctx_three.stroke();
+    ctx_three.beginPath();
+    ctx_three.arc(300, 300, 200, 1.25 * PI, 1.75 * PI);
+    ctx_three.stroke();
+    ctx_three.beginPath();
+    ctx_three.arc(300, 300, 150, 1.25 * PI, 1.75 * PI);
+    ctx_three.stroke();
+    ctx_three.beginPath();
+    ctx_three.arc(300, 300, 100, 1.25 * PI, 1.75 * PI);
+    ctx_three.stroke();
+    ctx_three.beginPath();
+    ctx_three.arc(300, 300, 50, 1.25 * PI, 1.75 * PI);
+    ctx_three.stroke();
+
+    ctx_three.beginPath();
+    ctx_three.arc(300, 300, 20, 1.25 * PI, 1.75 * PI);
+    ctx_three.fill();
+    ctx_three.beginPath();
+    ctx_three.moveTo(300, 300);
+    ctx_three.lineTo(300 - 20 / sqrt_two, 300 - 20 / sqrt_two);
+    ctx_three.lineTo(300 + 20 / sqrt_two, 300 - 20 / sqrt_two);
+    ctx_three.fill();
+  </script>
+  <script>
+    /***
+     * 90° WIFI - 粗线版
+     * */
+    let canvas_four = document.querySelector("#canvas-four");
+    let ctx_four = canvas_four.getContext("2d");
+
+    ctx_four.beginPath();
+    ctx_four.fillStyle = B;
+    ctx_four.arc(300, 300, 250, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+    ctx_four.beginPath();
+    ctx_four.fillStyle = W;
+    ctx_four.arc(300, 300, 240, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+
+    ctx_four.beginPath();
+    ctx_four.fillStyle = B;
+    ctx_four.arc(300, 300, 200, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+    ctx_four.beginPath();
+    ctx_four.fillStyle = W;
+    ctx_four.arc(300, 300, 190, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+
+    ctx_four.beginPath();
+    ctx_four.fillStyle = B;
+    ctx_four.arc(300, 300, 150, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+    ctx_four.beginPath();
+    ctx_four.fillStyle = W;
+    ctx_four.arc(300, 300, 140, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+
+    ctx_four.beginPath();
+    ctx_four.fillStyle = B;
+    ctx_four.arc(300, 300, 100, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+    ctx_four.beginPath();
+    ctx_four.fillStyle = W;
+    ctx_four.arc(300, 300, 91, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+
+    ctx_four.beginPath();
+    ctx_four.fillStyle = B;
+    ctx_four.arc(300, 300, 60, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+    ctx_four.beginPath();
+    ctx_four.fillStyle = W;
+    ctx_four.arc(300, 300, 52, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+
+    ctx_four.beginPath();
+    ctx_four.fillStyle = B;
+    ctx_four.arc(300, 300, 30, 1.25 * PI, 1.75 * PI);
+    ctx_four.fill();
+    ctx_four.beginPath();
+    ctx_four.moveTo(300, 300);
+    ctx_four.lineTo(300 - 30 / sqrt_two, 300 - 30 / sqrt_two);
+    ctx_four.lineTo(300 + 30 / sqrt_two, 300 - 30 / sqrt_two);
+    ctx_four.fill();
+  </script>
+  <script>
+    /***
+     * 90° WIFI - 粗线版 - 圆润版
+     * */
+
+    let canvas_five = document.querySelector("#canvas-five");
+    let ctx_five = canvas_five.getContext("2d");
+    // ctx_five.strokeStyle = W;
+
+    // 第一信号-暗
+    ctx_five.beginPath();
+    ctx_five.fillStyle = B;
+    ctx_five.arc(300, 300, 250, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 250 / sqrt_two, 300 - 250 / sqrt_two);
+    ctx_five.lineTo(300 + 250 / sqrt_two, 300 - 250 / sqrt_two);
+    ctx_five.fill();
+    // 第一信号-明
+    ctx_five.beginPath();
+    ctx_five.fillStyle = W;
+    ctx_five.arc(300, 300, 240, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 240 / sqrt_two, 300 - 240 / sqrt_two);
+    ctx_five.lineTo(300 + 240 / sqrt_two, 300 - 240 / sqrt_two);
+    ctx_five.fill();
+
+    // 第二信号-暗
+    ctx_five.beginPath();
+    ctx_five.fillStyle = B;
+    ctx_five.arc(300, 300, 200, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 200 / sqrt_two, 300 - 200 / sqrt_two);
+    ctx_five.lineTo(300 + 200 / sqrt_two, 300 - 200 / sqrt_two);
+    ctx_five.fill();
+    // 第二信号-明
+    ctx_five.beginPath();
+    ctx_five.fillStyle = W;
+    ctx_five.arc(300, 300, 190, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 190 / sqrt_two, 300 - 190 / sqrt_two);
+    ctx_five.lineTo(300 + 190 / sqrt_two, 300 - 190 / sqrt_two);
+    ctx_five.fill();
+
+    // 第三信号-暗
+    ctx_five.beginPath();
+    ctx_five.fillStyle = B;
+    ctx_five.arc(300, 300, 150, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 150 / sqrt_two, 300 - 150 / sqrt_two);
+    ctx_five.lineTo(300 + 150 / sqrt_two, 300 - 150 / sqrt_two);
+    ctx_five.fill();
+    // 第三信号-明
+    ctx_five.beginPath();
+    ctx_five.fillStyle = W;
+    ctx_five.arc(300, 300, 140, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 140 / sqrt_two, 300 - 140 / sqrt_two);
+    ctx_five.lineTo(300 + 140 / sqrt_two, 300 - 140 / sqrt_two);
+    ctx_five.fill();
+
+    // 第四信号-暗
+    ctx_five.beginPath();
+    ctx_five.fillStyle = B;
+    ctx_five.arc(300, 300, 100, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 100 / sqrt_two, 300 - 100 / sqrt_two);
+    ctx_five.lineTo(300 + 100 / sqrt_two, 300 - 100 / sqrt_two);
+    ctx_five.fill();
+    // 第四信号-明
+    ctx_five.beginPath();
+    ctx_five.fillStyle = W;
+    ctx_five.arc(300, 300, 91, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 91 / sqrt_two, 300 - 91 / sqrt_two);
+    ctx_five.lineTo(300 + 91 / sqrt_two, 300 - 91 / sqrt_two);
+    ctx_five.fill();
+
+    // 第五信号-暗
+    ctx_five.beginPath();
+    ctx_five.fillStyle = B;
+    ctx_five.arc(300, 300, 60, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 60 / sqrt_two, 300 - 60 / sqrt_two);
+    ctx_five.lineTo(300 + 60 / sqrt_two, 300 - 60 / sqrt_two);
+    ctx_five.fill();
+    // 第五信号-明
+    ctx_five.beginPath();
+    ctx_five.fillStyle = W;
+    ctx_five.arc(300, 300, 52, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 52 / sqrt_two, 300 - 52 / sqrt_two);
+    ctx_five.lineTo(300 + 52 / sqrt_two, 300 - 52 / sqrt_two);
+    ctx_five.fill();
+
+    ctx_five.beginPath();
+    ctx_five.fillStyle = B;
+    ctx_five.arc(300, 300, 30, 1.25 * PI, 1.75 * PI);
+    ctx_five.fill();
+    ctx_five.beginPath();
+    ctx_five.moveTo(300, 300);
+    ctx_five.lineTo(300 - 30 / sqrt_two, 300 - 30 / sqrt_two);
+    ctx_five.lineTo(300 + 30 / sqrt_two, 300 - 30 / sqrt_two);
+    ctx_five.fill();
+  </script>
+</body>
+
+</html>

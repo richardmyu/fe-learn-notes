@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grid line</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    /*
+    * 可以使用方括号，
+    * 指定每一根网格线的名字，
+    * 方便以后的引用
+    *
+    * 网格布局允许同一根线有多个名字，
+    * 比如 [fifth-line row-5]
+    */
+    .container {
+      grid-template-columns: [c1] 100px [c2] 100px [c3] auto [c4];
+      grid-template-rows: [c1] 100px [c2] 100px [c3] auto [c4];
+    }
+  </style>
+</head>
+
+<body>
+  <span>grid-template-columns: [c1] 100px [c2] 100px [c3] auto [c4];</span>
+  <div class="container">
+    <div class="item item-1">1</div>
+    <div class="item item-2">2</div>
+    <div class="item item-3">3</div>
+    <div class="item item-4">4</div>
+    <div class="item item-5">5</div>
+    <div class="item item-6">6</div>
+    <div class="item item-7">7</div>
+    <div class="item item-8">8</div>
+    <div class="item item-9">9</div>
+  </div>
+</body>
+
+</html>

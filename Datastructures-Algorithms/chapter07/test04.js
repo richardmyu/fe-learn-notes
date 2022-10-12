@@ -1,9 +1,11 @@
-//1.分离链接
-//为散列表的每一个位置创建一个链表并将元素存储在里面
-//优点：最简单
-//缺点：需要额外的空间
+/*
+* 分离链接
+* 为散列表的每一个位置创建一个链表并将元素存储在里面
+* 优点：最简单
+* 缺点：需要额外的空间
+*/
 
-//引入LinkedList
+// 引入LinkedList
 let LinkedList = (function () {
   class Node {
     constructor(ele) {
@@ -126,7 +128,7 @@ let LinkedList = (function () {
 function HashTableSeparateChaining() {
   let table = [];
 
-  //为了实现分离链接，添加一个新的辅助类：ValuePair
+  // 为了实现分离链接，添加一个新的辅助类：ValuePair
   let ValuePair = function (key, value) {
     this.key = key;
     this.value = value;
@@ -147,7 +149,7 @@ function HashTableSeparateChaining() {
     return loseloseHashCode(key);
   };
 
-  //重写put、get、remove
+  // 重写 put、get、remove
   this.put = function (key, value) {
     let position = hashCode(key);
     console.log(position + ' - ' + key);
@@ -204,25 +206,27 @@ function HashTableSeparateChaining() {
 };
 
 let hash = new HashTableSeparateChaining();
-hash.put('Gandalf', 'gandalf@email.com');//19 - Gandalf
-hash.put('John', 'john@email.com');//29 - John
-hash.put('Tyrion', 'tyrion@eamil.com');//16 - Tyrion
-hash.put('Aaron', 'aaron@email.com');//16 - Aaron
-hash.put('Donna', 'donna@email.com');//15 - Donna
-hash.put('Ana', 'Ana@email.com');//13 - Ana
-hash.put('Jonathan', 'jonathan@email.com');//5 - Jonathan
-hash.put('Jamie', 'Jamie@email.com');//5 - Jamie
-hash.put('Sue', 'sue@email.com');//5 - Sue
-hash.put('Mindy', 'mindy@email.com');//32 - Mindy
-hash.put('Paul', 'paul@email.com');//32 - Paul
-hash.put('Nathan', 'nathan@email.com');//10 - Nathan
+hash.put('Gandalf', 'gandalf@email.com'); // 19 - Gandalf
+hash.put('John', 'john@email.com'); // 29 - John
+hash.put('Tyrion', 'tyrion@eamil.com'); // 16 - Tyrion
+hash.put('Aaron', 'aaron@email.com'); // 16 - Aaron
+hash.put('Donna', 'donna@email.com'); // 15 - Donna
+hash.put('Ana', 'Ana@email.com'); // 13 - Ana
+hash.put('Jonathan', 'jonathan@email.com'); // 5 - Jonathan
+hash.put('Jamie', 'Jamie@email.com'); // 5 - Jamie
+hash.put('Sue', 'sue@email.com'); // 5 - Sue
+hash.put('Mindy', 'mindy@email.com'); // 32 - Mindy
+hash.put('Paul', 'paul@email.com'); // 32 - Paul
+hash.put('Nathan', 'nathan@email.com'); // 10 - Nathan
 
 hash.print();
-//[Jonathan - jonathan@email.com],[Jamie - Jamie@email.com],[Sue - sue@email.com]
-// test04.js:199 [Nathan - nathan@email.com]
-// test04.js:199 [Ana - Ana@email.com]
-// test04.js:199 [Donna - donna@email.com]
-// test04.js:199 [Tyrion - tyrion@eamil.com],[Aaron - aaron@email.com]
-// test04.js:199 [Gandalf - gandalf@email.com]
-// test04.js:199 [John - john@email.com]
-// test04.js:199 [Mindy - mindy@email.com],[Paul - paul@email.com]
+/*
+* [Jonathan - jonathan@email.com],[Jamie - Jamie@email.com],[Sue - sue@email.com]
+* test04.js:199 [Nathan - nathan@email.com]
+* test04.js:199 [Ana - Ana@email.com]
+* test04.js:199 [Donna - donna@email.com]
+* test04.js:199 [Tyrion - tyrion@eamil.com],[Aaron - aaron@email.com]
+* test04.js:199 [Gandalf - gandalf@email.com]
+* test04.js:199 [John - john@email.com]
+* test04.js:199 [Mindy - mindy@email.com],[Paul - paul@email.com]
+*/

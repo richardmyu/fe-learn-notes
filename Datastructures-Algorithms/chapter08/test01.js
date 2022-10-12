@@ -1,10 +1,11 @@
-//BST 二叉搜索树
-//和链表一样，使用指针来表示节点之间的关系（术语为：边）
-//键，是树相关的术语中对于节点的称呼
-//BST特点:
-// 左侧存储比父节点小的数据，
-// 右侧存储大于或等于父节点的数据
-
+/*
+* BST 二叉搜索树
+*   和链表一样，使用指针来表示节点之间的关系（术语为：边）
+*   键，是树相关的术语中对于节点的称呼
+* BST特点:
+*  左侧存储比父节点小的数据，
+*  右侧存储大于或等于父节点的数据
+*/
 function BinarySearchTree() {
   let Node = function (key) {
     this.key = key;
@@ -19,19 +20,20 @@ function BinarySearchTree() {
 
   this.insert = function (key) {
     let newNode = new Node(key);
-    //空
+    // 空
     if (root === null) {
       root = newNode;
     } else {
-      //非空，调用insertNode
+      // 非空，调用insertNode
       insertNode(root, newNode);
     }
   };
-  //私有辅助函数：将节点添加到非根结点位置
+
+  // 私有辅助函数：将节点添加到非根结点位置
   let insertNode = function (node, newNode) {
-    //node 父节点
-    //newNode 新增子节点
-    //占位顺序：父节点 --》 左子节点 --》 右子节点
+    // node 父节点
+    // newNode 新增子节点
+    // 占位顺序：父节点 --》 左子节点 --》 右子节点
     if (newNode.key < node.key) {
       if (node.left === null) {
         node.left = newNode;
@@ -47,26 +49,30 @@ function BinarySearchTree() {
     }
   };
 
-  /********************
+  /*
+  **********************
    *      中序遍历      *
    ********************
    *左 ---》 中 ---》 右
-   ******************** */
+   ********************
+   */
 
   this.inOrderTraverse = function (callback) {
-    //回调函数用来定义对遍历到每个节点进行的操作(也叫访问者模式)
+    // 回调函数用来定义对遍历到每个节点进行的操作(也叫访问者模式)
     inOrderTraverseNode(root, callback);
   };
 
-  //辅助函数
+  // 辅助函数
   let inOrderTraverseNode = function (node, callback) {
-    //根据传入节点是否是null，来决定是否继续执行递归
+    // 根据传入节点是否是null，来决定是否继续执行递归
     if (node !== null) {
-      //如果父节点不是null
+      // 如果父节点不是null
       // 左
       inOrderTraverseNode(node.left, callback);
+
       // 中
       callback(node.key);
+
       // 右
       inOrderTraverseNode(node.right, callback);
     }
@@ -122,7 +128,7 @@ function BinarySearchTree() {
     return minNode(root);
   };
 
-  //minNode可以从任意节点查找min
+  // minNode 可以从任意节点查找 min
   let minNode = function (node) {
     if (node) {
       while (node && node.left !== null) {
@@ -192,19 +198,19 @@ function BinarySearchTree() {
       return node;
     } else {
 
-      //第一种情况--一个叶节点
+      // 第一种情况--一个叶节点
       if (node.left === null && node.right === null) {
-        //移除
+        // 移除
         node = null;
-        //注意指针，返回null将父节点指针赋值为null
+        // 注意指针，返回 null 将父节点指针赋值为 null
         return node;
       }
 
-      //第二种情况--只有一个子节点
+      // 第二种情况--只有一个子节点
       if (node.left === null) {
-        //父节点直接执行子节点
+        // 父节点直接执行子节点
         node = node.right;
-        //返回更新节点
+        // 返回更新节点
         return node;
       } else if (node.right === null) {
         node = node.left;
@@ -218,14 +224,14 @@ function BinarySearchTree() {
         return node;
       };
 
-      //第三种情况--有两个子节点
-      //1.找到右侧树的最小节点
+      // 第三种情况--有两个子节点
+      // 1.找到右侧树的最小节点
       let aux = findMinNode(node.right);
-      //2.用最小节点更新该节点
+      // 2.用最小节点更新该节点
       node.key = aux.key;
-      //3.移除原最小节点
+      // 3.移除原最小节点
       node.right = removeNode(node.right, aux.key);
-      //4.返回更新后的引用
+      // 4.返回更新后的引用
       return node;
     }
   };
@@ -251,13 +257,13 @@ tree.insert(6);
 
 console.log('***** in-order transverse *****');
 
-//定义callback
+// 定义callback
 function printNode(value) {
   console.log(value);
 }
 
 tree.inOrderTraverse(printNode);
-//3 5 6 7 8 9 10 11 12 13 14 15 18 20 25
+// 3 5 6 7 8 9 10 11 12 13 14 15 18 20 25
 
 console.log('***** pre-order transverse *****');
 tree.preOrderTraverse(printNode);

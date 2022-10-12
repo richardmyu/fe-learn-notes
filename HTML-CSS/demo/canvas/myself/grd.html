@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="stage">
+    <canvas id="myCanvas" width="600" height="400" style="border:1px solid #000000;"></canvas>
+  </div>
+  <script>
+    let canvas = document.querySelector("#myCanvas");
+    let ctx = canvas.getContext("2d");
+
+    // 线性渐变 createLinearGradient(x,y,x1,y1)
+    // 创建渐变
+    var grd = ctx.createLinearGradient(0, 0, 200, 0);
+    grd.addColorStop(0, "red");
+    grd.addColorStop(1, "yellow");
+
+    // 填充渐变
+    ctx.fillStyle = grd;
+    ctx.fillRect(10, 10, 150, 80);
+
+    // 径向渐变 createRadialGradient(x,y,r,x1,y1,r1)
+    // 创建渐变
+    var grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
+    grd.addColorStop(0, 'red');
+    grd.addColorStop(1, 'yellow');
+    // 填充渐变
+    ctx.fillStyle = grd;
+    ctx.fillRect(10, 100, 150, 80);
+  </script>
+</body>
+
+</html>

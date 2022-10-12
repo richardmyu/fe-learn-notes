@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .canvas {
+      border: 1px solid #666666;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="600" height="500"></canvas>
+  <script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+
+    let path_fir = new Path2D();
+    path_fir.rect(150, 150, 100, 100);
+
+    let path_two = new Path2D(path_fir);
+    path_two.moveTo(220, 60);
+    path_two.arc(170, 60, 50, 0, 2 * Math.PI);
+
+    ctx.stroke(path_two);
+
+    // svg
+    // M10 10：路径将会移动到点 (10, 10)
+    // h 80：然后向右侧水平移动 80 个点
+    // v 80：然后向下 80 个点
+    // h -80：然后向左 80个点
+    // z: 最后回到起始点
+    let p = new Path2D("M10 10 h 80 v 80 h -80 Z");
+    ctx.fill(p);
+
+    // addPath
+    // Create a new path with a rect
+    let p1 = new Path2D();
+    p1.rect(200, 300, 100, 100);
+
+    // Create another path with a rect
+    let p2 = new Path2D();
+    p2.rect(200, 300, 100, 100);
+
+    // Create transformation matrix that moves vertically 300 points to the right
+    let m = document.createElementNS("http://www.w3.org/2000/svg", "svg").createSVGMatrix();
+    m.a = 1;
+    m.b = 0;
+    m.c = 0;
+    m.d = 1;
+    m.e = 300;
+    m.f = 0;
+
+    // add the second path to the first path
+    p1.addPath(p2, m);
+
+    // Finally, fill the first path onto the canvas
+    ctx.fill(p1);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+<svg version="1.1" baseProfile="full" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="10" cy="80" r="2" fill="red"></circle>
+  <circle cx="52.5" cy="10" r="2" fill="red"></circle>
+  <circle cx="95" cy="80" r="2" fill="red"></circle>
+  <line x1="10" x2="52.5" y1="80" y2="10" stroke="red" />
+  <line x1="52.5" x2="95" y1="10" y2="80" stroke="red" />
+  <path d="M10 80 Q 52.5 10, 95 80 T 180 80" stroke="black" fill="transparent" />
+  <circle cx="95" cy="80" r="2" fill="red"></circle>
+  <circle cx="137.5" cy="150" r="2" fill="red"></circle>
+  <circle cx="180" cy="80" r="2" fill="red"></circle>
+  <line x1="95" x2="137.5" y1="80" y2="150" stroke="blue" />
+  <line x1="137.5" x2="180" y1="150" y2="80" stroke="red" />
+</svg>

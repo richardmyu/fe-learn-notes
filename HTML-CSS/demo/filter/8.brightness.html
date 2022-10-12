@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>brightness</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .brightness-three-one{
+            -webkit-filter: brightness(67%);
+            filter: brightness(67%);
+        }
+        .brightness-three-two{
+            -webkit-filter: brightness(34%);
+            filter: brightness(34%);
+        }
+        .brightness-three-end{
+            -webkit-filter: brightness(1%);
+            filter: brightness(1%);
+        }
+        .brightness-three-one-over{
+            -webkit-filter: brightness(200%);
+            filter: brightness(200%);
+        }
+        .brightness-three-two-over{
+            -webkit-filter: brightness(500%);
+            filter: brightness(500%);
+        }
+        .brightness-three-end-over{
+            -webkit-filter: brightness(1000%);
+            filter: brightness(1000%);
+        }
+    </style>
+</head>
+<body>
+    <div class="stage">
+        <h1>filter: brightness; 亮度</h1>
+        <p>大概到 200% 勉强还是正常，当然也可以到 10000%，说实话，亮瞎眼...</p>
+        <div class="demo">
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>原图.jpg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-one" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>brightness: 67%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-two" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>brightness: 34%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-end" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>brightness: 1%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>原图.jpg</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-one-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>brightness: 200%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-two-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>brightness: 500%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-end-over" src="./imgs/test-jpg-01.jpg" alt="">
+                    </div>
+                    <p>brightness: 1000%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>原图.png</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-one" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>brightness: 67%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-two" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>brightness: 34%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-end" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>brightness: 1%</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                        <img src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>原图.png</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-one-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>brightness: 200%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-two-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>brightness: 500%</p>
+                </li>
+                <li>
+                    <div>
+                        <img class="brightness-three-end-over" src="./imgs/weather.png" alt="">
+                    </div>
+                    <p>brightness: 1000%</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

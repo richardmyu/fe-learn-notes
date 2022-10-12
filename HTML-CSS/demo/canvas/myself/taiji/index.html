@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <script>
+    const PI = Math.PI;
+    const YING = "#000000";
+    const YANG = "#ffffff";
+    let canvas = document.querySelector("#canvas");
+    let ctx = canvas.getContext("2d");
+
+    ctx.beginPath();
+    ctx.arc(300, 300, 200, 0, 2 * PI);
+    ctx.stroke();
+
+    // ying
+    ctx.fillStyle = YING;
+    ctx.beginPath();
+    ctx.arc(300, 400, 100, 1.5 * PI, 0.5 * PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(300, 300, 200, 0.5 * PI, 1.5 * PI);
+    ctx.fill();
+    ctx.fillStyle = YANG;
+    ctx.beginPath();
+    ctx.arc(300, 400, 20, 0, 2 * PI);
+    ctx.fill();
+
+    // yang
+    ctx.beginPath();
+    ctx.fillStyle = YANG;
+    ctx.arc(300, 200, 100, 0.5 * PI, 1.5 * PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.fillStyle = YING;
+    ctx.arc(300, 200, 20, 0, 2 * PI);
+    ctx.fill();
+  </script>
+</body>
+
+</html>

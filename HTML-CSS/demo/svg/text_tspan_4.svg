@@ -1,0 +1,26 @@
+<svg version="1.1" baseProfile="full" width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <text x="10" y="20">
+    <tspan font-size="12">【textLength="0"】</tspan>
+  </text>
+  <text x="10" y="40">
+    <tspan textLength="0">Hello World!</tspan>
+  </text>
+  <text x="10" y="60">
+    <tspan font-size="12">【textLength="50"】</tspan>
+  </text>
+  <text x="10" y="80">
+    <tspan textLength="50">Hello World!</tspan>
+  </text>
+  <text x="10" y="100">
+    <tspan font-size="12">【textLength="120"】</tspan>
+  </text>
+  <text x="10" y="120">
+    <tspan textLength="120">Hello World!</tspan>
+  </text>
+  <text x="10" y="140">
+    <tspan font-size="12">【textLength="300"】</tspan>
+  </text>
+  <text x="10" y="160">
+    <tspan textLength="300">Hello World!</tspan>
+  </text>
+</svg>

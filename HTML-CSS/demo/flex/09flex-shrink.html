@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>flex-shrink</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      h3 {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .stage {
+        margin: 0 auto 50px;
+        width: 80%;
+        border: 1px solid gray;
+        padding: 30px;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 5px;
+      }
+      .stage .item {
+        width: 400px;
+        height: 30px;
+        line-height: 30px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .stage1 .item1 {
+        background: red;
+        flex-shrink: 0;
+      }
+      .stage1 .item2 {
+        background: orange;
+        flex-shrink: 1;
+      }
+      .stage1 .item3 {
+        background: yellow;
+        /* flex-shrink: -1; */
+      }
+
+      .stage2 .item1 {
+        background: red;
+        flex-shrink: 1;
+      }
+      .stage2 .item2 {
+        background: orange;
+        flex-shrink: 1;
+      }
+      .stage2 .item3 {
+        background: yellow;
+        flex-shrink: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage stage1">
+      <div class="item item1">1 flex-shrink: 0;</div>
+      <div class="item item2">2 flex-shrink: 1;（默认值）</div>
+      <div class="item item3">3 </div>
+    </div>
+
+    <div class="stage stage2">
+      <div class="item item1">1 flex-shrink: 1;</div>
+      <div class="item item2">2 flex-shrink: 1;</div>
+      <div class="item item3">3 flex-shrink: 2;</div>
+    </div>
+  </body>
+</html>

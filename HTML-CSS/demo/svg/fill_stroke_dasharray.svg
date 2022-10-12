@@ -1,0 +1,82 @@
+<svg version="1.1" baseProfile="full" width="360" height="500" xmlns="http://www.w3.org/2000/svg">
+  <text x="180" y="20" font-size="16" text-anchor="middle">stroke-dasharray="5,5"</text>
+  <path
+    d="M 10 25 L 350 25"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="5,5"
+    fill="none"/>
+  <text x="180" y="55" font-size="16" text-anchor="middle">stroke-dasharray="5,10"</text>
+  <path
+    d="M 10 60 L 350 60"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="5,10"
+    fill="none"/>
+  <text x="180" y="90" font-size="16" text-anchor="middle">stroke-dasharray="10,5"</text>
+  <path
+    d="M 10 95 L 350 95"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="10,5"
+    fill="none"/>
+  <text x="180" y="125" font-size="16" text-anchor="middle">stroke-dasharray="5,1"</text>
+  <path
+    d="M 10 130 L 350 130"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="5,1"
+    fill="none"/>
+  <text x="180" y="160" font-size="16" text-anchor="middle">stroke-dasharray="1,5"</text>
+  <path
+    d="M 10 165 L 350 165"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="1,5"
+    fill="none"/>
+  <text x="180" y="195" font-size="16" text-anchor="middle">stroke-dasharray="0.9"</text>
+  <path
+    d="M 10 200 L 350 200"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="0.9"
+    fill="none"/>
+  <text x="180" y="230" font-size="16" text-anchor="middle">stroke-dasharray="15,10,5"</text>
+  <path
+    d="M 10 235 L 350 235"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="15,10,5"
+    fill="none"/>
+  <text x="180" y="265" font-size="16" text-anchor="middle">stroke-dasharray="15,10,5,10"</text>
+  <path
+    d="M 10 270 L 350 270"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="15,10,5,10"
+    fill="none"/>
+  <text x="180" y="300" font-size="16" text-anchor="middle">stroke-dasharray="15,10,5,10,15"</text>
+  <path
+    d="M 10 305 L 350 305"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="15,10,5,10,15"
+    fill="none"/>
+  <text x="180" y="335" font-size="16" text-anchor="middle">stroke-dasharray="5,5,1,5"</text>
+  <path
+    d="M 10 340 L 350 340"
+    stroke="red"
+    stroke-linecap="round"
+    stroke-width="1"
+    stroke-dasharray="5,5,1,5"
+    fill="none"/>
+</svg>

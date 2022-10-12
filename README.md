@@ -5,8 +5,3 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-support-brightgreen.svg)
 
 学习笔记，侵删。
-
----
-
-纯粹文本记录库，若有提示 demo，均可在 [
-css-and-js-animate](https://github.com/richardmyu/css-and-js-animate) 中找到。

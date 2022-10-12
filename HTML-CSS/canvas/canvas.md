@@ -680,7 +680,7 @@ canvas 的 API 可以使用下面这些类型中的一种作为图片的源：
 我们可以通过下列方法的一种来获得与 canvas 相同页面内的图片的引用：
 
 - `document.images` 集合（返回当前文档中所有 `image` 元素的集合）；
-- `document.getElementsByTagName()/document.getElementById()` 等方法；
+- `document.getElementsByTagName/document.getElementById` 等方法；
 
 #### 5.1.2.使用其它域名下的图片
 
@@ -690,13 +690,13 @@ canvas 的 API 可以使用下面这些类型中的一种作为图片的源：
 
 #### 5.1.3.使用其它 canvas 元素
 
-和引用页面内的图片类似地，用 `document.getElementsByTagName` 或 `document.getElementById` 方法来获取其它 canvas 元素。但引入的应该是已经准备好的 canvas。
+和引用页面内的图片类似地，用 `document.getElementsByTagName` 或 `document.getElementById` 方法来获取其它 `canvas` 元素。但引入的应该是已经准备好的 `canvas`。
 
-> 一个常用的应用就是将第二个 canvas  作为另一个大的 canvas 的缩略图。
+> 一个常用的应用就是将第二个 `canvas`  作为另一个大的 `canvas` 的缩略图。
 
 #### 5.1.4.由零开始创建图像
 
-可以用脚本创建一个新的 HTMLImageElement 对象。要实现这个方法，我们可以使用很方便的 `Image` 构造函数。
+可以用脚本创建一个新的 `HTMLImageElement` 对象。要实现这个方法，我们可以使用很方便的 `Image` 构造函数。
 
 ```js
 var img = new Image();   // 创建一个 img 元素
@@ -743,7 +743,7 @@ function getMyVideo() {
 
 ### 5.2.绘制图片
 
-一旦获得了源图对象，我们就可以使用 `drawImage` 方法将它渲染到 canvas 里。
+一旦获得了源图对象，我们就可以使用 `drawImage` 方法将它渲染到 `canvas` 里。
 
 #### 5.2.1.`drawImage`
 
@@ -751,7 +751,7 @@ function getMyVideo() {
 drawImage(image, x, y)
 ```
 
-其中 `image` 是 `image` 或者 `canvas` 对象，`x` 和 `y` 是其在目标 canvas 里的起始坐标。
+其中 `image` 是 `image` 或者 `canvas` 对象，`x` 和 `y` 是其在目标 `canvas` 里的起始坐标。
 
 > SVG 图像必须在 `<svg>` 根指定元素的宽度和高度。
 
@@ -778,7 +778,7 @@ drawImage(image, x, y)
 ctx.drawImage(image, x, y, width, height);
 ```
 
-这个方法多了 2 个参数：`width` 和 `height`，这两个参数用来控制 当向 canvas 画入时应该缩放的大小。
+这个方法多了 2 个参数：`width` 和 `height`，这两个参数用来控制当向 `canvas` 画入时应该缩放的大小。
 
 > 图像可能会因为大幅度的缩放而变得起杂点或者模糊。如果图像里面有文字，那么最好还是不要进行缩放，因为那样处理之后很可能图像里的文字就会变得无法辨认了。
 

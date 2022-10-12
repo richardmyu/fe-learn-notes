@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grid-auto-row/column</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    /*
+    * grid-auto-columns 属性和 grid-auto-rows 属性用来设置，
+    * 浏览器自动创建的多余网格的列宽和行高。
+    * 它们的写法与 grid-template-columns 和 grid-template-rows 完全相同。
+    * 如果不指定这两个属性，
+    * 浏览器完全根据单元格内容的大小，
+    * 决定新增网格的列宽和行高。
+    */
+    .container {
+      grid-template-columns: 100px 100px 100px;
+      grid-template-rows: 100px 100px 100px;
+      grid-auto-rows: 50px;
+    }
+
+    .item-8 {
+      grid-row-start: 4;
+      grid-column-start: 2;
+    }
+
+    .item-9 {
+      grid-row-start: 5;
+      grid-column-start: 3;
+    }
+  </style>
+</head>
+
+<body>
+  <span>display:grid;</span>
+  <div class="container">
+    <div class="item item-1">1</div>
+    <div class="item item-2">2</div>
+    <div class="item item-3">3</div>
+    <div class="item item-4">4</div>
+    <div class="item item-5">5</div>
+    <div class="item item-6">6</div>
+    <div class="item item-7">7</div>
+    <div class="item item-8">8</div>
+    <div class="item item-9">9</div>
+  </div>
+</body>
+
+</html>

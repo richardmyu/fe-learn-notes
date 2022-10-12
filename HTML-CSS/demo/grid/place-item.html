@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>place-item</title>
+  <link rel="stylesheet" href="./index.css" />
+  <style>
+    /*
+    * justify-items 属性设置单元格内容的水平位置（左中右）
+    * align-items 属性设置单元格内容的垂直位置（上中下）
+    *   start：对齐单元格的起始边缘
+    *   end：对齐单元格的结束边缘
+    *   center：单元格内部居中
+    *   stretch：拉伸，占满单元格的整个宽度（默认值）
+    *
+    * place-items 属性是 align-items 属性和 justify-items 属性的合并简写形式
+    * 如果省略第二个值，则浏览器认为与第一个值相等
+    * place-items: start end;
+    */
+    .container {
+      grid-template-columns: 50px 50px 50px;
+      grid-template-rows: 50px 50px 50px;
+    }
+
+    .container-1-1 {
+      justify-items: start;
+    }
+
+    .container-1-2 {
+      justify-items: end;
+    }
+
+    .container-1-3 {
+      justify-items: center;
+    }
+
+    .container-1-4 {
+      justify-items: stretch;
+    }
+
+    .container-2-1 {
+      align-items: start;
+    }
+
+    .container-2-2 {
+      align-items: end;
+    }
+
+    .container-2-3 {
+      align-items: center;
+    }
+
+    .container-2-4 {
+      align-items: stretch;
+    }
+
+    .container-3-1 {
+      place-items: start;
+    }
+
+    .container-3-2 {
+      place-items: end;
+    }
+
+    .container-3-3 {
+      place-items: center;
+    }
+
+    .container-3-4 {
+      place-items: stretch;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <span>justify-items: start;</span>
+    <div class="container container-1-1">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>justify-items: end;</span>
+    <div class="container container-1-2">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>justify-items: center;</span>
+    <div class="container container-1-3">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>justify-items: stretch;</span>
+    <div class="container container-1-4">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>align-items: start;</span>
+    <div class="container container-2-1">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>align-items: end;</span>
+    <div class="container container-2-2">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>align-items: center;</span>
+    <div class="container container-2-3">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>align-items: stretch;</span>
+    <div class="container container-2-4">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>place-items: start;</span>
+    <div class="container container-3-1">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>place-items: end;</span>
+    <div class="container container-3-2">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+  <div>
+    <span>place-items: center;</span>
+    <div class="container container-3-3">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+    <span>place-items: stretch;</span>
+    <div class="container container-3-4">
+      <div class="item item-1">1</div>
+      <div class="item item-2">2</div>
+      <div class="item item-3">3</div>
+      <div class="item item-4">4</div>
+      <div class="item item-5">5</div>
+      <div class="item item-6">6</div>
+      <div class="item item-7">7</div>
+      <div class="item item-8">8</div>
+      <div class="item item-9">9</div>
+    </div>
+  </div>
+
+</body>
+
+</html>
