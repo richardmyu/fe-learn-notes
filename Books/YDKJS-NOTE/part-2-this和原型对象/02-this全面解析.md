@@ -529,19 +529,24 @@ function foo() {
   console.log(this.a);
 }
 
-const a = 2;
-const o = { a: 3, foo: foo };
-const p = { a: 4 };
+var a = 2;
+var o = { a: 3, foo: foo };
+var p = { a: 4 };
 
 o.foo(); // 3
+// 赋值表达式 p.foo = o.foo 的返回值是目标函数的引用
+// 因此调用位置是 foo() 而不是
+// p.foo() 或者 o.foo()
 (p.foo = o.foo)(); // 2
+p.foo = o.foo;
+p.foo(); // 4
 ```
 
 > 注意：对于默认绑定来说，决定 `this` 绑定对象的并不是调用位置是否处于严格模式，而是函数体是否处于严格模式。如果函数体处于严格模式，`this` 会被绑定到 `undefined`，否则 `this` 会被绑定到全局对象。
 
 ### 4.3.软绑定
 
-硬绑定这种方式可以把 `this` 强制绑定到指定的对象（除了使用 `new` 时），防止函数调用应用默认绑定规则。问题在于，硬绑定会大大降低函数的灵活性，使用硬绑定之后就无法使用隐式绑定或者显式绑定来修改 `this`。
+硬绑定会大大降低函数的灵活性，使用硬绑定之后就无法使用隐式绑定或者显式绑定来修改 `this`。
 
 如果可以给默认绑定指定一个全局对象和 `undefined` 以外的值，那就可以实现和硬绑定相同的效果，同时保留隐式绑定或者显式绑定修改 `this` 的能力，这种方式被称为 **软绑定**。
 
@@ -559,75 +564,68 @@ if (!Function.prototype.softBind) {
               (!this || this === (window || global)) ? obj : this,
               curried.concat.apply(curried, arguments)
          );
+        //  curried.concat.apply(curried, arguments) == curried
       };
       bound.prototype = Object.create(fn.prototype);
       return bound;
   };
 }
 
-// curried.concat.apply(curried, arguments)
-// curried：绑定 softBind 的参数
-// arguments：绑定后执行时传入的参数
+var obj = { name: "obj" },
+  obj2 = { name: "obj2" },
+  obj3 = { name: "obj3" };
+
+var fooOBJ = foo.softBind(obj);
+fooOBJ(); // name: obj
+obj2.foo = foo.softBind(obj);
+obj2.foo(); // name: obj2 <---- 看！！！
+fooOBJ.call(obj3); // name: obj3 <---- 看！
+setTimeout(obj2.foo, 10);
+// name: obj <---- 应用了软绑定
 ```
 
 ## 5.箭头函数
 
-箭头函数并不是使用 `function` 关键字定义的，而是使用被称为“胖箭头”的操作符 `=>` 定义的。箭头函数不使用 `this` 的四种标准规则，而是根据外层（函数或者全局）作用域来决定 `this`。具体来说，箭头函数会继承外层函数调用的 `this` 绑定（无论 `this` 绑定到什么）。
+箭头函数并不是使用 `function` 关键字定义的，而是使用被称为“胖箭头”的操作符 `=>` 定义的。箭头函数不使用 `this` 的四种标准规则，而是根据 *外层（函数或者全局）作用域* 来决定 `this`。具体来说，*箭头函数会继承外层函数调用的 `this` 绑定*（无论 `this` 绑定到什么）。
 
 ```js
-const arrfn = () => {
-  console.log('arrfn ', this.a);
-};
-
 function foo() {
   // 返回一个箭头函数
-  (() => { console.log(111, this.a) })(); // 2
-  arrfn(); // 1
   return (a) => {
-    //this 继承自 foo
-    console.log(222, this.a); // 2
+    //this 继承自 foo()
+    console.log(this.a);
   };
 }
-
-var a = 1;
-
-const obj1 = {
+var obj1 = {
   a: 2
-};
-
-const obj2 = {
+};s
+var obj2 = {
   a: 3
 };
-
-const bar = foo.call(obj1);
-bar.call(obj2);
-
-(() => { console.log(333, this.a) })(); // 1
-
-arrfn(); // 1
-arrfn.call(obj2); // 1
+var bar = foo.call(obj1);
+bar.call(obj2); // 2, 不是 3
 ```
+
+`foo` 内部创建的箭头函数会捕获调用时 `foo` 的 `this`。由于 `foo` 的 `this` 绑定到 `obj1`，`bar`（引用箭头函数）的 `this` 也会绑定到 `obj1`，箭头函数的绑定无法被修改。（`new` 也不行！）
 
 箭头函数可以像 `bind` 一样确保函数的 `this` 被绑定到指定对象，此外，其重要性还体现在它用更常见的词法作用域取代了传统的 `this` 机制。实际上，在 ES6 之前我们就已经在使用一种几乎和箭头函数完全一样的模式。
 
 ```js
 function foo() {
-  const self = this; // lexical capture of this
+  var self = this; // lexical capture of this
   setTimeout(function(){
     console.log(self.a);
   }, 100);
 }
 
-const obj = {
+var obj = {
   a: 2
 };
 
 foo.call(obj); // 2
 ```
 
-虽然 `self = this` 和箭头函数看起来都可以取代 `bind`，但是从本质上来说，它们想替代的是 `this` 机制。
-
-如果你经常编写 `this` 风格的代码，但是绝大部分时候都会使用 `self = this` 或者箭头函数来否定 `this` 机制，那你或许应当：
+虽然 `self = this` 和箭头函数看起来都可以取代 `bind`，但是从本质上来说，它们想替代的是 `this` 机制。如果经常编写 `this` 风格的代码，但是绝大部分时候都会使用 `self = this` 或者箭头函数来否定 `this` 机制，那你或许应当：
 
 1. 只使用词法作用域并完全抛弃错误 `this` 风格的代码；
 >
