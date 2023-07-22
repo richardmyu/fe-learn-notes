@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // "use strict";
+      console.groupCollapsed("length");
+      var str = new String("明月几时有");
+      console.log(str.length); //5
+      str.length = 2;
+      console.log(str.length);
+      // 5
+      //TypeError: Cannot assign to read only property 'length' of string '明月几时有'
+      console.dir(str);
+      // 0 明
+      // 1 月
+      // 2 几
+      // 3 时
+      // 4 有
+      // length:5
+      for (var i in str) {
+        console.log(i, str[i]);
+      }
+      // 0 明
+      // 1 月
+      // 2 几
+      // 3 时
+      // 4 有
+      console.log(delete str.length); //false
+      console.groupEnd();
+
+      console.groupCollapsed("字符字面量");
+      // var str1='a
+      // b
+      // c';
+      //SyntaxError: Invalid or unexpected token
+      var str1 = "a \
+      b \
+      c";
+      console.log(str1); //a  b  c
+      var str2 = "a" + "b" + "c";
+      console.log(str2); //abc
+
+      (function() {
+        /*
+        line 1
+        line 2
+        line 3
+        */
+      }
+        .toString()
+        .split("\n")
+        .slice(1, -1)
+        .join("\n"));
+      //   /*
+      //   line 1
+      //   line 2
+      //   line 3
+      //   */
+      console.groupEnd();
+
+      console.groupCollapsed("转义");
+      console.log("1\n2");
+      //1
+      //2
+      console.log("1\02"); //1
+      console.log("1'2"); //1'2
+
+      console.log("\251"); //©
+      console.log("\250"); //¨
+      console.log("\xA9"); //©
+      console.log("\u00A9"); //©
+      console.log("\u1022"); //ဢ
+
+      console.log("\o"); //o
+      console.log("\a"); //a
+
+      console.groupEnd();
+
+      console.groupCollapsed("不可变性");
+      var str = "asdf";
+      str[0] = "b";
+      console.log(str); //'asdf'
+      console.groupEnd();
+
+      console.groupCollapsed("toString");
+      var num = 123;
+      console.log(num.toString()); //123
+      console.log(num.toString(8)); //173
+      console.log(num.toString(16)); //7b
+      console.log(num.toString("16")); //7b
+      // console.log(num.toString("16zx"));
+      //RangeError: toString() radix argument must be between 2 and 36
+
+      console.log({ name: "hh" }.toString()); //[object Object]
+      console.log({ 1: 222 }.toString()); //[object Object]
+
+      console.log([num].toString()); //123
+      console.log([0b11].toString()); //3
+      console.log([0o11].toString()); //9
+      console.log([0011].toString()); //9
+      console.log([0x11].toString()); //17
+
+      console.log([0.0000007].toString()); //7e-7
+      console.log([7e-7].toString()); //7e-7
+      console.log([3000000000000000000000].toString()); //3e+21
+      console.log([3e22].toString()); //3e+22
+      console.log(["name"].toString()); //'name'
+
+      console.log([null].toString()); //''
+      console.log([undefined].toString()); //''
+      console.log(true.toString()); //'true'
+      console.groupEnd();
+
+      console.groupCollapsed("String");
+      console.log(String({ name: "hh" })); //[object Object]
+      console.log(String({ 1: 222 })); //[object Object]
+      console.log(String(123)); //123
+      console.log(String(0b11)); //3
+      console.log(String(0o11)); //9
+      console.log(String(0011)); //9
+      console.log(String(0x11)); //17
+
+      console.log(String(0.0000007)); //7e-7
+      console.log(String(7e-7)); //7e-7
+      console.log(String(3000000000000000000000)); //3e+21
+      console.log(String(3e22)); //3e+22
+      console.log(String(["name"])); //'name'
+      console.log(String([null])); //''
+      console.log(String([undefined])); //''
+      console.log(String(true)); //'true'
+      console.groupEnd();
+
+      console.groupCollapsed("字符集");
+      //
+      var str1 = "\u1234\u1235";
+      var str2 = "\u22234\u22235";
+      console.log(str1, str1.length); //ሴስ 2
+      console.log(str2, str2.length); //∣4∣5 4
+      console.groupEnd();
+
+      console.groupCollapsed("base64");
+      var str = "Hello World";
+      console.log(btoa(str)); //SGVsbG8gV29ybGQ=
+      console.log(atob("SGVsbG8gV29ybGQ=")); //Hello World
+
+      console.log(btoa("i mess you")); //aSBtZXNzIHlvdQ==
+      console.log(atob("aSBtZXNzIHlvdQ==")); //i mess you
+
+      // function b64Encode(str) {
+      //   return btoa(encodeURIComponent(str));
+      // }
+
+      // function b64Decode(str) {
+      //   return decodeURIComponent(atob(str));
+      // }
+
+      console.log(btoa(encodeURIComponent("你好"))); // "JUU0JUJEJUEwJUU1JUE1JUJE"
+      console.log(decodeURIComponent(atob("JUU0JUJEJUEwJUU1JUE1JUJE"))); // 你好
+
+      console.log(btoa(encodeURIComponent("分分合合")));
+      // "JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4"
+      console.log(
+        decodeURIComponent(
+          atob("JUU1JTg4JTg2JUU1JTg4JTg2JUU1JTkwJTg4JUU1JTkwJTg4")
+        )
+      ); // 分分合合
+      console.groupEnd();
+    </script>
+  </body>
+</html>

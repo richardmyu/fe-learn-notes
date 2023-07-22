@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let err = new Error("出错了");
+      console.dir(err);
+      console.log(err.message); // 出错了
+      console.log(err.name); // Error
+      console.log(err.stack); // ...
+
+      function throwIt() {
+        throw new Error("");
+      }
+
+      function catchIt() {
+        try {
+          throwIt();
+        } catch (e) {
+          console.log(e.stack); // print stack trace
+        }
+      }
+
+      catchIt();
+    </script>
+    <script>
+      // let b = a;
+      // console.log(b); //Uncaught ReferenceError: a is not defined
+
+      // let b+2=1;
+      // console.log(b);
+      // Uncaught SyntaxError: Unexpected token +
+
+      // function fn(){
+      //   return 12;
+      // }
+      // fn()=13;
+      // Uncaught ReferenceError: Invalid left-hand side in assignment
+
+      // function fn(){
+      //   this=12;
+      //   return 12;
+      // }
+      // fn();
+      // Uncaught ReferenceError: Invalid left-hand side in assignment
+
+      // let arr = [1, 2];
+      // arr.length = -1;
+      // Uncaught RangeError: Invalid array length
+
+      /* let b = new true();
+      // Uncaught TypeError: true is not a constructor */
+
+      /* let n = new "str"();
+      // Uncaught TypeError: "str" is not a constructor */
+
+      /* let n = new 123();
+      // Uncaught TypeError: 123 is not a constructor */
+
+      /* null.toString();
+      // Uncaught TypeError: Cannot read property 'toString' of null */
+
+      /* undefined.toString();
+      // Uncaught TypeError: Cannot read property 'toString' of undefined */
+
+      /* let obj = {};
+      console.log(obj.start); // undefined
+      obj.start();
+      //Uncaught TypeError: obj.start is not a function */
+
+      // encodeURI('\uD800');
+      // Uncaught URIError: URI malformed
+
+      // encodeURIComponent('\uD800');
+      // Uncaught URIError: URI malformed
+
+      /* var err1 = new Error("出错了！");
+      var err2 = new RangeError("出错了，变量超出有效范围！");
+      var err3 = new TypeError("出错了，变量类型无效！");
+
+      console.log(err1.message); // "出错了！"
+      console.log(err2.message); // "出错了，变量超出有效范围！"
+      console.log(err3.message); // "出错了，变量类型无效！" */
+
+      /* function UserError(message) {
+        this.message = message || "默认信息";
+        this.name = "UserError";
+      }
+
+      UserError.prototype = new Error();
+      UserError.prototype.constructor = UserError;
+
+      let typeE = new UserError("类型错误");
+      console.log(typeE.name, typeE.message); */
+
+      /* if (x < 0) {
+        throw new Error("x 必须为正数");
+      }
+      // Uncaught ReferenceError: x is not defined
+      console.log("23"); */
+
+      // throw new Error("哈哈哈哈哈");
+      // Uncaught Error: 哈哈哈哈哈
+
+      // throw new Error(null);
+      // Uncaught Error: null
+
+      // throw new Error(undefined);
+      // Uncaught Error
+
+      // throw new Error(123);
+      // Uncaught Error: 123
+
+      // throw new Error({});
+      // Uncaught Error: [object Object]
+
+      /* try {
+        throw new Error("出错了!");
+      } catch (e) {
+        console.error(e.name + ": " + e.message);
+      } */
+
+      /* function cleansUp() {
+        try {
+          throw new Error("出错了……");
+          console.log("此行不会执行");
+        } finally {
+          console.log("完成清理工作");
+        }
+      }
+
+      cleansUp(); */
+
+      /* function idle(x) {
+        try {
+          console.log(x);
+          return "result";
+        } finally {
+          console.log("FINALLY");
+        }
+      }
+
+      console.log(idle("hello")); */
+
+      /* var count = 0;
+      function countUp() {
+        try {
+          // return count;
+          throw count;
+        } catch {
+          console.log(count); //0
+          return "catch";
+        } finally {
+          count++;
+          console.log(count);
+        }
+      }
+
+      console.log(countUp()); */
+      // 0
+
+      /* function f() {
+        try {
+          console.log(0);
+          throw "bug";
+        } catch (e) {
+          console.log(1);
+          return true; // 这句原本会延迟到 finally 代码块结束再执行
+          console.log(2); // 不会运行
+        } finally {
+          console.log(3);
+          return false; // 这句会覆盖掉前面那句 return
+          console.log(4); // 不会运行
+        }
+
+        console.log(5); // 不会运行
+      }
+
+      var result = f();
+
+      console.log(result); */
+
+      /* function f() {
+        try {
+          throw "出错了！";
+        } catch (e) {
+          console.log("捕捉到内部错误");
+          throw e; // 这句原本会等到finally结束再执行
+        } finally {
+          // return false; // 直接返回
+        }
+      }
+
+      try {
+        f();
+      } catch (e) {
+        // 此处不会执行
+        console.log('caught outer "bogus"');
+      }
+
+      // 捕捉到内部错误 */
+    </script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // Number
+      console.log("%c Number ↓", "color:red;font-size:20px");
+      console.groupCollapsed("*** Number ***");
+      // boolean
+      console.groupCollapsed("boo");
+      console.log(Number(true)); //1
+      console.log(Number(false)); //0
+      console.groupEnd();
+      // number
+      console.groupCollapsed("num");
+      console.log(Number(-Infinity)); //-Infinity
+      console.log(Number(NaN)); //NaN
+      console.log(Number(132)); //132
+      console.log(Number(-132)); //-132
+      // 小数
+      console.log(Number(0.132)); //0.132
+      console.log(Number(0.00000132)); //0.00000132
+      console.log(Number(0.011111132)); //0.011111132
+      console.log(Number(0.000000132)); //1.32e-7
+      // 科学计数法
+      console.log(Number(300000000000000000000)); //300000000000000000000
+      console.log(Number(3000000000000000000000)); //3e+21
+      console.log(Number(30000000000000000000000.123456)); //3e+22
+      // 多个前导 0
+      console.log(Number(0011)); //9
+      console.log(Number(000011)); //9
+      // 二进制
+      console.log(Number(0b11)); //3
+      console.log(Number(0b1111)); //15
+      // 八进制
+      console.log(Number(011)); //9
+      console.log(Number(046)); //38
+      console.log(Number(00046)); //38
+      // 十六进制
+      console.log(Number(0x456)); //1110
+      console.log(Number(0xadc)); //2780
+      console.groupEnd();
+      // null undefined
+      console.groupCollapsed("null");
+      console.log(Number(undefined)); //NaN
+      console.log(Number(null)); //0
+      console.log(Number('null')); //NaN
+      console.log(Number('undefined')); //NaN
+      console.groupEnd();
+      // str
+      console.groupCollapsed("str");
+      console.log(Number("")); //0
+      console.log(Number(" ")); //0
+      console.log(Number(" 123")); //123
+      console.log(Number("1 23")); //NaN
+      console.log(Number("1.23")); //1.23
+      console.log(Number("1.2.3")); //NaN
+      console.log(Number(".2.3")); //NaN
+      // 二进制
+      console.log(Number("0b11")); //3
+      // 八进制
+      console.log(Number("011")); //11
+      // 十六进制
+      console.log(Number("0x11")); //17
+      //
+      console.log(Number("0.0000013")); //0.0000013
+      console.log(Number("0.00000013")); //1.3e-7
+      console.log(Number("200000000000000000000")); //200000000000000000000
+      console.log(Number("2000000000000000000000")); //2e+21
+      console.log(Number("2e+21")); //2e+21
+      console.log(Number("0e+21")); //0
+      console.groupEnd();
+      // obj
+      console.groupCollapsed("obj");
+      console.log(Number({})); //NaN
+      console.log(Number({ 1: 2 })); //NaN
+      console.groupEnd();
+      // ary
+      console.groupCollapsed("ary");
+      console.log(Number([])); //0
+      console.log(Number([1])); //1
+      console.log(Number([null])); //0
+      console.log(Number([undefined])); //0
+      console.log(Number(['null'])); //NaN
+      console.log(Number(['undefined'])); //NaN
+      console.log(Number([NaN])); //NaN
+      console.log(Number([1, 2])); //NaN
+      console.log(Number(["123"])); //123
+      console.log(Number(["123zxc"])); //NaN
+      console.log(Number(["1", "2"])); //NaN
+      console.groupEnd();
+
+      console.groupEnd();
+    </script>
+  </body>
+</html>

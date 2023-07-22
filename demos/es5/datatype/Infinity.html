@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      console.groupCollapsed("特殊数值");
+
+      console.groupCollapsed("+0 -0");
+      console.log(0 === -0); //true
+      console.log(0 === +0); //true
+      console.log(-0 === +0); //true
+      console.log((-0).toString()); //0
+      console.log((+0).toString()); //0
+      console.log(1 / -0 === 1 / +0); //false
+      console.groupEnd();
+
+      console.groupCollapsed("NaN");
+      console.log(0 / 0); //NaN
+      console.log(0 / -0); //NaN
+      console.log(typeof NaN); //'number'
+      console.log([NaN].indexOf(NaN)); //-1
+      console.log(NaN == NaN); //false
+      console.log(NaN != NaN); //true
+      console.log(NaN === NaN); //false
+      console.log(NaN !== NaN); //true
+      console.log(NaN >= NaN); //false
+      console.log(NaN >= Infinity); //false
+      console.log(NaN + NaN); //NaN
+      console.log(NaN / 12); //NaN
+      console.groupEnd();
+
+      console.groupCollapsed("Infinity");
+      console.log(Math.pow(2, 1024)); //Infinity
+      console.log(1 / 0); //Infinity
+      console.log(-1 / 0); //-Infinity
+      console.log(Infinity === -Infinity); //false
+      // num
+      console.groupCollapsed("Infinity---num");
+      console.log(Infinity / 0); //Infinity
+      console.log(Infinity / 1); //Infinity
+      console.log(0 / Infinity); //0
+      console.log(1 / Infinity); //0
+      console.log(0 - Infinity); //-Infinity
+      console.log(0 * Infinity); //NaN
+      console.log(1 * Infinity); //Infinity
+      console.groupEnd();
+      // NaN
+      console.groupCollapsed("Infinity---NaN");
+      console.log(NaN * Infinity); //NaN
+      console.log(NaN + Infinity); //NaN
+      console.log(NaN - Infinity); //NaN
+      console.log(NaN / Infinity); //NaN
+      console.log(Infinity / NaN); //NaN
+      console.groupEnd();
+      // Infinity
+      console.groupCollapsed("Infinity---Infinity");
+      console.log(Infinity * Infinity); //Infinity
+      console.log(Infinity + Infinity); //Infinity
+      console.log(Infinity - Infinity); //NaN
+      console.log(Infinity / Infinity); //NaN
+      console.groupEnd();
+      // null === 0
+      console.groupCollapsed("Infinity---null");
+      console.log(null * Infinity); //NaN
+      console.log(null + Infinity); //Infinity
+      console.log(null - Infinity); //-Infinity
+      console.log(Infinity - null); //Infinity
+      console.log(null / Infinity); //0
+      console.log(Infinity / null); //Infinity
+      console.groupEnd();
+      //undefined
+      console.groupCollapsed("Infinity---undefined");
+      console.log(undefined * Infinity); //NaN
+      console.log(undefined + Infinity); //NaN
+      console.log(undefined - Infinity); //NaN
+      console.log(Infinity - undefined); //NaN
+      console.log(undefined / Infinity); //NaN
+      console.log(Infinity / undefined); //NaN
+      console.groupEnd();
+
+      console.groupEnd();
+
+      console.groupEnd();
+    </script>
+  </body>
+</html>

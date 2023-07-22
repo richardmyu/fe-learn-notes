@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>插槽默认内容</title>
+</head>
+
+<body>
+  <div id="app">
+    <submit-button-left></submit-button-left>
+    <submit-button-center>upload</submit-button-center>
+    <submit-button-right></submit-button-right>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script>
+    Vue.component('submit-button-left', {
+      template: `
+      <button type="submit">
+        <slot>Submit</slot>
+      </button>
+      `
+    })
+    Vue.component('submit-button-center', {
+      template: `
+      <button type="submit">
+        <slot>Save</slot>
+      </button>
+      `
+    })
+    Vue.component('submit-button-right', {
+      template: `
+      <button type="submit">
+        <slot>Save</slot>
+      </button>
+      `
+    })
+  </script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+
+      }
+    })
+  </script>
+
+</body>
+
+</html>

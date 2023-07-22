@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>console.count</title>
+</head>
+
+<body>
+  <script>
+    function greet(user) {
+      console.count();
+      return "hi " + user;
+    }
+
+    console.log(greet("bob"));
+    // default: 1
+    // hi bob
+
+    console.log(greet("alice"));
+    // default: 2
+    // hi alice
+
+    console.log(greet("bob"));
+    // default: 3
+    // hi bob
+  </script>
+  <script>
+    console.log("*******************");
+
+    function greet(user) {
+      console.count(user);
+      return "hi " + user;
+    }
+
+    console.log(greet("bob"));
+    // bob: 1
+    // hi bob
+
+    console.log(greet("alice"));
+    // alice: 2
+    // hi alice
+
+    console.log(greet("bob"));
+    // bob: 3
+    // hi bob
+  </script>
+  <script>
+    console.log("*******************");
+
+    function greet(user) {
+      console.log("param-user ", user);
+      console.count(user);
+      return "hi " + user;
+    }
+
+    console.log(greet(11));
+    // param-user 11
+    // 参数打印出来还是 Number !!!
+    // '11': '1'
+    // hi '11'
+
+    console.log(greet(22));
+    //param-user 22
+    // '22': '2'
+    // hi '22'
+
+    console.log(greet(11));
+    //param-user '11'
+    // '11': '3'
+    // hi '11'
+  </script>
+</body>
+
+</html>

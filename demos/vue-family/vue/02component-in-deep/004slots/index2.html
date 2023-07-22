@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>作用域插槽</title>
+</head>
+
+<body>
+  <div id="app">
+    <todo-list :todos="todos">
+      <template slot-scope="slotProps">
+        <span v-if="slotProps.todo.isComplete">
+          √
+        </span>
+        {{slotProps.todo.text}}
+      </template>
+    </todo-list>
+    <todo-list :todos="todos">
+      <template slot-scope="slotProps">
+        <span v-if="slotProps.todo.isComplete">
+          <input type="checkbox" :checked="slotProps.todo.isComplete">
+        </span>
+        {{slotProps.todo.text}}
+      </template>
+    </todo-list>
+    <todo-list :todos="todos">
+      <template slot-scope="slotProps">
+        <input type="checkbox" v-model="slotProps.todo.isComplete"> {{slotProps.todo.text}}
+      </template>
+    </todo-list>
+    <!-- 解构 slot-scope -->
+    <todo-list :todos="todos">
+      <template slot-scope="{todo}">
+        <input type="checkbox" v-model="todo.isComplete"> {{todo.text}}
+      </template>
+    </todo-list>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script>
+    Vue.component('todo-list', {
+      props: ['todos'],
+      template: `
+      <ul>
+        <li
+          v-for="todo of todos"
+          v-bind:key="todo.id"
+        >
+          <slot v-bind:todo="todo">
+            {{todo.text}}
+          </slot>
+        </li>
+      </ul>
+      `
+    })
+
+  </script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        todos: [
+          { id: 1, text: 'hello', isComplete: true },
+          { id: 2, text: 'world', isComplete: true },
+          { id: 3, text: 'okkkk', isComplete: false }
+        ]
+      }
+    })
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <base href="http://www.example.com/page.html" />
+    <title>dom</title>
+  </head>
+  <body>
+    <div
+      id="app"
+      class="container"
+      data-node="哈哈哈哈"
+      onclick="console.log('on')"
+    >
+      <div class="item item--first" name="first">1234</div>
+      <div class="item item--last" name="last">2341</div>
+    </div>
+    <ul id="list"></ul>
+    <img id="img" class="test" src="" alt="" />
+    <a id="lin" class="test" href=""></a>
+    <script>
+      let fChildren = document.childNodes
+      let sChildren = fChildren[1].childNodes
+
+      let app = document.getElementById('app')
+      let list = document.getElementById('list')
+    </script>
+  </body>
+</html>

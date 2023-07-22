@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>列表渲染</title>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <ul>
+        <!-- 在 v-for 块中，拥有对父作用域属性的完全访问权限。 -->
+        <li v-for="(item,index) of items" :key="index">item: {{item.name}} - index: {{index}}</li>
+      </ul>
+      <ul>
+        <li v-for="(value,key,index) in obj" :key="index">value: {{value}} - key: {{key}} - index: {{index}}</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li v-for="n in eNum">{{n}}</li>
+      </ul>
+    </div>
+    <hr>
+    <div>
+      <ul>no com
+        <li v-for="todo of todos" v-if="!todo.isCom">{{todo.name}}</li>
+      </ul>
+      <ul>com
+        <li v-for="todo of todos" v-if="todo.isCom">{{todo.name}}</li>
+      </ul>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        items: [
+          { name: 'kk' },
+          { name: 'jj' }
+        ],
+        obj: {
+          who: '我是谁',
+          where: '我从哪里来',
+          how: '要到那里去'
+        },
+        nums: [1, 2, 3, 4, 5, 6],
+        todos: [
+          { name: 'vu', isCom: false },
+          { name: 'jq', isCom: true },
+          { name: 'bt', isCom: true }
+        ]
+      },
+      computed: {
+        // 在计算属性不适用的情况下 (例如，在嵌套 v-for 循环中) 你可以使用一个 method 方法
+        eNum: function () {
+          return this.nums.filter(item => {
+            return item % 2 === 0;
+          })
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

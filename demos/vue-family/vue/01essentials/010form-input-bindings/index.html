@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>文本和多行文本</title>
+</head>
+
+<body>
+  <div id="app">
+    <input v-model="msg" placeholder="edit me">
+    <p>Message is: {{ msg }}</p>
+    <hr>
+    <span>Multiline message is:</span>
+    <p style="white-space: pre-line;">{{ msgT }}</p>
+    <br>
+    <!-- 在文本区域插值 (<textarea></textarea>) 并不会生效，应用 v-model 来代替。 -->
+    <textarea v-model="msgT" placeholder="add multiple lines"></textarea>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '',
+        msgT:''
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <input type="button" id="button" value="click me" />
+      <p>case 1</p>
+      <input type="text" id="input-box1" />
+      <p>case 2</p>
+      <input type="text" id="input-box2" />
+    </div>
+
+    <script>
+      var input = document.getElementById("button");
+      input.onclick = function A() {
+        console.log("AAA");
+        setTimeout(function B() {
+          console.log("CCC");
+          input.value += " input";
+        }, 0);
+      };
+      document.body.onclick = function C() {
+        console.log("BBB");
+        input.value += " body";
+      };
+
+      // 文本顺序
+      document.getElementById("input-box1").onkeypress = function(event) {
+        this.value = this.value.toUpperCase();
+      };
+
+      document.getElementById("input-box2").onkeypress = function(event) {
+        var self = this;
+        setTimeout(() => {
+          this.value = this.value.toUpperCase();
+        }, 0);
+      };
+      // 分割
+
+      var div = document.getElementsByTagName("div")[0];
+      // 写法一
+      var count = 0;
+      var timer = setInterval(() => {
+        count++;
+        console.log("count", count, timer);
+        if (count > 10) {
+          clearInterval(timer);
+        }
+      }, 1000);
+
+      var count1 = 0;
+      var timer1 = setInterval(() => {
+        count1++;
+        console.log("count1", count1, timer1);
+        if (count1 > 10) {
+          clearInterval(timer1);
+        }
+      }, 1000);
+
+      console.time("div");
+      for (var i = 0xe00000; i < 0xffffff; i++) {
+        // console.log(i);
+        div.style.backgroundColor = "#" + i.toString(16);
+      }
+      console.timeEnd("div");
+
+      // 写法二
+      // var timer;
+      // var i = 0xf00000;
+      // function func() {
+      //   timer = setTimeout(func, 0);
+      //   console.log(i, timer);
+      //   div.style.backgroundColor = "#" + i.toString(16);
+      //   i++;
+      //   if (i === 0xf00fff) {
+      //     clearInterval(timer);
+      //     console.timeEnd("set div");
+      //   }
+      // }
+      // console.time("set div");
+      // timer = setTimeout(func, 0);
+    </script>
+  </body>
+</html>

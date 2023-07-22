@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>数据劫持</title>
+</head>
+
+<body>
+  <div id="app">
+    {{msg}} {{obj}} {{arr}}
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app',  //querySelect()
+      data: {  //被vm代理
+        msg: 'hello',
+        arr: [1, 2, 3, 4],
+        obj: {}
+      }
+    });
+    //  vue 会循环 data 中的数据（这称之为数据劫持），依次为数据进行 getter 和 setter 转化，即任何对数据的读取或写入操作只能通过 get 和 set 函数进行，
+    //  被定义在 data 中的变量都是响应式
+
+    // 下面这中方式也可以增加变量，但不是响应式的
+    vm.b = 'world';
+
+    // 增加响应式2：
+    // 注意：Vue 不允许在已经创建的实例上动态添加新的根级响应式属性 (root-level reactive property)。然而它可以使用 Vue.set(object, key, value) 方法将响应属性添加到嵌套的对象上
+    Vue.set(vm.obj, "name", 'vue');
+    vm.$set(vm.obj, 'c', 3);
+
+    //  有时你想向已有对象上添加一些属性，例如使用 Object.assign() 或 _.extend() 方法来添加属性。但是，添加到对象上的新属性不会触发更新。在这种情况下可以创建一个新的对象，让它包含原对象的属性和新的属性：
+
+    vm.obj = Object.assign({}, vm.obj, { 'd': 123 });
+
+
+    // ??? 下面俩种方式可以改变数组  ???
+    // vm.arr[0] = 12;
+    // vm.arr.length -= 2;
+    vm.arr.reverse();
+    vm.arr = vm.arr.map(item => item * 3);
+  </script>
+</body>
+
+</html>

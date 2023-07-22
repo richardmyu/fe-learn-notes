@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>局部注册</title>
+
+</head>
+
+<body>
+  <div id="app">
+    <com-t></com-t>
+    <com-c>
+      <com-t></com-t>
+    </com-c>
+    <com-f></com-f>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script>
+    // 你可以通过一个普通的 JavaScript 对象来定义组件
+    const ComT = { template: '<h3>title</h3>' };
+    // 注意局部注册的组件在其子组件中不可用。例如，如果你希望 ComT 在 ComC 中可用，则你需要这样写：
+    //1.增加一个 components ,注明 com-t
+    //2.在模块中写入 com-t
+    // 对比全局组件的调用，只是多一个局部组件的声明
+    const ComC = {
+      components: {
+        'com-t': ComT
+      },
+      template: '<p><com-t></com-t>content</p>'
+    };
+    const ComF = { template: '<p>footer</p>' };
+
+    // 然后在 components 选项中定义你想要使用的组件
+    let vm = new Vue({
+      el: '#app',
+      components: {
+        'com-t': ComT,
+        'com-c': ComC,
+        'com-f': ComF
+      }
+    })
+  </script>
+
+
+</body>
+
+</html>

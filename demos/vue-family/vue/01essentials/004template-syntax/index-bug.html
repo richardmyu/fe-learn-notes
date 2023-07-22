@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>bug</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="radio" id="one" value="bug" v-model="picked">
+    <label for="one">bug</label>
+    <br>
+    <input type="radio" id="two" value="case1" v-model="picked">
+    <label for="two">case1</label>
+    <br>
+    <input type="radio" id="three" value="case2" v-model="picked">
+    <label for="three">case2</label>
+    <br>
+    <br>
+    <span>Picked: {{ picked }}</span>
+    <template v-if="picked==='bug'">
+      <p>counter: {{counter}}</p>
+      <p>++counter: {{++counter}}</p>
+    </template>
+    <template v-if="picked==='case1'">
+      <p>counter: {{counter}}</p>
+      <p v-once>++counter: {{++counter}}</p>
+    </template>
+    <template v-if="picked==='case2'">
+      <p>count: {{count}}</p>
+      <p>++count: {{++count}}</p>
+      <p>counter: {{counter}}</p>
+    </template>
+    <button :disabled="!picked" v-on:click="changeCounter">change counter</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        picked: '',
+        counter: 0
+      },
+      methods: {
+        changeCounter() {
+          this.counter++;
+        }
+      }
+    })
+    vm.count = 0;
+    console.log(vm);
+  </script>
+</body>
+
+</html>
